@@ -1,29 +1,37 @@
-/**
- * Learn more about using TypeScript with React Navigation:
- * https://reactnavigation.org/docs/typescript/
- */
-
 export type RootStackParamList = {
   Root: undefined;
-  NotFound: undefined;
+  SignupScreen: undefined;
+  AboutUsScreen: undefined;
+  DeleteAccountScreen: undefined;
+  MenuScreen: undefined;
+  BurgerScreen: undefined;
 };
 
 export type BottomTabParamList = {
-  TabOne: undefined;
-  TabTwo: undefined;
-  TabThree: undefined;
+  Chef: undefined;
+  Menu: undefined;
+  SavoredList: undefined;
 };
 
-export type TabOneParamList = {
-  TabOneScreen: {name: string};
-  ChefsScreen: {name: string};
-  LoginScreen: {name: string};
+export type LoggedOutParamList = {
+  LoginScreen: undefined;
+  SignupScreen: undefined;
+  AboutUsScreen: undefined;
+};
+  
+export type LoggedInParamList = {
+  ChefScreen: undefined;
+  AboutUsScreen: undefined;
+  LoginScreen: undefined;
+  DeleteAccountScreen: undefined;
 };
 
-export type TabTwoParamList = {
-  TabTwoScreen: undefined;
+export type MenuStackParamList = {
+  MenuScreen: undefined;
+  BurgerScreen: undefined;
 };
 
-export type TabThreeParamList = {
-  TabThreeScreen: undefined;
-};
+export type SavoredListParamList = {
+  SavoredListScreen: undefined;
+  RecipeScreen: {recipeId: string};
+}
