@@ -11,12 +11,19 @@ export type RootStackParamList = {
 export type BottomTabParamList = {
   TabOne: undefined;
   TabTwo: undefined;
+  TabThree: undefined;
 };
 
 export type TabOneParamList = {
-  TabOneScreen: undefined;
+  TabOneScreen: {name: string};
+  ChefsScreen: {name: string};
+  LoginScreen: {name: string};
 };
 
 export type TabTwoParamList = {
   TabTwoScreen: undefined;
+};
+
+export type TabThreeParamList = {
+  TabThreeScreen: undefined;
 };

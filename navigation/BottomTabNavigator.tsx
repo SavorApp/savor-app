@@ -12,11 +12,14 @@ import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { BottomTabParamList, TabOneParamList, TabTwoParamList } from '../types';
+import TabThreeScreen from '../screens/TabThreeScreen';
+import { BottomTabParamList, TabOneParamList, TabTwoParamList, TabThreeParamList } from '../types';
+import LoginScreen from '../screens/LoginScreen';
+import ChefsScreen from '../screens/ChefsScreen';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
-export default function BottomTabNavigator() {
+export function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
   return (
@@ -37,6 +40,13 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
         }}
       />
+      <BottomTab.Screen
+        name="TabThree"
+        component={TabThreeNavigator}
+        options={{
+          tabBarIcon: ({ color }) => <TabBarIcon name="ios-code" color={color} />,
+        }}
+      />
     </BottomTab.Navigator>
   );
 }
@@ -49,17 +59,35 @@ function TabBarIcon(props: { name: React.ComponentProps<typeof Ionicons>['name']
 
 // Each tab has its own navigation stack, you can read more about this pattern here:
 // https://reactnavigation.org/docs/tab-based-navigation#a-stack-navigator-for-each-tab
-const TabOneStack = createStackNavigator<TabOneParamList>();
+const LoggedInStack = createStackNavigator<TabOneParamList>();
+const LoggedOutStack = createStackNavigator<TabOneParamList>();
 
-function TabOneNavigator() {
+export function TabOneNavigator() {
+  const isLoggedIn: Boolean = false;
   return (
-    <TabOneStack.Navigator>
-      <TabOneStack.Screen
-        name="TabOneScreen"
-        component={TabOneScreen}
-        options={{ headerTitle: 'Tab One Title' }}
-      />
-    </TabOneStack.Navigator>
+    isLoggedIn ? (
+      <LoggedInStack.Navigator screenOptions={{ headerShown: false }}>
+        <LoggedInStack.Screen
+          name="TabOneScreen"
+          component={TabOneScreen}
+        />
+        <LoggedInStack.Screen
+          name="ChefsScreen"
+          component={ChefsScreen}
+        />
+      </LoggedInStack.Navigator>
+    ) : (
+      <LoggedOutStack.Navigator screenOptions={{ headerShown: false }}>
+        <LoggedOutStack.Screen
+          name="TabOneScreen"
+          component={TabOneScreen}
+        />
+        <LoggedOutStack.Screen
+          name="LoginScreen"
+          component={LoginScreen}
+        />
+      </LoggedOutStack.Navigator>
+    )
   );
 }
 
@@ -67,12 +95,24 @@ const TabTwoStack = createStackNavigator<TabTwoParamList>();
 
 function TabTwoNavigator() {
   return (
-    <TabTwoStack.Navigator>
+    <TabTwoStack.Navigator screenOptions={{ headerShown: false }}>
       <TabTwoStack.Screen
         name="TabTwoScreen"
         component={TabTwoScreen}
-        options={{ headerTitle: 'Tab Two Title' }}
       />
     </TabTwoStack.Navigator>
+  );
+}
+
+const TabThreeStack = createStackNavigator<TabThreeParamList>();
+
+function TabThreeNavigator() {
+  return (
+    <TabThreeStack.Navigator screenOptions={{ headerShown: false }}>
+      <TabThreeStack.Screen
+        name="TabThreeScreen"
+        component={TabThreeScreen}
+      />
+    </TabThreeStack.Navigator>
   );
 }

@@ -1,25 +1,20 @@
 import * as React from 'react';
 import { StyleSheet, Button } from 'react-native';
 
-import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TabOneParamList } from '../types';
 
-type TabOneScreenNavigationProp = StackNavigationProp<
-TabOneParamList,
-  'LoginScreen'
->;
+type TabOneScreenNavigationProp = StackNavigationProp<TabOneParamList,'TabOneScreen'>;
 
 type Props = {navigation: TabOneScreenNavigationProp}
 
-export default function TabOneScreen({navigation}: Props) {
+export default function LoginScreen({route}: {route: any}, {navigation}: Props) {
+  const { name } = route.params;
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="/screens/TabOneScreen.tsx" />
-      <Button title="Login" onPress={() => navigation.navigate("LoginScreen", {name: "Chef Yoshio"})} />
+      <Text style={styles.title}>{name} Login Screen</Text>
+      <Button title="Back" onPress={() => navigation.navigate("TabOneScreen", {name: "Went back"})} />
     </View>
   );
 }

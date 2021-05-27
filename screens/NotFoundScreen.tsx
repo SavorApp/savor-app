@@ -5,7 +5,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { RootStackParamList } from '../types';
 
 export default function NotFoundScreen({
-  navigation,
+navigation,
 }: StackScreenProps<RootStackParamList, 'NotFound'>) {
   return (
     <View style={styles.container}>
