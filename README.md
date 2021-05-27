@@ -4,14 +4,12 @@
 ## Description
 Savored is a quick and exciting Recipe suggestion mobile application.
 
-___
 ## Getting Started
 
 To get started you will need to install dependencies:
 ```console
 user@machine:~/savored_app$ npm i 
 ```
-___
 ## Contributors
 * Johan Thestrup
 * Gaetan Karst
