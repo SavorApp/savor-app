@@ -1,4 +1,4 @@
-# savored
+# Savored
 > Food has no bounderies, taste is limitless. Swipe and look, savor to cook.
 
 ## Description
