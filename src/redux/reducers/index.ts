@@ -1,8 +1,12 @@
-import { userReducer } from "./user";
+import { userReducer, UserState } from "./user";
 import { combineReducers } from "redux";
 
+export type RootState = {
+    userState: UserState
+}
+
 const rootReducer = combineReducers({
-    user: userReducer
+    userState: userReducer
 });
 
 export default rootReducer;

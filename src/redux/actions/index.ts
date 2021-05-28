@@ -10,3 +10,10 @@ export const setUser = (user: User):Action => {
         payload: user
     }
 }
+
+export const removeUser = (user: User):Action => {
+    return {
+        type: "LOGOUT_USER",
+        payload: user
+    }
+}
