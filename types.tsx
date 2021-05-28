@@ -1,3 +1,9 @@
+/*
+ _________________________
+ Stack Navigator Params
+ _________________________
+*/
+
 export type RootStackParamList = {
   Root: undefined;
   SignupScreen: undefined;
@@ -34,4 +40,43 @@ export type MenuStackParamList = {
 export type SavoredListParamList = {
   SavoredListScreen: undefined;
   RecipeScreen: {recipeId: string};
+}
+
+/*
+ _________________________
+ Redux Store Objects
+ _________________________
+*/
+
+// Core RootState interface
+export interface RootState {
+  userState: UserState
+}
+
+// Core User type
+export type User = {
+  id: number,
+  username: string,
+  image_url: string
+}
+
+// Core UserState interface
+export interface UserState {
+  user: User,
+  isLoggedIn: Boolean
+}
+
+// Core User action
+export type UserAction = {type: string, payload: User}
+
+/*
+ _________________________
+ Other Application Objects
+ _________________________
+*/
+
+// InputUser for when users log in
+export type InputUser = {
+  username: string,
+  password: string
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { LoggedOutParamList } from "../../types"
 

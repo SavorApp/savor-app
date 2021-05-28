@@ -1,17 +1,4 @@
-import { Action } from "../actions";
-
-// Set User type
-export type User = {
-    id: number,
-    username: string,
-    image_url: string
-}
-
-// Set UserState type via interface
-export interface UserState {
-    user: User,
-    isLoggedIn: Boolean
-}
+import { User, UserAction, UserState } from "../../../types";
 
 // Initialize initial User State
 // TODO: 
@@ -28,7 +15,7 @@ const initialState: UserState = {
 }
 
 // Initialize userReducer with initialState and Action type
-export const userReducer = (state: UserState = initialState, action: Action) => {
+export const userReducer = (state: UserState = initialState, action: UserAction) => {
     switch(action.type) {
         // When user logs in...
         case "LOGIN_USER": {

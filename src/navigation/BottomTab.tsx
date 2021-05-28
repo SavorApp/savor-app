@@ -15,7 +15,7 @@ export default function BottomTabNavigator() {
     const colorScheme = useColorScheme();
 
     // TODO: Get isLoggedIn from Authentication global state
-    let isLoggedIn: Boolean = true;
+    let isLoggedIn: Boolean = false;
 
     return (
         <BottomTab.Navigator

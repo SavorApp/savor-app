@@ -1,17 +1,15 @@
-import { User } from "../reducers/user"
+import { User, UserAction } from "../../../types"
 
-// Set Action type for User actions
-export type Action = {type: string, payload: User}
 
 // User Actions
-export const setUser = (user: User):Action => {
+export const setUser = (user: User):UserAction => {
     return {
         type: "LOGIN_USER",
         payload: user
     }
 }
 
-export const removeUser = (user: User):Action => {
+export const removeUser = (user: User):UserAction => {
     return {
         type: "LOGOUT_USER",
         payload: user
