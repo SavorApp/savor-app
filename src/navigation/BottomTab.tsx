@@ -39,7 +39,7 @@ export default function BottomTabNavigator() {
             name="SavoredList"
             component={SavoredListNavigator}
             options={{
-              tabBarIcon: ({ color }) => <TabBarIcon name="heart-multiple-outline" color={color} />,
+              tabBarIcon: ({ color }) => <TabBarIcon name="silverware-variant" color={color} />,
             }}
           />
         </BottomTab.Navigator>
