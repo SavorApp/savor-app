@@ -1,8 +1,10 @@
 export default {
-    primary: "#118ab2",
-    secondary: "#dee2e6",
-    alternate: "#ced4da",
-    trim: "#1d3557",
+    primary: "#1F8F89",
+    secondary: "#8DDBBC",
+    alternate: "#007ea7",
+    alternate2: "#003459",
+    trim: "#85909C",
+    popLight: "#ffffb7",
+    popDark: "#ffda0a",
     background: "#ffffff"
-
 }
