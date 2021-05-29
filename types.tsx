@@ -129,6 +129,17 @@ export interface FiltersState {
 export type FiltersAction = {type: string, payload: Filters}
 
 /*
+ _____________________________
+ Componenents Property Objects
+ _____________________________
+*/
+
+export type RecipeCardProps = {
+  id: number,
+  rcpImage: string | undefined
+}
+
+/*
  _________________________
  Other Application Objects
  _________________________
