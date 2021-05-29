@@ -5,8 +5,11 @@ import Constants from 'expo-constants';
 import axios from "axios";
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/recipes.json";
-import { initialState } from "../redux/reducers/recipe" 
+import { initialState } from "../redux/reducers/recipe"
 import { Recipe } from "../../types";
+import CardStack, { Card } from 'react-native-card-stack-swiper';
+import RecipeCard from '../components/RecipeCard';
+
 
 const _screen = Dimensions.get("screen");
 
@@ -25,30 +28,30 @@ export default function MenuScreen() {
 
         // Filter random recipes based on filters, if applied
         const filteredRecipes = recipesJson.recipes.map((rcp) => {
-          return {
-            id: rcp.id,
-            sourceUrl: rcp.sourceUrl,
-            image: rcp.image,
-            imageType: rcp.imageType,
-            title: rcp.title,
-            diets: rcp.diets,
-            cuisines: rcp.cuisines,
-            dishTypes: rcp.dishTypes,
-            vegetarian: rcp.vegetarian,
-            vegan: rcp.vegan,
-            glutenFree: rcp.glutenFree,
-            dairyFree: rcp.dairyFree,
-            veryHealthy: rcp.veryHealthy,
-            cheap: rcp.cheap,
-            veryPopular: rcp.veryPopular,
-            sustainable: rcp.sustainable,
-            aggregateLikes: rcp.aggregateLikes,
-            spoonacularScore: rcp.spoonacularScore,
-            healthScore: rcp.healthScore,
-            pricePerServing: rcp.pricePerServing,
-            readyInMinutes: rcp.readyInMinutes,
-            servings: rcp.servings,
-          }
+            return {
+                id: rcp.id,
+                sourceUrl: rcp.sourceUrl,
+                image: rcp.image,
+                imageType: rcp.imageType,
+                title: rcp.title,
+                diets: rcp.diets,
+                cuisines: rcp.cuisines,
+                dishTypes: rcp.dishTypes,
+                vegetarian: rcp.vegetarian,
+                vegan: rcp.vegan,
+                glutenFree: rcp.glutenFree,
+                dairyFree: rcp.dairyFree,
+                veryHealthy: rcp.veryHealthy,
+                cheap: rcp.cheap,
+                veryPopular: rcp.veryPopular,
+                sustainable: rcp.sustainable,
+                aggregateLikes: rcp.aggregateLikes,
+                spoonacularScore: rcp.spoonacularScore,
+                healthScore: rcp.healthScore,
+                pricePerServing: rcp.pricePerServing,
+                readyInMinutes: rcp.readyInMinutes,
+                servings: rcp.servings,
+            }
         })
 
         setRandRecipes(filteredRecipes);
@@ -56,7 +59,7 @@ export default function MenuScreen() {
 
     // On load, fetch/set random Recipes
     React.useEffect(() => {
-      fetchRandomRecipes();
+        fetchRandomRecipes();
     }, []);
 
     // TODO: 
@@ -67,14 +70,11 @@ export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                {randRecipes.map((rcp, idx) => {
-                    return (
-                        <Text
-                            style={styles.recipeTextTest}
-                            key={rcp.id}    
-                        >{rcp.title}</Text>
-                    )
-                })}
+                <CardStack ref={swiper => { swiper = swiper }}>
+                    {randRecipes.map((rcp: Recipe) => {
+                        return <Card ><RecipeCard rcpImage={rcp.image} id={rcp.id} /></Card>
+                    })}
+                </CardStack>
             </View>
         </View>
     )
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     subContainer: {
         justifyContent: "center",
         alignItems: "center",
-        width: _screen.width*0.9,
-        height: _screen.height*0.6,
+        width: _screen.width * 0.9,
+        height: _screen.height * 0.6,
         borderRadius: 30,
         backgroundColor: colorPalette.primary
     },
