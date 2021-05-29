@@ -3,13 +3,12 @@ import { StyleSheet, Dimensions, View, Text } from "react-native";
 import colorPalette from "../constants/ColorPalette";
 import Constants from 'expo-constants';
 import axios from "axios";
+import CardStack, { Card } from 'react-native-card-stack-swiper';
+import RecipeCard from '../components/RecipeCard';
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/recipes.json";
 import { initialState } from "../redux/reducers/recipe"
 import { Recipe } from "../../types";
-import CardStack, { Card } from 'react-native-card-stack-swiper';
-import RecipeCard from '../components/RecipeCard';
-
 
 const _screen = Dimensions.get("screen");
 
@@ -57,6 +56,14 @@ export default function MenuScreen() {
         setRandRecipes(filteredRecipes);
     }
 
+    function onSwipedLeft() {
+        console.log('Swiped left');
+    }
+
+    function onSwipedRight() {
+        console.log('Swiped right');
+    }
+    
     // On load, fetch/set random Recipes
     React.useEffect(() => {
         fetchRandomRecipes();
@@ -70,9 +77,9 @@ export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                <CardStack ref={swiper => { swiper = swiper }}>
+                <CardStack style={styles.cardStack} ref={swiper => { swiper = swiper } } onSwipedLeft={onSwipedLeft} onSwipedRight={onSwipedRight}>
                     {randRecipes.map((rcp: Recipe) => {
-                        return <Card ><RecipeCard rcpImage={rcp.image} id={rcp.id} /></Card>
+                        return <Card ><RecipeCard rcp={rcp} id={rcp.id} /></Card>
                     })}
                 </CardStack>
             </View>
@@ -104,5 +111,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         textAlign: "center",
         margin: 8
+    },
+
+    cardStack: {
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

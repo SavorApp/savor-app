@@ -136,7 +136,7 @@ export type FiltersAction = {type: string, payload: Filters}
 
 export type RecipeCardProps = {
   id: number,
-  rcpImage: string | undefined
+  rcp: Recipe
 }
 
 /*
