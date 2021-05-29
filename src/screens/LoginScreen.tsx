@@ -57,6 +57,9 @@ export default function LoginScreen({ navigation }: LoginProps) {
 
         // receive user: User after authentication and setUser()
         // dispatch(setUser(user));
+
+        // Once authenticated, navigate to MenuScreen
+        // navigation.navigate("MenuScreen");
     }
 
 

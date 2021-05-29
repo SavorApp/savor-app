@@ -23,6 +23,7 @@ export type LoggedOutParamList = {
   LoginScreen: undefined;
   SignupScreen: undefined;
   AboutUsScreen: undefined;
+  MenuScreen: undefined;
 };
   
 export type LoggedInParamList = {
