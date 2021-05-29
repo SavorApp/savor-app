@@ -69,6 +69,48 @@ export interface UserState {
 // Core User action
 export type UserAction = {type: string, payload: User}
 
+// Core Recipe type
+export type Recipe = {
+  id: number,
+  sourceUrl: string,
+  image: string | undefined,
+  imageType: string | undefined,
+  title: string,
+  diets: never[] | string[],
+  cuisines: string[],
+  dishTypes: string[],
+  vegetarian: Boolean,
+  vegan: Boolean,
+  glutenFree: Boolean,
+  dairyFree: Boolean,
+  veryHealthy: Boolean,
+  cheap: Boolean,
+  veryPopular: Boolean,
+  sustainable: Boolean,
+  aggregateLikes: number,
+  spoonacularScore: number,
+  healthScore: number,
+  pricePerServing: number,
+  readyInMinutes: number,
+  servings: number,
+}
+
+// Core RecipeState interface
+export interface RecipeState {
+  recipe: Recipe
+}
+
+// Core Recipe action
+export type RecipeAction = {type: string, payload: Recipe}
+
+// Core RecipeState interface
+export interface RecipeListState {
+  recipeList: Recipe[]
+}
+
+// Core Recipe action
+export type RecipeListAction = {type: string, payload: Recipe[]}
+
 /*
  _________________________
  Other Application Objects

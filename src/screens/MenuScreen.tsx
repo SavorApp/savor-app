@@ -1,13 +1,66 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text } from "react-native";
 import colorPalette from "../constants/ColorPalette";
+import Constants from 'expo-constants';
+import axios from "axios";
+// Importing JSON data for development and testing
+import * as recipesJson from "../data/recipes.json";
+import { initialState } from "../redux/reducers/recipe" 
+import { Recipe } from "../../types";
 
 const _screen = Dimensions.get("screen");
 
+// Initializing Spoonacular resources
+const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
+const randRecipeUrl = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&`
+
+
 export default function MenuScreen() {
+    const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([initialState.recipe]);
+
+    // Fetch random Recipes from Spoonacular
+    async function fetchRandomRecipes() {
+        // const resp = await axios.get(randRecipeUrl + "number=10&tags=gluten%20free,vegetarian,dinner,italian")
+        // const fetchedRecipes = resp.data.recipes;
+
+        // Filter random recipes based on filters, if applied
+        const filteredRecipes = recipesJson.recipes.map((rcp) => {
+          return {
+            id: rcp.id,
+            sourceUrl: rcp.sourceUrl,
+            image: rcp.image,
+            imageType: rcp.imageType,
+            title: rcp.title,
+            diets: rcp.diets,
+            cuisines: rcp.cuisines,
+            dishTypes: rcp.dishTypes,
+            vegetarian: rcp.vegetarian,
+            vegan: rcp.vegan,
+            glutenFree: rcp.glutenFree,
+            dairyFree: rcp.dairyFree,
+            veryHealthy: rcp.veryHealthy,
+            cheap: rcp.cheap,
+            veryPopular: rcp.veryPopular,
+            sustainable: rcp.sustainable,
+            aggregateLikes: rcp.aggregateLikes,
+            spoonacularScore: rcp.spoonacularScore,
+            healthScore: rcp.healthScore,
+            pricePerServing: rcp.pricePerServing,
+            readyInMinutes: rcp.readyInMinutes,
+            servings: rcp.servings,
+          }
+        })
+
+        setRandRecipes(filteredRecipes);
+    }
+
+    // On load, fetch/set random Recipes
+    React.useEffect(() => {
+        console.log("RENDER")
+      fetchRandomRecipes();
+    }, []);
 
     // TODO: 
-    // - Setup Recipe Reducers & brin in RecipeState
     // - On load/before render make API requests for randomized Recipes (Spoonacular)
     // - Apply filters
     // - Compare against User's viewed Recipes list if User is logged in
@@ -15,7 +68,9 @@ export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                <Text> Menu Screen </Text>
+                {randRecipes.map((rcp, idx) => {
+                  return <Text style={styles.recipeTextTest}>{rcp.title}</Text>
+                })}
             </View>
         </View>
     )
@@ -38,5 +93,12 @@ const styles = StyleSheet.create({
         height: _screen.height*0.6,
         borderRadius: 30,
         backgroundColor: colorPalette.primary
+    },
+
+    recipeTextTest: {
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
+        margin: 8
     }
 })

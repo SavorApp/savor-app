@@ -19,7 +19,7 @@ export default function LoginScreen({ navigation }: LoginProps) {
     const userState = useSelector<RootState, UserState>((state) => state.userState);
     // useDispatch allows us to dispatch Actions to mutate global store variables
     const dispatch = useDispatch();
-    const [userInput, setUserInput] = React.useState({username: "", password: ""})
+    const [userInput, setUserInput] = React.useState<InputUser>({username: "", password: ""})
     const [hidePassword, setHidePassword] = React.useState(true);
 
     function usernameInputChange(val: string) {
