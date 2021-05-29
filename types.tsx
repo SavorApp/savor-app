@@ -50,7 +50,10 @@ export type SavoredListParamList = {
 
 // Core RootState interface
 export interface RootState {
-  userState: UserState
+  userState: UserState,
+  recipeState: RecipeState,
+  recipeListState: RecipeListState,
+  filtersState: FiltersState
 }
 
 // Core User type
@@ -108,8 +111,22 @@ export interface RecipeListState {
   recipeList: Recipe[]
 }
 
-// Core Recipe action
+// Core Recipe List action
 export type RecipeListAction = {type: string, payload: Recipe[]}
+
+// Core Filters type
+export type Filters = {
+  smartFilter: Boolean
+}
+
+// Core FiltersState interface
+export interface FiltersState {
+  userId: number,
+  filters: Filters
+}
+
+// Core Filters action
+export type FiltersAction = {type: string, payload: Filters}
 
 /*
  _________________________

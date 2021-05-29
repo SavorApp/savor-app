@@ -1,4 +1,4 @@
-import { User, UserAction, Recipe, RecipeAction, RecipeListAction } from "../../../types"
+import { User, UserAction, Recipe, RecipeAction, RecipeListAction, Filters, FiltersAction } from "../../../types"
 
 
 // User Actions
@@ -29,5 +29,13 @@ export const recipeListAction = (recipeList: Recipe[]):RecipeListAction => {
     return {
         type: "NEW_ACTION_HERE",
         payload: recipeList
+    }
+}
+
+// Filters Actions
+export const updateFilters = (filters: Filters):FiltersAction => {
+    return {
+        type: "UPDATE_FILTERS",
+        payload: filters
     }
 }

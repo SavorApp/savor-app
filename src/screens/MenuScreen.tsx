@@ -56,7 +56,6 @@ export default function MenuScreen() {
 
     // On load, fetch/set random Recipes
     React.useEffect(() => {
-        console.log("RENDER")
       fetchRandomRecipes();
     }, []);
 
@@ -69,7 +68,12 @@ export default function MenuScreen() {
         <View style={styles.container}>
             <View style={styles.subContainer}>
                 {randRecipes.map((rcp, idx) => {
-                  return <Text style={styles.recipeTextTest}>{rcp.title}</Text>
+                    return (
+                        <Text
+                            style={styles.recipeTextTest}
+                            key={rcp.id}    
+                        >{rcp.title}</Text>
+                    )
                 })}
             </View>
         </View>
