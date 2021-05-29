@@ -1,4 +1,4 @@
-import { User, UserAction, UserState } from "../../../types";
+import { UserAction, UserState } from "../../../types";
 
 // Initialize initial User State
 // TODO: 
