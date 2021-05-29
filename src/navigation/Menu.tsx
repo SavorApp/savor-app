@@ -11,10 +11,10 @@ export interface MenuNavigatorProps {
 }
 
 const MenuStack = createStackNavigator();
-
 // Menu tab navigator header right contains burger icon
 // which navigates to the BurgerScreen
 export default function MenuNavigator({ navigation }: MenuNavigatorProps) {
+    
     return (
         <MenuStack.Navigator>
             <MenuStack.Screen
