@@ -1,10 +1,12 @@
 import React from "react";
-import { StyleSheet, Dimensions, View, Text } from "react-native";
+import { StyleSheet, Dimensions, View, Text, Button } from "react-native";
 import colorPalette from "../constants/ColorPalette";
 import Constants from 'expo-constants';
 import axios from "axios";
 import CardStack, { Card } from 'react-native-card-stack-swiper';
 import RecipeCard from '../components/RecipeCard';
+import SwipeButtons from '../components/SwipeButtons';
+
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/recipes.json";
 import { initialState } from "../redux/reducers/recipe"
@@ -63,7 +65,11 @@ export default function MenuScreen() {
     function onSwipedRight() {
         console.log('Swiped right');
     }
-    
+
+    function handleOnPress() {
+        console.log('hello')
+    }
+
     // On load, fetch/set random Recipes
     React.useEffect(() => {
         fetchRandomRecipes();
@@ -77,12 +83,13 @@ export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                <CardStack style={styles.cardStack} ref={swiper => { swiper = swiper } } onSwipedLeft={onSwipedLeft} onSwipedRight={onSwipedRight}>
+                <CardStack style={styles.cardStack} ref={swiper => { swiper = swiper }} onSwipedLeft={onSwipedLeft} onSwipedRight={onSwipedRight}>
                     {randRecipes.map((rcp: Recipe) => {
                         return <Card ><RecipeCard rcp={rcp} id={rcp.id} /></Card>
                     })}
                 </CardStack>
             </View>
+            <SwipeButtons onPress={handleOnPress}/>
         </View>
     )
 }
