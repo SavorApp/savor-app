@@ -10,7 +10,8 @@ import SwipeButtons from '../components/SwipeButtons';
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/recipes.json";
 import { initialState } from "../redux/reducers/recipe"
-import { Recipe } from "../../types";
+import { Recipe, RootState, UserState } from "../../types";
+import { useSelector } from "react-redux";
 
 const _screen = Dimensions.get("screen");
 
@@ -21,6 +22,11 @@ const randRecipeUrl = `https://api.spoonacular.com/recipes/random?apiKey=${API_K
 
 export default function MenuScreen() {
     const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([initialState.recipe]);
+    const user = useSelector<RootState, UserState>((state) => state.userState);
+    
+    // FOR TEST PURPOSES
+    const[swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([])
+    const[swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([])
 
     // Fetch random Recipes from Spoonacular
     async function fetchRandomRecipes() {
@@ -58,12 +64,20 @@ export default function MenuScreen() {
         setRandRecipes(filteredRecipes);
     }
 
-    function onSwipedLeft() {
+    function onSwipedLeft(idx: number) {
         console.log('Swiped left');
+        // TODO: store it the database instead
+        console.log(user);
+        setSwipedLeftRecipes(swipedLeftRecipes.concat([randRecipes[idx]]));
+        console.log('🎉', swipedLeftRecipes)
     }
 
-    function onSwipedRight() {
+    function onSwipedRight(idx: number) {
         console.log('Swiped right');
+        // TODO: store it the database instead
+        console.log(user);
+        setSwipedRightRecipes(swipedRightRecipes.concat([randRecipes[idx]]));
+        console.log('🎉', swipedRightRecipes)
     }
 
     function handleOnPress() {
@@ -83,13 +97,13 @@ export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                <CardStack style={styles.cardStack} ref={swiper => { swiper = swiper }} onSwipedLeft={onSwipedLeft} onSwipedRight={onSwipedRight}>
-                    {randRecipes.map((rcp: Recipe) => {
-                        return <Card ><RecipeCard rcp={rcp} id={rcp.id} /></Card>
+                <CardStack style={styles.cardStack} ref={swiper => { swiper = swiper }} disableBottomSwipe disableTopSwipe>
+                    {randRecipes.map((rcp: Recipe, idx: number) => {
+                        return <Card onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}><RecipeCard rcp={rcp} id={rcp.id} /></Card>
                     })}
                 </CardStack>
             </View>
-            <SwipeButtons onPress={handleOnPress}/>
+            <SwipeButtons onPress={handleOnPress} />
         </View>
     )
 }
