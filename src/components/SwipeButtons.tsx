@@ -5,10 +5,10 @@ import { Feather } from '@expo/vector-icons';
 import { SwipeButtonsParamList } from "../../types"
 
 
- const SwipeButtons = ({handleOnPressLeft, handleOnPressRight}: SwipeButtonsParamList) => {
+const SwipeButtons = ({ handleOnPressLeft, handleOnPressRight }: SwipeButtonsParamList) => {
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={() => handleOnPressLeft()}>   
+            <TouchableOpacity style={styles.button} onPress={() => handleOnPressLeft()}>
                 <Feather name="x-circle" size={24} color="black" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => handleOnPressRight()}>

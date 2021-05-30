@@ -7,8 +7,7 @@ import axios from "axios";
 import CardStack, { Card } from 'react-native-card-stack-swiper';
 import RecipeCard from '../components/RecipeCard';
 import SwipeButtons from '../components/SwipeButtons';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/recipes.json";
 import { initialState } from "../redux/reducers/recipe"
@@ -29,7 +28,7 @@ export default function MenuScreen() {
     // FOR TEST PURPOSES
     const [swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([]);
     const [swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([]);
-    let cardRef = React.useRef<any | undefined>();
+    let cardRef = React.useRef<CardStack | any>();
 
     // Fetch random Recipes from Spoonacular
     async function fetchRandomRecipes() {
@@ -144,9 +143,16 @@ export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                <CardStack style={styles.cardStack} ref={(node: any) => { cardRef.current = node }} renderNoMoreCards={() => { return <Text>No More Recipes</Text> }} disableBottomSwipe disableTopSwipe>
+                <CardStack 
+                style={styles.cardStack} 
+                ref={(cardStack: CardStack) => { cardRef.current = cardStack }} 
+                renderNoMoreCards={() => { return <Text>No More Recipes</Text> }} 
+                disableBottomSwipe 
+                disableTopSwipe>
                     {randRecipes.map((rcp: Recipe, idx: number) => {
-                        return <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}><RecipeCard rcp={rcp} id={rcp.id} /></Card>
+                        return <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}>
+                                <RecipeCard rcp={rcp} id={rcp.id} />
+                            </Card>
                     })}
                 </CardStack>
 
