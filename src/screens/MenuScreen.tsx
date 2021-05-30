@@ -1,11 +1,12 @@
 import React from "react";
-import { StyleSheet, Dimensions, View, Text, Button } from "react-native";
+import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
 import colorPalette from "../constants/ColorPalette";
 import Constants from 'expo-constants';
 import axios from "axios";
 import CardStack, { Card } from 'react-native-card-stack-swiper';
 import RecipeCard from '../components/RecipeCard';
 import SwipeButtons from '../components/SwipeButtons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/recipes.json";
@@ -25,8 +26,8 @@ export default function MenuScreen() {
     const userState = useSelector<RootState, UserState>((state) => state.userState);
     
     // FOR TEST PURPOSES
-    const[swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([])
-    const[swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([])
+    const[swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([]);
+    const[swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([]);
 
     // Fetch random Recipes from Spoonacular
     async function fetchRandomRecipes() {
@@ -64,20 +65,34 @@ export default function MenuScreen() {
         setRandRecipes(filteredRecipes);
     }
 
-    function onSwipedLeft(idx: number) {
+    async function onSwipedLeft(idx: number) {
         console.log('Swiped left');
+        // const query = `query getUser {
+        //     users{
+        //       id
+        //       username
+        //     }
+        //   }`
+
+        // const user = await axios({
+        //     url: 'https://savored-server.herokuapp.com/',
+        //     method: 'get',
+        //     data: {
+        //         query: query,
+        //     }
+        // })
         // TODO: store it the database instead
         console.log(userState);
-        setSwipedLeftRecipes(swipedLeftRecipes.concat([randRecipes[idx]]));
-        console.log('🎉', swipedLeftRecipes)
+        swipedLeftRecipes.push(randRecipes[idx]);
+        setSwipedLeftRecipes(swipedLeftRecipes);
     }
 
     function onSwipedRight(idx: number) {
         console.log('Swiped right');
         // TODO: store it the database instead
         console.log(userState);
-        setSwipedRightRecipes(swipedRightRecipes.concat([randRecipes[idx]]));
-        console.log('🎉', swipedRightRecipes)
+        swipedRightRecipes.push(randRecipes[idx])
+        setSwipedRightRecipes(swipedRightRecipes);
     }
 
     function handleOnPress() {
@@ -103,7 +118,9 @@ export default function MenuScreen() {
                     })}
                 </CardStack>
             </View>
-            <SwipeButtons onPress={handleOnPress} />
+            <TouchableOpacity  onPress={() => {this.swiper.swipeRight()}}>
+                <MaterialCommunityIcons name="silverware-fork-knife" size={24} color="black"/>
+            </TouchableOpacity>
         </View>
     )
 }
