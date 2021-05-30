@@ -128,7 +128,7 @@ export default function MenuScreen() {
     }
 
     function handleOnPressLeft() {
-        cardRef.current.props.swipeLeft();
+        cardRef.current.swipeLeft()
     }
 
 
@@ -140,14 +140,14 @@ export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                <CardStack style={styles.cardStack}  ref={(node: any) => { cardRef.current = node }} renderNoMoreCards={() => { return <Text>No More Recipes</Text> }} disableBottomSwipe disableTopSwipe>
+                <CardStack style={styles.cardStack} ref={(node: any) => { cardRef.current = node }} renderNoMoreCards={() => { return <Text>No More Recipes</Text> }} disableBottomSwipe disableTopSwipe>
                     {randRecipes.map((rcp: Recipe, idx: number) => {
                         return <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}><RecipeCard rcp={rcp} id={rcp.id} /></Card>
                     })}
                 </CardStack>
 
             </View>
-            <TouchableOpacity  onPress={() => onSwipedLeft(0)}>   
+            <TouchableOpacity  onPress={() => handleOnPressLeft()}>   
                 <Feather name="x-circle" size={24} color="black" />
             </TouchableOpacity>
             {/* <SwipeButtons ref={cardRef.current} handleOnPressLeft={handleOnPressLeft} /> */}
