@@ -5,11 +5,11 @@ import { LoggedOutParamList } from "../../types"
 import colorPalette from "../constants/ColorPalette";
 
 const _screen = Dimensions.get("screen");
-export interface SignupProps {
+export interface SignupScreenProps {
     navigation: StackNavigationProp<LoggedOutParamList, "SignupScreen">
 }
 
-export default function SignupScreen({ navigation }: SignupProps) {
+export default function SignupScreen({ navigation }: SignupScreenProps) {
 
     return (
         <View style={styles.container}>
