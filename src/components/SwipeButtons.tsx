@@ -5,13 +5,13 @@ import { Feather } from '@expo/vector-icons';
 import { SwipeButtonsParamList } from "../../types"
 
 
- const SwipeButtons = (props: any, ref: any, {handleOnPressLeft}: {handleOnPressLeft: void}) => {
+ const SwipeButtons = ({handleOnPressLeft, handleOnPressRight}: SwipeButtonsParamList) => {
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={() => handleOnPressLeft}>   
+            <TouchableOpacity style={styles.button} onPress={() => handleOnPressLeft()}>   
                 <Feather name="x-circle" size={24} color="black" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => { console.log(ref) }}>
+            <TouchableOpacity style={styles.button} onPress={() => handleOnPressRight()}>
                 <MaterialCommunityIcons name="silverware-fork-knife" size={24} color="black" />
             </TouchableOpacity>
         </View>
@@ -46,4 +46,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default React.forwardRef(SwipeButtons);
+export default SwipeButtons;

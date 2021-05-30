@@ -128,7 +128,11 @@ export default function MenuScreen() {
     }
 
     function handleOnPressLeft() {
-        cardRef.current.swipeLeft()
+        cardRef.current.swipeLeft();
+    }
+
+    function handleOnPressRight() {
+        cardRef.current.swipeRight();
     }
 
 
@@ -147,10 +151,7 @@ export default function MenuScreen() {
                 </CardStack>
 
             </View>
-            <TouchableOpacity  onPress={() => handleOnPressLeft()}>   
-                <Feather name="x-circle" size={24} color="black" />
-            </TouchableOpacity>
-            {/* <SwipeButtons ref={cardRef.current} handleOnPressLeft={handleOnPressLeft} /> */}
+            <SwipeButtons handleOnPressLeft={handleOnPressLeft} handleOnPressRight={handleOnPressRight} />
         </View>
     )
 }

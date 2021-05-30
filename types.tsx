@@ -152,7 +152,8 @@ export type RecipeCardProps = {
 }
 
 export type SwipeButtonsParamList = {
-  handleOnPressLeft: void
+  handleOnPressLeft: void | undefined,
+  handleOnPressRight: void | undefined
 }
 
 /*
