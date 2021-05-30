@@ -28,7 +28,7 @@ export default function MenuScreen() {
     // FOR TEST PURPOSES
     const [swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([]);
     const [swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([]);
-    let cardRef = React.useRef<CardStack | any>();
+    let cardStackRef = React.useRef<CardStack | any>();
 
     // Fetch random Recipes from Spoonacular
     async function fetchRandomRecipes() {
@@ -127,11 +127,11 @@ export default function MenuScreen() {
     }
 
     function handleOnPressLeft() {
-        cardRef.current.swipeLeft();
+        cardStackRef.current.swipeLeft();
     }
 
     function handleOnPressRight() {
-        cardRef.current.swipeRight();
+        cardStackRef.current.swipeRight();
     }
 
 
@@ -145,7 +145,7 @@ export default function MenuScreen() {
             <View style={styles.subContainer}>
                 <CardStack 
                 style={styles.cardStack} 
-                ref={(cardStack: CardStack) => { cardRef.current = cardStack }} 
+                ref={(cardStack: CardStack) => { cardStackRef.current = cardStack }} 
                 renderNoMoreCards={() => { return <Text>No More Recipes</Text> }} 
                 disableBottomSwipe 
                 disableTopSwipe>
