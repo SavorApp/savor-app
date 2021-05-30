@@ -1,15 +1,17 @@
 import React from "react";
-import { StyleSheet, Dimensions, View, Text } from "react-native";
+import { StyleSheet, Dimensions, View, Text, Button } from "react-native";
 import colorPalette from "../constants/ColorPalette";
 import Constants from 'expo-constants';
 import axios from "axios";
+import CardStack, { Card } from 'react-native-card-stack-swiper';
+import RecipeCard from '../components/RecipeCard';
+import SwipeButtons from '../components/SwipeButtons';
+
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/recipes.json";
 import { initialState } from "../redux/reducers/recipe"
-import { Recipe } from "../../types";
-import CardStack, { Card } from 'react-native-card-stack-swiper';
-import RecipeCard from '../components/RecipeCard';
-
+import { Recipe, RootState, UserState } from "../../types";
+import { useSelector } from "react-redux";
 
 const _screen = Dimensions.get("screen");
 
@@ -20,6 +22,11 @@ const randRecipeUrl = `https://api.spoonacular.com/recipes/random?apiKey=${API_K
 
 export default function MenuScreen() {
     const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([initialState.recipe]);
+    const userState = useSelector<RootState, UserState>((state) => state.userState);
+    
+    // FOR TEST PURPOSES
+    const[swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([])
+    const[swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([])
 
     // Fetch random Recipes from Spoonacular
     async function fetchRandomRecipes() {
@@ -57,6 +64,26 @@ export default function MenuScreen() {
         setRandRecipes(filteredRecipes);
     }
 
+    function onSwipedLeft(idx: number) {
+        console.log('Swiped left');
+        // TODO: store it the database instead
+        console.log(userState);
+        setSwipedLeftRecipes(swipedLeftRecipes.concat([randRecipes[idx]]));
+        console.log('🎉', swipedLeftRecipes)
+    }
+
+    function onSwipedRight(idx: number) {
+        console.log('Swiped right');
+        // TODO: store it the database instead
+        console.log(userState);
+        setSwipedRightRecipes(swipedRightRecipes.concat([randRecipes[idx]]));
+        console.log('🎉', swipedRightRecipes)
+    }
+
+    function handleOnPress() {
+        console.log('hello')
+    }
+
     // On load, fetch/set random Recipes
     React.useEffect(() => {
         fetchRandomRecipes();
@@ -70,12 +97,13 @@ export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                <CardStack ref={swiper => { swiper = swiper }}>
-                    {randRecipes.map((rcp: Recipe) => {
-                        return <Card ><RecipeCard rcpImage={rcp.image} id={rcp.id} /></Card>
+                <CardStack style={styles.cardStack} ref={swiper => { swiper = swiper }} disableBottomSwipe disableTopSwipe>
+                    {randRecipes.map((rcp: Recipe, idx: number) => {
+                        return <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}><RecipeCard rcp={rcp} id={rcp.id} /></Card>
                     })}
                 </CardStack>
             </View>
+            <SwipeButtons onPress={handleOnPress} />
         </View>
     )
 }
@@ -104,5 +132,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         textAlign: "center",
         margin: 8
+    },
+
+    cardStack: {
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })
