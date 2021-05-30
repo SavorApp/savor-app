@@ -1,12 +1,18 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text } from "react-native";
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import colorPalette from "../constants/ColorPalette";
 import Constants from 'expo-constants';
 import axios from "axios";
+import CardStack, { Card } from 'react-native-card-stack-swiper';
+import RecipeCard from '../components/RecipeCard';
+import SwipeButtons from '../components/SwipeButtons';
+
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/recipes.json";
-import { initialState } from "../redux/reducers/recipe" 
-import { Recipe } from "../../types";
+import { initialState } from "../redux/reducers/recipe"
+import { Recipe, RootState, UserState } from "../../types";
+import { useSelector } from "react-redux";
 
 const _screen = Dimensions.get("screen");
 
@@ -17,6 +23,11 @@ const randRecipeUrl = `https://api.spoonacular.com/recipes/random?apiKey=${API_K
 
 export default function MenuScreen() {
     const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([initialState.recipe]);
+    const userState = useSelector<RootState, UserState>((state) => state.userState);
+    
+    // FOR TEST PURPOSES
+    const[swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([])
+    const[swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([])
 
     // Fetch random Recipes from Spoonacular
     async function fetchRandomRecipes() {
@@ -25,39 +36,70 @@ export default function MenuScreen() {
 
         // Filter random recipes based on filters, if applied
         const filteredRecipes = recipesJson.recipes.map((rcp) => {
-          return {
-            id: rcp.id,
-            sourceUrl: rcp.sourceUrl,
-            image: rcp.image,
-            imageType: rcp.imageType,
-            title: rcp.title,
-            diets: rcp.diets,
-            cuisines: rcp.cuisines,
-            dishTypes: rcp.dishTypes,
-            vegetarian: rcp.vegetarian,
-            vegan: rcp.vegan,
-            glutenFree: rcp.glutenFree,
-            dairyFree: rcp.dairyFree,
-            veryHealthy: rcp.veryHealthy,
-            cheap: rcp.cheap,
-            veryPopular: rcp.veryPopular,
-            sustainable: rcp.sustainable,
-            aggregateLikes: rcp.aggregateLikes,
-            spoonacularScore: rcp.spoonacularScore,
-            healthScore: rcp.healthScore,
-            pricePerServing: rcp.pricePerServing,
-            readyInMinutes: rcp.readyInMinutes,
-            servings: rcp.servings,
-          }
+            return {
+                id: rcp.id,
+                sourceUrl: rcp.sourceUrl,
+                image: rcp.image,
+                imageType: rcp.imageType,
+                title: rcp.title,
+                diets: rcp.diets,
+                cuisines: rcp.cuisines,
+                dishTypes: rcp.dishTypes,
+                vegetarian: rcp.vegetarian,
+                vegan: rcp.vegan,
+                glutenFree: rcp.glutenFree,
+                dairyFree: rcp.dairyFree,
+                veryHealthy: rcp.veryHealthy,
+                cheap: rcp.cheap,
+                veryPopular: rcp.veryPopular,
+                sustainable: rcp.sustainable,
+                aggregateLikes: rcp.aggregateLikes,
+                spoonacularScore: rcp.spoonacularScore,
+                healthScore: rcp.healthScore,
+                pricePerServing: rcp.pricePerServing,
+                readyInMinutes: rcp.readyInMinutes,
+                servings: rcp.servings,
+            }
         })
 
         setRandRecipes(filteredRecipes);
     }
 
-    // On load, fetch/set random Recipes
+    // On focus, fetch/set random Recipes
+    useFocusEffect(
+        React.useCallback(() => {
+            console.log("FOCUSED")
+            fetchRandomRecipes();
+        }, [])
+    );
+
+    // On randomRecipes updated, do something...
     React.useEffect(() => {
-      fetchRandomRecipes();
-    }, []);
+        console.log("Recipes SET")
+      }, [randRecipes])
+
+
+    // Listen to when randRecipes get set
+    function onSwipedLeft(idx: number) {
+        console.log('Swiped left');
+        // TODO: store it the database instead
+        console.log(userState);
+        setSwipedLeftRecipes(swipedLeftRecipes.concat([randRecipes[idx]]));
+        console.log('🎉', swipedLeftRecipes)
+    }
+
+    function onSwipedRight(idx: number) {
+        console.log('Swiped right');
+        // TODO: store it the database instead
+        console.log(userState);
+        setSwipedRightRecipes(swipedRightRecipes.concat([randRecipes[idx]]));
+        console.log('🎉', swipedRightRecipes)
+    }
+
+    function handleOnPress() {
+        console.log('hello')
+    }
+
 
     // TODO: 
     // - On load/before render make API requests for randomized Recipes (Spoonacular)
@@ -67,15 +109,13 @@ export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                {randRecipes.map((rcp, idx) => {
-                    return (
-                        <Text
-                            style={styles.recipeTextTest}
-                            key={rcp.id}    
-                        >{rcp.title}</Text>
-                    )
-                })}
+                <CardStack style={styles.cardStack} ref={swiper => { swiper = swiper }} disableBottomSwipe disableTopSwipe>
+                    {randRecipes.map((rcp: Recipe, idx: number) => {
+                        return <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}><RecipeCard rcp={rcp} id={rcp.id} /></Card>
+                    })}
+                </CardStack>
             </View>
+            <SwipeButtons onPress={handleOnPress} />
         </View>
     )
 }
@@ -93,8 +133,8 @@ const styles = StyleSheet.create({
     subContainer: {
         justifyContent: "center",
         alignItems: "center",
-        width: _screen.width*0.9,
-        height: _screen.height*0.6,
+        width: _screen.width * 0.9,
+        height: _screen.height * 0.6,
         borderRadius: 30,
         backgroundColor: colorPalette.primary
     },
@@ -104,5 +144,10 @@ const styles = StyleSheet.create({
         alignItems: "center",
         textAlign: "center",
         margin: 8
+    },
+
+    cardStack: {
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

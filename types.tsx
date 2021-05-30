@@ -23,6 +23,7 @@ export type LoggedOutParamList = {
   LoginScreen: undefined;
   SignupScreen: undefined;
   AboutUsScreen: undefined;
+  MenuScreen: undefined;
 };
   
 export type LoggedInParamList = {
@@ -30,6 +31,8 @@ export type LoggedInParamList = {
   AboutUsScreen: undefined;
   LoginScreen: undefined;
   DeleteAccountScreen: undefined;
+  MenuScreen: undefined;
+  BurgerScreen: undefined;
 };
 
 export type MenuStackParamList = {
@@ -116,7 +119,16 @@ export type RecipeListAction = {type: string, payload: Recipe[]}
 
 // Core Filters type
 export type Filters = {
-  smartFilter: Boolean
+  smartFilter: Boolean,
+  dishTypes: string[],
+  diets: never[] | string[],
+  cuisine: string,
+  vegetarian: Boolean,
+  vegan: Boolean,
+  glutenFree: Boolean,
+  dairyFree: Boolean,
+  readyInMinutes: number,
+  servings: number
 }
 
 // Core FiltersState interface
@@ -127,6 +139,17 @@ export interface FiltersState {
 
 // Core Filters action
 export type FiltersAction = {type: string, payload: Filters}
+
+/*
+ _____________________________
+ Componenents Property Objects
+ _____________________________
+*/
+
+export type RecipeCardProps = {
+  id: number,
+  rcp: Recipe
+}
 
 /*
  _________________________
