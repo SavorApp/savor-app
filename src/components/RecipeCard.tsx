@@ -8,7 +8,7 @@ export default function RecipeCard({ id, rcp}: RecipeCardProps) {
         return (
             <View>
                 {/* <Text>{rcp.title}</Text> */}
-                <Image key={id} source={{uri: rcp.image}} style={styles.picture} />
+                <Image key={id} source={{uri: rcp.image || " "}} style={styles.picture} />
             </View>
         )
     }

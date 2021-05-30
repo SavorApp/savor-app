@@ -22,7 +22,7 @@ const randRecipeUrl = `https://api.spoonacular.com/recipes/random?apiKey=${API_K
 
 export default function MenuScreen() {
     const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([initialState.recipe]);
-    const user = useSelector<RootState, UserState>((state) => state.userState);
+    const userState = useSelector<RootState, UserState>((state) => state.userState);
     
     // FOR TEST PURPOSES
     const[swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([])
@@ -67,7 +67,7 @@ export default function MenuScreen() {
     function onSwipedLeft(idx: number) {
         console.log('Swiped left');
         // TODO: store it the database instead
-        console.log(user);
+        console.log(userState);
         setSwipedLeftRecipes(swipedLeftRecipes.concat([randRecipes[idx]]));
         console.log('🎉', swipedLeftRecipes)
     }
@@ -75,7 +75,7 @@ export default function MenuScreen() {
     function onSwipedRight(idx: number) {
         console.log('Swiped right');
         // TODO: store it the database instead
-        console.log(user);
+        console.log(userState);
         setSwipedRightRecipes(swipedRightRecipes.concat([randRecipes[idx]]));
         console.log('🎉', swipedRightRecipes)
     }
@@ -99,7 +99,7 @@ export default function MenuScreen() {
             <View style={styles.subContainer}>
                 <CardStack style={styles.cardStack} ref={swiper => { swiper = swiper }} disableBottomSwipe disableTopSwipe>
                     {randRecipes.map((rcp: Recipe, idx: number) => {
-                        return <Card onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}><RecipeCard rcp={rcp} id={rcp.id} /></Card>
+                        return <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}><RecipeCard rcp={rcp} id={rcp.id} /></Card>
                     })}
                 </CardStack>
             </View>
