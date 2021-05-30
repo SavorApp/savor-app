@@ -4,7 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
 export type SwipeButtonsParamList = {
-    cardRef: Object
+    cardRef: Object | undefined
 }
 
 export default function SwipeButtons({cardRef}: {cardRef: SwipeButtonsParamList}) {

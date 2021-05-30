@@ -17,11 +17,11 @@ import * as recipesJson from "../data/recipes.json";
 
 const _screen = Dimensions.get("screen");
 
-export interface SavoredListProps {
+export interface SavoredListScreenProps {
   navigation: StackNavigationProp<SavoredListParamList, "SavoredListScreen">;
 }
 
-export default function SavoredListScreen({ navigation }: SavoredListProps) {
+export default function SavoredListScreen({ navigation }: SavoredListScreenProps) {
   const Item = ({ title }: any) => (
     <View style={styles.item}>
       <TouchableOpacity
