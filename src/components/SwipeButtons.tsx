@@ -2,23 +2,21 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Button } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import { SwipeButtonsParamList } from "../../types"
 
-export type SwipeButtonsParamList = {
-    cardRef: Object | undefined
-}
 
-export default function SwipeButtons({cardRef}: {cardRef: SwipeButtonsParamList}) {
+ const SwipeButtons = (props: any, ref: any, {handleOnPressLeft}: {handleOnPressLeft: void}) => {
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={() => {console.log(cardRef)}}>
+            <TouchableOpacity style={styles.button} onPress={() => handleOnPressLeft}>   
                 <Feather name="x-circle" size={24} color="black" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => {console.log(cardRef)}}>
-                <MaterialCommunityIcons name="silverware-fork-knife" size={24} color="black"/>
+            <TouchableOpacity style={styles.button} onPress={() => { console.log(ref) }}>
+                <MaterialCommunityIcons name="silverware-fork-knife" size={24} color="black" />
             </TouchableOpacity>
         </View>
     )
-}
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -26,7 +24,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center'
-        
+
     },
     button: {
         width: 50,
@@ -47,3 +45,5 @@ const styles = StyleSheet.create({
         elevation: 9,
     },
 })
+
+export default React.forwardRef(SwipeButtons);

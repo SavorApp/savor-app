@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Dimensions, View, Text } from "react-native";
+import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import colorPalette from "../constants/ColorPalette";
 import Constants from 'expo-constants';
@@ -8,7 +8,7 @@ import CardStack, { Card } from 'react-native-card-stack-swiper';
 import RecipeCard from '../components/RecipeCard';
 import SwipeButtons from '../components/SwipeButtons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-
+import { Feather } from '@expo/vector-icons';
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/recipes.json";
 import { initialState } from "../redux/reducers/recipe"
@@ -29,7 +29,7 @@ export default function MenuScreen() {
     // FOR TEST PURPOSES
     const [swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([]);
     const [swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([]);
-    const cardRef = React.useRef<Object>();
+    let cardRef = React.useRef<any | undefined>();
 
     // Fetch random Recipes from Spoonacular
     async function fetchRandomRecipes() {
@@ -127,8 +127,8 @@ export default function MenuScreen() {
         setSwipedRightRecipes(swipedRightRecipes);
     }
 
-    function handleOnPress() {
-        console.log('hello')
+    function handleOnPressLeft() {
+        cardRef.current.props.swipeLeft();
     }
 
 
@@ -140,14 +140,17 @@ export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                <CardStack style={styles.cardStack} ref={(node: any) => { cardRef.current = node }} renderNoMoreCards={() => { return <Text>No More Recipes</Text> }} disableBottomSwipe disableTopSwipe>
+                <CardStack style={styles.cardStack}  ref={(node: any) => { cardRef.current = node }} renderNoMoreCards={() => { return <Text>No More Recipes</Text> }} disableBottomSwipe disableTopSwipe>
                     {randRecipes.map((rcp: Recipe, idx: number) => {
-                        return <Card key={rcp.id} ref={(node: any) => { cardRef.current = node }} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}><RecipeCard rcp={rcp} id={rcp.id} /></Card>
+                        return <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}><RecipeCard rcp={rcp} id={rcp.id} /></Card>
                     })}
                 </CardStack>
 
             </View>
-            <SwipeButtons cardRef={cardRef} />
+            <TouchableOpacity  onPress={() => onSwipedLeft(0)}>   
+                <Feather name="x-circle" size={24} color="black" />
+            </TouchableOpacity>
+            {/* <SwipeButtons ref={cardRef.current} handleOnPressLeft={handleOnPressLeft} /> */}
         </View>
     )
 }
