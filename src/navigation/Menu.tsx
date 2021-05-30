@@ -24,7 +24,9 @@ export default function MenuNavigator({ navigation }: MenuNavigatorProps) {
                     headerRight: () => (
                         <TouchableOpacity
                             onPress={() => {
+                                // Check if user is logged in, if so nevigate to BurgerScreen
                                 navigation.navigate("BurgerScreen")
+                                // else, nevigate to another component prompting user to login/create account
                             }}
                         >
                             <MaterialCommunityIcons
