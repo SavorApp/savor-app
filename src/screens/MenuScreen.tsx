@@ -1,10 +1,6 @@
 import React from "react";
-<<<<<<< HEAD
 import { StyleSheet, Dimensions, View, Text } from "react-native";
 import { useFocusEffect, useIsFocused } from '@react-navigation/native';
-=======
-import { StyleSheet, Dimensions, View, Text, Button } from "react-native";
->>>>>>> 8ed9ed9ecf41301d70ae3c12a5bee4fba6c66c2e
 import colorPalette from "../constants/ColorPalette";
 import Constants from 'expo-constants';
 import axios from "axios";
