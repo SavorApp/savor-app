@@ -6,11 +6,11 @@ import colorPalette from "../constants/ColorPalette";
 
 const _screen = Dimensions.get("screen");
 
-export interface SavoredListProps {
+export interface SavoredListScreenProps {
     navigation: StackNavigationProp<SavoredListParamList, "SavoredListScreen">
 }
 
-export default function SavoredListScreen({ navigation }: SavoredListProps) {
+export default function SavoredListScreen({ navigation }: SavoredListScreenProps) {
 
     // TODO: Get Savored List from global state
     return (

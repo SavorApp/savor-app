@@ -31,6 +31,8 @@ export type LoggedInParamList = {
   AboutUsScreen: undefined;
   LoginScreen: undefined;
   DeleteAccountScreen: undefined;
+  MenuScreen: undefined;
+  BurgerScreen: undefined;
 };
 
 export type MenuStackParamList = {
@@ -117,7 +119,16 @@ export type RecipeListAction = {type: string, payload: Recipe[]}
 
 // Core Filters type
 export type Filters = {
-  smartFilter: Boolean
+  smartFilter: Boolean,
+  dishTypes: string[],
+  diets: never[] | string[],
+  cuisines: string[],
+  vegetarian: Boolean,
+  vegan: Boolean,
+  glutenFree: Boolean,
+  dairyFree: Boolean,
+  readyInMinutes: number,
+  servings: number
 }
 
 // Core FiltersState interface

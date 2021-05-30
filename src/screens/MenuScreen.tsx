@@ -1,5 +1,6 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text } from "react-native";
+import { useFocusEffect, useIsFocused } from '@react-navigation/native';
 import colorPalette from "../constants/ColorPalette";
 import Constants from 'expo-constants';
 import axios from "axios";
@@ -57,10 +58,19 @@ export default function MenuScreen() {
         setRandRecipes(filteredRecipes);
     }
 
-    // On load, fetch/set random Recipes
+    // On focus, fetch/set random Recipes
+    useFocusEffect(
+        React.useCallback(() => {
+            console.log("FOCUSED")
+            fetchRandomRecipes();
+        }, [])
+    );
+
+    // Listen to when randRecipes get set
     React.useEffect(() => {
-        fetchRandomRecipes();
-    }, []);
+      console.log("Recipes SET")
+    }, [randRecipes])
+
 
     // TODO: 
     // - On load/before render make API requests for randomized Recipes (Spoonacular)

@@ -8,7 +8,16 @@ import { FiltersAction, FiltersState } from "../../../types";
 export const initialState: FiltersState = {
     userId: 1991,
     filters: {
-        smartFilter: true
+        smartFilter: true,
+        dishTypes: ["dinner"],
+        diets: [],
+        cuisines: [],
+        vegetarian: false,
+        vegan: false,
+        glutenFree: false,
+        dairyFree: false,
+        readyInMinutes: 30,
+        servings: 2
     }
 }
 

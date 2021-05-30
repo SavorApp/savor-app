@@ -10,11 +10,11 @@ import colorPalette from "../constants/ColorPalette";
 
 const _screen = Dimensions.get("screen");
 
-export interface LoginProps {
+export interface LoginScreenProps {
     navigation: StackNavigationProp<LoggedOutParamList, "LoginScreen">
 }
 
-export default function LoginScreen({ navigation }: LoginProps) {
+export default function LoginScreen({ navigation }: LoginScreenProps) {
     // userSelector allows us to access global store variables
     const userState = useSelector<RootState, UserState>((state) => state.userState);
     // useDispatch allows us to dispatch Actions to mutate global store variables
