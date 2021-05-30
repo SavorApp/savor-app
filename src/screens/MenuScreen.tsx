@@ -24,10 +24,11 @@ const randRecipeUrl = `https://api.spoonacular.com/recipes/random?apiKey=${API_K
 export default function MenuScreen() {
     const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([initialState.recipe]);
     const userState = useSelector<RootState, UserState>((state) => state.userState);
-    
+
     // FOR TEST PURPOSES
-    const[swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([]);
-    const[swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([]);
+    const [swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([]);
+    const [swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([]);
+    const cardRef = React.useRef<Object>();
 
     // Fetch random Recipes from Spoonacular
     async function fetchRandomRecipes() {
@@ -67,28 +68,43 @@ export default function MenuScreen() {
 
     async function onSwipedLeft(idx: number) {
         console.log('Swiped left');
-        // const query = `query getUser {
-        //     users{
-        //       id
-        //       username
-        //     }
-        //   }`
+        const query = `query getUser {
+            users {
+              id
+              username
+            }
+          }`
 
-        // const user = await axios({
-        //     url: 'https://savored-server.herokuapp.com/',
-        //     method: 'get',
-        //     data: {
-        //         query: query,
-        //     }
-        // })
+        const user = await axios({
+            url: 'https://savored-server.herokuapp.com/',
+            method: 'post',
+            data: {
+                query: query,
+            }
+        })
         // TODO: store it the database instead
         console.log(userState);
+        console.log(user)
         swipedLeftRecipes.push(randRecipes[idx]);
         setSwipedLeftRecipes(swipedLeftRecipes);
     }
 
-    function onSwipedRight(idx: number) {
+    async function onSwipedRight(idx: number) {
         console.log('Swiped right');
+        const query = `query getUser {
+            users {
+              id
+              username
+            }
+          }`
+
+        const user = await axios({
+            url: 'https://savored-server.herokuapp.com/',
+            method: 'post',
+            data: {
+                query: query,
+            }
+        })
         // TODO: store it the database instead
         console.log(userState);
         swipedRightRecipes.push(randRecipes[idx])
@@ -112,15 +128,14 @@ export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                <CardStack style={styles.cardStack} ref={swiper => { swiper = swiper }} disableBottomSwipe disableTopSwipe>
+                <CardStack style={styles.cardStack} ref={(node: any) => { cardRef.current = node }} renderNoMoreCards={() => { return <Text>No More Recipes</Text> }} disableBottomSwipe disableTopSwipe>
                     {randRecipes.map((rcp: Recipe, idx: number) => {
-                        return <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}><RecipeCard rcp={rcp} id={rcp.id} /></Card>
+                        return <Card key={rcp.id} ref={(node: any) => { cardRef.current = node }} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}><RecipeCard rcp={rcp} id={rcp.id} /></Card>
                     })}
                 </CardStack>
+
             </View>
-            <TouchableOpacity  onPress={() => {this.swiper.swipeRight()}}>
-                <MaterialCommunityIcons name="silverware-fork-knife" size={24} color="black"/>
-            </TouchableOpacity>
+            <SwipeButtons cardRef={cardRef} />
         </View>
     )
 }

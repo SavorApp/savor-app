@@ -4,16 +4,16 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
 export type SwipeButtonsParamList = {
-    onPress: void
+    cardRef: Object
 }
 
-export default function SwipeButtons({onPress}: {onPress: SwipeButtonsParamList}) {
+export default function SwipeButtons({cardRef}: {cardRef: SwipeButtonsParamList}) {
     return (
         <View style={styles.container}>
-            <TouchableOpacity style={styles.button} onPress={() => {return onPress}}>
+            <TouchableOpacity style={styles.button} onPress={() => {console.log(cardRef)}}>
                 <Feather name="x-circle" size={24} color="black" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => {return onPress}}>
+            <TouchableOpacity style={styles.button} onPress={() => {console.log(cardRef)}}>
                 <MaterialCommunityIcons name="silverware-fork-knife" size={24} color="black"/>
             </TouchableOpacity>
         </View>
