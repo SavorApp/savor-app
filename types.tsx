@@ -122,7 +122,7 @@ export type Filters = {
   smartFilter: Boolean,
   dishTypes: string[],
   diets: never[] | string[],
-  cuisines: string[],
+  cuisine: string,
   vegetarian: Boolean,
   vegan: Boolean,
   glutenFree: Boolean,

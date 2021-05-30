@@ -11,7 +11,7 @@ export const initialState: FiltersState = {
         smartFilter: true,
         dishTypes: ["dinner"],
         diets: [],
-        cuisines: [],
+        cuisine: "",
         vegetarian: false,
         vegan: false,
         glutenFree: false,
