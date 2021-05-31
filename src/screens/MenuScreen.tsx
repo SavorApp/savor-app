@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import { StackNavigationProp } from '@react-navigation/stack';
 import Constants from "expo-constants";
 import { useSelector, useDispatch } from "react-redux";
 import { addtoUserRecipeList } from "../redux/actions"
@@ -13,7 +14,7 @@ import SwipeButtons from "../components/SwipeButtons";
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/recipes.json";
 import { initialState } from "../redux/reducers/recipe"
-import { Recipe, RootState, UserState, FiltersState, UserRecipeListState } from "../../types";
+import { Recipe, RootState, UserState, FiltersState, UserRecipeListState, LoggedInParamList } from "../../types";
 
 const _screen = Dimensions.get("screen");
 
@@ -76,17 +77,19 @@ export default function MenuScreen() {
     // On focus, fetch/set random Recipes
     useFocusEffect(
         React.useCallback(() => {
-            console.log("FOCUSED")
-            fetchRandomRecipes();
+            console.log("MenuScreen Focused")
         }, [])
     );
 
-    // On randomRecipes updated, do something...
+    // On update
     React.useEffect(() => {
-        console.log("Filters Set")
-      }, [filtersState])
+        console.log("FROM MENU SCREEN -> dishType:", filtersState.filters.dishType);
+        // Fetch new recipes and apply new filters
+        fetchRandomRecipes();
+        // Re-render the page to update entire cardstack with new stateful values
+      }, [filtersState.filters])
 
-
+    console.log("OUTSIDE MENU SCREEN -> dishType:", filtersState.filters.dishType);
     // Listen to when randRecipes get set
     async function onSwipedLeft(idx: number) {
         console.log("Swiped left");
@@ -106,8 +109,7 @@ export default function MenuScreen() {
         // })
 
         // TODO: store it the database instead
-        console.log(userState);
-        // console.log(user)
+        console.log("onSwipedLeft -> dishType:", filtersState.filters.dishType);
 
         const recipeToBeAdded = {
             id: randRecipes[idx].id,
@@ -126,7 +128,6 @@ export default function MenuScreen() {
 
 
         dispatch(addtoUserRecipeList(recipeToBeAdded))
-
 
         swipedLeftRecipes.push(randRecipes[idx]);
         setSwipedLeftRecipes(swipedLeftRecipes);
@@ -148,8 +149,9 @@ export default function MenuScreen() {
         //         query: query,
         //     }
         // })
+
         // TODO: store it the database instead
-        // console.log(userState);
+        console.log("onSwipedRight -> dishType:", filtersState.filters);
 
         const recipeToBeAdded = {
             id: randRecipes[idx].id,
@@ -165,8 +167,6 @@ export default function MenuScreen() {
             isSavored: true
         }
 
-        console.log(recipeToBeAdded.cuisine);
-        console.log(recipeToBeAdded.dishType);
 
         dispatch(addtoUserRecipeList(recipeToBeAdded))
 
@@ -198,9 +198,11 @@ export default function MenuScreen() {
                 disableBottomSwipe 
                 disableTopSwipe>
                     {randRecipes.map((rcp: Recipe, idx: number) => {
-                        return <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}>
+                        return (
+                            <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}>
                                 <RecipeCard rcp={rcp} id={rcp.id} />
                             </Card>
+                        )
                     })}
                 </CardStack>
 

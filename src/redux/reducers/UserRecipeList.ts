@@ -68,7 +68,7 @@ const initialState: UserRecipeListState = {
 export const userRecipeListReducer = (state: UserRecipeListState = initialState, action: UserRecipeListAction) => {
     switch(action.type) {
         // When user swipes...
-        case "ADD_USER_RECIPE_LIST": {
+        case "ADD_TO_USER_RECIPE_LIST": {
             return {
                 ...state,
                 userRecipeList: [

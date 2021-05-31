@@ -19,7 +19,7 @@ export const removeUser = (user: User):UserAction => {
 // User Recipe List Actions
 export const addtoUserRecipeList = (recipe: UserRecipe):UserRecipeListAction => {
     return {
-        type: "ADD_USER_RECIPE_LIST",
+        type: "ADD_TO_USER_RECIPE_LIST",
         payload: recipe
     }
 }
