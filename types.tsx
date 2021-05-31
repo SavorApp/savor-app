@@ -55,7 +55,7 @@ export type SavoredListParamList = {
 export interface RootState {
   userState: UserState,
   recipeState: RecipeState,
-  recipeListState: RecipeListState,
+  userRecipeListState: UserRecipeListState,
   filtersState: FiltersState
 }
 
@@ -109,13 +109,29 @@ export interface RecipeState {
 // Core Recipe action
 export type RecipeAction = {type: string, payload: Recipe}
 
-// Core RecipeState interface
-export interface RecipeListState {
-  recipeList: Recipe[]
+// Core UserRecipe type
+export type UserRecipe = {
+  id: number,
+  title: string,
+  cuisine: string,
+  dishType: string,
+  vegetarian: Boolean,
+  vegan: Boolean,
+  glutenFree: Boolean,
+  dairyFree: Boolean,
+  readyInMinutes: number,
+  servings: number,
+  isSavored: Boolean
 }
 
-// Core Recipe List action
-export type RecipeListAction = {type: string, payload: Recipe[]}
+// Core UserRecipeListState interface
+export interface UserRecipeListState {
+  userId: number,
+  userRecipeList: UserRecipe[]
+}
+
+// Core UserRecipeList action
+export type UserRecipeListAction = {type: string, payload: UserRecipe[] | UserRecipe}
 
 // Core Filters type
 export type Filters = {

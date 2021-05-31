@@ -224,6 +224,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
     }
 
     function handleApply() {
+        // Update only changed values
         dispatch(updateFilters({
             ...filtersState.filters,
             smartFilter: smartFilter,
@@ -234,7 +235,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
             glutenFree: glutenFree,
             dairyFree: dairyFree
         }))
-
+        // NAvigate to menu screen
         navigation.navigate("MenuScreen");
     }
 
