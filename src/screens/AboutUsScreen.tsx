@@ -4,11 +4,11 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import {
   header,
   slogan,
-  noBounderies,
+  noBoundaries,
   noLimits,
   swipeAndLook,
   savorToCook,
-  noBounderiesContent,
+  noBoundariesContent,
   noLimitsContent,
   swipeAndLookContent,
   savorToCookContent,
@@ -31,8 +31,8 @@ export default function AboutUsScreen() {
               <Text style={[styles.slogan, styles.content]}>{slogan}</Text>
             </View>
             <Text style={[styles.subTitle, styles.content]}>Savored Core Values:</Text>
-            <Text style={[styles.subTitle2, styles.content]}>{noBounderies}</Text>
-            <Text style={styles.content}>{noBounderiesContent}</Text>
+            <Text style={[styles.subTitle2, styles.content]}>{noBoundaries}</Text>
+            <Text style={styles.content}>{noBoundariesContent}</Text>
             <Text style={[styles.subTitle2, styles.content]}>{noLimits}</Text>
             <Text style={styles.content}>{noLimitsContent}</Text>
             <Text style={[styles.subTitle2, styles.content]}>{swipeAndLook}</Text>
