@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text } from "react-native";
-import colorPalette from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 
 const _screen = Dimensions.get("screen");
 
@@ -32,5 +32,6 @@ const styles = StyleSheet.create({
     height: _screen.height * 0.6,
     borderRadius: 30,
     backgroundColor: colorPalette.primary,
+    ...shadowStyle
   },
 });

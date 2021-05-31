@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-import colorPalette from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import Constants from "expo-constants";
 import axios from "axios";
 import CardStack, { Card } from "react-native-card-stack-swiper";
@@ -77,7 +77,7 @@ export default function MenuScreen() {
     // On randomRecipes updated, do something...
     React.useEffect(() => {
         console.log("Recipes SET")
-      }, [randRecipes])
+    }, [randRecipes])
 
 
     // Listen to when randRecipes get set
@@ -143,21 +143,22 @@ export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                <CardStack 
-                style={styles.cardStack} 
-                ref={(cardStack: CardStack) => { cardStackRef.current = cardStack }} 
-                renderNoMoreCards={() => { return <Text>No More Recipes</Text> }} 
-                disableBottomSwipe 
-                disableTopSwipe>
+                <CardStack
+                    style={styles.cardStack}
+                    ref={(cardStack: CardStack) => { cardStackRef.current = cardStack }}
+                    renderNoMoreCards={() => { return <Text>No More Recipes</Text> }}
+                    disableBottomSwipe
+                    disableTopSwipe>
                     {randRecipes.map((rcp: Recipe, idx: number) => {
                         return <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}>
-                                <RecipeCard rcp={rcp} id={rcp.id} />
-                            </Card>
+                            <RecipeCard rcp={rcp} id={rcp.id} />
+                        </Card>
                     })}
                 </CardStack>
-
+                <View style={styles.buttonBar}>
+                    <SwipeButtons handleOnPressLeft={handleOnPressLeft} handleOnPressRight={handleOnPressRight} />
+                </View>
             </View>
-            <SwipeButtons handleOnPressLeft={handleOnPressLeft} handleOnPressRight={handleOnPressRight} />
         </View>
     )
 }
@@ -173,12 +174,18 @@ const styles = StyleSheet.create({
     },
 
     subContainer: {
+        flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
         width: _screen.width * 0.9,
-        height: _screen.height * 0.6,
+        height: _screen.height * 0.7,
         borderRadius: 30,
-        backgroundColor: colorPalette.primary
+        backgroundColor: colorPalette.primary,
+        ...shadowStyle
+    },
+
+    buttonBar: { 
+        alignSelf: "flex-end"
     },
 
     recipeTextTest: {

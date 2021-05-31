@@ -2,6 +2,7 @@ import React from "react"
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native"
 import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 import { SwipeButtonsParamList } from "../../types"
+import { shadowStyle } from "../constants/ColorPalette";
 
 
 export default function SwipeButtons({ handleOnPressLeft, handleOnPressRight }: SwipeButtonsParamList) {
@@ -16,6 +17,7 @@ export default function SwipeButtons({ handleOnPressLeft, handleOnPressRight }: 
         </View>
     )
 };
+
 
 const styles = StyleSheet.create({
     container: {
@@ -34,13 +36,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         justifyContent: "center",
         alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 0,
-        },
-        shadowOpacity: 0.15,
-        shadowRadius: 6.46,
+        ...shadowStyle,
         elevation: 9,
     },
 })
