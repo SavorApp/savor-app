@@ -1,4 +1,4 @@
-import { User, UserAction, Recipe, RecipeAction, RecipeListAction, Filters, FiltersAction } from "../../../types"
+import { User, UserAction, Recipe, RecipeAction, UserRecipeListAction, Filters, FiltersAction, UserRecipe } from "../../../types"
 
 
 // User Actions
@@ -16,19 +16,11 @@ export const removeUser = (user: User):UserAction => {
     }
 }
 
-// Recipe Actions
-export const recipeAction = (recipe: Recipe):RecipeAction => {
+// User Recipe List Actions
+export const addtoUserRecipeList = (recipe: UserRecipe):UserRecipeListAction => {
     return {
-        type: "NEW_ACTION_HERE",
+        type: "ADD_TO_USER_RECIPE_LIST",
         payload: recipe
-    }
-}
-
-// Recipe List Actions
-export const recipeListAction = (recipeList: Recipe[]):RecipeListAction => {
-    return {
-        type: "NEW_ACTION_HERE",
-        payload: recipeList
     }
 }
 

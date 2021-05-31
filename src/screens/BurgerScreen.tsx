@@ -7,7 +7,7 @@ import Emoji from 'react-native-emoji';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { useSelector, useDispatch } from "react-redux";
-import { LoggedInParamList, RootState, FiltersState, Filters } from "../../types";
+import { LoggedInParamList, RootState, FiltersState } from "../../types";
 import { updateFilters } from "../redux/actions";
 
 const _screen = Dimensions.get("screen");
@@ -224,6 +224,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
     }
 
     function handleApply() {
+        // Update only changed values
         dispatch(updateFilters({
             ...filtersState.filters,
             smartFilter: smartFilter,
@@ -235,6 +236,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
             dairyFree: dairyFree
         }))
 
+        // Navigate to menu screen
         navigation.navigate("MenuScreen");
     }
 
