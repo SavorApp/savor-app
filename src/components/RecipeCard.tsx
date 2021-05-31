@@ -79,6 +79,7 @@ const styles = StyleSheet.create({
     },
     pictureUnavailable: {
         textAlign: "center",
+        
     },
     pictureUnavailableContainer: {
         marginBottom: 10,
@@ -86,7 +87,9 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         width: 250,
         borderRadius: 15,
-        ...shadowStyle
+        justifyContent: "center",
+        alignItems: "center",
+        height: _screen.height * 0.25 
     },
 
     rcpInfoContainer: {
