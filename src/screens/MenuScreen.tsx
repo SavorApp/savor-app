@@ -27,7 +27,7 @@ const randRecipeUrl = `https://api.spoonacular.com/recipes/random?apiKey=${API_K
 export default function MenuScreen() {
     // useDispatch allows us to dispatch Actions to mutate global store variables
     const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([initialState.recipe]);
-    const [isCardStackLoading, setIsCardStackLoading] = React.useState<boolean>(false);
+    const [isCardStackLoading, setIsCardStackLoading] = React.useState<boolean>(true);
     const filtersState = useSelector<RootState, FiltersState>((state) => state.filtersState);
 
 
