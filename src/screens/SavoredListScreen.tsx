@@ -6,6 +6,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -126,6 +127,7 @@ const styles = StyleSheet.create({
 
   flatList: {
     padding: 8,
+    marginVertical: Platform.OS === "android" ? 12 : 0,
     width: _screen.width * 0.83,
     borderRadius: 30,
     backgroundColor: colorPalette.secondary,
@@ -133,7 +135,7 @@ const styles = StyleSheet.create({
 
   flatListContainer: {
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "center"
   },
 
   recipeListItem: {
