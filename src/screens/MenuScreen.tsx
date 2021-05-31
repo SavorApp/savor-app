@@ -1,7 +1,6 @@
 import React from "react";
-import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Dimensions, View, Text } from "react-native";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-import { StackNavigationProp } from '@react-navigation/stack';
 import Constants from "expo-constants";
 import { useSelector, useDispatch } from "react-redux";
 import { addtoUserRecipeList } from "../redux/actions"
@@ -86,6 +85,7 @@ export default function MenuScreen() {
         console.log("FROM MENU SCREEN -> dishType:", filtersState.filters.dishType);
         // Fetch new recipes and apply new filters
         fetchRandomRecipes();
+        console.log("MenuScreen Filters changed")
         // Re-render the page to update entire cardstack with new stateful values
       }, [filtersState.filters])
 
@@ -151,7 +151,7 @@ export default function MenuScreen() {
         // })
 
         // TODO: store it the database instead
-        console.log("onSwipedRight -> dishType:", filtersState.filters);
+        console.log("onSwipedRight -> dishType:", filtersState.filters.dishType);
 
         const recipeToBeAdded = {
             id: randRecipes[idx].id,
@@ -191,6 +191,11 @@ export default function MenuScreen() {
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
+                {/* {cardsLoading? (
+                    <LoadingCard />
+                ) : (
+                    <RecipeCardStack filtersState={filtersState} />
+                )} */}
                 <CardStack 
                 style={styles.cardStack} 
                 ref={(cardStack: CardStack) => { cardStackRef.current = cardStack }} 
@@ -205,7 +210,6 @@ export default function MenuScreen() {
                         )
                     })}
                 </CardStack>
-
             </View>
             <SwipeButtons handleOnPressLeft={handleOnPressLeft} handleOnPressRight={handleOnPressRight} />
         </View>
