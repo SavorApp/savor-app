@@ -1,38 +1,106 @@
 import React from "react";
-import { StyleSheet, Dimensions, View, Text } from "react-native";
+import { StyleSheet, Dimensions, View, ScrollView, Text } from "react-native";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import {
+  header,
+  slogan,
+  noBounderies,
+  noLimits,
+  swipeAndLook,
+  savorToCook,
+  noBounderiesContent,
+  noLimitsContent,
+  swipeAndLookContent,
+  savorToCookContent
+} from "../constants/AboutUsContent";
 
 const _screen = Dimensions.get("screen");
 
 export default function AboutUsScreen() {
-
-    // TODO: Include information about us
-    return (
-        <View style={styles.container}>
-            <View style={styles.subContainer}>
-                <Text> About Us Screen </Text>
-            </View>
+  // TODO: Include information about us
+  return (
+    <View style={styles.container}>
+      <View style={styles.subContainer}>
+        <Text style={styles.title}>About Us</Text>
+        <View style={styles.contentContainer}>
+          <ScrollView style={styles.scrollView}>
+            <Text style={styles.content}>{header}</Text>
+            <Text style={[styles.slogan, styles.content]}>{slogan}</Text>
+            <Text style={[styles.subTitle, styles.content]}>Savored Core Values:</Text>
+            <Text style={[styles.subTitle2, styles.content]}>{noBounderies}</Text>
+            <Text style={styles.content}>{noBounderiesContent}</Text>
+            <Text style={[styles.subTitle2, styles.content]}>{noLimits}</Text>
+            <Text style={styles.content}>{noLimitsContent}</Text>
+            <Text style={[styles.subTitle2, styles.content]}>{swipeAndLook}</Text>
+            <Text style={styles.content}>{swipeAndLookContent}</Text>
+            <Text style={[styles.subTitle2, styles.content]}>{savorToCook}</Text>
+            <Text style={styles.content}>{savorToCookContent}</Text>
+          </ScrollView>
         </View>
-    )
+      </View>
+    </View>
+  );
 }
 
-
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colorPalette.background,
+  },
 
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: colorPalette.background
-    },
+  subContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: _screen.width * 0.9,
+    height: _screen.height * 0.8,
+    borderRadius: 30,
+    backgroundColor: colorPalette.primary,
+    ...shadowStyle,
+  },
 
-    subContainer: {
-        justifyContent: "center",
-        alignItems: "center",
-        width: _screen.width*0.9,
-        height: _screen.height*0.6,
-        borderRadius: 30,
-        backgroundColor: colorPalette.primary,
-        ...shadowStyle
-    }
-})
+  title: {
+    marginVertical: 8,
+    fontSize: 28,
+    fontWeight: "bold",
+    color: colorPalette.background,
+  },
+
+  contentContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: _screen.width * 0.85,
+    height: _screen.height * 0.7,
+    borderRadius: 30,
+    backgroundColor: colorPalette.secondary,
+  },
+
+  scrollView: {
+    padding: 8,
+    width: _screen.width * 0.83,
+    borderRadius: 30,
+    backgroundColor: colorPalette.secondary,
+  },
+
+  content: {
+    marginBottom: 6,
+  },
+
+  slogan: {
+    fontSize: 14,
+    fontWeight: "bold",
+    fontStyle: "italic",
+  },
+
+  subTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+
+  subTitle2: {
+    fontSize: 14,
+    fontWeight: "bold",
+    textDecorationLine: "underline",
+  },
+});
