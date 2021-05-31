@@ -1,7 +1,6 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-import { StackNavigationProp } from '@react-navigation/stack';
 import Constants from "expo-constants";
 import { useSelector, useDispatch } from "react-redux";
 import { addtoUserRecipeList } from "../redux/actions"
