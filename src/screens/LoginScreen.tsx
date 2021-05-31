@@ -8,6 +8,12 @@ import { InputUser, LoggedOutParamList, RootState, UserState, User } from "../..
 import { setUser } from "../redux/actions";
 import colorPalette from "../constants/ColorPalette";
 
+// Johan and Mark auth work
+import {firebaseApp} from "../constants/Firebase"
+
+
+
+
 const _screen = Dimensions.get("screen");
 
 export interface LoginScreenProps {
@@ -61,6 +67,10 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
         // Once authenticated, navigate to MenuScreen
         // navigation.navigate("MenuScreen");
     }
+
+    function loginFirebase () {
+        firebaseApp.auth().onAuthStateChanged(user => console.log("🔥", user))
+    };
 
 
     return (
@@ -116,7 +126,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
                     <View>
                         <TouchableOpacity
-                        onPress={() => {handleLogin(userInput)}}
+                        onPress={() => loginFirebase()}
                         activeOpacity={0.8}
                         >
                             <LinearGradient
