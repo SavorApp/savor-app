@@ -24,11 +24,11 @@ const randRecipeUrl = `https://api.spoonacular.com/recipes/random?apiKey=${API_K
 export default function MenuScreen() {
     const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([initialState.recipe]);
     const userState = useSelector<RootState, UserState>((state) => state.userState);
+    const cardStackRef = React.useRef<CardStack | undefined>();
 
     // FOR TEST PURPOSES
     const [swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([]);
     const [swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([]);
-    let cardStackRef = React.useRef<CardStack | undefined>();
 
     // Fetch random Recipes from Spoonacular
     async function fetchRandomRecipes() {
