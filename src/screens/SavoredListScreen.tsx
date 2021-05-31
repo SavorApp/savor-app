@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { SavoredListParamList } from "../../types";
-import colorPalette from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 //Import for dev
 import * as recipesJson from "../data/recipes.json";
 
@@ -53,13 +53,16 @@ const styles = StyleSheet.create({
     marginTop: StatusBar.currentHeight || 0,
     backgroundColor: colorPalette.background,
   },
+
   item: {
     backgroundColor: colorPalette.primary,
     padding: 20,
     marginVertical: 8,
     marginHorizontal: 16,
     borderRadius: 10,
+    ...shadowStyle
   },
+  
   title: {
     fontSize: 32,
   },

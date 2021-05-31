@@ -5,7 +5,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import Emoji from 'react-native-emoji';
 import { StackNavigationProp } from '@react-navigation/stack';
-import colorPalette from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { useSelector, useDispatch } from "react-redux";
 import { LoggedInParamList, RootState, FiltersState, Filters } from "../../types";
 import { updateFilters } from "../redux/actions";
@@ -30,13 +30,15 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
    // Smart Filter
     const [smartFilter, setSmartFilter] = React.useState(filtersState.filters.smartFilter);
     // Dish Types
-    const [dishTypesOpen, setdishTypesOpen] = React.useState(false);
+    const [dishTypeOpen, setdishTypeOpen] = React.useState(false);
     // setting initial state type to 'any' due to restrictions with
     // data type provided by react-native-dropdown-picker for setValue<ValuType | ValueType[] | null>
     // ... in compreSettings() .length is used and, ValueType consists of a number data type
     //     which does not contain property length: causes Error
-    const [dishTypes, setDishTypesValue] = React.useState<any>(filtersState.filters.dishTypes);
-    const [dishTypesItems, setDishTypesItems] = React.useState([
+    const [dishType, setDishTypeValue] = React.useState<any>(filtersState.filters.dishType);
+    const [dishTypeItems, setDishTypeItems] = React.useState([
+        {label: "All", value: "",
+            icon: () => <Ionicons name="ios-happy-outline" size={18} />},
         {label: "Breakfast", value: "breakfast",
             icon: () => <Ionicons name="restaurant" size={18} />},
         {label: "Lunch", value: "lunch",
@@ -109,7 +111,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
         if (!somethingChanged) somethingChanged = compreDishType();
         // Check if cuisine changed
         if (!somethingChanged) somethingChanged = compareCuisine();
-    }, [smartFilter, dishTypes, cuisine, vegetarian, vegan, glutenFree, dairyFree]);
+    }, [smartFilter, dishType, cuisine, vegetarian, vegan, glutenFree, dairyFree]);
 
     // Compare smartFilter and decide to display the Apply button, or not
     function compareSmartFilter() {
@@ -173,25 +175,14 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
 
     // Compare dishType and decide to display the Apply button, or not
     function compreDishType() {
-        // Check length first to save processing
-        if (dishTypes.length !== filtersState.filters.dishTypes.length) {
+        // Simply String comparison
+        if (dishType !== filtersState.filters.dishType) {
             setChangesMade(true);
             return true;
         // Check each element in dishTypes against original state of filters
         } else {
-            let different = false;
-            for (let i = 0; i < dishTypes.length; i++) {
-                if (!filtersState.filters.dishTypes.includes(dishTypes[i])) {
-                    different = true;
-                }
-            }
-            if (different) {
-                setChangesMade(true);
-                return true;
-            } else {
-                setChangesMade(false);
-                return false;
-            }
+            setChangesMade(false);
+            return false;
         }
     }
 
@@ -236,7 +227,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
         dispatch(updateFilters({
             ...filtersState.filters,
             smartFilter: smartFilter,
-            dishTypes: dishTypes,
+            dishType: dishType,
             cuisine: cuisine,
             vegetarian: vegetarian,
             vegan: vegan,
@@ -269,16 +260,14 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
                     <Text>Dish Types: </Text>
                     <DropDownPicker
                         zIndex={3000}
-                        // zIndexInverse={1000}
-                        multiple={true}
-                        min={0}
-                        max={5}
-                        open={dishTypesOpen}
-                        value={dishTypes}
-                        items={dishTypesItems}
-                        setOpen={setdishTypesOpen}
-                        setValue={setDishTypesValue}
-                        setItems={setDishTypesItems}
+                        listMode="SCROLLVIEW"
+                        open={dishTypeOpen}
+                        value={dishType}
+                        items={dishTypeItems}
+                        setOpen={setdishTypeOpen}
+                        setValue={setDishTypeValue}
+                        closeAfterSelecting={true}
+                        setItems={setDishTypeItems}
                         translation={{
                             PLACEHOLDER: "Select your type(s)",
                             SEARCH_PLACEHOLDER: "Type something...",
@@ -297,7 +286,6 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
                     <Text>Cuisine: </Text>
                     <DropDownPicker
                         zIndex={2000}
-                        // zIndexInverse={2000}
                         listMode="SCROLLVIEW"
                         open={cuisineOpen}
                         value={cuisine}
@@ -408,13 +396,15 @@ const styles = StyleSheet.create({
 
     subContainer: {
         flex: 10,
+        marginTop: 8,
         paddingBottom: 100,
         justifyContent: "center",
         alignItems: "center",
         width: _screen.width*0.9,
         height: _screen.height*0.6,
         borderRadius: 30,
-        backgroundColor: colorPalette.primary
+        backgroundColor: colorPalette.primary,
+        ...shadowStyle
     },
 
     title: {

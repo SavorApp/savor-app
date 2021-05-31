@@ -120,8 +120,7 @@ export type RecipeListAction = {type: string, payload: Recipe[]}
 // Core Filters type
 export type Filters = {
   smartFilter: Boolean,
-  dishTypes: string[],
-  diets: never[] | string[],
+  dishType: string,
   cuisine: string,
   vegetarian: Boolean,
   vegan: Boolean,
