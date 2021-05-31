@@ -1,12 +1,12 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import colorPalette from "../constants/ColorPalette";
-import Constants from 'expo-constants';
+import Constants from "expo-constants";
 import axios from "axios";
-import CardStack, { Card } from 'react-native-card-stack-swiper';
-import RecipeCard from '../components/RecipeCard';
-import SwipeButtons from '../components/SwipeButtons';
+import CardStack, { Card } from "react-native-card-stack-swiper";
+import RecipeCard from "../components/RecipeCard";
+import SwipeButtons from "../components/SwipeButtons";
 
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/recipes.json";
@@ -82,7 +82,7 @@ export default function MenuScreen() {
 
     // Listen to when randRecipes get set
     async function onSwipedLeft(idx: number) {
-        console.log('Swiped left');
+        console.log("Swiped left");
         // const query = `query getUser {
         //     users {
         //       id
@@ -91,21 +91,21 @@ export default function MenuScreen() {
         //   }`
 
         // const user = await axios({
-        //     url: 'https://savored-server.herokuapp.com/',
-        //     method: 'post',
+        //     url: "https://savored-server.herokuapp.com/",
+        //     method: "post",
         //     data: {
         //         query: query,
         //     }
         // })
         // TODO: store it the database instead
         console.log(userState);
-        console.log(user)
+        // console.log(user)
         swipedLeftRecipes.push(randRecipes[idx]);
         setSwipedLeftRecipes(swipedLeftRecipes);
     }
 
     async function onSwipedRight(idx: number) {
-        console.log('Swiped right');
+        console.log("Swiped right");
         // const query = `query getUser {
         //     users {
         //       id
@@ -114,8 +114,8 @@ export default function MenuScreen() {
         //   }`
 
         // const user = await axios({
-        //     url: 'https://savored-server.herokuapp.com/',
-        //     method: 'post',
+        //     url: "https://savored-server.herokuapp.com/",
+        //     method: "post",
         //     data: {
         //         query: query,
         //     }
@@ -138,7 +138,7 @@ export default function MenuScreen() {
     // TODO: 
     // - On load/before render make API requests for randomized Recipes (Spoonacular)
     // - Apply filters
-    // - Compare against User's viewed Recipes list if User is logged in
+    // - Compare against User"s viewed Recipes list if User is logged in
     // - Apply score and sorting if smart filter is turned on
     return (
         <View style={styles.container}>
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     },
 
     cardStack: {
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: "center",
+        alignItems: "center"
     }
 })
