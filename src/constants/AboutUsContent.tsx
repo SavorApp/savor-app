@@ -1,5 +1,5 @@
 export const header =
-    "The Savored organization strives to provide an experience that is aligned with our values:";
+    "The Savored organization aims to provide an experience that is aligned with our values:";
 
 export const slogan = 
     "Food has no bounderies, taste has no limits. " +
@@ -20,17 +20,45 @@ export const savorToCook =
 export const noBounderiesContent = 
     "At Savored we believe in diversity and inclusion. There are no bounderies " +
     "in the lives we lead. We accept people, and food, from all backgrounds " +
-    "and cultures. This is especially true for food! We love to enjoy, and " +
-    "recommend, food from all over the world! A feature in our application we are most " +
+    "and cultures. This is especially true for food! We love to enjoy and " +
+    "we recommend food from all over the world! A feature in our application we are most " +
     "proud of is, the filtering ability. We are working hard to make the Savored application " +
     "inclusive to everyone, even if you might have certain dietary restrictions.";
 
 export const noLimitsContent = 
-    "There are no limits to our cooking endeavors and we want to " +
-    "motivate all of ou users to believe in their abilities";
+    "There are no limits to our cooking endeavors and, we want to " +
+    "motivate all of our users to believe in their abilities as well. " +
+    "There is no limit to the complexity of taste for the meals we prepare. " +
+    "In the same sense, there are also no limits to what you can achieve! " +
+    "No matter how complex a recipe might be, we encourage you to try, try again " +
+    "and, keep trying because we believe in the simple philosophy that practice " +
+    "makes perfect. We hope that the Savored application continues to help you " +
+    "push you limits and grow as a cook!";
 
 export const swipeAndLookContent = 
-    "Swipe and look";
+    "Seriously... Swipe and look. It's really as simple as that! The Savored applicaiton " +
+    "is built upon simplicity and efficiency. We want to save you the time, and headache, " +
+    "of attempting to come up with a recipe idea on your own. " + 
+    "We are here to help make things simple, quick and easy for you when it comes to " +
+    "deciding what to cook! No need to create an account if you needs something fast. " +
+    "I'll say it again, simply, swipe and look!" ;
 
 export const savorToCookContent = 
-    "Savor to cook";
+    "So, you've found something that looks good? Intriguing? Challenging? " +
+    "Well, add it to your Savored list and start cooking! " +
+    "The idea behind this core value is that, we hope to challenge individuals to " +
+    "truly savor their eating habits. Cherish the food you prepare and consume. " +
+    "There is something very special about picking out and preparing your own ingredients, " +
+    "experiencing all of the sensations that occur during cooking your own meal and, " +
+    "tasting the masterpiece of your own creations. " +
+    "It's something we believe everyone should have the chance to experience! " +
+    "Cooking your own meals usually result in healthier eating habits, " +
+    "as well as tastier food!";
+
+export const contactUsContent = 
+    "If you have any questions, concerns or, feature recommendations, " +
+    "we would love to hear from you and hope that you reach out!\n\n" +
+    "You can contact us at:";
+
+export const email = 
+    "suppport@savored.com\n\n\n";

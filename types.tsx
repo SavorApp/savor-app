@@ -161,7 +161,7 @@ export type FiltersAction = {type: string, payload: Filters}
  _____________________________
 */
 
-export type RecipeCardProps = {
+export type RecipeCardParamLists = {
   id: number,
   rcp: Recipe
 }

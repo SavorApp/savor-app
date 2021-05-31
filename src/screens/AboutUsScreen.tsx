@@ -11,7 +11,9 @@ import {
   noBounderiesContent,
   noLimitsContent,
   swipeAndLookContent,
-  savorToCookContent
+  savorToCookContent,
+  contactUsContent,
+  email
 } from "../constants/AboutUsContent";
 
 const _screen = Dimensions.get("screen");
@@ -25,7 +27,9 @@ export default function AboutUsScreen() {
         <View style={styles.contentContainer}>
           <ScrollView style={styles.scrollView}>
             <Text style={styles.content}>{header}</Text>
-            <Text style={[styles.slogan, styles.content]}>{slogan}</Text>
+            <View style={styles.sloganContainer}>
+              <Text style={[styles.slogan, styles.content]}>{slogan}</Text>
+            </View>
             <Text style={[styles.subTitle, styles.content]}>Savored Core Values:</Text>
             <Text style={[styles.subTitle2, styles.content]}>{noBounderies}</Text>
             <Text style={styles.content}>{noBounderiesContent}</Text>
@@ -35,6 +39,9 @@ export default function AboutUsScreen() {
             <Text style={styles.content}>{swipeAndLookContent}</Text>
             <Text style={[styles.subTitle2, styles.content]}>{savorToCook}</Text>
             <Text style={styles.content}>{savorToCookContent}</Text>
+            <Text style={[styles.subTitle, styles.content]}>Contact Information:</Text>
+            <Text style={styles.content}>{contactUsContent}</Text>
+            <Text style={[styles.content, styles.email]}>{email}</Text>
           </ScrollView>
         </View>
       </View>
@@ -87,8 +94,16 @@ const styles = StyleSheet.create({
     marginBottom: 6,
   },
 
+  sloganContainer: {
+    marginVertical: 6,
+    paddingTop: 4,
+    backgroundColor: colorPalette.popDark,
+    borderRadius: 10
+  },
+
   slogan: {
-    fontSize: 14,
+    textAlign: "center",
+    fontSize: 12,
     fontWeight: "bold",
     fontStyle: "italic",
   },
@@ -103,4 +118,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textDecorationLine: "underline",
   },
+
+  email: {
+    fontWeight: "bold",
+    color: colorPalette.alternate2
+  }
 });
