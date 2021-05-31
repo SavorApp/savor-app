@@ -83,20 +83,20 @@ export default function MenuScreen() {
     // Listen to when randRecipes get set
     async function onSwipedLeft(idx: number) {
         console.log('Swiped left');
-        const query = `query getUser {
-            users {
-              id
-              username
-            }
-          }`
+        // const query = `query getUser {
+        //     users {
+        //       id
+        //       username
+        //     }
+        //   }`
 
-        const user = await axios({
-            url: 'https://savored-server.herokuapp.com/',
-            method: 'post',
-            data: {
-                query: query,
-            }
-        })
+        // const user = await axios({
+        //     url: 'https://savored-server.herokuapp.com/',
+        //     method: 'post',
+        //     data: {
+        //         query: query,
+        //     }
+        // })
         // TODO: store it the database instead
         console.log(userState);
         console.log(user)
@@ -106,20 +106,20 @@ export default function MenuScreen() {
 
     async function onSwipedRight(idx: number) {
         console.log('Swiped right');
-        const query = `query getUser {
-            users {
-              id
-              username
-            }
-          }`
+        // const query = `query getUser {
+        //     users {
+        //       id
+        //       username
+        //     }
+        //   }`
 
-        const user = await axios({
-            url: 'https://savored-server.herokuapp.com/',
-            method: 'post',
-            data: {
-                query: query,
-            }
-        })
+        // const user = await axios({
+        //     url: 'https://savored-server.herokuapp.com/',
+        //     method: 'post',
+        //     data: {
+        //         query: query,
+        //     }
+        // })
         // TODO: store it the database instead
         console.log(userState);
         swipedRightRecipes.push(randRecipes[idx])
