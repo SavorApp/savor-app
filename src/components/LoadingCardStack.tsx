@@ -1,26 +1,20 @@
 import React from 'react'
 import { View, Image, StyleSheet, Text } from 'react-native'
-import { RecipeCardParamList } from "../../types"
 
-export default function RecipeCard({ id, rcp}: RecipeCardParamList) {
+export default function LoadingCardStack() {
 
         //TODO: Display the titles of the recipes
         return (
             <View>
                 {/* <Text style={styles.title}>{rcp.title}</Text> */}
-                <Image key={id} source={{uri: rcp.image || " "}} style={styles.picture} />
+                <Text style={styles.loadingText} >Loading...</Text>
             </View>
         )
     }
 
 const styles = StyleSheet.create({
-    picture: {
-        height: 300,
-        width: 300,
-        resizeMode: 'cover',
-        borderRadius: 20,
-    },
-    title: {
+    
+    loadingText: {
         justifyContent:'center',
         alignItems: "center"
     }
