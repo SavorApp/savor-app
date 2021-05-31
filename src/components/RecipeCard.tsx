@@ -57,11 +57,10 @@ const styles = StyleSheet.create({
     subContainer: {
         justifyContent: "center",
         alignItems: "center",
-        width: _screen.width * 0.9,
+        width: _screen.width * 0.85,
         height: _screen.height * 0.6,
         borderRadius: 30,
         backgroundColor: colorPalette.secondary,
-        ...shadowStyle
     },
     pictureUnavailable: {
         textAlign: "center",
