@@ -12,7 +12,7 @@ const initialState: UserRecipeListState = {
         {
             id: 1919,
             title: "Recipe 1",
-            cuisine: "american",
+            cuisine: "American",
             dishType: "dinner",
             vegetarian: true,
             vegan: false,
@@ -25,7 +25,7 @@ const initialState: UserRecipeListState = {
           {
             id: 1929,
             title: "Recipe 2",
-            cuisine: "japanese",
+            cuisine: "Japanese",
             dishType: "lunch",
             vegetarian: false,
             vegan: false,
@@ -38,7 +38,7 @@ const initialState: UserRecipeListState = {
           {
             id: 1939,
             title: "Recipe 3",
-            cuisine: "mexican",
+            cuisine: "Mexican",
             dishType: "beverage",
             vegetarian: true,
             vegan: true,
@@ -51,7 +51,7 @@ const initialState: UserRecipeListState = {
           {
             id: 1949,
             title: "Recipe 4",
-            cuisine: "italian",
+            cuisine: "Italian",
             dishType: "dinner",
             vegetarian: false,
             vegan: false,

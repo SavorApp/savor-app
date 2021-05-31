@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Dimensions, View, Text, Pressable, TouchableOpacity } from "react-native";
 import DropDownPicker from 'react-native-dropdown-picker';
 import {LinearGradient} from 'expo-linear-gradient';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Emoji from 'react-native-emoji';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
@@ -38,13 +38,13 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
     const [dishType, setDishTypeValue] = React.useState<any>(filtersState.filters.dishType);
     const [dishTypeItems, setDishTypeItems] = React.useState([
         {label: "All", value: "",
-            icon: () => <Ionicons name="ios-happy-outline" size={18} />},
+            icon: () => <MaterialCommunityIcons name="emoticon-outline" size={18} />},
         {label: "Breakfast", value: "breakfast",
-            icon: () => <Ionicons name="restaurant" size={18} />},
+            icon: () => <MaterialCommunityIcons name="silverware-variant" size={18} />},
         {label: "Lunch", value: "lunch",
-            icon: () => <Ionicons name="restaurant" size={18} />},
+            icon: () => <MaterialCommunityIcons name="silverware-variant" size={18} />},
         {label: "Dinner", value: "dinner",
-            icon: () => <Ionicons name="restaurant" size={18} />},
+            icon: () => <MaterialCommunityIcons name="silverware-variant" size={18} />},
         {label: "Dessert", value: "dessert",
             icon: () => <MaterialCommunityIcons name="cupcake" size={18} />},
         {label: "Beverage", value: "beverage",
