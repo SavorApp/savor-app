@@ -25,7 +25,7 @@ export type LoggedOutParamList = {
   AboutUsScreen: undefined;
   MenuScreen: undefined;
 };
-  
+
 export type LoggedInParamList = {
   ChefScreen: undefined;
   AboutUsScreen: undefined;
@@ -42,8 +42,8 @@ export type MenuStackParamList = {
 
 export type SavoredListParamList = {
   SavoredListScreen: undefined;
-  RecipeScreen: {recipeId: string};
-}
+  RecipeScreen: { recipeId: string };
+};
 
 /*
  _________________________
@@ -53,107 +53,110 @@ export type SavoredListParamList = {
 
 // Core RootState interface
 export interface RootState {
-  userState: UserState,
-  recipeState: RecipeState,
-  userRecipeListState: UserRecipeListState,
-  filtersState: FiltersState
+  userState: UserState;
+  recipeState: RecipeState;
+  userRecipeListState: UserRecipeListState;
+  filtersState: FiltersState;
 }
 
 // Core User type
 export type User = {
-  id: number,
-  username: string,
-  image_url: string
-}
+  id: string | undefined;
+  username: string | null | undefined;
+  image_url: string | null | undefined;
+};
 
 // Core UserState interface
 export interface UserState {
-  user: User,
-  isLoggedIn: Boolean
+  user: User;
+  isLoggedIn: Boolean;
 }
 
 // Core User action
-export type UserAction = {type: string, payload: User}
+export type UserAction = { type: string; payload: User };
 
 // Core Recipe type
 export type Recipe = {
-  id: number,
-  sourceUrl: string,
-  image: string | undefined,
-  imageType: string | undefined,
-  title: string,
-  diets: never[] | string[],
-  cuisines: string[],
-  dishTypes: string[],
-  vegetarian: Boolean,
-  vegan: Boolean,
-  glutenFree: Boolean,
-  dairyFree: Boolean,
-  veryHealthy: Boolean,
-  cheap: Boolean,
-  veryPopular: Boolean,
-  sustainable: Boolean,
-  aggregateLikes: number,
-  spoonacularScore: number,
-  healthScore: number,
-  pricePerServing: number,
-  readyInMinutes: number,
-  servings: number,
-}
+  id: number;
+  sourceUrl: string;
+  image: string | undefined;
+  imageType: string | undefined;
+  title: string;
+  diets: never[] | string[];
+  cuisines: string[];
+  dishTypes: string[];
+  vegetarian: Boolean;
+  vegan: Boolean;
+  glutenFree: Boolean;
+  dairyFree: Boolean;
+  veryHealthy: Boolean;
+  cheap: Boolean;
+  veryPopular: Boolean;
+  sustainable: Boolean;
+  aggregateLikes: number;
+  spoonacularScore: number;
+  healthScore: number;
+  pricePerServing: number;
+  readyInMinutes: number;
+  servings: number;
+};
 
 // Core RecipeState interface
 export interface RecipeState {
-  recipe: Recipe
+  recipe: Recipe;
 }
 
 // Core Recipe action
-export type RecipeAction = {type: string, payload: Recipe}
+export type RecipeAction = { type: string; payload: Recipe };
 
 // Core UserRecipe type
 export type UserRecipe = {
-  id: number,
-  title: string,
-  cuisine: string,
-  dishType: string,
-  vegetarian: Boolean,
-  vegan: Boolean,
-  glutenFree: Boolean,
-  dairyFree: Boolean,
-  readyInMinutes: number,
-  servings: number,
-  isSavored: Boolean
-}
+  id: number;
+  title: string;
+  cuisine: string;
+  dishType: string;
+  vegetarian: Boolean;
+  vegan: Boolean;
+  glutenFree: Boolean;
+  dairyFree: Boolean;
+  readyInMinutes: number;
+  servings: number;
+  isSavored: Boolean;
+};
 
 // Core UserRecipeListState interface
 export interface UserRecipeListState {
-  userId: number,
-  userRecipeList: UserRecipe[]
+  userId: number;
+  userRecipeList: UserRecipe[];
 }
 
 // Core UserRecipeList action
-export type UserRecipeListAction = {type: string, payload: UserRecipe[] | UserRecipe}
+export type UserRecipeListAction = {
+  type: string;
+  payload: UserRecipe[] | UserRecipe;
+};
 
 // Core Filters type
 export type Filters = {
-  smartFilter: Boolean,
-  dishType: string,
-  cuisine: string,
-  vegetarian: Boolean,
-  vegan: Boolean,
-  glutenFree: Boolean,
-  dairyFree: Boolean,
-  readyInMinutes: number,
-  servings: number
-}
+  smartFilter: Boolean;
+  dishType: string;
+  cuisine: string;
+  vegetarian: Boolean;
+  vegan: Boolean;
+  glutenFree: Boolean;
+  dairyFree: Boolean;
+  readyInMinutes: number;
+  servings: number;
+};
 
 // Core FiltersState interface
 export interface FiltersState {
-  userId: number,
-  filters: Filters
+  userId: number;
+  filters: Filters;
 }
 
 // Core Filters action
-export type FiltersAction = {type: string, payload: Filters}
+export type FiltersAction = { type: string; payload: Filters };
 
 /*
  _____________________________
@@ -162,14 +165,14 @@ export type FiltersAction = {type: string, payload: Filters}
 */
 
 export type RecipeCardProps = {
-  id: number,
-  rcp: Recipe
-}
+  id: number;
+  rcp: Recipe;
+};
 
 export type SwipeButtonsParamList = {
-  handleOnPressLeft: () => void,
-  handleOnPressRight: () => void
-}
+  handleOnPressLeft: () => void;
+  handleOnPressRight: () => void;
+};
 
 /*
  _________________________
@@ -179,6 +182,6 @@ export type SwipeButtonsParamList = {
 
 // InputUser for when users log in
 export type InputUser = {
-  username: string,
-  password: string
-}
+  username: string;
+  password: string;
+};
