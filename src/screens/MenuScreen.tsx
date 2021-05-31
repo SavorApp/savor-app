@@ -174,7 +174,7 @@ const styles = StyleSheet.create({
     },
 
     subContainer: {
-        flexDirection: "row",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         width: _screen.width * 0.9,
