@@ -33,20 +33,20 @@ export const noLimitsContent =
     "No matter how complex a recipe might be, we encourage you to try, try again " +
     "and, keep trying because we believe in the simple philosophy that practice " +
     "makes perfect. We hope that the Savored application continues to help you " +
-    "push you limits and grow as a cook!";
+    "push your limits and grow as a cook!";
 
 export const swipeAndLookContent = 
-    "Seriously... Swipe and look. It's really as simple as that! The Savored applicaiton " +
+    "Seriously... Swipe and look. It's really as simple as that! The Savored application " +
     "is built upon simplicity and efficiency. We want to save you the time, and headache, " +
     "of attempting to come up with a recipe idea on your own. " + 
     "We are here to help make things simple, quick and easy for you when it comes to " +
-    "deciding what to cook! No need to create an account if you needs something fast. " +
+    "deciding what to cook! No need to create an account if you need something fast. " +
     "I'll say it again, simply, swipe and look!" ;
 
 export const savorToCookContent = 
     "So, you've found something that looks good? Intriguing? Challenging? " +
     "Well, add it to your Savored list and start cooking! " +
-    "The idea behind this core value is that, we hope to challenge individuals to " +
+    "The idea behind this core value is that we hope to challenge individuals to " +
     "truly savor their eating habits. Cherish the food you prepare and consume. " +
     "There is something very special about picking out and preparing your own ingredients, " +
     "experiencing all of the sensations that occur during cooking your own meal and, " +
