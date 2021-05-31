@@ -7,7 +7,7 @@ export default function RecipeCard({ id, rcp}: RecipeCardProps) {
         //TODO: Display the titles of the recipes
         return (
             <View>
-                {/* <Text style={styles.title}>{rcp.title}</Text> */}
+                <Text style={styles.title}>{rcp.title}</Text>
                 <Image key={id} source={{uri: rcp.image || " "}} style={styles.picture} />
             </View>
         )

@@ -28,7 +28,7 @@ export default function MenuScreen() {
     // FOR TEST PURPOSES
     const [swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([]);
     const [swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([]);
-    let cardStackRef = React.useRef<CardStack | any>();
+    let cardStackRef = React.useRef<CardStack | undefined>();
 
     // Fetch random Recipes from Spoonacular
     async function fetchRandomRecipes() {
@@ -127,11 +127,11 @@ export default function MenuScreen() {
     }
 
     function handleOnPressLeft() {
-        cardStackRef.current.swipeLeft();
+        cardStackRef.current?.swipeLeft();
     }
 
     function handleOnPressRight() {
-        cardStackRef.current.swipeRight();
+        cardStackRef.current?.swipeRight();
     }
 
 
