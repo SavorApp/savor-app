@@ -25,12 +25,19 @@ export const userReducer = (
       return {
         ...state,
         user: { ...action.payload },
-        isLoggedIn: false,
+        isLoggedIn: true,
       };
     }
     // When user logs out...
     case "LOGOUT_USER": {
-      return initialState;
+      return {
+        user: {
+          id: "1991",
+          username: "",
+          image_url: "",
+        },
+        isLoggedIn: false,
+      };
     }
     // Default...
     default:
