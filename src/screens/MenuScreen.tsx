@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
 import { useFocusEffect, useIsFocused } from "@react-navigation/native";
-import colorPalette from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import Constants from "expo-constants";
 import axios from "axios";
 import CardStack, { Card } from "react-native-card-stack-swiper";
@@ -178,7 +178,8 @@ const styles = StyleSheet.create({
         width: _screen.width * 0.9,
         height: _screen.height * 0.6,
         borderRadius: 30,
-        backgroundColor: colorPalette.primary
+        backgroundColor: colorPalette.primary,
+        ...shadowStyle
     },
 
     recipeTextTest: {

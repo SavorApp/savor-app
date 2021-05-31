@@ -6,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector, useDispatch } from "react-redux";
 import { InputUser, LoggedOutParamList, RootState, UserState, User } from "../../types";
 import { setUser } from "../redux/actions";
-import colorPalette from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 
 const _screen = Dimensions.get("screen");
 
@@ -179,7 +179,8 @@ const styles = StyleSheet.create({
         width: _screen.width*0.9,
         height: _screen.height*0.6,
         borderRadius: 30,
-        backgroundColor: colorPalette.primary
+        backgroundColor: colorPalette.primary,
+        ...shadowStyle
     },
 
     form: {

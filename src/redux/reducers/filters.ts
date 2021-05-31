@@ -9,8 +9,7 @@ export const initialState: FiltersState = {
     userId: 1991,
     filters: {
         smartFilter: true,
-        dishTypes: ["dinner"],
-        diets: [],
+        dishType: "dinner",
         cuisine: "",
         vegetarian: false,
         vegan: false,

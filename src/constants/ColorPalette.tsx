@@ -1,4 +1,4 @@
-export default {
+export const colorPalette = {
     primary: "#1F8F89",
     secondary: "#8DDBBC",
     alternate: "#007ea7",
@@ -7,4 +7,14 @@ export default {
     popLight: "#ffffb7",
     popDark: "#ffda0a",
     background: "#ffffff"
+}
+
+export const shadowStyle = {
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 0,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 8
 }
