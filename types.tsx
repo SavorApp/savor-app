@@ -171,6 +171,11 @@ export type SwipeButtonsParamList = {
   handleOnPressRight: () => void
 }
 
+export type recipeCardStackParamList = {
+  randRecipes: Recipe[],
+  filtersState: FiltersState
+}
+
 /*
  _________________________
  Other Application Objects
