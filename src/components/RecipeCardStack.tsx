@@ -108,7 +108,7 @@ export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCar
                 <CardStack
                     style={styles.cardStack}
                     ref={(cardStack: CardStack) => { cardStackRef.current = cardStack }}
-                    renderNoMoreCards={() => { return <Text>No More Recipes</Text> }}
+                    renderNoMoreCards={() => { return <Text style={{justifyContent: "center", alignItems:"center"}}>No More Recipes</Text> }}
                     disableBottomSwipe
                     disableTopSwipe>
                     {randRecipes.map((rcp: Recipe, idx: number) => {
@@ -119,8 +119,8 @@ export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCar
                         )
                     })}
                 </CardStack>
+                <SwipeButtons handleOnPressLeft={handleOnPressLeft} handleOnPressRight={handleOnPressRight} />
             </View>
-            <SwipeButtons handleOnPressLeft={handleOnPressLeft} handleOnPressRight={handleOnPressRight} />
         </View>
 
     )
@@ -128,7 +128,7 @@ export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCar
 
 const styles = StyleSheet.create({
     cardStack: {
-        justifyContent: "center",
+        justifyContent: "flex-end",
         alignItems: "center"
     },
 
@@ -140,10 +140,10 @@ const styles = StyleSheet.create({
     },
 
     subContainer: {
-        justifyContent: "center",
+        justifyContent: "flex-end",
         alignItems: "center",
         width: _screen.width * 0.9,
-        height: _screen.height * 0.6,
+        height: _screen.height * 0.75,
         borderRadius: 30,
         backgroundColor: colorPalette.primary,
         ...shadowStyle
