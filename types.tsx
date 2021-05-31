@@ -142,13 +142,18 @@ export type FiltersAction = {type: string, payload: Filters}
 
 /*
  _____________________________
- Componenents Property Objects
+ Components Property Objects
  _____________________________
 */
 
 export type RecipeCardProps = {
   id: number,
   rcp: Recipe
+}
+
+export type SwipeButtonsParamList = {
+  handleOnPressLeft: () => void,
+  handleOnPressRight: () => void
 }
 
 /*

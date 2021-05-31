@@ -1,12 +1,12 @@
 import React from "react";
-import { StyleSheet, Dimensions, View, Text } from "react-native";
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
+import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
 import colorPalette from "../constants/ColorPalette";
-import Constants from 'expo-constants';
+import Constants from "expo-constants";
 import axios from "axios";
-import CardStack, { Card } from 'react-native-card-stack-swiper';
-import RecipeCard from '../components/RecipeCard';
-import SwipeButtons from '../components/SwipeButtons';
+import CardStack, { Card } from "react-native-card-stack-swiper";
+import RecipeCard from "../components/RecipeCard";
+import SwipeButtons from "../components/SwipeButtons";
 
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/recipes.json";
@@ -24,10 +24,11 @@ const randRecipeUrl = `https://api.spoonacular.com/recipes/random?apiKey=${API_K
 export default function MenuScreen() {
     const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([initialState.recipe]);
     const userState = useSelector<RootState, UserState>((state) => state.userState);
-    
+
     // FOR TEST PURPOSES
-    const[swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([])
-    const[swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([])
+    const [swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([]);
+    const [swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([]);
+    let cardStackRef = React.useRef<CardStack | any>();
 
     // Fetch random Recipes from Spoonacular
     async function fetchRandomRecipes() {
@@ -80,42 +81,83 @@ export default function MenuScreen() {
 
 
     // Listen to when randRecipes get set
-    function onSwipedLeft(idx: number) {
-        console.log('Swiped left');
+    async function onSwipedLeft(idx: number) {
+        console.log("Swiped left");
+        // const query = `query getUser {
+        //     users {
+        //       id
+        //       username
+        //     }
+        //   }`
+
+        // const user = await axios({
+        //     url: "https://savored-server.herokuapp.com/",
+        //     method: "post",
+        //     data: {
+        //         query: query,
+        //     }
+        // })
         // TODO: store it the database instead
         console.log(userState);
-        setSwipedLeftRecipes(swipedLeftRecipes.concat([randRecipes[idx]]));
-        console.log('🎉', swipedLeftRecipes)
+        // console.log(user)
+        swipedLeftRecipes.push(randRecipes[idx]);
+        setSwipedLeftRecipes(swipedLeftRecipes);
     }
 
-    function onSwipedRight(idx: number) {
-        console.log('Swiped right');
+    async function onSwipedRight(idx: number) {
+        console.log("Swiped right");
+        // const query = `query getUser {
+        //     users {
+        //       id
+        //       username
+        //     }
+        //   }`
+
+        // const user = await axios({
+        //     url: "https://savored-server.herokuapp.com/",
+        //     method: "post",
+        //     data: {
+        //         query: query,
+        //     }
+        // })
         // TODO: store it the database instead
         console.log(userState);
-        setSwipedRightRecipes(swipedRightRecipes.concat([randRecipes[idx]]));
-        console.log('🎉', swipedRightRecipes)
+        swipedRightRecipes.push(randRecipes[idx])
+        setSwipedRightRecipes(swipedRightRecipes);
     }
 
-    function handleOnPress() {
-        console.log('hello')
+    function handleOnPressLeft() {
+        cardStackRef.current.swipeLeft();
+    }
+
+    function handleOnPressRight() {
+        cardStackRef.current.swipeRight();
     }
 
 
     // TODO: 
     // - On load/before render make API requests for randomized Recipes (Spoonacular)
     // - Apply filters
-    // - Compare against User's viewed Recipes list if User is logged in
+    // - Compare against User"s viewed Recipes list if User is logged in
     // - Apply score and sorting if smart filter is turned on
     return (
         <View style={styles.container}>
             <View style={styles.subContainer}>
-                <CardStack style={styles.cardStack} ref={swiper => { swiper = swiper }} disableBottomSwipe disableTopSwipe>
+                <CardStack 
+                style={styles.cardStack} 
+                ref={(cardStack: CardStack) => { cardStackRef.current = cardStack }} 
+                renderNoMoreCards={() => { return <Text>No More Recipes</Text> }} 
+                disableBottomSwipe 
+                disableTopSwipe>
                     {randRecipes.map((rcp: Recipe, idx: number) => {
-                        return <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}><RecipeCard rcp={rcp} id={rcp.id} /></Card>
+                        return <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}>
+                                <RecipeCard rcp={rcp} id={rcp.id} />
+                            </Card>
                     })}
                 </CardStack>
+
             </View>
-            <SwipeButtons onPress={handleOnPress} />
+            <SwipeButtons handleOnPressLeft={handleOnPressLeft} handleOnPressRight={handleOnPressRight} />
         </View>
     )
 }
@@ -147,7 +189,7 @@ const styles = StyleSheet.create({
     },
 
     cardStack: {
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: "center",
+        alignItems: "center"
     }
 })

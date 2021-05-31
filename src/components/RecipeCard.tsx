@@ -7,7 +7,7 @@ export default function RecipeCard({ id, rcp}: RecipeCardProps) {
         //TODO: Display the titles of the recipes
         return (
             <View>
-                {/* <Text>{rcp.title}</Text> */}
+                {/* <Text style={styles.title}>{rcp.title}</Text> */}
                 <Image key={id} source={{uri: rcp.image || " "}} style={styles.picture} />
             </View>
         )
@@ -19,5 +19,9 @@ const styles = StyleSheet.create({
         width: 300,
         resizeMode: 'cover',
         borderRadius: 20,
+    },
+    title: {
+        justifyContent:'center',
+        alignItems: "center"
     }
 })
