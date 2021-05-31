@@ -2,11 +2,11 @@ export const header =
     "The Savored organization aims to provide an experience that is aligned with our values:";
 
 export const slogan = 
-    "Food has no bounderies, taste has no limits. " +
+    "Food has no boundaries, taste has no limits. " +
     "Swipe and look, savor to cook.";
 
-export const noBounderies = 
-    "Food has no bounderies";
+export const noBoundaries = 
+    "Food has no boundaries";
 
 export const noLimits = 
     "Taste has no limits";
@@ -17,8 +17,8 @@ export const swipeAndLook =
 export const savorToCook = 
     "Savor to cook";
 
-export const noBounderiesContent = 
-    "At Savored we believe in diversity and inclusion. There are no bounderies " +
+export const noBoundariesContent = 
+    "At Savored we believe in diversity and inclusion. There are no boundaries " +
     "in the lives we lead. We accept people, and food, from all backgrounds " +
     "and cultures. This is especially true for food! We love to enjoy and " +
     "we recommend food from all over the world! A feature in our application we are most " +
