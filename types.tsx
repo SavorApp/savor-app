@@ -161,7 +161,7 @@ export type FiltersAction = {type: string, payload: Filters}
  _____________________________
 */
 
-export type RecipeCardProps = {
+export type RecipeCardParamList = {
   id: number,
   rcp: Recipe
 }
@@ -171,7 +171,7 @@ export type SwipeButtonsParamList = {
   handleOnPressRight: () => void
 }
 
-export type recipeCardStackParamList = {
+export type RecipeCardStackParamList = {
   randRecipes: Recipe[],
   filtersState: FiltersState
 }

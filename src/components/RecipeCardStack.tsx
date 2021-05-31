@@ -11,11 +11,11 @@ import SwipeButtons from "../components/SwipeButtons";
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/recipes.json";
 import { initialState } from "../redux/reducers/recipe"
-import { Recipe, RootState, UserState, FiltersState, UserRecipeListState, LoggedInParamList, recipeCardStackParamList } from "../../types";
+import { Recipe, RootState, UserState, FiltersState, UserRecipeListState, LoggedInParamList, RecipeCardStackParamList } from "../../types";
 
 const _screen = Dimensions.get("screen");
 
-export default function RecipeCardStack({ randRecipes, filtersState }: recipeCardStackParamList) {
+export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCardStackParamList) {
 
 
     const userState = useSelector<RootState, UserState>((state) => state.userState);

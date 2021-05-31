@@ -1,6 +1,5 @@
 import React from 'react'
 import { View, Image, StyleSheet, Text } from 'react-native'
-import { RecipeCardProps } from "../../types"
 
 export default function LoadingCardStack() {
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { View, Image, StyleSheet, Text } from 'react-native'
-import { RecipeCardProps } from "../../types"
+import { RecipeCardParamList } from "../../types"
 
-export default function RecipeCard({ id, rcp}: RecipeCardProps) {
+export default function RecipeCard({ id, rcp}: RecipeCardParamList) {
 
         //TODO: Display the titles of the recipes
         return (
