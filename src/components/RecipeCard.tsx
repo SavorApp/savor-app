@@ -21,15 +21,15 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
                     </View>}
 
                 <View style={styles.rcpInfoContainer}>
+                    <Text style={styles.rcpInfo}>Type: {rcp.dishTypes}</Text>
+                    <Text style={styles.rcpInfo}>Cuisine: {rcp.cuisines}</Text>
                     <Text style={styles.rcpInfo}>Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}</Text>
                     <Text style={styles.rcpInfo}>Gluten-free:{rcp.glutenFree ? " ✅  " : " ❌ "}</Text>
                     <Text style={styles.rcpInfo}>Vegetarian:{rcp.vegetarian ? " ✅  " : " ❌ "}</Text>
                     <Text style={styles.rcpInfo}>Vegan:{rcp.vegan ? " ✅  " : " ❌ "}</Text>
 
-                    <Text style={{fontWeight: "bold", ...styles.rcpInfo}}>Servings: {rcp.servings} min</Text>
-                    <Text style={{fontWeight: "bold", ...styles.rcpInfo}}>Prep time: {rcp.readyInMinutes} min</Text>
-                    <Text style={styles.rcpInfo}>Type: {rcp.dishTypes}</Text>
-                    <Text style={styles.rcpInfo}>Cuisine: {rcp.cuisines}</Text>
+                    <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>Servings: {rcp.servings}</Text>
+                    <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>Prep time: {rcp.readyInMinutes} min</Text>
                 </View>
             </View>
         </View>
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         width: _screen.width * 0.75,
         marginTop: 10,
         alignContent: "stretch",
-        marginBottom: 10
+        marginBottom: 10,
     },
 
     rcpInfo: {
