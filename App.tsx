@@ -1,12 +1,12 @@
 import React from "react";
 import { Provider } from "react-redux";
-import { store } from "./src/redux/store"
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { store } from "./src/redux/store";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import getCacheLoadData from "./src/hooks/onStartFetchData";
-import useColorScheme from "./src/hooks/useColorScheme"
-import Navigation from "./src/navigation"
+import useColorScheme from "./src/hooks/useColorScheme";
+import Navigation from "./src/navigation";
 
-export default function App() {
+function App() {
   const isLoadingComplete = getCacheLoadData();
   const colorScheme = useColorScheme();
 
@@ -15,11 +15,19 @@ export default function App() {
     return null;
   } else {
     return (
-      <Provider store={store}>
-        <SafeAreaProvider>
-          <Navigation colorScheme={colorScheme} />
-        </SafeAreaProvider>
-      </Provider>
+      <SafeAreaProvider>
+        <Navigation colorScheme={colorScheme} />
+      </SafeAreaProvider>
     );
   }
+}
+
+// This exist so that we can communicate with our global state in the root
+// - A replacement for "index.ts" if you will.
+export default function AppWrapper() {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
 }
