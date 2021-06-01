@@ -143,8 +143,7 @@ const styles = StyleSheet.create({
     position: "relative",
     left: 0,
     top: 0,
-    opacity: 0.4,
-    color: colorPalette.primary
+    opacity: 0.4
   },
 
   container: {
