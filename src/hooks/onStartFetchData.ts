@@ -25,6 +25,7 @@ export default function getCacheLoadData() {
           };
           if (user !== null) {
             dispatch(setUser(currentUser));
+<<<<<<< HEAD
             // TODO:
             // - Get cached data or,
             // - Make appropriate API requests
@@ -51,7 +52,23 @@ export default function getCacheLoadData() {
               console.log(user);
             }
             getCurrentUser();
+=======
+
+
+            // TODO: WRITE TO DB
+            
+>>>>>>> 2beb61489fbdca02fcf7efd1895bde5ea198e31a
             // - Get user's UserRecipeList & dispatch
+            //   - axios API call to recipe table with currentUser.id or currentUser.email
+            //   - const resp = await axios.post();
+            //   - resp.data should look like {userId: USER_ID, userRecipeList: UserRecipe[]}
+            //   - dispatch(setUserRecipeListState(resp.data))
+
+            // - Get user's filters & dispatch
+            //   - axios API call to filters table with currentUser.id or currentUser.email
+            //   - const resp = await axios.post();
+            //   - resp.data should look like {userId: USER_ID, filters: Filters}
+            //   - dispatch(setFilters(resp.data))
           }
         });
       } catch (e) {

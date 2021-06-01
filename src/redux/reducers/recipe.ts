@@ -19,12 +19,14 @@ export const initialState: RecipeState = {
         cheap: false,
         veryPopular: false,
         sustainable: false,
-        aggregateLikes: 99,
-        spoonacularScore: 99,
-        healthScore: 99,
-        pricePerServing: 199.1,
-        readyInMinutes: 30,
-        servings: 2
+        aggregateLikes: 0,
+        spoonacularScore: 0,
+        healthScore: 0,
+        pricePerServing: 0.01,
+        readyInMinutes: 0,
+        servings: 0,
+        ingredients: [],
+        smartFilterScore: 0
       }
 }
 

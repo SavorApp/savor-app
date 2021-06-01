@@ -1,11 +1,6 @@
 import { UserAction, UserState } from "../../../types";
 
 // Initialize initial User State
-// TODO:
-// - Check mobile cache storage for access_token
-// - Attempt to authenticate user
-// - else initialize with initialState
-
 const initialState: UserState = {
   user: {
     id: "1991",

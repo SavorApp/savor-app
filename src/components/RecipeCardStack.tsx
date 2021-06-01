@@ -75,6 +75,7 @@ export default function RecipeCardStack({
       dairyFree: randRecipes[idx].dairyFree,
       readyInMinutes: randRecipes[idx].readyInMinutes,
       servings: randRecipes[idx].servings,
+      ingredients: randRecipes[idx].ingredients,
       isSavored: false,
     };
 
@@ -151,6 +152,7 @@ export default function RecipeCardStack({
       dairyFree: randRecipes[idx].dairyFree,
       readyInMinutes: randRecipes[idx].readyInMinutes,
       servings: randRecipes[idx].servings,
+      ingredients: randRecipes[idx].ingredients,
       isSavored: true,
     };
     dispatch(addtoUserRecipeList(recipeToBeAdded));

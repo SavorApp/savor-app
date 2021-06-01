@@ -11,9 +11,10 @@ import RecipeCard from "../components/RecipeCard";
 import SwipeButtons from "../components/SwipeButtons";
 import RecipeCardStack from "../components/RecipeCardStack";
 import LoadingCardStack from "../components/LoadingCardStack";
+import { applySmartFilter } from "../utils";
 
 // Importing JSON data for development and testing
-import * as recipesJson from "../data/recipes.json";
+import * as recipesJson from "../data/100Recipes.json";
 import { initialState } from "../redux/reducers/recipe";
 import {
   Recipe,
@@ -22,6 +23,7 @@ import {
   FiltersState,
   UserRecipeListState,
   LoggedInParamList,
+  Ingredient,
 } from "../../types";
 
 const _screen = Dimensions.get("screen");
@@ -31,25 +33,60 @@ const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
 const randRecipeUrl = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&`;
 
 export default function MenuScreen() {
-  // useDispatch allows us to dispatch Actions to mutate global store variables
+  const userRecipeListState = useSelector<RootState, UserRecipeListState>(
+    (state) => state.userRecipeListState
+  );
+  const filtersState = useSelector<RootState, FiltersState>(
+    (state) => state.filtersState
+  );
   const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([
     initialState.recipe,
   ]);
   const [isCardStackLoading, setIsCardStackLoading] =
     React.useState<boolean>(true);
-  const filtersState = useSelector<RootState, FiltersState>(
-    (state) => state.filtersState
-  );
 
   // Fetch random Recipes from Spoonacular
   async function fetchRandomRecipes() {
-    // const resp = await axios.get(randRecipeUrl + "number=10&tags=gluten%20free,vegetarian,dinner,italian")
-    // const fetchedRecipes = resp.data.recipes;
+    const vegetarian = filtersState.filters.vegetarian;
+    const SUB_ENDPPOINT = `number=10&tags=${vegetarian && "vegetarian"}`;
+
+    // const resp = await axios.get(randRecipeUrl + SUB_ENDPPOINT);
+    // const fetchedRecipes = resp.data.recipes.map((rcp: Recipe) => {
+    //     return {
+    //         id: rcp.id,
+    //         sourceUrl: rcp.sourceUrl,
+    //         image: rcp.image,
+    //         imageType: rcp.imageType,
+    //         title: rcp.title,
+    //         diets: rcp.diets,
+    //         cuisines: rcp.cuisines,
+    //         dishTypes: rcp.dishTypes,
+    //         vegetarian: rcp.vegetarian,
+    //         vegan: rcp.vegan,
+    //         glutenFree: rcp.glutenFree,
+    //         dairyFree: rcp.dairyFree,
+    //         veryHealthy: rcp.veryHealthy,
+    //         cheap: rcp.cheap,
+    //         veryPopular: rcp.veryPopular,
+    //         sustainable: rcp.sustainable,
+    //         aggregateLikes: rcp.aggregateLikes,
+    //         spoonacularScore: rcp.spoonacularScore,
+    //         healthScore: rcp.healthScore,
+    //         pricePerServing: rcp.pricePerServing,
+    //         readyInMinutes: rcp.readyInMinutes,
+    //         servings: rcp.servings
+    //     }
+    // });
 
     // Filter random recipes based on filters + Suffle them
     // Filter random recipes based on already viewed recipes by user
     // Apply smart logic if turned on
-    const filteredRecipes = recipesJson.recipes.map((rcp) => {
+    const fetchedRecipes = recipesJson.recipes.map((rcp) => {
+      const ingredientsArray = (
+        rcp.extendedIngredients as Array<Ingredient>
+      ).map((ing: Ingredient): string => {
+        return ing?.name;
+      });
       return {
         id: rcp.id,
         sourceUrl: rcp.sourceUrl,
@@ -73,11 +110,22 @@ export default function MenuScreen() {
         pricePerServing: rcp.pricePerServing,
         readyInMinutes: rcp.readyInMinutes,
         servings: rcp.servings,
+        ingredients: ingredientsArray,
+        smartFilterScore: 0,
       };
     });
 
-    shuffleRecipes(filteredRecipes);
-    setRandRecipes(filteredRecipes);
+    // Apply smartFilter is set to true
+    if (filtersState.filters.smartFilter) {
+      const finalRandRecipes = applySmartFilter(
+        fetchedRecipes,
+        userRecipeListState.userRecipeList
+      );
+      setRandRecipes(finalRandRecipes);
+    } else {
+      setRandRecipes(fetchedRecipes);
+    }
+
     setIsCardStackLoading(false);
   }
 
@@ -86,11 +134,6 @@ export default function MenuScreen() {
     setIsCardStackLoading(true);
     fetchRandomRecipes();
   }, [filtersState]);
-
-  // Helper function
-  function shuffleRecipes(array: Recipe[]) {
-    array.sort(() => Math.random() - 0.5);
-  }
 
   console.log(
     "OUTSIDE MENU SCREEN -> dishType:",
@@ -102,6 +145,7 @@ export default function MenuScreen() {
   // - Apply filters
   // - Compare against User"s viewed Recipes list if User is logged in
   // - Apply score and sorting if smart filter is turned on
+
   return isCardStackLoading ? (
     <LoadingCardStack />
   ) : (

@@ -11,6 +11,7 @@ export type RootStackParamList = {
   DeleteAccountScreen: undefined;
   MenuScreen: undefined;
   BurgerScreen: undefined;
+  ProtectedBurgerScreen: undefined;
 };
 
 export type BottomTabParamList = {
@@ -38,6 +39,7 @@ export type LoggedInParamList = {
 export type MenuStackParamList = {
   MenuScreen: undefined;
   BurgerScreen: undefined;
+  ProtectedBurgerScreen: undefined;
 };
 
 export type SavoredListParamList = {
@@ -105,6 +107,8 @@ export type Recipe = {
   pricePerServing: number;
   readyInMinutes: number;
   servings: number;
+  ingredients: string[];
+  smartFilterScore: number;
 };
 
 // Core RecipeState interface
@@ -127,19 +131,20 @@ export type UserRecipe = {
   dairyFree: Boolean;
   readyInMinutes: number;
   servings: number;
+  ingredients: string[];
   isSavored: Boolean;
 };
 
 // Core UserRecipeListState interface
 export interface UserRecipeListState {
-  userId: number;
+  userId: string;
   userRecipeList: UserRecipe[];
 }
 
 // Core UserRecipeList action
 export type UserRecipeListAction = {
   type: string;
-  payload: UserRecipe[] | UserRecipe;
+  payload: UserRecipeListState | UserRecipe[] | UserRecipe;
 };
 
 // Core Filters type
@@ -157,12 +162,12 @@ export type Filters = {
 
 // Core FiltersState interface
 export interface FiltersState {
-  userId: number;
+  userId: string;
   filters: Filters;
 }
 
 // Core Filters action
-export type FiltersAction = { type: string; payload: Filters };
+export type FiltersAction = { type: string; payload: FiltersState | Filters };
 
 /*
  _____________________________
@@ -171,9 +176,9 @@ export type FiltersAction = { type: string; payload: Filters };
 */
 
 export type RecipeCardParamList = {
-  id: number,
-  rcp: Recipe,
-  filteredDishtype: string
+  id: number;
+  rcp: Recipe;
+  filteredDishtype: string;
 }
 
 export type SwipeButtonsParamList = {
@@ -182,8 +187,8 @@ export type SwipeButtonsParamList = {
 };
 
 export type RecipeCardStackParamList = {
-  randRecipes: Recipe[],
-  filtersState: FiltersState
+  randRecipes: Recipe[];
+  filtersState: FiltersState;
 }
 
 /*
@@ -197,3 +202,31 @@ export type InputUser = {
   username: string;
   password: string;
 };
+
+export type Ingredient = {
+  id: number;
+  aisle: string;
+  image: string;
+  consistency: string;
+  name: string;
+  nameClean: string;
+  original: string;
+  originalString: string;
+  originalName: string;
+  amount: number;
+  unit: string;
+  meta: never[] | string[];
+  metaInformation: never[] | string[]
+  measures: {
+    us: {
+      amount: number;
+      unitShort: string;
+      unitLong: string;
+    },
+    metric: {
+      amount: number
+      unitShort: string;
+      unitLong: string;
+    }
+  }
+}
