@@ -20,6 +20,7 @@ const initialState: UserRecipeListState = {
       dairyFree: false,
       readyInMinutes: 15,
       servings: 2,
+      ingredients: [""],
       isSavored: true,
     },
     {
@@ -33,6 +34,7 @@ const initialState: UserRecipeListState = {
       dairyFree: true,
       readyInMinutes: 25,
       servings: 2,
+      ingredients: [""],
       isSavored: true,
     },
     {
@@ -46,6 +48,7 @@ const initialState: UserRecipeListState = {
       dairyFree: false,
       readyInMinutes: 20,
       servings: 4,
+      ingredients: [""],
       isSavored: true,
     },
     {
@@ -59,6 +62,7 @@ const initialState: UserRecipeListState = {
       dairyFree: false,
       readyInMinutes: 30,
       servings: 2,
+      ingredients: [""],
       isSavored: false,
     },
   ],

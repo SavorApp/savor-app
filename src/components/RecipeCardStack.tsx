@@ -20,7 +20,6 @@ export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCar
 
 
     const userState = useSelector<RootState, UserState>((state) => state.userState);
-    const userRecipeListState = useSelector<RootState, UserRecipeListState>((state) => state.userRecipeListState);
     const dispatch = useDispatch();
     // FOR TEST PURPOSES
     const [swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([]);
@@ -60,6 +59,7 @@ export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCar
             dairyFree: randRecipes[idx].dairyFree,
             readyInMinutes: randRecipes[idx].readyInMinutes,
             servings: randRecipes[idx].servings,
+            ingredients: randRecipes[idx].ingredients,
             isSavored: false
         }
 
@@ -87,6 +87,7 @@ export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCar
             dairyFree: randRecipes[idx].dairyFree,
             readyInMinutes: randRecipes[idx].readyInMinutes,
             servings: randRecipes[idx].servings,
+            ingredients: randRecipes[idx].ingredients,
             isSavored: true
         }
 
