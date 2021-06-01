@@ -34,7 +34,10 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
   );
 
   function getRandomNumber(): number {
-    return Math.floor(Math.random() * userRecipeListState.userRecipeList.length + 1)
+    const savoredList = userRecipeListState.userRecipeList.filter((rcp) => {
+      return rcp.isSavored;
+    })
+    return Math.floor(Math.random() * savoredList.length);
   }
 
   function RecipeListItem({rcp}: {rcp: UserRecipe}) {
@@ -94,7 +97,10 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
           <FlatList
             style={styles.flatList}
             contentContainerStyle={styles.flatListContainer}
-            data={userRecipeListState.userRecipeList}
+            data={userRecipeListState.userRecipeList.filter((rcp) => {
+              // Select only Recipes where isSavored = true
+              return rcp.isSavored;
+            })}
             renderItem={(item) => renderItem(item)}
             keyExtractor={item => item.id.toString()}
           />
