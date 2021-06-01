@@ -5,7 +5,9 @@ import { shadowStyle, colorPalette } from "../constants/ColorPalette"
 
 const _screen = Dimensions.get("screen");
 
-export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
+export default function RecipeCard({ id, rcp, filteredDishtype }: RecipeCardParamList) {
+
+
 
     //TODO: Need to modify the "Type" displayed
     return (
@@ -21,7 +23,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
                     </View>}
 
                 <View style={styles.rcpInfoContainer}>
-                    <Text style={styles.rcpInfo}>Type: {rcp.dishTypes}</Text>
+                    <Text style={styles.rcpInfo}>Type: {filteredDishtype}</Text>
                     <Text style={styles.rcpInfo}>Cuisine: {rcp.cuisines}</Text>
                     <Text style={styles.rcpInfo}>Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}</Text>
                     <Text style={styles.rcpInfo}>Gluten-free:{rcp.glutenFree ? " ✅  " : " ❌ "}</Text>
@@ -79,7 +81,7 @@ const styles = StyleSheet.create({
     },
     pictureUnavailable: {
         textAlign: "center",
-        
+
     },
     pictureUnavailableContainer: {
         marginBottom: 10,
@@ -89,7 +91,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         justifyContent: "center",
         alignItems: "center",
-        height: _screen.height * 0.25 
+        height: _screen.height * 0.25
     },
 
     rcpInfoContainer: {
