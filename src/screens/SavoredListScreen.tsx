@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
-import { SwipeListView } from 'react-native-swipe-list-view';
+// import { SwipeListView } from 'react-native-swipe-list-view';
 import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
