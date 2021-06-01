@@ -1,4 +1,5 @@
-import React from 'react'
+import { useFocusEffect } from '@react-navigation/native';
+import React, { useEffect } from 'react'
 import { View, Image, StyleSheet, Text, Dimensions } from 'react-native'
 import { RecipeCardParamList } from "../../types"
 import { shadowStyle, colorPalette } from "../constants/ColorPalette"
@@ -6,6 +7,10 @@ import { shadowStyle, colorPalette } from "../constants/ColorPalette"
 const _screen = Dimensions.get("screen");
 
 export default function RecipeCard({ id, rcp, filteredDishtype }: RecipeCardParamList) {
+
+    useEffect(() => {
+        console.log('RECIPE CARD CALLED')
+    }, [rcp])
 
 
 

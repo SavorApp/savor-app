@@ -115,7 +115,12 @@ export default function MenuScreen() {
     React.useEffect(() => {
         setIsCardStackLoading(true)
         fetchRandomRecipes();
-    }, [filtersState])
+    }, [filtersState]);
+
+    React.useEffect(() => {
+        setIsCardStackLoading(true)
+        fetchRandomRecipes();
+    }, [])
 
     console.log("OUTSIDE MENU SCREEN -> dishType:", filtersState.filters.dishType);
     // Listen to when randRecipes get set

@@ -26,6 +26,10 @@ export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCar
     const [swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([]);
 
 
+    React.useEffect(() => {
+        console.log('CARD Stack CALLED')
+    }, [randRecipes])
+
     let cardStackRef = React.useRef<CardStack | any>();
     async function onSwipedLeft(idx: number) {
         console.log("Swiped left");
