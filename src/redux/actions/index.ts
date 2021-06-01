@@ -2,12 +2,12 @@ import {
   User,
   EmptyUserAction,
   UserAction,
-  Recipe,
-  RecipeAction,
   UserRecipeListAction,
   Filters,
   FiltersAction,
   UserRecipe,
+  UserRecipeListState,
+  FiltersState,
 } from "../../../types";
 
 // User Actions
@@ -25,6 +25,15 @@ export const removeUser = (): EmptyUserAction => {
 };
 
 // User Recipe List Actions
+export const setUserRecipeListState = (
+  userRecipeListState: UserRecipeListState
+): UserRecipeListAction => {
+  return {
+    type: "ADD_TO_USER_RECIPE_LIST",
+    payload: userRecipeListState,
+  };
+};
+
 export const addtoUserRecipeList = (
   recipe: UserRecipe
 ): UserRecipeListAction => {
@@ -35,6 +44,13 @@ export const addtoUserRecipeList = (
 };
 
 // Filters Actions
+export const setFilters = (filtersState: FiltersState): FiltersAction => {
+  return {
+    type: "UPDATE_FILTERS",
+    payload: filtersState,
+  };
+};
+
 export const updateFilters = (filters: Filters): FiltersAction => {
   return {
     type: "UPDATE_FILTERS",

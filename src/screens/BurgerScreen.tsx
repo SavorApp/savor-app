@@ -258,7 +258,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
                     </Pressable>
                 </View>
                 
-                <View style={[styles.filtersContainers, styles.dropDown, styles.z2]}>
+                <View style={[styles.filtersContainers, styles.dropDownContainer, styles.z2]}>
                     <Text>Dish Types: </Text>
                     <DropDownPicker
                         zIndex={3000}
@@ -284,7 +284,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
                     />
                 </View>
 
-                <View style={[styles.filtersContainers, styles.dropDown, styles.z1]}>
+                <View style={[styles.filtersContainers, styles.dropDownContainer, styles.z1]}>
                     <Text>Cuisine: </Text>
                     <DropDownPicker
                         zIndex={2000}
@@ -441,7 +441,7 @@ const styles = StyleSheet.create({
         zIndex: 2000
     },
 
-    dropDown: {
+    dropDownContainer: {
         flexDirection: "row",
         paddingHorizontal: 10,
         justifyContent: "space-between",

@@ -19,7 +19,6 @@ import {
 const _screen = Dimensions.get("screen");
 
 export default function AboutUsScreen() {
-  // TODO: Include information about us
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
