@@ -11,6 +11,7 @@ export type RootStackParamList = {
   DeleteAccountScreen: undefined;
   MenuScreen: undefined;
   BurgerScreen: undefined;
+  ProtectedBurgerScreen: undefined;
 };
 
 export type BottomTabParamList = {
@@ -38,6 +39,7 @@ export type LoggedInParamList = {
 export type MenuStackParamList = {
   MenuScreen: undefined;
   BurgerScreen: undefined;
+  ProtectedBurgerScreen: undefined;
 };
 
 export type SavoredListParamList = {
@@ -85,8 +87,8 @@ export type EmptyUserAction = {
 export type Recipe = {
   id: number;
   sourceUrl: string;
-  image: string | undefined;
-  imageType: string | undefined;
+  image: string | null | undefined;
+  imageType: string | null | undefined;
   title: string;
   diets: never[] | string[];
   cuisines: string[];
@@ -99,14 +101,14 @@ export type Recipe = {
   cheap: Boolean;
   veryPopular: Boolean;
   sustainable: Boolean;
-  aggregateLikes: number;
-  spoonacularScore: number;
-  healthScore: number;
-  pricePerServing: number;
-  readyInMinutes: number;
-  servings: number;
-  ingredients: string[];
-  smartFilterScore: number;
+  aggregateLikes: number | null | undefined;
+  spoonacularScore: number | null | undefined;
+  healthScore: number | null | undefined;
+  pricePerServing: number | null | undefined;
+  readyInMinutes: number | null | undefined;
+  servings: number | null | undefined;
+  ingredients: never[] | string[];
+  smartFilterScore: number | null | undefined;
 };
 
 // Core RecipeState interface
@@ -135,14 +137,14 @@ export type UserRecipe = {
 
 // Core UserRecipeListState interface
 export interface UserRecipeListState {
-  userId: number;
+  userId: string;
   userRecipeList: UserRecipe[];
 }
 
 // Core UserRecipeList action
 export type UserRecipeListAction = {
   type: string;
-  payload: UserRecipe[] | UserRecipe;
+  payload: UserRecipeListState | UserRecipe[] | UserRecipe;
 };
 
 // Core Filters type
@@ -154,18 +156,18 @@ export type Filters = {
   vegan: Boolean;
   glutenFree: Boolean;
   dairyFree: Boolean;
-  readyInMinutes: number;
-  servings: number;
+  readyInMinutes: number | null | undefined;
+  servings: number | null | undefined;
 };
 
 // Core FiltersState interface
 export interface FiltersState {
-  userId: number;
+  userId: string;
   filters: Filters;
 }
 
 // Core Filters action
-export type FiltersAction = { type: string; payload: Filters };
+export type FiltersAction = { type: string; payload: FiltersState | Filters };
 
 /*
  _____________________________

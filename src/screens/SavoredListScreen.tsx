@@ -163,7 +163,8 @@ const styles = StyleSheet.create({
 
   flatListContainer: {
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    paddingBottom: 16,
   },
 
   recipeListItem: {
