@@ -42,7 +42,7 @@ export type MenuStackParamList = {
 
 export type SavoredListParamList = {
   SavoredListScreen: undefined;
-  RecipeScreen: { recipeId: string };
+  RecipeScreen: { recipeId: number };
 };
 
 /*

@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text, Pressable, TouchableOpacity } from "react-native";
-import DropDownPicker from 'react-native-dropdown-picker';
-import {LinearGradient} from 'expo-linear-gradient';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Emoji from 'react-native-emoji';
-import { StackNavigationProp } from '@react-navigation/stack';
+import DropDownPicker from "react-native-dropdown-picker";
+import {LinearGradient} from "expo-linear-gradient";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Emoji from "react-native-emoji";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { useSelector, useDispatch } from "react-redux";
 import { LoggedInParamList, RootState, FiltersState } from "../../types";
@@ -60,27 +60,27 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
         {label: "American", value: "american",
             icon: () => <Emoji name="us" />},
         {label: "Chinese", value: "chinese",
-            icon: () => <Emoji name="cn"/>},
+            icon: () => <Emoji name="cn" />},
         {label: "French", value: "french",
-            icon: () => <Emoji name="fr"/>},
+            icon: () => <Emoji name="fr" />},
         {label: "German", value: "german",
-            icon: () => <Emoji name="de"/>},
+            icon: () => <Emoji name="de" />},
         {label: "Greek", value: "greek",
-            icon: () => <Emoji name="flag-gr"/>},
+            icon: () => <Emoji name="flag-gr" />},
         {label: "Indian", value: "indian",
-            icon: () => <Emoji name="flag-in"/>},
+            icon: () => <Emoji name="flag-in" />},
         {label: "Italian", value: "italian",
-            icon: () => <Emoji name="it"/>},
+            icon: () => <Emoji name="it" />},
         {label: "Japanese", value: "japanese",
-            icon: () => <Emoji name="jp"/>},
+            icon: () => <Emoji name="jp" />},
         {label: "Korean", value: "korean",
-            icon: () => <Emoji name="kr"/>},
+            icon: () => <Emoji name="kr" />},
         {label: "Mexican", value: "mexican",
-            icon: () => <Emoji name="flag-mx"/>},
+            icon: () => <Emoji name="flag-mx" />},
         {label: "Thai", value: "thai",
-            icon: () => <Emoji name="flag-th"/>},
+            icon: () => <Emoji name="flag-th" />},
         {label: "Vietnamese", value: "vietnamese",
-            icon: () => <Emoji name="flag-vn"/>}
+            icon: () => <Emoji name="flag-vn" />}
     ]);
     // Vegetarian
     const [vegetarian, setVegetarian] = React.useState(filtersState.filters.vegetarian);
@@ -470,11 +470,11 @@ const styles = StyleSheet.create({
     checkboxBase: {
         width: 24,
         height: 24,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
         borderRadius: 4,
         borderWidth: 1,
-        borderColor: 'coral',
+        borderColor: "coral",
         backgroundColor: colorPalette.background,
       },
     

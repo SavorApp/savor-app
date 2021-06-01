@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
+// import { SwipeListView } from 'react-native-swipe-list-view';
 import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -18,6 +19,7 @@ import {
   UserRecipe,
 } from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
 
 const _screen = Dimensions.get("screen");
@@ -44,16 +46,36 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
         activeOpacity={0.8}
       >
         <View style={styles.recipeListItemInner}>
-          <MaterialCommunityIcons name="silverware-variant" size={18} />
+          {cuisineMap[rcp.cuisine]}
           <View  style={styles.recipeListItemInnerContent}>
             <Text style={styles.recipeTitle}>{newTitle}</Text>
             <View style={styles.tagsContainer}>
-              <Text>{rcp.dishType} </Text>
-              <Text>{rcp.cuisine} </Text>
-              <Text>{rcp.vegetarian ? "Vegetarian " : ""}</Text>
-              <Text>{rcp.vegan ? "Vegan " : ""}</Text>
-              <Text>{rcp.glutenFree ? "Gluten Free " : ""}</Text>
-              <Text>{rcp.dairyFree ? "Dairy Free " : ""}</Text>
+              <View style={styles.singleTagContainer}>
+              {dishTypeMap[rcp.dishType]}
+                <Text style={styles.tag}>{rcp.dishType[0].toUpperCase() + rcp.dishType.slice(1)}</Text>
+              </View>
+              {rcp.vegetarian && (
+                <View style={styles.singleTagContainer}>
+                  <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" />
+                  <Text style={styles.tag}>Vegetarian</Text>
+                </View>
+              )}
+              {rcp.vegan && (
+                <View style={styles.singleTagContainer}>
+                  <MaterialCommunityIcons name="alpha-v-circle" color="green" />
+                  <Text style={styles.tag}>Vegan</Text>
+                </View>
+              )}
+              {rcp.glutenFree && (
+                <View style={styles.singleTagContainer}>
+                  <Text style={[styles.tag, {fontWeight: "bold"}]}>GF</Text>
+                </View>
+              )}
+              {rcp.dairyFree && (
+                <View style={styles.singleTagContainer}>
+                  <Text style={[styles.tag, {fontWeight: "bold"}]}>DF</Text>
+                </View>
+              )}
             </View>
           </View>
         </View>
@@ -73,7 +95,7 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
             style={styles.flatList}
             contentContainerStyle={styles.flatListContainer}
             data={userRecipeListState.userRecipeList}
-            renderItem={renderItem}
+            renderItem={(item) => renderItem(item)}
             keyExtractor={item => item.id.toString()}
           />
         </View>
@@ -152,11 +174,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 6,
-    width: _screen.width * 0.81,
+    width: _screen.width * 0.81
   },
 
   recipeListItemInnerContent: {
-    paddingHorizontal: 6
+    paddingLeft: 6,
   },
 
   recipeTitle: {
@@ -164,7 +186,21 @@ const styles = StyleSheet.create({
   },
 
   tagsContainer: {
-    flexDirection: "row"
+    flexDirection: "row",
+  },
+
+  singleTagContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 3,
+    padding: 4,
+    borderRadius:8,
+    backgroundColor: colorPalette.trimLight
+  },
+
+  tag: {
+    fontSize: 10,
   },
 
   truffleShuffleButton: {
