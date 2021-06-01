@@ -29,7 +29,7 @@ export default function getCacheLoadData() {
             // TODO: 
             // - Get cached data or,
             // - Make appropriate API requests
-            // - Get user's UserRecipeList
+            // - Get user's UserRecipeList & dispatch
           }
         });
 
