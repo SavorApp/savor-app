@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Dimensions, View, ScrollView, Text } from "react-native";
+import { StyleSheet, Dimensions, Platform, View, ScrollView, Text } from "react-native";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import {
   header,
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
 
   scrollView: {
     padding: 8,
+    marginVertical: Platform.OS === "android" ? 12 : 0,
     width: _screen.width * 0.83,
     borderRadius: 30,
     backgroundColor: colorPalette.secondary,
