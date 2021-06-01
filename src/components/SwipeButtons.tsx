@@ -1,6 +1,6 @@
 import React from "react"
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native"
-import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { SwipeButtonsParamList } from "../../types"
 import { shadowStyle } from "../constants/ColorPalette";
 
@@ -9,10 +9,10 @@ export default function SwipeButtons({ handleOnPressLeft, handleOnPressRight }: 
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.button} onPress={handleOnPressLeft}>
-                <Feather name="x-circle" size={24} color="black" />
+                <Ionicons name="thumbs-down-sharp" size={24} color="#B50000" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={handleOnPressRight}>
-                <MaterialCommunityIcons name="silverware-fork-knife" size={24} color="black" />
+                <Ionicons name="thumbs-up-sharp" size={24} color="green" />
             </TouchableOpacity>
         </View>
     )

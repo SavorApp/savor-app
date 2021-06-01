@@ -170,15 +170,20 @@ export type FiltersAction = { type: string; payload: Filters };
  _____________________________
 */
 
-export type RecipeCardProps = {
-  id: number;
-  rcp: Recipe;
-};
+export type RecipeCardParamList = {
+  id: number,
+  rcp: Recipe
+}
 
 export type SwipeButtonsParamList = {
   handleOnPressLeft: () => void;
   handleOnPressRight: () => void;
 };
+
+export type RecipeCardStackParamList = {
+  randRecipes: Recipe[],
+  filtersState: FiltersState
+}
 
 /*
  _________________________
