@@ -75,6 +75,12 @@ export interface UserState {
 // Core User action
 export type UserAction = { type: string; payload: User };
 
+// Empty User action
+
+export type EmptyUserAction = {
+  type: string;
+};
+
 // Core Recipe type
 export type Recipe = {
   id: number;

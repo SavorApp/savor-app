@@ -7,13 +7,13 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Alert,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { LoggedOutParamList } from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp, api } from "../constants/Firebase";
 import { setUser } from "../redux/actions";
+import { RootState, UserState } from "../../types";
 
 const _screen = Dimensions.get("screen");
 export interface SignupScreenProps {
@@ -37,26 +37,24 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
     }
   }, [error]);
 
-  const handleSignUp = async () => {
+  async function handleSignUp() {
     // Check that both email and password field are populated.
     // Also check that the email is somewhat valid
     if (email && password && /^\S+@\S+\.\S+$/.test(email)) {
       try {
-        const user = await firebaseApp
+        const resp = await firebaseApp
           .auth()
           .createUserWithEmailAndPassword(email, password);
-        if (user.additionalUserInfo?.isNewUser) {
+        if (resp.additionalUserInfo?.isNewUser) {
           //TODO:
           //Send user info to DB
         }
         //Update global state
         dispatch(
           setUser({
-            ...userState.user,
-            id: user?.user?.uid,
-            username: user?.user?.email,
-            image_url: user?.user?.photoURL,
-            isLoggedIn: true,
+            id: resp.user?.uid,
+            username: resp.user?.email,
+            image_url: resp.user?.photoURL,
           })
         );
         navigation.navigate("MenuScreen");
@@ -67,7 +65,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
     } else {
       setError("Invalid email or password");
     }
-  };
+  }
 
   return (
     <View style={styles.container}>

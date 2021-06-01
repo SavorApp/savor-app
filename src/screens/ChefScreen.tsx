@@ -11,6 +11,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { LoggedInParamList } from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
+import { removeUser } from "../redux/actions/index";
 
 const _screen = Dimensions.get("screen");
 export interface ChefScreenProps {
@@ -35,13 +36,13 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
               .signOut()
               .then(() => {
                 console.log("Signed out user successfully");
+                // - Update global state
+                dispatch(removeUser());
+                navigation.navigate("LoginScreen");
               })
               .catch((error) => {
                 // An error happened.
               });
-            // - Update global state
-            dispatch({ type: "LOGOUT_USER" });
-            navigation.navigate("LoginScreen");
           }}
         >
           <Text>Logout</Text>
