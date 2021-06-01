@@ -96,7 +96,6 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
         // Check if uid exists in the DB - if so - grab the data associated with it.
         dispatch(
           setUser({
-            ...userState.user,
             id: data.user?.uid,
             username: data.user?.email,
             image_url: data.user?.photoURL,

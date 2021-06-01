@@ -11,7 +11,7 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import { LoggedOutParamList } from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
-import { firebaseApp, api } from "../constants/Firebase";
+import { firebaseApp } from "../constants/Firebase";
 import { setUser } from "../redux/actions";
 import { RootState, UserState } from "../../types";
 
