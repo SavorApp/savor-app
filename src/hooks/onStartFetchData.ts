@@ -26,12 +26,13 @@ export default function getCacheLoadData() {
           };
           if (user !== null) {
             dispatch(setUser(currentUser));
+            // TODO: 
+            // - Get cached data or,
+            // - Make appropriate API requests
+            // - Get user's UserRecipeList
           }
         });
 
-        // TODO: 
-        // - Get cached data or,
-        // - Make appropriate API requests
         
       } catch (e) {
         // We might want to provide this error information to an error reporting service
