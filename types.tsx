@@ -87,8 +87,8 @@ export type EmptyUserAction = {
 export type Recipe = {
   id: number;
   sourceUrl: string;
-  image: string | null | undefined;
-  imageType: string | null | undefined;
+  image: string | undefined;
+  imageType: string | undefined;
   title: string;
   diets: never[] | string[];
   cuisines: string[];
@@ -101,14 +101,14 @@ export type Recipe = {
   cheap: Boolean;
   veryPopular: Boolean;
   sustainable: Boolean;
-  aggregateLikes: number | null | undefined;
-  spoonacularScore: number | null | undefined;
-  healthScore: number | null | undefined;
-  pricePerServing: number | null | undefined;
-  readyInMinutes: number | null | undefined;
-  servings: number | null | undefined;
-  ingredients: never[] | string[];
-  smartFilterScore: number | null | undefined;
+  aggregateLikes: number;
+  spoonacularScore: number;
+  healthScore: number;
+  pricePerServing: number;
+  readyInMinutes: number;
+  servings: number;
+  ingredients: string[];
+  smartFilterScore: number;
 };
 
 // Core RecipeState interface
@@ -156,8 +156,8 @@ export type Filters = {
   vegan: Boolean;
   glutenFree: Boolean;
   dairyFree: Boolean;
-  readyInMinutes: number | null | undefined;
-  servings: number | null | undefined;
+  readyInMinutes: number;
+  servings: number;
 };
 
 // Core FiltersState interface
