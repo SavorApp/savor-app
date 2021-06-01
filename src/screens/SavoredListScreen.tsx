@@ -45,7 +45,7 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     return (
       <TouchableOpacity
         style={styles.recipeListItem}
-        onPress={() => navigation.navigate("RecipeScreen", { recipeId: rcp.id })}
+        onPress={() => navigation.navigate("RecipeScreen", { recipeId: rcp.id})}
         activeOpacity={0.8}
       >
         <View style={styles.recipeListItemInner}>

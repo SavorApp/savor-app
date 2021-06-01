@@ -7,11 +7,14 @@ const _screen = Dimensions.get("screen");
 export default function RecipeScreen({ route }: { route: any }) {
   const { recipeId } = route.params;
 
+
   // TODO: take recipeId and make API request for Recipe information
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text> Recipe {recipeId} Screen </Text>
+      <View style={styles.titleContainer}>
+                    <Text style={styles.titleBackground}>{recipeId}</Text>
+                </View>
       </View>
     </View>
   );
@@ -34,4 +37,17 @@ const styles = StyleSheet.create({
     backgroundColor: colorPalette.primary,
     ...shadowStyle
   },
+  titleBackground: {
+    color: "black",
+    marginTop: 5,
+    textAlign: "center",
+},
+titleContainer: {
+    marginBottom: 10,
+    padding: 5,
+    backgroundColor: "white",
+    width: 250,
+    borderRadius: 15,
+    ...shadowStyle
+},
 });
