@@ -50,8 +50,6 @@ export default function RecipeCardStack({
     userUID.current = userState.user.id;
   }, [userState]);
 
-  console.log(userUID.current);
-
   let cardStackRef = React.useRef<CardStack | any>();
   async function onSwipedLeft(idx: number) {
     console.log("Swiped left");
