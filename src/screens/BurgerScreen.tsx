@@ -7,7 +7,7 @@ import Emoji from "react-native-emoji";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { useSelector, useDispatch } from "react-redux";
-import { LoggedInParamList, RootState, FiltersState } from "../../types";
+import { LoggedInParamList, RootState, FiltersState, UserState } from "../../types";
 import { updateFilters } from "../redux/actions";
 
 const _screen = Dimensions.get("screen");
@@ -19,7 +19,7 @@ export interface BurgerScreenProps {
 export default function BurgerScreen({ navigation }: BurgerScreenProps) {
     // Original state of users FilterState from redux store
     const filtersState = useSelector<RootState, FiltersState>((state) => state.filtersState);
-    // useDispatch allows us to dispatch Actions to mutate global store variables
+    const userState = useSelector<RootState, UserState>((state) => state.userState);
     const dispatch = useDispatch();
     
     /*
@@ -235,6 +235,10 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
             glutenFree: glutenFree,
             dairyFree: dairyFree
         }))
+
+        // TODO: WRITE TO DB
+        // - Update filters table with userState.id and,
+        //   updated Filters.
 
         // Navigate to menu screen
         navigation.navigate("MenuScreen");

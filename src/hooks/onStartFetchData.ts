@@ -28,7 +28,7 @@ export default function getCacheLoadData() {
             dispatch(setUser(currentUser));
 
 
-            // TODO: 
+            // TODO: WRITE TO DB
             
             // - Get user's UserRecipeList & dispatch
             //   - axios API call to recipe table with currentUser.id or currentUser.email
