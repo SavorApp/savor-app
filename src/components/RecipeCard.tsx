@@ -8,7 +8,7 @@ const _screen = Dimensions.get("screen");
 export default function RecipeCard({ id, rcp, filteredDishtype }: RecipeCardParamList) {
 
 
-    
+
     //TODO: Need to modify the "Type" displayed
     return (
         <View style={styles.container}>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     },
     pictureUnavailable: {
         textAlign: "center",
-        
+
     },
     pictureUnavailableContainer: {
         marginBottom: 10,
@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         justifyContent: "center",
         alignItems: "center",
-        height: _screen.height * 0.25 
+        height: _screen.height * 0.25
     },
 
     rcpInfoContainer: {

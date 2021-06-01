@@ -36,7 +36,7 @@ export default function MenuScreen() {
         // const resp = await axios.get(randRecipeUrl + "number=10&tags=gluten%20free,vegetarian,dinner,italian")
         // const fetchedRecipes = resp.data.recipes;
 
-        // Filter random recipes based on filters
+        // Filter random recipes based on filters + Suffle them
         // Filter random recipes based on already viewed recipes by user
         // Apply smart logic if turned on
         const filteredRecipes = recipesJson.recipes.map((rcp) => {
@@ -73,12 +73,6 @@ export default function MenuScreen() {
 
     // On update
     React.useEffect(() => {
-        console.log("FROM MENU SCREEN -> dishType:", filtersState.filters.dishType);
-        // Fetch new recipes and apply new filters
-
-        console.log("MenuScreen Filters changed");
-        // Re-render the page to update entire cardstack with new stateful value
-
         setIsCardStackLoading(true)
         fetchRandomRecipes();
     }, [filtersState])

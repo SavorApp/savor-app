@@ -26,7 +26,7 @@ export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCar
     const [swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([]);
     const [swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([]);
 
-    
+
     let cardStackRef = React.useRef<CardStack | any>();
     async function onSwipedLeft(idx: number) {
         console.log("Swiped left");
@@ -72,7 +72,7 @@ export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCar
 
     async function onSwipedRight(idx: number) {
         console.log("Swiped right");
-    
+
         // TODO: store it the database instead
         console.log("onSwipedRight -> dishType:", filtersState.filters.dishType);
 
@@ -111,13 +111,13 @@ export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCar
                 <CardStack
                     style={styles.cardStack}
                     ref={(cardStack: CardStack) => { cardStackRef.current = cardStack }}
-                    renderNoMoreCards={() => { return <Text style={{justifyContent: "center", alignItems:"center"}}>No More Recipes</Text> }}
+                    renderNoMoreCards={() => { return <Text style={{ justifyContent: "center", alignItems: "center" }}>No More Recipes</Text> }}
                     disableBottomSwipe
                     disableTopSwipe>
                     {randRecipes.map((rcp: Recipe, idx: number) => {
                         return (
                             <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}>
-                                <RecipeCard rcp={rcp} id={rcp.id} filteredDishtype={filtersState.filters.dishType}/>
+                                <RecipeCard rcp={rcp} id={rcp.id} filteredDishtype={filtersState.filters.dishType} />
                             </Card>
                         )
                     })}
