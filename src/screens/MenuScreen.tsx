@@ -66,17 +66,10 @@ export default function MenuScreen() {
             }
         })
 
+        shuffleRecipes(filteredRecipes);
         setRandRecipes(filteredRecipes);
-        setIsCardStackLoading(false)
+        setIsCardStackLoading(false);
     }
-
-    // On focus, fetch/set random Recipes
-    useFocusEffect(
-        React.useCallback(() => {
-            console.log("MenuScreen Focused")
-            fetchRandomRecipes()
-        }, [])
-    );
 
     // On update
     React.useEffect(() => {
@@ -87,45 +80,12 @@ export default function MenuScreen() {
         // Re-render the page to update entire cardstack with new stateful value
 
         setIsCardStackLoading(true)
-        changeRandomRecipes();
+        fetchRandomRecipes();
     }, [filtersState])
 
     // Helper function 
     function shuffleRecipes(array: Recipe[]) {
         array.sort(() => Math.random() - .5);
-    }
-
-    function changeRandomRecipes() {
-        const newRandomRecipes = recipesJson.recipes.map((rcp) => {
-            return {
-                id: rcp.id,
-                sourceUrl: rcp.sourceUrl,
-                image: rcp.image,
-                imageType: rcp.imageType,
-                title: rcp.title,
-                diets: rcp.diets,
-                cuisines: rcp.cuisines,
-                dishTypes: rcp.dishTypes,
-                vegetarian: rcp.vegetarian,
-                vegan: rcp.vegan,
-                glutenFree: rcp.glutenFree,
-                dairyFree: rcp.dairyFree,
-                veryHealthy: rcp.veryHealthy,
-                cheap: rcp.cheap,
-                veryPopular: rcp.veryPopular,
-                sustainable: rcp.sustainable,
-                aggregateLikes: rcp.aggregateLikes,
-                spoonacularScore: rcp.spoonacularScore,
-                healthScore: rcp.healthScore,
-                pricePerServing: rcp.pricePerServing,
-                readyInMinutes: rcp.readyInMinutes,
-                servings: rcp.servings,
-            }
-        })
-
-        shuffleRecipes(newRandomRecipes);
-        setRandRecipes(newRandomRecipes);
-        setIsCardStackLoading(false);
     }
 
     console.log("OUTSIDE MENU SCREEN -> dishType:", filtersState.filters.dishType);
