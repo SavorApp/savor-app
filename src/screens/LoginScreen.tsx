@@ -10,7 +10,7 @@ import colorPalette from "../constants/ColorPalette";
 
 // Johan and Mark auth work
 import {firebaseApp} from "../constants/Firebase"
-
+import firebase from "firebase";
 
 
 
@@ -65,13 +65,22 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
         // dispatch(setUser(user));
 
         // Once authenticated, navigate to MenuScreen
-        // navigation.navigate("MenuScreen");
     }
-
+    
     function loginFirebase () {
-        firebaseApp.auth().onAuthStateChanged(user => console.log("🔥", user))
+      firebaseApp.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
+
+          firebaseApp.auth().signInWithEmailAndPassword(email, password).then(userData => console.log(userData.user))
+          navigation.navigate("MenuScreen");
+      }).catch(err => {
+
+          console.log("Error loging in: ", err)
+      })
     };
 
+    function handleSignOut() {
+        firebaseApp.auth().signOut().then(() => console.log("Successfully logged you out!")).catch()
+    }
 
     return (
         <View style={styles.container}>

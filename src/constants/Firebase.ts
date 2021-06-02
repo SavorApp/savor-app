@@ -16,21 +16,9 @@ const firebaseConfig = {
     storageBucket: storageBucket,
     messagingSenderId: messagingSenderId,
     appId: appId,
-    measurementId: measurementId
-    
-    // apiKey: "AIzaSyDOXvIrFJyBP8Gf2pTH9u1Zc7QGwHyXEyE",
-    // authDomain: "savored-app.firebaseapp.com",
-    // projectId: "savored-app",
-    // storageBucket: "savored-app.appspot.com",
-    // messagingSenderId: "609527545165",
-    // appId: "1:609527545165:web:04fd6a7979c50e77f70b04",
-    // measurementId: "G-RWM44NX7B1"
-
+    measurementId: measurementId,
   };
 
   export const api = Constants.manifest.extra?.FIREBASE_API_KEY
 
   export const firebaseApp = firebase.initializeApp(firebaseConfig);
-  // firebase.initializeApp(firebaseConfig);
-
-  // npm install -D ts-node
