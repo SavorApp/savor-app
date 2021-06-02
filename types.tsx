@@ -102,6 +102,7 @@ export type Recipe = {
   servings: number;
   ingredients: string[];
   smartFilterScore: number;
+  extendedIngredients: Ingredient[]
 };
 
 // Core RecipeState interface

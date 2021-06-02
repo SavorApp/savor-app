@@ -11,8 +11,8 @@ export const initialState: FiltersState = {
         vegan: false,
         glutenFree: false,
         dairyFree: false,
-        readyInMinutes: null,
-        servings: null
+        readyInMinutes: 0,
+        servings: 0
     }
 }
 

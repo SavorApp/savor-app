@@ -213,9 +213,11 @@ export default function RecipeCardStack({
           }}
           renderNoMoreCards={() => {
             return (
-              <Text style={{ justifyContent: "center", alignItems: "center" }}>
-                No More Recipes
-              </Text>
+              <View>
+                <Text style={styles.renderNoMoreCards}>
+                  No More Recipes
+                </Text>
+              </View>
             );
           }}
           disableBottomSwipe
@@ -271,4 +273,12 @@ const styles = StyleSheet.create({
     backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
+
+  renderNoMoreCards: {
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    marginBottom: 250,
+    color: "white"
+  }
 });

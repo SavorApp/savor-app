@@ -1,17 +1,21 @@
 import { Recipe, UserRecipe } from "../../types";
+interface CountMap {
+    [ingredient: string]: number;
+}
 
 export function applySmartFilter(fetchedRcps: Recipe[], userRcps: UserRecipe[]): Recipe[] {
 
-    interface CountMap {
-        [ingredient: string]: number;
-    }
+    // Filter UserRecipeList by is Savored = true
+    const userSavoredList = userRcps.filter((rcp) => {
+      return rcp.isSavored;
+    })
 
     // Object to contain overall counts for each ingredient
     const ingredientsCount: CountMap = {};
 
     // Generate counts for each ingredient for each recipe in user's UserRecipe list
-    for (const idx in userRcps) {
-        userRcps[idx].ingredients.forEach((ing) => {
+    for (const idx in userSavoredList) {
+        userSavoredList[idx].ingredients.forEach((ing) => {
             if(ingredientsCount[ing]) {
                 ingredientsCount[ing]++;
             } else {
