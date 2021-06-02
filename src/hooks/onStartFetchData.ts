@@ -25,7 +25,6 @@ export default function getCacheLoadData() {
           };
           if (user !== null) {
             dispatch(setUser(currentUser));
-<<<<<<< HEAD
             // TODO:
             // - Get cached data or,
             // - Make appropriate API requests
@@ -52,12 +51,6 @@ export default function getCacheLoadData() {
               console.log(user);
             }
             getCurrentUser();
-=======
-
-
-            // TODO: WRITE TO DB
-            
->>>>>>> 2beb61489fbdca02fcf7efd1895bde5ea198e31a
             // - Get user's UserRecipeList & dispatch
             //   - axios API call to recipe table with currentUser.id or currentUser.email
             //   - const resp = await axios.post();
