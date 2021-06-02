@@ -240,8 +240,8 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
         // - Update filters table with userState.id and,
         //   updated Filters.
 
-        // Navigate to menu screen
-        navigation.navigate("MenuScreen");
+        // Navigate back to MenuScreen
+        navigation.goBack()
     }
 
 

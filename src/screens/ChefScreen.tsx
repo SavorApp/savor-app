@@ -52,7 +52,7 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
                 .then(() => {
                   // - Update global state
                   dispatch(removeUser());
-                  navigation.navigate("LoginScreen");
+                  navigation.goBack();
                 })
                 .catch((error) => {
                   // An error happened.

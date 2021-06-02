@@ -1,6 +1,8 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useDispatch } from "react-redux";
+import { removeUser } from "../redux/actions";
 import { LoggedInParamList } from "../../types"
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 
@@ -12,6 +14,7 @@ export interface DeleteAccountScreenProps {
 
 
 export default function DeleteAccountScreen({ navigation }: DeleteAccountScreenProps) {
+    const dispatch = useDispatch();
 
     return (
         <View style={styles.container}>
@@ -22,7 +25,9 @@ export default function DeleteAccountScreen({ navigation }: DeleteAccountScreenP
                     onPress={() => {
 
                         // TODO: Sign Chef out & Delete Account
-                        navigation.navigate("LoginScreen")
+                        // - Update global state
+                        dispatch(removeUser());
+                        navigation.goBack();
                     }}
                 >
                     <Text>Delete Account</Text>
