@@ -222,3 +222,9 @@ export type Ingredient = {
     }
   }
 }
+
+export type RecipeScreenInfo = {
+  title: string;
+  summary: string;
+  recipeId?: number 
+}
