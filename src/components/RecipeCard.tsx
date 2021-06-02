@@ -31,7 +31,7 @@ export default function RecipeCard({ id, rcp}: RecipeCardParamList) {
                     <Text style={styles.rcpInfo}>Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}</Text>
                     <Text style={styles.rcpInfo}>Gluten-free:{rcp.glutenFree ? " ✅  " : " ❌ "}</Text>
                     <Text style={styles.rcpInfo}>Vegetarian:{rcp.vegetarian ? " ✅  " : " ❌ "}</Text>
-                    <Text style={styles.rcpInfo}>Vegan:{rcp.vegan ? " ✅  " : " ❌ "}</Text>
+                    <Text style={styles.rcpInfo}>Vegan:{rcp.vegan ? " ✅  " : " c"}</Text>
 
                     <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>Servings: {rcp.servings}</Text>
                     <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>Prep time: {rcp.readyInMinutes} min</Text>

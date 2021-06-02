@@ -232,7 +232,15 @@ export type Ingredient = {
 
 export type RecipeScreenInfo = {
   title: string;
-  summary: string;
+  instructions: string,
+  summary: string,
   ingredients: string[];
+  veryHealthy: boolean;
+  vegan: boolean, 
+  vegetarian: boolean, 
+  dairyFree: boolean,
+  healthScore: number
+  prepTime: number,
+  diets: string[],
   recipeId?: number 
 }
