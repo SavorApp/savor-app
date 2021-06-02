@@ -7,20 +7,13 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
 import SwipeButtons from "../components/SwipeButtons";
-
-// Importing JSON data for development and testing
-import * as recipesJson from "../data/recipes.json";
-import { initialState } from "../redux/reducers/recipe";
 import {
   Recipe,
   RootState,
   UserState,
-  FiltersState,
   UserRecipeListState,
-  LoggedInParamList,
   RecipeCardStackParamList,
 } from "../../types";
-import { useFocusEffect } from "@react-navigation/native";
 
 const _screen = Dimensions.get("screen");
 

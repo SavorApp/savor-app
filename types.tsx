@@ -20,29 +20,22 @@ export type BottomTabParamList = {
   SavoredList: undefined;
 };
 
-export type LoggedOutParamList = {
+export type ChefStackParamList = {
   LoginScreen: undefined;
   SignupScreen: undefined;
-  AboutUsScreen: undefined;
-  MenuScreen: undefined;
-};
-
-export type LoggedInParamList = {
   ChefScreen: undefined;
   AboutUsScreen: undefined;
-  LoginScreen: undefined;
   DeleteAccountScreen: undefined;
-  MenuScreen: undefined;
-  BurgerScreen: undefined;
-};
+}
 
 export type MenuStackParamList = {
+  ChefScreen: undefined;
   MenuScreen: undefined;
   BurgerScreen: undefined;
   ProtectedBurgerScreen: undefined;
 };
 
-export type SavoredListParamList = {
+export type SavoredListStackParamList = {
   SavoredListScreen: undefined;
   RecipeScreen: { recipeId: number };
 };

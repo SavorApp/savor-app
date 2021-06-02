@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {
-  SavoredListParamList,
+  SavoredListStackParamList,
   RootState,
   UserRecipeListState,
   UserRecipe,
@@ -25,7 +25,7 @@ import { LinearGradient } from "expo-linear-gradient";
 const _screen = Dimensions.get("screen");
 
 export interface SavoredListScreenProps {
-  navigation: StackNavigationProp<SavoredListParamList, "SavoredListScreen">;
+  navigation: StackNavigationProp<SavoredListStackParamList, "SavoredListScreen">;
 }
 
 export default function SavoredListScreen({ navigation }: SavoredListScreenProps) {

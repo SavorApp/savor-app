@@ -1,14 +1,8 @@
-import React, { useEffect } from "react";
-import { StyleSheet, Dimensions, View, Text } from "react-native";
-import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import React from "react";
+import { Dimensions } from "react-native";
 import Constants from "expo-constants";
-import { useSelector, useDispatch } from "react-redux";
-import { addtoUserRecipeList } from "../redux/actions";
+import { useSelector } from "react-redux";
 import axios from "axios";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
-import CardStack, { Card } from "react-native-card-stack-swiper";
-import RecipeCard from "../components/RecipeCard";
-import SwipeButtons from "../components/SwipeButtons";
 import RecipeCardStack from "../components/RecipeCardStack";
 import LoadingCardStack from "../components/LoadingCardStack";
 import { applySmartFilter } from "../utils";
@@ -19,10 +13,8 @@ import { initialState } from "../redux/reducers/recipe";
 import {
   Recipe,
   RootState,
-  UserState,
   FiltersState,
   UserRecipeListState,
-  LoggedInParamList,
   Ingredient,
 } from "../../types";
 
