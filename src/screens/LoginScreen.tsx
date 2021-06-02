@@ -12,7 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useDispatch } from "react-redux";
-import { InputUser, LoggedOutParamList } from "../../types";
+import { InputUser, ChefStackParamList } from "../../types";
 import { setUser } from "../redux/actions";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
@@ -21,7 +21,7 @@ import firebase from "firebase";
 const _screen = Dimensions.get("screen");
 
 export interface LoginScreenProps {
-  navigation: StackNavigationProp<LoggedOutParamList, "LoginScreen">;
+  navigation: StackNavigationProp<ChefStackParamList, "LoginScreen">;
 }
 
 export default function LoginScreen({ navigation }: LoginScreenProps) {
@@ -91,7 +91,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
               image_url: data.user?.photoURL,
             })
           );
-          navigation.navigate("MenuScreen");
+          navigation.goBack();
         })
         .catch((error: any) => {
           // Handle Errors here.
