@@ -30,7 +30,7 @@ const _screen = Dimensions.get("screen");
 
 // Initializing Spoonacular resources
 const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
-const randRecipeUrl = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&`;
+const RAND_RECIPE_BASE_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&`;
 
 export default function MenuScreen() {
   const userRecipeListState = useSelector<RootState, UserRecipeListState>(
@@ -48,9 +48,9 @@ export default function MenuScreen() {
   // Fetch random Recipes from Spoonacular
   async function fetchRandomRecipes() {
     const vegetarian = filtersState.filters.vegetarian;
-    const SUB_ENDPPOINT = `number=10&tags=${vegetarian && "vegetarian"}`;
+    const ENDPOINT = `number=10&tags=${vegetarian && "vegetarian"}`;
 
-    // const resp = await axios.get(randRecipeUrl + SUB_ENDPPOINT);
+    // const resp = await axios.get(RAND_RECIPE_BASE_URL + ENDPOINT);
     // const fetchedRecipes = resp.data.recipes.map((rcp: Recipe) => {
     //     return {
     //         id: rcp.id,

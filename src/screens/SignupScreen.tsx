@@ -103,7 +103,8 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
               image_url: resp.user?.photoURL,
             })
           );
-          navigation.navigate("MenuScreen");
+          // navigation.navigate("MenuScreen");
+          navigation.goBack();
         }
       } catch (error) {
         Alert.alert("Invalid Request", error.message);
