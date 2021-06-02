@@ -1,8 +1,8 @@
-import * as SplashScreen from 'expo-splash-screen';
+import * as SplashScreen from "expo-splash-screen";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { setUser } from "../redux/actions"
-import { firebaseApp } from '../constants/Firebase';
+import { setUser } from "../redux/actions";
+import { firebaseApp } from "../constants/Firebase";
 import axios from "axios";
 
 export default function getCacheLoadData() {
@@ -11,7 +11,6 @@ export default function getCacheLoadData() {
 
   // Attempt to authenticate user
   React.useLayoutEffect(() => {
-
     function loadData() {
       try {
         SplashScreen.preventAutoHideAsync();
@@ -26,10 +25,39 @@ export default function getCacheLoadData() {
           };
           if (user !== null) {
             dispatch(setUser(currentUser));
+<<<<<<< HEAD
+            // TODO:
+            // - Get cached data or,
+            // - Make appropriate API requests
+            console.log(currentUser.id);
+            async function getCurrentUser() {
+              const user = await axios(
+                "https://savored-server.herokuapp.com/",
+                {
+                  method: "POST",
+                  data: {
+                    query: `
+                 query getUser($_id: String!)
+                 {user(_id:$_id) {
+                   _id
+                   username         
+                 }}
+                    `,
+                    variables: {
+                      _id: currentUser.id,
+                    },
+                  },
+                }
+              );
+              console.log(user);
+            }
+            getCurrentUser();
+=======
 
 
             // TODO: WRITE TO DB
             
+>>>>>>> 2beb61489fbdca02fcf7efd1895bde5ea198e31a
             // - Get user's UserRecipeList & dispatch
             //   - axios API call to recipe table with currentUser.id or currentUser.email
             //   - const resp = await axios.post();
@@ -43,8 +71,6 @@ export default function getCacheLoadData() {
             //   - dispatch(setFilters(resp.data))
           }
         });
-
-        
       } catch (e) {
         // We might want to provide this error information to an error reporting service
         console.warn(e);

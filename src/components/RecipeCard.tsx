@@ -26,7 +26,7 @@ export default function RecipeCard({ id, rcp}: RecipeCardParamList) {
                     </View>}
 
                 <View style={styles.rcpInfoContainer}>
-                    <Text style={styles.rcpInfo}>Type: {filtersState.filters.dishType}</Text>
+                    <Text style={styles.rcpInfo}>Type: {filtersState.filters.dishType.slice(0,1).toUpperCase()}{filtersState.filters.dishType.slice(1)}</Text>
                     <Text style={styles.rcpInfo}>Cuisine: {rcp.cuisines.length === 0 ? "World Food" : filtersState.filters.cuisine === "" ? rcp.cuisines[0] : filtersState.filters.cuisine}</Text>
                     <Text style={styles.rcpInfo}>Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}</Text>
                     <Text style={styles.rcpInfo}>Gluten-free:{rcp.glutenFree ? " ✅  " : " ❌ "}</Text>

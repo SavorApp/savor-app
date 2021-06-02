@@ -25,19 +25,18 @@ export interface LoginScreenProps {
 }
 
 export default function LoginScreen({ navigation }: LoginScreenProps) {
-  // useDispatch allows us to dispatch Actions to mutate global store variables
   const dispatch = useDispatch();
   const [userInput, setUserInput] = React.useState<InputUser>({
-    username: "",
+    email: "",
     password: "",
   });
-  const [validUsername, setValidUsername] = React.useState(false);
+  const [validEmail, setValidEmail] = React.useState(false);
   const [hidePassword, setHidePassword] = React.useState(true);
 
-  function usernameInputChange(val: string) {
+  function emailInputChange(val: string) {
     setUserInput({
       ...userInput,
-      username: val,
+      email: val,
     });
   }
 
@@ -53,39 +52,38 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   }
 
   React.useEffect(() => {
-    if (userInput.username.length >= 4) {
-      setValidUsername(true);
+    if (/^\S+@\S+\.\S+$/.test(userInput.email)) {
+      setValidEmail(true);
     } else {
-      setValidUsername(false);
+      setValidEmail(false);
     }
   }, [userInput]);
 
   function handleLogin(data: InputUser) {
-    if (data.username.length < 4) {
+    if (!/^\S+@\S+\.\S+$/.test(data.email)) {
       Alert.alert(
-        "Invalid Username",
-        "Username must be 4 characters or longer."
+        "Invalid Email",
+        "Please enter a valid email."
       );
-    } else if (data.password.length < 6) {
+    } 
+    
+    else if (data.password.length < 6) {
       Alert.alert(
         "Invalid Password",
         "Password must be 6 characters or longer."
       );
-    } else {
-      // Authenticate user and log user in
-      // Use Oauth or axios, etc..
-      // const user: User = <AUTHENTICATE>
+    } 
+    
+    else {
       firebaseApp
         .auth()
         .setPersistence(firebase.auth.Auth.Persistence.SESSION)
         .then(() => {
           return firebase
             .auth()
-            .signInWithEmailAndPassword(data.username, data.password);
+            .signInWithEmailAndPassword(data.email, data.password);
         })
         .then((data) => {
-          //TODO:
-          // Check if uid exists in the DB - if so - grab the data associated with it.
           dispatch(
             setUser({
               id: data.user?.uid,
@@ -114,13 +112,13 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
                 <MaterialCommunityIcons name="account-outline" size={20} />
                 <TextInput
                   style={{ width: _screen.width * 0.5 }}
-                  placeholder="Your Username"
+                  placeholder="Your Email"
                   autoCapitalize="none"
-                  onChangeText={(val) => usernameInputChange(val)}
+                  onChangeText={(val) => emailInputChange(val)}
                 />
               </View>
 
-              {validUsername ? (
+              {validEmail ? (
                 <MaterialCommunityIcons
                   name="checkbox-marked-circle-outline"
                   color="green"

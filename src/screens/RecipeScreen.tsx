@@ -14,7 +14,7 @@ export default function RecipeScreen({ route }: { route: any }) {
       <View style={styles.subContainer}>
       <View style={styles.titleContainer}>
       {recipeJson.recipes.map((rcp) => {
-                      return <Text style={styles.titleBackground}>{}</Text>
+                      return <Text style={styles.titleBackground}>{rcp[recipeId]}</Text>
                     })}
       
                     
