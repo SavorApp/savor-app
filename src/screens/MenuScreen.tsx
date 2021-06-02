@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import RecipeCardStack from "../components/RecipeCardStack";
 import LoadingCardStack from "../components/LoadingCardStack";
-import { applySmartFilter } from "../utils";
+import { applySmartFilter, removeViewedRecipes } from "../utils";
 
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/100Recipes.json";
@@ -17,8 +17,6 @@ import {
   UserRecipeListState,
   Ingredient,
 } from "../../types";
-
-const _screen = Dimensions.get("screen");
 
 // Initializing Spoonacular resources
 const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
@@ -133,15 +131,18 @@ export default function MenuScreen() {
           "Please adjust your filter settings to allow for more recipes to show."
         );
       } else {
+        // Remove already viewed Recipes
+        const removedViewedRecipes = removeViewedRecipes(fetchedRecipes, userRecipeListState.userRecipeList);
+
         // Apply smartFilter is set to true
         if (filtersState.filters.smartFilter) {
           const finalRandRecipes = applySmartFilter(
-            fetchedRecipes,
+            removedViewedRecipes,
             userRecipeListState.userRecipeList
           );
           setRandRecipes(finalRandRecipes);
         } else {
-          setRandRecipes(fetchedRecipes);
+          setRandRecipes(removedViewedRecipes);
         }
       }
       setIsCardStackLoading(false);

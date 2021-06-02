@@ -3,6 +3,20 @@ interface CountMap {
     [ingredient: string]: number;
 }
 
+export function removeViewedRecipes(fetchedRcps: Recipe[], userRcps: UserRecipe[]): Recipe[] {
+    // Create an array of IDs for Recipes we want to remove
+    const rcpIdsToRemove = userRcps.map((rcp) => {
+      return rcp.id;
+    });
+
+    // Filter fetched Recipes by removing all Recipes where the ID is found in rcpIdsToRemove
+    const filteredRcps = fetchedRcps.filter((rcp) => {
+        return !rcpIdsToRemove.includes(rcp.id);
+    });
+
+    return filteredRcps;
+}
+
 export function applySmartFilter(fetchedRcps: Recipe[], userRcps: UserRecipe[]): Recipe[] {
 
     // Filter UserRecipeList by is Savored = true
