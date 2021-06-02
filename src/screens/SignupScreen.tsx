@@ -14,6 +14,18 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
 import { setUser } from "../redux/actions";
 import { RootState, UserState } from "../../types";
+import { print } from "graphql";
+import gql from "graphql-tag";
+import axios from "axios";
+
+// const CREATE_USER = gql`
+//   mutation createUser($id: String!) {
+//     createUser(id: $id) {
+//       id
+//       username
+//     }
+//   }
+// `;
 
 const _screen = Dimensions.get("screen");
 export interface SignupScreenProps {
@@ -41,14 +53,33 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
     // Check that both email and password field are populated.
     // Also check that the email is somewhat valid
     if (email && password && /^\S+@\S+\.\S+$/.test(email)) {
-      try {
-        const resp = await firebaseApp
-          .auth()
-          .createUserWithEmailAndPassword(email, password);
-        if (resp.additionalUserInfo?.isNewUser) {
-          //TODO:
-          //Send user info to DB
-        }
+      const resp = await firebaseApp
+        .auth()
+        .createUserWithEmailAndPassword(email, password);
+      if (resp.additionalUserInfo?.isNewUser) {
+        //TODO:
+        //Send user info to DB
+        const newUser = await axios("https://savored-server.herokuapp.com/", {
+          method: "POST",
+          data: {
+            query: `
+            mutation createUser($_id: String!, $username: String!) {
+              createUser(_id:$_id, username:$username) {
+               _id
+                username
+              }
+            }
+            `,
+            variables: {
+              _id: resp.user?.uid,
+              username: resp.user?.email,
+            },
+          },
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(newUser);
         //Update global state
         dispatch(
           setUser({
@@ -59,8 +90,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
         );
         navigation.navigate("MenuScreen");
         setError(null);
-      } catch (error) {
-        setError(error.message);
+        // setError(error.message);
       }
     } else {
       setError("Invalid email or password");
