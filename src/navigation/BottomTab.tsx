@@ -4,23 +4,14 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
 import { BottomTabParamList } from "../../types";
-import LoggedInNavigator from "./LoggedIn";
-import LoggedOutNavigator from "./LoggedOut";
-import MenuNavigator from "./Menu";
-import SavoredListNavigator from "./SavoredList";
-import { useSelector } from "react-redux";
-import { RootState, UserState } from "../../types";
+import ChefNavigator from "./ChefNav";
+import MenuNavigator from "./MenuNav";
+import SavoredListNavigator from "./SavoredListNav";
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
-  const userState = useSelector<RootState, UserState>(
-    (state) => state.userState
-  );
-
-  // Getting isLoggedIn from the global state.
-  let isLoggedIn: Boolean = userState.isLoggedIn;
 
   return (
     <BottomTab.Navigator
@@ -29,7 +20,7 @@ export default function BottomTabNavigator() {
     >
       <BottomTab.Screen
         name="Chef"
-        component={isLoggedIn ? LoggedInNavigator : LoggedOutNavigator}
+        component={ChefNavigator}
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="chef-hat" color={color} />
