@@ -1,19 +1,23 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text } from "react-native";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import * as recipeJson from "../data/recipes.json"
 
 const _screen = Dimensions.get("screen");
 
 export default function RecipeScreen({ route }: { route: any }) {
   const { recipeId } = route.params;
 
-
   // TODO: take recipeId and make API request for Recipe information
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
       <View style={styles.titleContainer}>
-                    <Text style={styles.titleBackground}>{recipeId}</Text>
+      {recipeJson.recipes.map((rcp) => {
+                      return <Text style={styles.titleBackground}>{}</Text>
+                    })}
+      
+                    
                 </View>
       </View>
     </View>

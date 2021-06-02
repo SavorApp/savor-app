@@ -11,6 +11,7 @@ export type RootStackParamList = {
   DeleteAccountScreen: undefined;
   MenuScreen: undefined;
   BurgerScreen: undefined;
+  ProtectedBurgerScreen: undefined;
 };
 
 export type BottomTabParamList = {
@@ -38,6 +39,7 @@ export type LoggedInParamList = {
 export type MenuStackParamList = {
   MenuScreen: undefined;
   BurgerScreen: undefined;
+  ProtectedBurgerScreen: undefined;
 };
 
 export type SavoredListParamList = {
@@ -135,14 +137,14 @@ export type UserRecipe = {
 
 // Core UserRecipeListState interface
 export interface UserRecipeListState {
-  userId: number;
+  userId: string;
   userRecipeList: UserRecipe[];
 }
 
 // Core UserRecipeList action
 export type UserRecipeListAction = {
   type: string;
-  payload: UserRecipe[] | UserRecipe;
+  payload: UserRecipeListState | UserRecipe[] | UserRecipe;
 };
 
 // Core Filters type
@@ -160,12 +162,12 @@ export type Filters = {
 
 // Core FiltersState interface
 export interface FiltersState {
-  userId: number;
+  userId: string;
   filters: Filters;
 }
 
 // Core Filters action
-export type FiltersAction = { type: string; payload: Filters };
+export type FiltersAction = { type: string; payload: FiltersState | Filters };
 
 /*
  _____________________________
@@ -176,7 +178,6 @@ export type FiltersAction = { type: string; payload: Filters };
 export type RecipeCardParamList = {
   id: number;
   rcp: Recipe;
-  filteredDishtype: string;
 }
 
 export type SwipeButtonsParamList = {

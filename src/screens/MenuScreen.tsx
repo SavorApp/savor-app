@@ -113,12 +113,12 @@ export default function MenuScreen() {
     
     // On update
     React.useEffect(() => {
-        setIsCardStackLoading(true)
+        setIsCardStackLoading(true);
         fetchRandomRecipes();
     }, [filtersState]);
 
     React.useEffect(() => {
-        setIsCardStackLoading(true)
+        setIsCardStackLoading(true);
         fetchRandomRecipes();
     }, [])
 

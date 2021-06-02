@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { StyleSheet, Dimensions, View, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { addtoUserRecipeList } from "../redux/actions"
@@ -7,29 +7,21 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
 import SwipeButtons from "../components/SwipeButtons";
-
-// Importing JSON data for development and testing
-import * as recipesJson from "../data/recipes.json";
-import { initialState } from "../redux/reducers/recipe"
-import { Recipe, RootState, UserState, FiltersState, UserRecipeListState, LoggedInParamList, RecipeCardStackParamList } from "../../types";
-import { useFocusEffect } from "@react-navigation/native";
+import { Recipe, RootState, UserState, RecipeCardStackParamList, FiltersState } from "../../types";
 
 const _screen = Dimensions.get("screen");
 
-export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCardStackParamList) {
+export default function RecipeCardStack({ randRecipes}: RecipeCardStackParamList) {
 
-
+    
     const userState = useSelector<RootState, UserState>((state) => state.userState);
     const dispatch = useDispatch();
     // FOR TEST PURPOSES
     const [swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([]);
     const [swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([]);
 
-
-    React.useEffect(() => {
-        console.log('CARD Stack CALLED')
-    }, [randRecipes])
-
+    const filtersState = useSelector<RootState, FiltersState>((state) => state.filtersState);
+    console.log(filtersState.filters.cuisine)
     let cardStackRef = React.useRef<CardStack | any>();
     async function onSwipedLeft(idx: number) {
         console.log("Swiped left");
@@ -109,6 +101,7 @@ export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCar
     function handleOnPressRight() {
         cardStackRef.current.swipeRight();
     }
+    console.log("🐻", filtersState.filters.dishType); 
 
     return (
         <View style={styles.container}>
@@ -122,7 +115,7 @@ export default function RecipeCardStack({ randRecipes, filtersState }: RecipeCar
                     {randRecipes.map((rcp: Recipe, idx: number) => {
                         return (
                             <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}>
-                                <RecipeCard rcp={rcp} id={rcp.id} filteredDishtype={filtersState.filters.dishType} />
+                                <RecipeCard rcp={rcp} id={rcp.id}/>
                             </Card>
                         )
                     })}

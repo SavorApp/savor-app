@@ -1,18 +1,16 @@
 import { useFocusEffect } from '@react-navigation/native';
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef} from 'react'
 import { View, Image, StyleSheet, Text, Dimensions } from 'react-native'
+import { useSelector } from "react-redux";
 import { RecipeCardParamList } from "../../types"
 import { shadowStyle, colorPalette } from "../constants/ColorPalette"
+import{ RootState, FiltersState } from "../../types"
 
 const _screen = Dimensions.get("screen");
 
-export default function RecipeCard({ id, rcp, filteredDishtype }: RecipeCardParamList) {
+export default function RecipeCard({ id, rcp}: RecipeCardParamList) {
 
-    useEffect(() => {
-        console.log('RECIPE CARD CALLED')
-    }, [rcp])
-
-
+    const filtersState = useSelector<RootState, FiltersState>((state) => state.filtersState);
 
     //TODO: Need to modify the "Type" displayed
     return (
@@ -28,8 +26,8 @@ export default function RecipeCard({ id, rcp, filteredDishtype }: RecipeCardPara
                     </View>}
 
                 <View style={styles.rcpInfoContainer}>
-                    <Text style={styles.rcpInfo}>Type: {filteredDishtype}</Text>
-                    <Text style={styles.rcpInfo}>Cuisine: {rcp.cuisines}</Text>
+                    <Text style={styles.rcpInfo}>Type: {filtersState.filters.dishType}</Text>
+                    <Text style={styles.rcpInfo}>Cuisine: {rcp.cuisines.length === 0 ? "World Food" : filtersState.filters.cuisine === "" ? rcp.cuisines[0] : filtersState.filters.cuisine}</Text>
                     <Text style={styles.rcpInfo}>Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}</Text>
                     <Text style={styles.rcpInfo}>Gluten-free:{rcp.glutenFree ? " ✅  " : " ❌ "}</Text>
                     <Text style={styles.rcpInfo}>Vegetarian:{rcp.vegetarian ? " ✅  " : " ❌ "}</Text>
