@@ -44,6 +44,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
   async function handleSignUp() {
     // Check that both email and password field are populated.
     // Also check that the email is somewhat valid
+
     if (!/^\S+@\S+\.\S+$/.test(email)) {
       Alert.alert(
         "Invalid Email",
@@ -66,8 +67,35 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
         if (resp.additionalUserInfo?.isNewUser) {
           // TODO:
           // Send user info, WRITE TO DB
-        }
+        
         // Update UserState with resp.user
+
+    
+        //TODO:
+        //Send user info to DB
+        const newUser = await axios("https://savored-server.herokuapp.com/", {
+          method: "POST",
+          data: {
+            query: `
+            mutation createUser($_id: String!, $username: String!) {
+              createUser(_id:$_id, username:$username) {
+               _id
+                username
+              }
+            }
+            `,
+            variables: {
+              _id: resp.user?.uid,
+              username: resp.user?.email,
+            },
+          },
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(newUser);
+        //Update global state
+
         dispatch(
           setUser({
             id: resp.user?.uid,
@@ -76,8 +104,10 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
           })
         );
         navigation.navigate("MenuScreen");
+
       } catch (error) {
         Alert.alert("Invalid Request", error.message);
+
       }
     } 
   }
