@@ -7,25 +7,15 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
+  Alert
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { LoggedOutParamList } from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
 import { setUser } from "../redux/actions";
-import { RootState, UserState } from "../../types";
-import { print } from "graphql";
-import gql from "graphql-tag";
-import axios from "axios";
-
-// const CREATE_USER = gql`
-//   mutation createUser($id: String!) {
-//     createUser(id: $id) {
-//       id
-//       username
-//     }
-//   }
-// `;
 
 const _screen = Dimensions.get("screen");
 export interface SignupScreenProps {
@@ -33,30 +23,54 @@ export interface SignupScreenProps {
 }
 
 export default function SignupScreen({ navigation }: SignupScreenProps) {
-  const [email, setEmail] = useState<string | null>(null);
-  const [password, setPassword] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const userState = useSelector<RootState, UserState>(
-    (state) => state.userState
-  );
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [validEmail, setValidEmail] = React.useState(false);
+  const [hidePassword, setHidePassword] = React.useState(true);
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (error !== null) {
-      setTimeout(() => {
-        setError(null);
-      }, 3000);
+  React.useEffect(() => {
+    if (/^\S+@\S+\.\S+$/.test(email)) {
+      setValidEmail(true);
+    } else {
+      setValidEmail(false);
     }
-  }, [error]);
+  }, [email]);
+
+  function handleHidePassword() {
+    setHidePassword(!hidePassword);
+  }
 
   async function handleSignUp() {
     // Check that both email and password field are populated.
     // Also check that the email is somewhat valid
-    if (email && password && /^\S+@\S+\.\S+$/.test(email)) {
-      const resp = await firebaseApp
-        .auth()
-        .createUserWithEmailAndPassword(email, password);
-      if (resp.additionalUserInfo?.isNewUser) {
+
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      Alert.alert(
+        "Invalid Email",
+        "Please enter a valid email."
+      );
+    } 
+
+    else if (password.length < 6) {
+      Alert.alert(
+        "Invalid Password",
+        "Password must be 6 characters or longer."
+      );
+    }
+
+    else {
+      try {
+        const resp = await firebaseApp
+          .auth()
+          .createUserWithEmailAndPassword(email, password);
+        if (resp.additionalUserInfo?.isNewUser) {
+          // TODO:
+          // Send user info, WRITE TO DB
+        
+        // Update UserState with resp.user
+
+    
         //TODO:
         //Send user info to DB
         const newUser = await axios("https://savored-server.herokuapp.com/", {
@@ -81,6 +95,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
         });
         console.log(newUser);
         //Update global state
+
         dispatch(
           setUser({
             id: resp.user?.uid,
@@ -89,37 +104,82 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
           })
         );
         navigation.navigate("MenuScreen");
-        setError(null);
-        // setError(error.message);
+
+      } catch (error) {
+        Alert.alert("Invalid Request", error.message);
+
       }
-    } else {
-      setError("Invalid email or password");
-    }
+    } 
   }
 
   return (
     <View style={styles.container}>
-      <Text> Signup Screen </Text>
-      <Text>{error ? error : null}</Text>
       <View style={styles.subContainer}>
-        <TextInput
-          placeholder="Email"
-          onChangeText={(text) => setEmail(text)}
-        />
-        <TextInput
-          placeholder="Password"
-          onChangeText={(text) => setPassword(text)}
-        />
-        <TouchableOpacity
-          onPress={() => {
-            // TODO:
-            // - Register user by making API request
-            handleSignUp();
-            // navigation.goBack();
-          }}
-        >
-          <Text>Register</Text>
-        </TouchableOpacity>
+        <Text style={styles.title}>Please Register</Text>
+        <View style={styles.form}>
+          <View style={styles.inputContainer}>
+            <View style={[styles.input, { justifyContent: "space-between" }]}>
+              <View style={styles.passwordContainer}>
+                <MaterialCommunityIcons name="account-outline" size={20} />
+                <TextInput
+                  style={{ width: _screen.width * 0.5 }}
+                  placeholder="Your Email"
+                  autoCapitalize="none"
+                  onChangeText={(val) => setEmail(val)}
+                />
+              </View>
+
+              {validEmail ? (
+                <MaterialCommunityIcons
+                  name="checkbox-marked-circle-outline"
+                  color="green"
+                  size={20}
+                />
+              ) : (
+                <></>
+              )}
+            </View>
+
+            <View style={[styles.input, { justifyContent: "space-between" }]}>
+              <View style={styles.passwordContainer}>
+                <MaterialCommunityIcons name="lock-outline" size={20} />
+                <TextInput
+                  style={{ width: _screen.width * 0.5 }}
+                  placeholder="Your Password"
+                  secureTextEntry={hidePassword ? true : false}
+                  autoCapitalize="none"
+                  onChangeText={(val) => setPassword(val)}
+                />
+              </View>
+
+              <TouchableOpacity onPress={handleHidePassword}>
+                {hidePassword ? (
+                  <MaterialCommunityIcons
+                    name="eye-off"
+                    color="grey"
+                    size={20}
+                  />
+                ) : (
+                  <MaterialCommunityIcons name="eye" color="grey" size={20} />
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.signInButtonContainer}>
+            <TouchableOpacity
+              onPress={handleSignUp}
+              activeOpacity={0.8}
+            >
+              <LinearGradient
+                colors={[colorPalette.popLight, colorPalette.popDark]}
+                style={styles.signUpButton}
+              >
+                <Text>Register</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -141,5 +201,75 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: colorPalette.primary,
     ...shadowStyle,
+  },
+
+  form: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 48,
+    width: _screen.width * 0.8,
+    height: _screen.height * 0.3,
+    borderRadius: 30,
+    backgroundColor: colorPalette.secondary,
+  },
+
+  title: {
+    marginVertical: 8,
+    fontSize: 28,
+    fontWeight: "bold",
+    color: colorPalette.background,
+  },
+
+  inputContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 1,
+    padding: 6,
+    paddingBottom: 18,
+    width: _screen.width * 0.7,
+    borderRadius: 10,
+    backgroundColor: colorPalette.background,
+  },
+
+  input: {
+    flexDirection: "row",
+    marginTop: 10,
+    paddingHorizontal: 3,
+    width: _screen.width * 0.65,
+    borderBottomWidth: 1,
+    borderBottomColor: colorPalette.trim,
+  },
+
+  passwordContainer: {
+    flexDirection: "row",
+  },
+
+  signInButtonContainer: {
+    marginTop: 10,
+  },
+
+  signUpButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+    width: 200,
+    borderRadius: 10,
+    padding: 8,
+  },
+
+  signUp: {
+    margin: 8,
+    fontSize: 18,
+    textDecorationLine: "underline",
+    color: colorPalette.background,
+  },
+
+  aboutUsButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 8,
+    width: 120,
+    borderRadius: 10,
+    padding: 8,
   },
 });

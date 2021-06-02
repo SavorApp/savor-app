@@ -199,7 +199,7 @@ export type RecipeCardStackParamList = {
 
 // InputUser for when users log in
 export type InputUser = {
-  username: string;
+  email: string;
   password: string;
 };
 
