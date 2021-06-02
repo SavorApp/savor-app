@@ -16,7 +16,7 @@ import { LoggedOutParamList } from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
 import { setUser } from "../redux/actions";
-
+import axios from "axios";
 const _screen = Dimensions.get("screen");
 export interface SignupScreenProps {
   navigation: StackNavigationProp<LoggedOutParamList, "SignupScreen">;
@@ -50,7 +50,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
         "Invalid Email",
         "Please enter a valid email."
       );
-    } 
+    }
 
     else if (password.length < 6) {
       Alert.alert(
@@ -67,16 +67,16 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
         if (resp.additionalUserInfo?.isNewUser) {
           // TODO:
           // Send user info, WRITE TO DB
-        
-        // Update UserState with resp.user
 
-    
-        //TODO:
-        //Send user info to DB
-        const newUser = await axios("https://savored-server.herokuapp.com/", {
-          method: "POST",
-          data: {
-            query: `
+          // Update UserState with resp.user
+
+
+          //TODO:
+          //Send user info to DB
+          const newUser = await axios("https://savored-server.herokuapp.com/", {
+            method: "POST",
+            data: {
+              query: `
             mutation createUser($_id: String!, $username: String!) {
               createUser(_id:$_id, username:$username) {
                _id
@@ -84,32 +84,32 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
               }
             }
             `,
-            variables: {
-              _id: resp.user?.uid,
-              username: resp.user?.email,
+              variables: {
+                _id: resp.user?.uid,
+                username: resp.user?.email,
+              },
             },
-          },
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        console.log(newUser);
-        //Update global state
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          console.log(newUser);
+          //Update global state
 
-        dispatch(
-          setUser({
-            id: resp.user?.uid,
-            username: resp.user?.email,
-            image_url: resp.user?.photoURL,
-          })
-        );
-        navigation.navigate("MenuScreen");
-
+          dispatch(
+            setUser({
+              id: resp.user?.uid,
+              username: resp.user?.email,
+              image_url: resp.user?.photoURL,
+            })
+          );
+          navigation.navigate("MenuScreen");
+        }
       } catch (error) {
         Alert.alert("Invalid Request", error.message);
 
       }
-    } 
+    }
   }
 
   return (
@@ -136,8 +136,8 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
                   size={20}
                 />
               ) : (
-                <></>
-              )}
+                  <></>
+                )}
             </View>
 
             <View style={[styles.input, { justifyContent: "space-between" }]}>
@@ -160,8 +160,8 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
                     size={20}
                   />
                 ) : (
-                  <MaterialCommunityIcons name="eye" color="grey" size={20} />
-                )}
+                    <MaterialCommunityIcons name="eye" color="grey" size={20} />
+                  )}
               </TouchableOpacity>
             </View>
           </View>

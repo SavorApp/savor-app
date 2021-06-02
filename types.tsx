@@ -178,7 +178,6 @@ export type FiltersAction = { type: string; payload: FiltersState | Filters };
 export type RecipeCardParamList = {
   id: number;
   rcp: Recipe;
-  filteredDishtype: string;
 }
 
 export type SwipeButtonsParamList = {

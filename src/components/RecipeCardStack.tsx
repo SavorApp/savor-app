@@ -242,7 +242,6 @@ export default function RecipeCardStack({
                 <RecipeCard
                   rcp={rcp}
                   id={rcp.id}
-                  filteredDishtype={filtersState.filters.dishType}
                 />
               </Card>
             );
