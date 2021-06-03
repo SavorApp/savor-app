@@ -50,10 +50,10 @@ export const resetUserRecipeListState = (): EmptyAction => {
 };
 
 // Filters Actions
-export const setFilters = (filtersState: FiltersState): FiltersAction => {
+export const setFilters = (filters: Filters): FiltersAction => {
   return {
-    type: "UPDATE_FILTERS",
-    payload: filtersState,
+    type: "SET_FILTERS",
+    payload: filters,
   };
 };
 

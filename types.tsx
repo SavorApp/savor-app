@@ -131,7 +131,6 @@ export type UserRecipe = {
 
 // Core UserRecipeListState interface
 export interface UserRecipeListState {
-  // userId: string;
   userRecipeList: UserRecipe[];
 }
 

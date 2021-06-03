@@ -23,29 +23,16 @@ export const filtersReducer = (
   switch (action.type) {
     // When user changes a filter...
     case "SET_FILTERS": {
-      return action.payload;
+      return { filters: action.payload };
     }
     // When user changes a filter...
     case "UPDATE_FILTERS": {
       return {
-        ...state,
         filters: { ...action.payload },
       };
     }
     case "RESET_FILTERS": {
-      return {
-        filters: {
-          smartFilter: false,
-          dishType: "dinner",
-          cuisine: "",
-          vegetarian: false,
-          vegan: false,
-          glutenFree: false,
-          dairyFree: false,
-          readyInMinutes: 0,
-          servings: 0,
-        },
-      };
+      return initialState;
     }
     // Default...
     default:

@@ -29,6 +29,7 @@ export default function getCacheLoadData() {
             // - Get cached data or,
             // - Make appropriate API requests
             console.log(currentUser.id);
+            // Add all recipe properties
             async function getCurrentUser() {
               const user = await axios(
                 "https://savored-server.herokuapp.com/",
