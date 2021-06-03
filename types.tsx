@@ -26,7 +26,7 @@ export type ChefStackParamList = {
   ChefScreen: undefined;
   AboutUsScreen: undefined;
   DeleteAccountScreen: undefined;
-}
+};
 
 export type MenuStackParamList = {
   ChefScreen: undefined;
@@ -102,7 +102,7 @@ export type Recipe = {
   servings: number;
   ingredients: string[];
   smartFilterScore: number;
-  extendedIngredients: Ingredient[]
+  extendedIngredients: Ingredient[];
 };
 
 // Core RecipeState interface
@@ -219,18 +219,6 @@ export type Ingredient = {
       amount: number;
       unitShort: string;
       unitLong: string;
-<<<<<<< HEAD
     };
   };
 };
-=======
-    }
-  }
-}
-
-export type RecipeScreenInfo = {
-  title: string;
-  summary: string;
-  recipeId?: number 
-}
->>>>>>> 210f6c3dfad3a7a3bd5b2ae26993d60b795ed086
