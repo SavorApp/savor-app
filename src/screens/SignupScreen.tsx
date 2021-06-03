@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   StyleSheet,
   Dimensions,
@@ -12,10 +12,10 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { ChefStackParamList } from "../../types";
+import { ChefStackParamList, RootState, UserRecipeListState } from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
-import { setUser } from "../redux/actions";
+import { resetFilters, resetUserRecipeList, setUser } from "../redux/actions";
 import axios from "axios";
 const _screen = Dimensions.get("screen");
 export interface SignupScreenProps {
@@ -23,6 +23,9 @@ export interface SignupScreenProps {
 }
 
 export default function SignupScreen({ navigation }: SignupScreenProps) {
+  const userRecipeListState = useSelector<RootState, UserRecipeListState>(
+    (state) => state.userRecipeListState
+  );
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [validEmail, setValidEmail] = React.useState(false);
@@ -65,7 +68,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
           .auth()
           .createUserWithEmailAndPassword(email, password);
         if (resp.additionalUserInfo?.isNewUser) {
-          const newUser = await axios("https://savored-server.herokuapp.com/", {
+          await axios("https://savored-server.herokuapp.com/", {
             method: "POST",
             data: {
               query: `
@@ -86,6 +89,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
             },
           });
 
+          // setUser with new user
           dispatch(
             setUser({
               id: resp.user?.uid,
@@ -93,6 +97,18 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
               image_url: resp.user?.photoURL,
             })
           );
+
+          if (userRecipeListState.userRecipeList.length > 0) {
+            // Write to DB
+            // Update UserRecipeList with these new recipes for the new user
+            for (const rcp of userRecipeListState.userRecipeList) {
+              // WRITE TO DB EACH RECIPE (with resp.user?.uid)
+            };
+          } else {
+            // Reset UserRecipeList
+            dispatch(resetUserRecipeList());
+          }
+          
           navigation.goBack();
         }
       } catch (error) {
