@@ -102,7 +102,7 @@ export type Recipe = {
   servings: number;
   ingredients: string[];
   smartFilterScore: number;
-  extendedIngredients: Ingredient[];
+  extendedIngredients?: Ingredient[];
 };
 
 // Core RecipeState interface
@@ -218,6 +218,21 @@ export type Ingredient = {
       amount: number;
       unitShort: string;
       unitLong: string;
-    };
-  };
-};
+    }
+  }
+}
+
+export type RecipeScreenInfo = {
+  title: string;
+  instructions: string,
+  summary: string,
+  ingredients: string[];
+  veryHealthy: boolean;
+  vegan: boolean, 
+  vegetarian: boolean, 
+  dairyFree: boolean,
+  healthScore: number
+  prepTime: number,
+  diets: string[],
+  recipeId?: number 
+}
