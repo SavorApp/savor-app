@@ -61,23 +61,16 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
   function handleLogin(data: InputUser) {
     if (!/^\S+@\S+\.\S+$/.test(data.email)) {
-      Alert.alert(
-        "Invalid Email",
-        "Please enter a valid email."
-      );
-    } 
-    
-    else if (data.password.length < 6) {
+      Alert.alert("Invalid Email", "Please enter a valid email.");
+    } else if (data.password.length < 6) {
       Alert.alert(
         "Invalid Password",
         "Password must be 6 characters or longer."
       );
-    } 
-    
-    else {
+    } else {
       firebaseApp
         .auth()
-        .setPersistence(firebase.auth.Auth.Persistence.SESSION)
+        .setPersistence(firebase.auth.Auth.Persistence.LOCAL)
         .then(() => {
           return firebase
             .auth()
