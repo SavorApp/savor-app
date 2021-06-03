@@ -1,7 +1,7 @@
 import * as SplashScreen from "expo-splash-screen";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { setUser } from "../redux/actions";
+import { setUser, setUserRecipeListState } from "../redux/actions";
 import { firebaseApp } from "../constants/Firebase";
 import axios from "axios";
 
@@ -38,8 +38,14 @@ export default function getCacheLoadData() {
                     query: `
                  query getUser($_id: String!)
                  {user(_id:$_id) {
-                   _id
-                   username         
+                  _id
+                  username
+                  recipes{
+                  recipe_id
+                  title
+                  is_savored
+                  summary
+                   }         
                  }}
                     `,
                     variables: {
@@ -48,7 +54,10 @@ export default function getCacheLoadData() {
                   },
                 }
               );
-              console.log(user);
+              console.log(user.data.data.user?.recipes);
+              if (Array.isArray(user.data.data.user?.recipes)) {
+                dispatch(setUserRecipeListState(user.data.data.user?.recipes));
+              }
             }
             getCurrentUser();
             // - Get user's UserRecipeList & dispatch

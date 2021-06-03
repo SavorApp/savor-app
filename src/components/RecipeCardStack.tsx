@@ -239,10 +239,7 @@ export default function RecipeCardStack({
                   onSwipedRight(idx);
                 }}
               >
-                <RecipeCard
-                  rcp={rcp}
-                  id={rcp.id}
-                />
+                <RecipeCard rcp={rcp} id={rcp.id} />
               </Card>
             );
           })}

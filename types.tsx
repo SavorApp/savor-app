@@ -79,7 +79,7 @@ export type UserAction = { type: string; payload: User };
 
 // Empty User action
 
-export type EmptyUserAction = {
+export type EmptyAction = {
   type: string;
 };
 
@@ -137,7 +137,7 @@ export type UserRecipe = {
 
 // Core UserRecipeListState interface
 export interface UserRecipeListState {
-  userId: string;
+  // userId: string;
   userRecipeList: UserRecipe[];
 }
 
@@ -162,7 +162,6 @@ export type Filters = {
 
 // Core FiltersState interface
 export interface FiltersState {
-  userId: string;
   filters: Filters;
 }
 
@@ -178,7 +177,7 @@ export type FiltersAction = { type: string; payload: FiltersState | Filters };
 export type RecipeCardParamList = {
   id: number;
   rcp: Recipe;
-}
+};
 
 export type SwipeButtonsParamList = {
   handleOnPressLeft: () => void;
@@ -188,7 +187,7 @@ export type SwipeButtonsParamList = {
 export type RecipeCardStackParamList = {
   randRecipes: Recipe[];
   filtersState: FiltersState;
-}
+};
 
 /*
  _________________________
@@ -215,17 +214,17 @@ export type Ingredient = {
   amount: number;
   unit: string;
   meta: never[] | string[];
-  metaInformation: never[] | string[]
+  metaInformation: never[] | string[];
   measures: {
     us: {
       amount: number;
       unitShort: string;
       unitLong: string;
-    },
+    };
     metric: {
-      amount: number
+      amount: number;
       unitShort: string;
       unitLong: string;
-    }
-  }
-}
+    };
+  };
+};
