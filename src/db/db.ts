@@ -80,27 +80,20 @@ import axios from "axios";
 
 export async function createUser(
   id: string | undefined,
-  username: string | null | undefined,
-  image_url: string | null | undefined
+  username: string | null | undefined
 ) {
-  console.log(id, username, image_url);
-  const user = await axios("https://savored-server.herokuapp.com/", {
+  console.log(id, username);
+  const newUser = await axios("https://savored-server.herokuapp.com/", {
     method: "POST",
     data: {
       query: `
-                mutation addRcp(
-                    $_id: String!,
-                    $username: String!,
-                    ) {
-                  createUser(
-                    _id:$_id,
-                    username:$username,
-                    ) {
-                   _id
-                   username
-                  }
-                }
-                `,
+            mutation createUser($_id: String!, $username: String!) {
+              createUser(_id:$_id, username:$username) {
+               _id
+                username
+              }
+            }
+            `,
       variables: {
         _id: id,
         username: username,
@@ -110,4 +103,5 @@ export async function createUser(
       "Content-Type": "application/json",
     },
   });
+  console.log(newUser);
 }

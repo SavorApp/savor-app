@@ -59,26 +59,26 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
           .auth()
           .createUserWithEmailAndPassword(email, password);
         if (resp.additionalUserInfo?.isNewUser) {
-          const newUser = await axios("https://savored-server.herokuapp.com/", {
-            method: "POST",
-            data: {
-              query: `
-            mutation createUser($_id: String!, $username: String!) {
-              createUser(_id:$_id, username:$username) {
-               _id
-                username
-              }
-            }
-            `,
-              variables: {
-                _id: resp.user?.uid,
-                username: resp.user?.email,
-              },
-            },
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+          // const newUser = await axios("https://savored-server.herokuapp.com/", {
+          //   method: "POST",
+          //   data: {
+          //     query: `
+          //   mutation createUser($_id: String!, $username: String!) {
+          //     createUser(_id:$_id, username:$username) {
+          //      _id
+          //       username
+          //     }
+          //   }
+          //   `,
+          //     variables: {
+          //       _id: resp.user?.uid,
+          //       username: resp.user?.email,
+          //     },
+          //   },
+          //   headers: {
+          //     "Content-Type": "application/json",
+          //   },
+          // });
 
           dispatch(
             setUser({
