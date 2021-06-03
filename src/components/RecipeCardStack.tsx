@@ -26,6 +26,7 @@ export default function RecipeCardStack({
   );
   const userUID = useRef<string | undefined>("");
   const cardStackRef = React.useRef<CardStack>();
+  const [currentRecipe, setCurrentRecipe] = React.useState<Recipe>(randRecipes[0]);
 
   useEffect(() => {
     userUID.current = userState.user.id;
@@ -60,6 +61,7 @@ export default function RecipeCardStack({
       isSavored: false,
     };
     dispatch(addtoUserRecipeList(recipeToBeAdded));
+    setCurrentRecipe(randRecipes[idx+1])
 
     // await axios("https://savored-server.herokuapp.com/", {
     //   method: "POST",
@@ -130,6 +132,7 @@ export default function RecipeCardStack({
       isSavored: true,
     };
     dispatch(addtoUserRecipeList(recipeToBeAdded));
+    setCurrentRecipe(randRecipes[idx+1]);
 
     // await axios("https://savored-server.herokuapp.com/", {
     //   method: "POST",
@@ -179,6 +182,8 @@ export default function RecipeCardStack({
     cardStackRef.current?.swipeRight();
   }
 
+
+
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
@@ -216,6 +221,7 @@ export default function RecipeCardStack({
         <SwipeButtons
           handleOnPressLeft={handleOnPressLeft}
           handleOnPressRight={handleOnPressRight}
+          currentRecipe={currentRecipe}
         />
       </View>
     </View>
