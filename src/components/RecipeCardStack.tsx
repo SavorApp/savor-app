@@ -13,7 +13,7 @@ import {
   UserState,
   RecipeCardStackParamList,
 } from "../../types";
-import { rightSwipeAddToDb, leftSwipeAddToDb } from "../db/db";
+import { swipeToDb } from "../db/db";
 
 const _screen = Dimensions.get("screen");
 
@@ -55,7 +55,7 @@ export default function RecipeCardStack({
       isSavored: false,
     };
     dispatch(addtoUserRecipeList(recipeToBeAdded));
-    leftSwipeAddToDb(user_id.current, recipeToBeAdded);
+    swipeToDb(user_id.current, false, recipeToBeAdded);
   }
 
   async function onSwipedRight(idx: number) {
@@ -80,7 +80,7 @@ export default function RecipeCardStack({
       isSavored: true,
     };
     dispatch(addtoUserRecipeList(recipeToBeAdded));
-    rightSwipeAddToDb(user_id.current, recipeToBeAdded);
+    swipeToDb(user_id.current, true, recipeToBeAdded);
   }
 
   function handleOnPressLeft() {
