@@ -154,56 +154,6 @@ export default function MenuScreen() {
         "Sorry for the inconvenience, please try again later."
       );
     }
-
-    // Filter random recipes based on filters + Suffle them
-    // Filter random recipes based on already viewed recipes by user
-    // Apply smart logic if turned on
-    // const fetchedRecipes = recipesJson.recipes.map((rcp) => {
-    //   const ingredientsArray = (
-    //     rcp.extendedIngredients as Array<Ingredient>
-    //   ).map((ing: Ingredient): string => {
-    //     return ing?.name;
-    //   });
-    //   return {
-    //     id: rcp.id,
-    //     sourceUrl: rcp.sourceUrl,
-    //     image: rcp.image,
-    //     imageType: rcp.imageType,
-    //     title: rcp.title,
-    //     diets: rcp.diets,
-    //     cuisines: rcp.cuisines,
-    //     dishTypes: rcp.dishTypes,
-    //     vegetarian: rcp.vegetarian,
-    //     vegan: rcp.vegan,
-    //     glutenFree: rcp.glutenFree,
-    //     dairyFree: rcp.dairyFree,
-    //     veryHealthy: rcp.veryHealthy,
-    //     cheap: rcp.cheap,
-    //     veryPopular: rcp.veryPopular,
-    //     sustainable: rcp.sustainable,
-    //     aggregateLikes: rcp.aggregateLikes,
-    //     spoonacularScore: rcp.spoonacularScore,
-    //     healthScore: rcp.healthScore,
-    //     pricePerServing: rcp.pricePerServing,
-    //     readyInMinutes: rcp.readyInMinutes,
-    //     servings: rcp.servings,
-    //     ingredients: ingredientsArray,
-    //     smartFilterScore: 0,
-    //   };
-    // });
-
-    // Apply smartFilter is set to true
-    // if (filtersState.filters.smartFilter) {
-    //   const finalRandRecipes = applySmartFilter(
-    //     fetchedRecipes,
-    //     userRecipeListState.userRecipeList
-    //   );
-    //   setRandRecipes(finalRandRecipes);
-    // } else {
-    //   setRandRecipes(fetchedRecipes);
-    // }
-
-    // setIsCardStackLoading(false);
   }
 
   // On update
