@@ -11,7 +11,7 @@ const _screen = Dimensions.get("screen");
 
 export default function RecipeScreen({ route }: { route: any }) {
   const { recipeId } = route.params;
-  const [recipeInfos, setRecipeInfos] = React.useState<RecipeScreenInfo>({
+  const [recipeInfos, setRecipeInfos] = React.useState<RecipeScreenInfo | undefined>({
     title: "",
     instructions: "",
     summary: "",
@@ -63,7 +63,7 @@ export default function RecipeScreen({ route }: { route: any }) {
 
   // TODO: take recipeId and make API request for Recipe information
   return (
-    recipeInfos.title ?
+    recipeInfos?.title ?
       <View style={styles.container}>
         <View style={styles.subContainer}>
           <Text style={styles.title}>{recipeInfos.title}</Text>
@@ -74,7 +74,7 @@ export default function RecipeScreen({ route }: { route: any }) {
               <Text style={styles.subTitle}>Summary</Text>
               <HTML source={{ html: recipeInfos.summary }} />
               <Text style={styles.subTitle}>Ingredients</Text>
-              <Text style={styles.ingredients}>{recipeInfos.ingredients.split(',')}</Text>
+              <Text style={styles.ingredients}>{recipeInfos.ingredients}</Text>
               <Text style={styles.subTitle}>Extra-Information</Text>
               <Text style={styles.ingredients}>VeryHealthy: {recipeInfos.veryHealthy ? "✅" : "❌"}</Text>
               <Text style={styles.ingredients}>Vegetarian: {recipeInfos.vegetarian ? "✅" : "❌"}</Text>

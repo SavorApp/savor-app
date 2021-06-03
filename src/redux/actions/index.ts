@@ -1,6 +1,6 @@
 import {
   User,
-  EmptyUserAction,
+  EmptyAction,
   UserAction,
   UserRecipeListAction,
   Filters,
@@ -18,7 +18,7 @@ export const setUser = (user: User): UserAction => {
   };
 };
 
-export const removeUser = (): EmptyUserAction => {
+export const removeUser = (): EmptyAction => {
   return {
     type: "LOGOUT_USER",
   };
@@ -26,11 +26,11 @@ export const removeUser = (): EmptyUserAction => {
 
 // User Recipe List Actions
 export const setUserRecipeListState = (
-  userRecipeListState: UserRecipeListState
+  userRecipeList: UserRecipe[]
 ): UserRecipeListAction => {
   return {
-    type: "ADD_TO_USER_RECIPE_LIST",
-    payload: userRecipeListState,
+    type: "SET_USER_RECIPE_LIST_STATE",
+    payload: userRecipeList,
   };
 };
 
@@ -43,11 +43,17 @@ export const addtoUserRecipeList = (
   };
 };
 
-// Filters Actions
-export const setFilters = (filtersState: FiltersState): FiltersAction => {
+export const resetUserRecipeListState = (): EmptyAction => {
   return {
-    type: "UPDATE_FILTERS",
-    payload: filtersState,
+    type: "RESET_USER_RECIPE_LIST_STATE",
+  };
+};
+
+// Filters Actions
+export const setFilters = (filters: Filters): FiltersAction => {
+  return {
+    type: "SET_FILTERS",
+    payload: filters,
   };
 };
 
@@ -55,5 +61,11 @@ export const updateFilters = (filters: Filters): FiltersAction => {
   return {
     type: "UPDATE_FILTERS",
     payload: filters,
+  };
+};
+
+export const resetFilters = (): EmptyAction => {
+  return {
+    type: "RESET_FILTERS",
   };
 };
