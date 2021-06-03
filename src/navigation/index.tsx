@@ -4,7 +4,7 @@ import * as React from 'react';
 import { ColorSchemeName, Text } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { RootStackParamList } from "../../types"
-import { SignupScreen, AboutUsScreen, DeleteAccountScreen, BurgerScreen } from '../screens';
+import { SignupScreen, AboutUsScreen, DeleteAccountScreen, BurgerScreen, ProtectedBurgerScreen } from '../screens';
 import BottomTabNavigator from "./BottomTab";
 
 
@@ -61,6 +61,16 @@ function RootNavigator() {
       <RootStack.Screen 
         name="BurgerScreen"
         component={BurgerScreen}
+        options={{
+          headerBackImage:  () => <Ionicons name="chevron-down-sharp" size={36} />,
+          headerBackTitleVisible: false,
+          headerLeftContainerStyle: {
+            marginLeft: 12
+          }
+        }}/>
+      <RootStack.Screen 
+        name="ProtectedBurgerScreen"
+        component={ProtectedBurgerScreen}
         options={{
           headerBackImage:  () => <Ionicons name="chevron-down-sharp" size={36} />,
           headerBackTitleVisible: false,

@@ -1,153 +1,154 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Dimensions, View, Text } from "react-native";
-import { useFocusEffect, useIsFocused } from '@react-navigation/native';
-import colorPalette from "../constants/ColorPalette";
-import Constants from 'expo-constants';
+import { useFocusEffect, useIsFocused } from "@react-navigation/native";
+import Constants from "expo-constants";
+import { useSelector, useDispatch } from "react-redux";
+import { addtoUserRecipeList } from "../redux/actions";
 import axios from "axios";
-import CardStack, { Card } from 'react-native-card-stack-swiper';
-import RecipeCard from '../components/RecipeCard';
-import SwipeButtons from '../components/SwipeButtons';
+import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import CardStack, { Card } from "react-native-card-stack-swiper";
+import RecipeCard from "../components/RecipeCard";
+import SwipeButtons from "../components/SwipeButtons";
+import RecipeCardStack from "../components/RecipeCardStack";
+import LoadingCardStack from "../components/LoadingCardStack";
+import { applySmartFilter } from "../utils";
 
 // Importing JSON data for development and testing
-import * as recipesJson from "../data/recipes.json";
-import { initialState } from "../redux/reducers/recipe"
-import { Recipe, RootState, UserState } from "../../types";
-import { useSelector } from "react-redux";
+import * as recipesJson from "../data/100Recipes.json";
+import { initialState } from "../redux/reducers/recipe";
+import {
+  Recipe,
+  RootState,
+  UserState,
+  FiltersState,
+  UserRecipeListState,
+  LoggedInParamList,
+  Ingredient,
+} from "../../types";
 
 const _screen = Dimensions.get("screen");
 
 // Initializing Spoonacular resources
 const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
-const randRecipeUrl = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&`
-
+const randRecipeUrl = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&`;
 
 export default function MenuScreen() {
-    const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([initialState.recipe]);
-    const userState = useSelector<RootState, UserState>((state) => state.userState);
-    
-    // FOR TEST PURPOSES
-    const[swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>([])
-    const[swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>([])
+  const userRecipeListState = useSelector<RootState, UserRecipeListState>(
+    (state) => state.userRecipeListState
+  );
+  const filtersState = useSelector<RootState, FiltersState>(
+    (state) => state.filtersState
+  );
+  const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([
+    initialState.recipe,
+  ]);
+  const [isCardStackLoading, setIsCardStackLoading] =
+    React.useState<boolean>(true);
 
-    // Fetch random Recipes from Spoonacular
-    async function fetchRandomRecipes() {
-        // const resp = await axios.get(randRecipeUrl + "number=10&tags=gluten%20free,vegetarian,dinner,italian")
-        // const fetchedRecipes = resp.data.recipes;
+  // Fetch random Recipes from Spoonacular
+  async function fetchRandomRecipes() {
+    const vegetarian = filtersState.filters.vegetarian;
+    const SUB_ENDPPOINT = `number=10&tags=${vegetarian && "vegetarian"}`;
 
-        // Filter random recipes based on filters, if applied
-        const filteredRecipes = recipesJson.recipes.map((rcp) => {
-            return {
-                id: rcp.id,
-                sourceUrl: rcp.sourceUrl,
-                image: rcp.image,
-                imageType: rcp.imageType,
-                title: rcp.title,
-                diets: rcp.diets,
-                cuisines: rcp.cuisines,
-                dishTypes: rcp.dishTypes,
-                vegetarian: rcp.vegetarian,
-                vegan: rcp.vegan,
-                glutenFree: rcp.glutenFree,
-                dairyFree: rcp.dairyFree,
-                veryHealthy: rcp.veryHealthy,
-                cheap: rcp.cheap,
-                veryPopular: rcp.veryPopular,
-                sustainable: rcp.sustainable,
-                aggregateLikes: rcp.aggregateLikes,
-                spoonacularScore: rcp.spoonacularScore,
-                healthScore: rcp.healthScore,
-                pricePerServing: rcp.pricePerServing,
-                readyInMinutes: rcp.readyInMinutes,
-                servings: rcp.servings,
-            }
-        })
+    // const resp = await axios.get(randRecipeUrl + SUB_ENDPPOINT);
+    // const fetchedRecipes = resp.data.recipes.map((rcp: Recipe) => {
+    //     return {
+    //         id: rcp.id,
+    //         sourceUrl: rcp.sourceUrl,
+    //         image: rcp.image,
+    //         imageType: rcp.imageType,
+    //         title: rcp.title,
+    //         diets: rcp.diets,
+    //         cuisines: rcp.cuisines,
+    //         dishTypes: rcp.dishTypes,
+    //         vegetarian: rcp.vegetarian,
+    //         vegan: rcp.vegan,
+    //         glutenFree: rcp.glutenFree,
+    //         dairyFree: rcp.dairyFree,
+    //         veryHealthy: rcp.veryHealthy,
+    //         cheap: rcp.cheap,
+    //         veryPopular: rcp.veryPopular,
+    //         sustainable: rcp.sustainable,
+    //         aggregateLikes: rcp.aggregateLikes,
+    //         spoonacularScore: rcp.spoonacularScore,
+    //         healthScore: rcp.healthScore,
+    //         pricePerServing: rcp.pricePerServing,
+    //         readyInMinutes: rcp.readyInMinutes,
+    //         servings: rcp.servings
+    //     }
+    // });
 
-        setRandRecipes(filteredRecipes);
+    // Filter random recipes based on filters + Suffle them
+    // Filter random recipes based on already viewed recipes by user
+    // Apply smart logic if turned on
+    const fetchedRecipes = recipesJson.recipes.map((rcp) => {
+      const ingredientsArray = (
+        rcp.extendedIngredients as Array<Ingredient>
+      ).map((ing: Ingredient): string => {
+        return ing?.name;
+      });
+      return {
+        id: rcp.id,
+        sourceUrl: rcp.sourceUrl,
+        image: rcp.image,
+        imageType: rcp.imageType,
+        title: rcp.title,
+        diets: rcp.diets,
+        cuisines: rcp.cuisines,
+        dishTypes: rcp.dishTypes,
+        vegetarian: rcp.vegetarian,
+        vegan: rcp.vegan,
+        glutenFree: rcp.glutenFree,
+        dairyFree: rcp.dairyFree,
+        veryHealthy: rcp.veryHealthy,
+        cheap: rcp.cheap,
+        veryPopular: rcp.veryPopular,
+        sustainable: rcp.sustainable,
+        aggregateLikes: rcp.aggregateLikes,
+        spoonacularScore: rcp.spoonacularScore,
+        healthScore: rcp.healthScore,
+        pricePerServing: rcp.pricePerServing,
+        readyInMinutes: rcp.readyInMinutes,
+        servings: rcp.servings,
+        ingredients: ingredientsArray,
+        smartFilterScore: 0,
+      };
+    });
+
+    // Apply smartFilter is set to true
+    if (filtersState.filters.smartFilter) {
+      const finalRandRecipes = applySmartFilter(
+        fetchedRecipes,
+        userRecipeListState.userRecipeList
+      );
+      setRandRecipes(finalRandRecipes);
+    } else {
+      setRandRecipes(fetchedRecipes);
     }
 
-    // On focus, fetch/set random Recipes
-    useFocusEffect(
-        React.useCallback(() => {
-            console.log("FOCUSED")
-            fetchRandomRecipes();
-        }, [])
-    );
+    setIsCardStackLoading(false);
+  }
 
-    // On randomRecipes updated, do something...
-    React.useEffect(() => {
-        console.log("Recipes SET")
-      }, [randRecipes])
+  // On update
+  React.useEffect(() => {
+    setIsCardStackLoading(true);
+    fetchRandomRecipes();
+  }, [filtersState]);
 
+  console.log(
+    "OUTSIDE MENU SCREEN -> dishType:",
+    filtersState.filters.dishType
+  );
+  // Listen to when randRecipes get set
+  // TODO:
+  // - On load/before render make API requests for randomized Recipes (Spoonacular)
+  // - Apply filters
+  // - Compare against User"s viewed Recipes list if User is logged in
+  // - Apply score and sorting if smart filter is turned on
 
-    // Listen to when randRecipes get set
-    function onSwipedLeft(idx: number) {
-        console.log('Swiped left');
-        // TODO: store it the database instead
-        console.log(userState);
-        setSwipedLeftRecipes(swipedLeftRecipes.concat([randRecipes[idx]]));
-        console.log('🎉', swipedLeftRecipes)
-    }
-
-    function onSwipedRight(idx: number) {
-        console.log('Swiped right');
-        // TODO: store it the database instead
-        console.log(userState);
-        setSwipedRightRecipes(swipedRightRecipes.concat([randRecipes[idx]]));
-        console.log('🎉', swipedRightRecipes)
-    }
-
-    function handleOnPress() {
-        console.log('hello')
-    }
-
-
-    // TODO: 
-    // - On load/before render make API requests for randomized Recipes (Spoonacular)
-    // - Apply filters
-    // - Compare against User's viewed Recipes list if User is logged in
-    // - Apply score and sorting if smart filter is turned on
-    return (
-        <View style={styles.container}>
-            <View style={styles.subContainer}>
-                <CardStack style={styles.cardStack} ref={swiper => { swiper = swiper }} disableBottomSwipe disableTopSwipe>
-                    {randRecipes.map((rcp: Recipe, idx: number) => {
-                        return <Card key={rcp.id} onSwipedLeft={() => { onSwipedLeft(idx) }} onSwipedRight={() => { onSwipedRight(idx) }}><RecipeCard rcp={rcp} id={rcp.id} /></Card>
-                    })}
-                </CardStack>
-            </View>
-            <SwipeButtons onPress={handleOnPress} />
-        </View>
-    )
+  return isCardStackLoading ? (
+    <LoadingCardStack />
+  ) : (
+    <RecipeCardStack randRecipes={randRecipes} filtersState={filtersState} />
+  );
 }
-
-
-const styles = StyleSheet.create({
-
-    container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: colorPalette.background
-    },
-
-    subContainer: {
-        justifyContent: "center",
-        alignItems: "center",
-        width: _screen.width * 0.9,
-        height: _screen.height * 0.6,
-        borderRadius: 30,
-        backgroundColor: colorPalette.primary
-    },
-
-    recipeTextTest: {
-        justifyContent: "center",
-        alignItems: "center",
-        textAlign: "center",
-        margin: 8
-    },
-
-    cardStack: {
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-})

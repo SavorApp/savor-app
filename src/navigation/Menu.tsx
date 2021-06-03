@@ -4,7 +4,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TouchableOpacity } from "react-native";
 import { MenuScreen } from "../screens"
-import { MenuStackParamList } from "../../types"
+import { MenuStackParamList, RootState, UserState } from "../../types"
+import { useSelector } from "react-redux";
 
 export interface MenuNavigatorProps {
     navigation: StackNavigationProp<MenuStackParamList, "BurgerScreen">
@@ -14,6 +15,9 @@ const MenuStack = createStackNavigator();
 // Menu tab navigator header right contains burger icon
 // which navigates to the BurgerScreen
 export default function MenuNavigator({ navigation }: MenuNavigatorProps) {
+    const userState = useSelector<RootState, UserState>(
+        (state) => state.userState
+      );
     
     return (
         <MenuStack.Navigator>
@@ -24,9 +28,11 @@ export default function MenuNavigator({ navigation }: MenuNavigatorProps) {
                     headerRight: () => (
                         <TouchableOpacity
                             onPress={() => {
-                                // Check if user is logged in, if so nevigate to BurgerScreen
-                                navigation.navigate("BurgerScreen")
-                                // else, nevigate to another component prompting user to login/create account
+                                if (userState.isLoggedIn) {
+                                    navigation.navigate("BurgerScreen");
+                                } else {
+                                    navigation.navigate("ProtectedBurgerScreen");
+                                }
                             }}
                         >
                             <MaterialCommunityIcons

@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text } from "react-native";
-import colorPalette from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import * as recipeJson from "../data/recipes.json"
 
 const _screen = Dimensions.get("screen");
 
@@ -11,7 +12,13 @@ export default function RecipeScreen({ route }: { route: any }) {
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text> Recipe {recipeId} Screen </Text>
+      <View style={styles.titleContainer}>
+      {recipeJson.recipes.map((rcp) => {
+                      return <Text style={styles.titleBackground}>{rcp[recipeId]}</Text>
+                    })}
+      
+                    
+                </View>
       </View>
     </View>
   );
@@ -32,5 +39,19 @@ const styles = StyleSheet.create({
     height: _screen.height * 0.6,
     borderRadius: 30,
     backgroundColor: colorPalette.primary,
+    ...shadowStyle
   },
+  titleBackground: {
+    color: "black",
+    marginTop: 5,
+    textAlign: "center",
+},
+titleContainer: {
+    marginBottom: 10,
+    padding: 5,
+    backgroundColor: "white",
+    width: 250,
+    borderRadius: 15,
+    ...shadowStyle
+},
 });

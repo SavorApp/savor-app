@@ -1,13 +1,13 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text, Pressable, TouchableOpacity } from "react-native";
-import DropDownPicker from 'react-native-dropdown-picker';
-import {LinearGradient} from 'expo-linear-gradient';
-import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-import Emoji from 'react-native-emoji';
-import { StackNavigationProp } from '@react-navigation/stack';
-import colorPalette from "../constants/ColorPalette";
+import DropDownPicker from "react-native-dropdown-picker";
+import {LinearGradient} from "expo-linear-gradient";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Emoji from "react-native-emoji";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { useSelector, useDispatch } from "react-redux";
-import { LoggedInParamList, RootState, FiltersState, Filters } from "../../types";
+import { LoggedInParamList, RootState, FiltersState, UserState } from "../../types";
 import { updateFilters } from "../redux/actions";
 
 const _screen = Dimensions.get("screen");
@@ -19,7 +19,7 @@ export interface BurgerScreenProps {
 export default function BurgerScreen({ navigation }: BurgerScreenProps) {
     // Original state of users FilterState from redux store
     const filtersState = useSelector<RootState, FiltersState>((state) => state.filtersState);
-    // useDispatch allows us to dispatch Actions to mutate global store variables
+    const userState = useSelector<RootState, UserState>((state) => state.userState);
     const dispatch = useDispatch();
     
     /*
@@ -30,19 +30,21 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
    // Smart Filter
     const [smartFilter, setSmartFilter] = React.useState(filtersState.filters.smartFilter);
     // Dish Types
-    const [dishTypesOpen, setdishTypesOpen] = React.useState(false);
+    const [dishTypeOpen, setdishTypeOpen] = React.useState(false);
     // setting initial state type to 'any' due to restrictions with
     // data type provided by react-native-dropdown-picker for setValue<ValuType | ValueType[] | null>
     // ... in compreSettings() .length is used and, ValueType consists of a number data type
     //     which does not contain property length: causes Error
-    const [dishTypes, setDishTypesValue] = React.useState<any>(filtersState.filters.dishTypes);
-    const [dishTypesItems, setDishTypesItems] = React.useState([
+    const [dishType, setDishTypeValue] = React.useState<any>(filtersState.filters.dishType);
+    const [dishTypeItems, setDishTypeItems] = React.useState([
+        {label: "All", value: "",
+            icon: () => <MaterialCommunityIcons name="emoticon-outline" size={18} />},
         {label: "Breakfast", value: "breakfast",
-            icon: () => <Ionicons name="restaurant" size={18} />},
+            icon: () => <MaterialCommunityIcons name="silverware-variant" size={18} />},
         {label: "Lunch", value: "lunch",
-            icon: () => <Ionicons name="restaurant" size={18} />},
+            icon: () => <MaterialCommunityIcons name="silverware-variant" size={18} />},
         {label: "Dinner", value: "dinner",
-            icon: () => <Ionicons name="restaurant" size={18} />},
+            icon: () => <MaterialCommunityIcons name="silverware-variant" size={18} />},
         {label: "Dessert", value: "dessert",
             icon: () => <MaterialCommunityIcons name="cupcake" size={18} />},
         {label: "Beverage", value: "beverage",
@@ -58,27 +60,27 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
         {label: "American", value: "american",
             icon: () => <Emoji name="us" />},
         {label: "Chinese", value: "chinese",
-            icon: () => <Emoji name="cn"/>},
+            icon: () => <Emoji name="cn" />},
         {label: "French", value: "french",
-            icon: () => <Emoji name="fr"/>},
+            icon: () => <Emoji name="fr" />},
         {label: "German", value: "german",
-            icon: () => <Emoji name="de"/>},
+            icon: () => <Emoji name="de" />},
         {label: "Greek", value: "greek",
-            icon: () => <Emoji name="flag-gr"/>},
+            icon: () => <Emoji name="flag-gr" />},
         {label: "Indian", value: "indian",
-            icon: () => <Emoji name="flag-in"/>},
+            icon: () => <Emoji name="flag-in" />},
         {label: "Italian", value: "italian",
-            icon: () => <Emoji name="it"/>},
+            icon: () => <Emoji name="it" />},
         {label: "Japanese", value: "japanese",
-            icon: () => <Emoji name="jp"/>},
+            icon: () => <Emoji name="jp" />},
         {label: "Korean", value: "korean",
-            icon: () => <Emoji name="kr"/>},
+            icon: () => <Emoji name="kr" />},
         {label: "Mexican", value: "mexican",
-            icon: () => <Emoji name="flag-mx"/>},
+            icon: () => <Emoji name="flag-mx" />},
         {label: "Thai", value: "thai",
-            icon: () => <Emoji name="flag-th"/>},
+            icon: () => <Emoji name="flag-th" />},
         {label: "Vietnamese", value: "vietnamese",
-            icon: () => <Emoji name="flag-vn"/>}
+            icon: () => <Emoji name="flag-vn" />}
     ]);
     // Vegetarian
     const [vegetarian, setVegetarian] = React.useState(filtersState.filters.vegetarian);
@@ -109,7 +111,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
         if (!somethingChanged) somethingChanged = compreDishType();
         // Check if cuisine changed
         if (!somethingChanged) somethingChanged = compareCuisine();
-    }, [smartFilter, dishTypes, cuisine, vegetarian, vegan, glutenFree, dairyFree]);
+    }, [smartFilter, dishType, cuisine, vegetarian, vegan, glutenFree, dairyFree]);
 
     // Compare smartFilter and decide to display the Apply button, or not
     function compareSmartFilter() {
@@ -173,25 +175,14 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
 
     // Compare dishType and decide to display the Apply button, or not
     function compreDishType() {
-        // Check length first to save processing
-        if (dishTypes.length !== filtersState.filters.dishTypes.length) {
+        // Simply String comparison
+        if (dishType !== filtersState.filters.dishType) {
             setChangesMade(true);
             return true;
         // Check each element in dishTypes against original state of filters
         } else {
-            let different = false;
-            for (let i = 0; i < dishTypes.length; i++) {
-                if (!filtersState.filters.dishTypes.includes(dishTypes[i])) {
-                    different = true;
-                }
-            }
-            if (different) {
-                setChangesMade(true);
-                return true;
-            } else {
-                setChangesMade(false);
-                return false;
-            }
+            setChangesMade(false);
+            return false;
         }
     }
 
@@ -233,10 +224,11 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
     }
 
     function handleApply() {
+        // Update only changed values
         dispatch(updateFilters({
             ...filtersState.filters,
             smartFilter: smartFilter,
-            dishTypes: dishTypes,
+            dishType: dishType,
             cuisine: cuisine,
             vegetarian: vegetarian,
             vegan: vegan,
@@ -244,6 +236,11 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
             dairyFree: dairyFree
         }))
 
+        // TODO: WRITE TO DB
+        // - Update filters table with userState.id and,
+        //   updated Filters.
+
+        // Navigate to menu screen
         navigation.navigate("MenuScreen");
     }
 
@@ -265,20 +262,18 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
                     </Pressable>
                 </View>
                 
-                <View style={[styles.filtersContainers, styles.dropDown, styles.z2]}>
+                <View style={[styles.filtersContainers, styles.dropDownContainer, styles.z2]}>
                     <Text>Dish Types: </Text>
                     <DropDownPicker
                         zIndex={3000}
-                        // zIndexInverse={1000}
-                        multiple={true}
-                        min={0}
-                        max={5}
-                        open={dishTypesOpen}
-                        value={dishTypes}
-                        items={dishTypesItems}
-                        setOpen={setdishTypesOpen}
-                        setValue={setDishTypesValue}
-                        setItems={setDishTypesItems}
+                        listMode="SCROLLVIEW"
+                        open={dishTypeOpen}
+                        value={dishType}
+                        items={dishTypeItems}
+                        setOpen={setdishTypeOpen}
+                        setValue={setDishTypeValue}
+                        closeAfterSelecting={true}
+                        setItems={setDishTypeItems}
                         translation={{
                             PLACEHOLDER: "Select your type(s)",
                             SEARCH_PLACEHOLDER: "Type something...",
@@ -293,11 +288,10 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
                     />
                 </View>
 
-                <View style={[styles.filtersContainers, styles.dropDown, styles.z1]}>
+                <View style={[styles.filtersContainers, styles.dropDownContainer, styles.z1]}>
                     <Text>Cuisine: </Text>
                     <DropDownPicker
                         zIndex={2000}
-                        // zIndexInverse={2000}
                         listMode="SCROLLVIEW"
                         open={cuisineOpen}
                         value={cuisine}
@@ -408,13 +402,15 @@ const styles = StyleSheet.create({
 
     subContainer: {
         flex: 10,
+        marginTop: 8,
         paddingBottom: 100,
         justifyContent: "center",
         alignItems: "center",
         width: _screen.width*0.9,
         height: _screen.height*0.6,
         borderRadius: 30,
-        backgroundColor: colorPalette.primary
+        backgroundColor: colorPalette.primary,
+        ...shadowStyle
     },
 
     title: {
@@ -449,7 +445,7 @@ const styles = StyleSheet.create({
         zIndex: 2000
     },
 
-    dropDown: {
+    dropDownContainer: {
         flexDirection: "row",
         paddingHorizontal: 10,
         justifyContent: "space-between",
@@ -478,11 +474,11 @@ const styles = StyleSheet.create({
     checkboxBase: {
         width: 24,
         height: 24,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
         borderRadius: 4,
         borderWidth: 1,
-        borderColor: 'coral',
+        borderColor: "coral",
         backgroundColor: colorPalette.background,
       },
     
