@@ -20,29 +20,22 @@ export type BottomTabParamList = {
   SavoredList: undefined;
 };
 
-export type LoggedOutParamList = {
+export type ChefStackParamList = {
   LoginScreen: undefined;
   SignupScreen: undefined;
-  AboutUsScreen: undefined;
-  MenuScreen: undefined;
-};
-
-export type LoggedInParamList = {
   ChefScreen: undefined;
   AboutUsScreen: undefined;
-  LoginScreen: undefined;
   DeleteAccountScreen: undefined;
-  MenuScreen: undefined;
-  BurgerScreen: undefined;
-};
+}
 
 export type MenuStackParamList = {
+  ChefScreen: undefined;
   MenuScreen: undefined;
   BurgerScreen: undefined;
   ProtectedBurgerScreen: undefined;
 };
 
-export type SavoredListParamList = {
+export type SavoredListStackParamList = {
   SavoredListScreen: undefined;
   RecipeScreen: { recipeId: number };
 };
@@ -109,6 +102,7 @@ export type Recipe = {
   servings: number;
   ingredients: string[];
   smartFilterScore: number;
+  extendedIngredients: Ingredient[]
 };
 
 // Core RecipeState interface
@@ -225,6 +219,18 @@ export type Ingredient = {
       amount: number;
       unitShort: string;
       unitLong: string;
+<<<<<<< HEAD
     };
   };
 };
+=======
+    }
+  }
+}
+
+export type RecipeScreenInfo = {
+  title: string;
+  summary: string;
+  recipeId?: number 
+}
+>>>>>>> 210f6c3dfad3a7a3bd5b2ae26993d60b795ed086

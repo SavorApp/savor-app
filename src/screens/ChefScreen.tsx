@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { LoggedInParamList, RootState, UserState } from "../../types";
+import { ChefStackParamList, RootState, UserState } from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
 import {
@@ -20,7 +20,7 @@ import {
 
 const _screen = Dimensions.get("screen");
 export interface ChefScreenProps {
-  navigation: StackNavigationProp<LoggedInParamList, "ChefScreen">;
+  navigation: StackNavigationProp<ChefStackParamList, "ChefScreen">;
 }
 
 export default function ChefScreen({ navigation }: ChefScreenProps) {
