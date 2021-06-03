@@ -87,7 +87,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
               image_url: resp.user?.photoURL,
             })
           );
-          createUser(resp.user?.uid, resp.user?.email, resp.user?.photoURL);
+          createUser(resp.user?.uid, resp.user?.email);
           navigation.goBack();
         }
       } catch (error) {
