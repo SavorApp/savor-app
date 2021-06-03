@@ -1,14 +1,23 @@
 import axios from "axios";
 import { UserRecipe } from "../../types";
+import { setUser, setUserRecipeListState } from "../redux/actions";
+import { User } from "../../types";
+import { useDispatch } from "react-redux";
 
-export async function leftSwipeAddToDb(rcp: UserRecipe) {
+// const dispatch = useDispatch();
+
+export async function leftSwipeAddToDb(
+  user_id: string | undefined,
+  rcp: UserRecipe
+) {
+  console.log(user_id);
   const recipe = await axios("https://savored-server.herokuapp.com/", {
     method: "POST",
     data: {
       query: `
             mutation addRcp(
                   $user_id: String!,
-                  $recipe_id: Int!,
+                  $id: Int!,
                   $title: String!,
                   $cuisine: String,
                   $dishType: String,
@@ -27,7 +36,7 @@ export async function leftSwipeAddToDb(rcp: UserRecipe) {
                 ) {
               addRecipe(
                 user_id:$user_id
-                recipe_id:$recipe_id,
+                id:$id,
                 title:$title,
                 cuisine:$cuisine,
                 dishType:$dishType,
@@ -41,7 +50,7 @@ export async function leftSwipeAddToDb(rcp: UserRecipe) {
                 isSavored:$isSavored,
                 ) {
                   user_id
-                  recipe_id
+                  id
                   title
                   cuisine
                   dishType
@@ -57,8 +66,8 @@ export async function leftSwipeAddToDb(rcp: UserRecipe) {
             }
             `,
       variables: {
-        user_id: "2",
-        recipe_id: rcp.id,
+        user_id: user_id,
+        id: rcp.id,
         title: rcp.title,
         cuisine: rcp.cuisine,
         dishType: rcp.dishType,
@@ -79,14 +88,17 @@ export async function leftSwipeAddToDb(rcp: UserRecipe) {
   console.log(recipe);
 }
 
-export async function rightSwipeAddToDb(rcp: UserRecipe) {
+export async function rightSwipeAddToDb(
+  user_id: string | undefined,
+  rcp: UserRecipe
+) {
   const recipe = await axios("https://savored-server.herokuapp.com/", {
     method: "POST",
     data: {
       query: `
           mutation addRcp(
                 $user_id: String!,
-                $recipe_id: Int!,
+                $id: Int!,
                 $title: String!,
                 $cuisine: String,
                 $dishType: String,
@@ -105,7 +117,7 @@ export async function rightSwipeAddToDb(rcp: UserRecipe) {
               ) {
             addRecipe(
               user_id:$user_id
-              recipe_id:$recipe_id,
+              id:$id,
               title:$title,
               cuisine:$cuisine,
               dishType:$dishType,
@@ -119,7 +131,7 @@ export async function rightSwipeAddToDb(rcp: UserRecipe) {
               isSavored:$isSavored,
               ) {
                 user_id
-                recipe_id
+                id
                 title
                 cuisine
                 dishType
@@ -135,8 +147,8 @@ export async function rightSwipeAddToDb(rcp: UserRecipe) {
           }
           `,
       variables: {
-        user_id: "2",
-        recipe_id: rcp.id,
+        user_id: user_id,
+        id: rcp.id,
         title: rcp.title,
         cuisine: rcp.cuisine,
         dishType: rcp.dishType,
@@ -183,4 +195,39 @@ export async function createUser(
     },
   });
   console.log(newUser);
+}
+
+export async function getCurrentUser(currentUser: User) {
+  console.log(currentUser.id);
+  const user = await axios("https://savored-server.herokuapp.com/", {
+    method: "POST",
+    data: {
+      query: `
+         query getUser($_id: String!)
+         {user(_id:$_id) {
+          _id
+          username
+          recipes{
+          id
+          title
+          cuisine
+          dishType
+          vegetarian
+          vegan
+          glutenFree
+          dairyFree
+          readyInMinutes
+          servings
+          ingredients
+          isSavored
+           }
+         }}
+            `,
+      variables: {
+        _id: currentUser.id,
+      },
+    },
+  });
+  console.log(user.data.data.user);
+  return user.data.data.user;
 }

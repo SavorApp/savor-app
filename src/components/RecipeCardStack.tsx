@@ -25,12 +25,12 @@ export default function RecipeCardStack({
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   );
-  const userUID = useRef<string | undefined>("");
+  const user_id = useRef<string | undefined>("");
   const cardStackRef = React.useRef<CardStack>();
 
   useEffect(() => {
     console.log("UserState has probably updated", userState.user.id);
-    userUID.current = userState.user.id;
+    user_id.current = userState.user.id;
   }, [userState]);
 
   async function onSwipedLeft(idx: number) {
@@ -55,7 +55,7 @@ export default function RecipeCardStack({
       isSavored: false,
     };
     dispatch(addtoUserRecipeList(recipeToBeAdded));
-    leftSwipeAddToDb(recipeToBeAdded);
+    leftSwipeAddToDb(user_id.current, recipeToBeAdded);
   }
 
   async function onSwipedRight(idx: number) {
@@ -80,7 +80,7 @@ export default function RecipeCardStack({
       isSavored: true,
     };
     dispatch(addtoUserRecipeList(recipeToBeAdded));
-    rightSwipeAddToDb(recipeToBeAdded);
+    rightSwipeAddToDb(user_id.current, recipeToBeAdded);
   }
 
   function handleOnPressLeft() {
