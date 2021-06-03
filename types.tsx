@@ -218,21 +218,21 @@ export type Ingredient = {
       amount: number;
       unitShort: string;
       unitLong: string;
-    }
-  }
-}
+    };
+  };
+};
 
 export type RecipeScreenInfo = {
   title: string;
-  instructions: string,
-  summary: string,
+  instructions: string;
+  summary: string;
   ingredients: string[];
   veryHealthy: boolean;
-  vegan: boolean, 
-  vegetarian: boolean, 
-  dairyFree: boolean,
-  healthScore: number
-  prepTime: number,
-  diets: string[],
-  recipeId?: number 
-}
+  vegan: boolean;
+  vegetarian: boolean;
+  dairyFree: boolean;
+  healthScore: number;
+  prepTime: number;
+  diets: string[];
+  recipeId?: number;
+};
