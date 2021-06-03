@@ -1,17 +1,20 @@
 import React from "react";
 import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
 import { StackNavigationProp } from '@react-navigation/stack';
-import { LoggedInParamList } from "../../types"
+import { useDispatch } from "react-redux";
+import { removeUser, resetFilters, resetUserRecipeListState } from "../redux/actions";
+import { ChefStackParamList } from "../../types"
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 
 const _screen = Dimensions.get("screen");
 
 export interface DeleteAccountScreenProps {
-    navigation: StackNavigationProp<LoggedInParamList, "DeleteAccountScreen">
+    navigation: StackNavigationProp<ChefStackParamList, "DeleteAccountScreen">
 }
 
 
 export default function DeleteAccountScreen({ navigation }: DeleteAccountScreenProps) {
+    const dispatch = useDispatch();
 
     return (
         <View style={styles.container}>
@@ -21,8 +24,13 @@ export default function DeleteAccountScreen({ navigation }: DeleteAccountScreenP
                 <TouchableOpacity
                     onPress={() => {
 
-                        // TODO: Sign Chef out & Delete Account
-                        navigation.navigate("LoginScreen")
+                        // TODO: 
+                        // - Sign Chef out & Delete Account in DB
+                        // - Update global state
+                        dispatch(removeUser());
+                        dispatch(resetUserRecipeListState());
+                        dispatch(resetFilters());
+                        navigation.goBack();
                     }}
                 >
                     <Text>Delete Account</Text>

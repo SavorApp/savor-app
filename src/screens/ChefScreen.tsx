@@ -9,26 +9,33 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { LoggedInParamList, RootState, UserState } from "../../types";
+import { ChefStackParamList, RootState, UserState } from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
-import { removeUser } from "../redux/actions/index";
+import {
+  removeUser,
+  resetUserRecipeListState,
+  resetFilters,
+} from "../redux/actions/index";
 
 const _screen = Dimensions.get("screen");
 export interface ChefScreenProps {
-  navigation: StackNavigationProp<LoggedInParamList, "ChefScreen">;
+  navigation: StackNavigationProp<ChefStackParamList, "ChefScreen">;
 }
 
 export default function ChefScreen({ navigation }: ChefScreenProps) {
-  const userState = useSelector<RootState, UserState>((state) => state.userState);
+  const userState = useSelector<RootState, UserState>(
+    (state) => state.userState
+  );
   const dispatch = useDispatch();
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text style={styles.title}>Chef{"\n"} {userState.user.username}</Text>
-        <View style={styles.profileContainer}>
-        </View>
+        <Text style={styles.title}>
+          Chef{"\n"} {userState.user.username}
+        </Text>
+        <View style={styles.profileContainer}></View>
 
         <TouchableOpacity
           onPress={() => navigation.navigate("AboutUsScreen")}
@@ -52,7 +59,10 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
                 .then(() => {
                   // - Update global state
                   dispatch(removeUser());
-                  navigation.navigate("LoginScreen");
+                  dispatch(resetUserRecipeListState());
+                  dispatch(resetFilters());
+
+                  navigation.goBack();
                 })
                 .catch((error) => {
                   // An error happened.
@@ -134,5 +144,5 @@ const styles = StyleSheet.create({
   bottomButtonsContainer: {
     flexDirection: "row",
     margin: 8,
-  }
+  },
 });

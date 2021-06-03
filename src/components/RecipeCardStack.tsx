@@ -7,20 +7,12 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
 import SwipeButtons from "../components/SwipeButtons";
-
-// Importing JSON data for development and testing
-import * as recipesJson from "../data/recipes.json";
-import { initialState } from "../redux/reducers/recipe";
 import {
   Recipe,
   RootState,
   UserState,
-  FiltersState,
-  UserRecipeListState,
-  LoggedInParamList,
   RecipeCardStackParamList,
 } from "../../types";
-import { useFocusEffect } from "@react-navigation/native";
 
 const _screen = Dimensions.get("screen");
 
@@ -28,47 +20,36 @@ export default function RecipeCardStack({
   randRecipes,
   filtersState,
 }: RecipeCardStackParamList) {
+  const dispatch = useDispatch();
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   );
-  const userRecipeListState = useSelector<RootState, UserRecipeListState>(
-    (state) => state.userRecipeListState
-  );
-  const dispatch = useDispatch();
-  // FOR TEST PURPOSES
-  const [swipedLeftRecipes, setSwipedLeftRecipes] = React.useState<Recipe[]>(
-    []
-  );
-  const [swipedRightRecipes, setSwipedRightRecipes] = React.useState<Recipe[]>(
-    []
-  );
-
-  const userUID: any = useRef("");
+  const userUID = useRef<string | undefined>("");
+  const cardStackRef = React.useRef<CardStack>();
 
   useEffect(() => {
-    console.log("UserState has probably updated", userState.user.id);
     userUID.current = userState.user.id;
   }, [userState]);
 
-  let cardStackRef = React.useRef<CardStack | any>();
   async function onSwipedLeft(idx: number) {
-    console.log("Swiped left");
-
-    // TODO: store it the database instead
-    console.log("onSwipedLeft -> dishType:", filtersState.filters.dishType);
-
     const recipeToBeAdded = {
       id: randRecipes[idx].id,
       title: randRecipes[idx].title,
-      // Change cuisne and dishType to be comma separated string value
       cuisine:
-        filtersState.filters.cuisine === ""
-          ? randRecipes[idx].cuisines.toString()
-          : filtersState.filters.cuisine,
+        filtersState.filters.cuisine !== ""
+          ? filtersState.filters.cuisine[0].toUpperCase() +
+            filtersState.filters.cuisine.slice(1)
+          : randRecipes[idx].cuisines.length === 0
+          ? "World Food"
+          : randRecipes[idx].cuisines[0],
       dishType:
-        filtersState.filters.dishType === ""
-          ? randRecipes[idx].dishTypes.toString()
-          : filtersState.filters.dishType,
+        filtersState.filters.dishType !== ""
+          ? filtersState.filters.dishType[0].toUpperCase() +
+            filtersState.filters.dishType.slice(1)
+          : randRecipes[idx].dishTypes.length === 0
+          ? "Many"
+          : randRecipes[idx].dishTypes[0][0].toUpperCase() +
+            randRecipes[idx].dishTypes[0].slice(1),
       vegetarian: randRecipes[idx].vegetarian,
       vegan: randRecipes[idx].vegan,
       glutenFree: randRecipes[idx].glutenFree,
@@ -78,74 +59,67 @@ export default function RecipeCardStack({
       ingredients: randRecipes[idx].ingredients,
       isSavored: false,
     };
-
-    const notSavoredRecipe = await axios(
-      "https://savored-server.herokuapp.com/",
-      {
-        method: "POST",
-        data: {
-          query: `
-            mutation addRcp(
-                $user_id: String!, 
-                $recipe_id: Int!, 
-                $title: String!, 
-                $is_savored: Boolean!, 
-                $summary: String!, 
-                ) {
-              addRecipe(
-                user_id:$user_id, 
-                recipe_id:$recipe_id, 
-                title:$title, 
-                is_savored:$is_savored, 
-                summary:$summary, 
-                ) {
-               user_id
-               recipe_id
-               title
-               is_savored
-               summary
-              }
-            }
-            `,
-          variables: {
-            user_id: userUID.current,
-            recipe_id: recipeToBeAdded.id,
-            title: recipeToBeAdded.title,
-            is_savored: false,
-            summary: "delicious dude",
-          },
-        },
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    console.log(notSavoredRecipe);
-
     dispatch(addtoUserRecipeList(recipeToBeAdded));
 
-    swipedLeftRecipes.push(randRecipes[idx]);
-    setSwipedLeftRecipes(swipedLeftRecipes);
+    // await axios("https://savored-server.herokuapp.com/", {
+    //   method: "POST",
+    //   data: {
+    //     query: `
+    //         mutation addRcp(
+    //             $user_id: String!,
+    //             $recipe_id: Int!,
+    //             $title: String!,
+    //             $is_savored: Boolean!,
+    //             $summary: String!,
+    //             ) {
+    //           addRecipe(
+    //             user_id:$user_id,
+    //             recipe_id:$recipe_id,
+    //             title:$title,
+    //             is_savored:$is_savored,
+    //             summary:$summary,
+    //             ) {
+    //            user_id
+    //            recipe_id
+    //            title
+    //            is_savored
+    //            summary
+    //           }
+    //         }
+    //         `,
+    //     variables: {
+    //       user_id: userUID.current,
+    //       recipe_id: recipeToBeAdded.id,
+    //       title: recipeToBeAdded.title,
+    //       is_savored: false,
+    //       summary: "delicious dude",
+    //     },
+    //   },
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
   }
 
   async function onSwipedRight(idx: number) {
-    console.log("Swiped right");
-
-    // TODO: store it the database instead
-    console.log("onSwipedRight -> dishType:", filtersState.filters.dishType);
-
     const recipeToBeAdded = {
       id: randRecipes[idx].id,
       title: randRecipes[idx].title,
       cuisine:
-        filtersState.filters.cuisine === ""
-          ? randRecipes[idx].cuisines.toString()
-          : filtersState.filters.cuisine,
+        filtersState.filters.cuisine !== ""
+          ? filtersState.filters.cuisine[0].toUpperCase() +
+            filtersState.filters.cuisine.slice(1)
+          : randRecipes[idx].cuisines.length === 0
+          ? "World Food"
+          : randRecipes[idx].cuisines[0],
       dishType:
-        filtersState.filters.dishType === ""
-          ? randRecipes[idx].dishTypes.toString()
-          : filtersState.filters.dishType,
+        filtersState.filters.dishType !== ""
+          ? filtersState.filters.dishType[0].toUpperCase() +
+            filtersState.filters.dishType.slice(1)
+          : randRecipes[idx].dishTypes.length === 0
+          ? "Many"
+          : randRecipes[idx].dishTypes[0][0].toUpperCase() +
+            randRecipes[idx].dishTypes[0].slice(1),
       vegetarian: randRecipes[idx].vegetarian,
       vegan: randRecipes[idx].vegan,
       glutenFree: randRecipes[idx].glutenFree,
@@ -157,57 +131,52 @@ export default function RecipeCardStack({
     };
     dispatch(addtoUserRecipeList(recipeToBeAdded));
 
-    const savoredRecipe = await axios("https://savored-server.herokuapp.com/", {
-      method: "POST",
-      data: {
-        query: `
-            mutation addRcp(
-                $user_id: String!, 
-                $recipe_id: Int!, 
-                $title: String!, 
-                $is_savored: Boolean!, 
-                $summary: String!, 
-                ) {
-              addRecipe(
-                user_id:$user_id, 
-                recipe_id:$recipe_id, 
-                title:$title, 
-                is_savored:$is_savored, 
-                summary:$summary, 
-                ) {
-               user_id
-               recipe_id
-               title
-               is_savored
-               summary
-              }
-            }
-            `,
-        variables: {
-          user_id: userUID.current,
-          recipe_id: recipeToBeAdded.id,
-          title: recipeToBeAdded.title,
-          is_savored: true,
-          summary: "delicious dude",
-        },
-      },
-
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(savoredRecipe);
-
-    swipedRightRecipes.push(randRecipes[idx]);
-    setSwipedRightRecipes(swipedRightRecipes);
+    // await axios("https://savored-server.herokuapp.com/", {
+    //   method: "POST",
+    //   data: {
+    //     query: `
+    //         mutation addRcp(
+    //             $user_id: String!,
+    //             $recipe_id: Int!,
+    //             $title: String!,
+    //             $is_savored: Boolean!,
+    //             $summary: String!,
+    //             ) {
+    //           addRecipe(
+    //             user_id:$user_id,
+    //             recipe_id:$recipe_id,
+    //             title:$title,
+    //             is_savored:$is_savored,
+    //             summary:$summary,
+    //             ) {
+    //            user_id
+    //            recipe_id
+    //            title
+    //            is_savored
+    //            summary
+    //           }
+    //         }
+    //         `,
+    //     variables: {
+    //       user_id: userUID.current,
+    //       recipe_id: recipeToBeAdded.id,
+    //       title: recipeToBeAdded.title,
+    //       is_savored: true,
+    //       summary: "delicious dude",
+    //     },
+    //   },
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // });
   }
 
   function handleOnPressLeft() {
-    cardStackRef.current.swipeLeft();
+    cardStackRef.current?.swipeLeft();
   }
 
   function handleOnPressRight() {
-    cardStackRef.current.swipeRight();
+    cardStackRef.current?.swipeRight();
   }
 
   return (
@@ -220,9 +189,9 @@ export default function RecipeCardStack({
           }}
           renderNoMoreCards={() => {
             return (
-              <Text style={{ justifyContent: "center", alignItems: "center" }}>
-                No More Recipes
-              </Text>
+              <View>
+                <Text style={styles.renderNoMoreCards}>No More Recipes</Text>
+              </View>
             );
           }}
           disableBottomSwipe
@@ -239,10 +208,7 @@ export default function RecipeCardStack({
                   onSwipedRight(idx);
                 }}
               >
-                <RecipeCard
-                  rcp={rcp}
-                  id={rcp.id}
-                />
+                <RecipeCard rcp={rcp} id={rcp.id} />
               </Card>
             );
           })}
@@ -277,5 +243,13 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: colorPalette.primary,
     ...shadowStyle,
+  },
+
+  renderNoMoreCards: {
+    justifyContent: "center",
+    alignItems: "center",
+    textAlign: "center",
+    marginBottom: 250,
+    color: "white",
   },
 });

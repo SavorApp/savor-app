@@ -24,9 +24,9 @@ export const cuisineMap: Map = {
 
 export const dishTypeMap: Map = {
     All: <MaterialCommunityIcons name="emoticon-outline" />,
-    breakfast: <MaterialCommunityIcons name="silverware-variant" />,
-    lunch: <MaterialCommunityIcons name="silverware-variant" />,
-    dinner: <MaterialCommunityIcons name="silverware-variant" />,
-    dessert: <MaterialCommunityIcons name="cupcake" />,
-    beverage: <MaterialCommunityIcons name="glass-cocktail" />
+    Breakfast: <MaterialCommunityIcons name="silverware-variant" />,
+    Lunch: <MaterialCommunityIcons name="silverware-variant" />,
+    Dinner: <MaterialCommunityIcons name="silverware-variant" />,
+    Dessert: <MaterialCommunityIcons name="cupcake" />,
+    Beverage: <MaterialCommunityIcons name="glass-cocktail" />
 }

@@ -1,21 +1,42 @@
-import React from 'react'
-import { View, Image, StyleSheet, Text } from 'react-native'
+import React from "react";
+import { View, StyleSheet, Text, Dimensions } from "react-native";
+import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+
+const _screen = Dimensions.get("screen");
 
 export default function LoadingCardStack() {
-
-        //TODO: Display the titles of the recipes
-        return (
-            <View>
-                {/* <Text style={styles.title}>{rcp.title}</Text> */}
-                <Text style={styles.loadingText} >Loading...</Text>
-            </View>
-        )
-    }
+  return (
+    <View style={styles.container}>
+      <View style={styles.subContainer}>
+          <View style={styles.loadingContent}>
+            <Text style={{color: "white", fontSize: 24}}>Loading Recipes...</Text>
+          </View>
+      </View>
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
-    
-    loadingText: {
-        justifyContent:'center',
-        alignItems: "center"
-    }
-}) 
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colorPalette.background,
+  },
+
+  subContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: _screen.width * 0.9,
+    height: _screen.height * 0.75,
+    borderRadius: 30,
+    backgroundColor: colorPalette.primary,
+    ...shadowStyle,
+  },
+
+  loadingContent: {
+    justifyContent: "center",
+    alignItems: "center",
+  }
+
+});

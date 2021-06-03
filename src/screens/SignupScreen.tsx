@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   StyleSheet,
   Dimensions,
@@ -12,14 +12,14 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { LoggedOutParamList } from "../../types";
+import { ChefStackParamList } from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
 import { setUser } from "../redux/actions";
 import axios from "axios";
 const _screen = Dimensions.get("screen");
 export interface SignupScreenProps {
-  navigation: StackNavigationProp<LoggedOutParamList, "SignupScreen">;
+  navigation: StackNavigationProp<ChefStackParamList, "SignupScreen">;
 }
 
 export default function SignupScreen({ navigation }: SignupScreenProps) {
@@ -65,14 +65,6 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
           .auth()
           .createUserWithEmailAndPassword(email, password);
         if (resp.additionalUserInfo?.isNewUser) {
-          // TODO:
-          // Send user info, WRITE TO DB
-
-          // Update UserState with resp.user
-
-
-          //TODO:
-          //Send user info to DB
           const newUser = await axios("https://savored-server.herokuapp.com/", {
             method: "POST",
             data: {
@@ -93,8 +85,6 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
               "Content-Type": "application/json",
             },
           });
-          console.log(newUser);
-          //Update global state
 
           dispatch(
             setUser({
@@ -103,7 +93,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
               image_url: resp.user?.photoURL,
             })
           );
-          navigation.navigate("MenuScreen");
+          navigation.goBack();
         }
       } catch (error) {
         Alert.alert("Invalid Request", error.message);

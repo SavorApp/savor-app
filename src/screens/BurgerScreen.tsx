@@ -7,13 +7,13 @@ import Emoji from "react-native-emoji";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { useSelector, useDispatch } from "react-redux";
-import { LoggedInParamList, RootState, FiltersState, UserState } from "../../types";
+import { RootState, FiltersState, UserState, MenuStackParamList } from "../../types";
 import { updateFilters } from "../redux/actions";
 
 const _screen = Dimensions.get("screen");
 
 export interface BurgerScreenProps {
-    navigation: StackNavigationProp<LoggedInParamList, "BurgerScreen">
+    navigation: StackNavigationProp<MenuStackParamList, "BurgerScreen">
 }
 
 export default function BurgerScreen({ navigation }: BurgerScreenProps) {
@@ -240,8 +240,8 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
         // - Update filters table with userState.id and,
         //   updated Filters.
 
-        // Navigate to menu screen
-        navigation.navigate("MenuScreen");
+        // Navigate back to MenuScreen
+        navigation.goBack()
     }
 
 
