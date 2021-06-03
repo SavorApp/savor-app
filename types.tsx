@@ -52,6 +52,7 @@ export interface RootState {
   recipeState: RecipeState;
   userRecipeListState: UserRecipeListState;
   filtersState: FiltersState;
+  reloadRecipesState: ReloadRecipesState;
 }
 
 // Core User type
@@ -69,41 +70,6 @@ export interface UserState {
 
 // Core User action
 export type UserAction = { type: string; payload: User };
-
-// Empty User action
-
-export type EmptyAction = {
-  type: string;
-};
-
-// Core Recipe type
-export type Recipe = {
-  id: number;
-  sourceUrl: string;
-  image: string | undefined;
-  imageType: string | undefined;
-  title: string;
-  diets: never[] | string[];
-  cuisines: string[];
-  dishTypes: string[];
-  vegetarian: Boolean;
-  vegan: Boolean;
-  glutenFree: Boolean;
-  dairyFree: Boolean;
-  veryHealthy: Boolean;
-  cheap: Boolean;
-  veryPopular: Boolean;
-  sustainable: Boolean;
-  aggregateLikes: number;
-  spoonacularScore: number;
-  healthScore: number;
-  pricePerServing: number;
-  readyInMinutes: number;
-  servings: number;
-  ingredients: string[];
-  smartFilterScore: number;
-  extendedIngredients?: Ingredient[]
-};
 
 // Core RecipeState interface
 export interface RecipeState {
@@ -161,6 +127,16 @@ export interface FiltersState {
 // Core Filters action
 export type FiltersAction = { type: string; payload: FiltersState | Filters };
 
+// Core ReloadRecipesState interface
+export interface ReloadRecipesState {
+  reload: Boolean
+}
+
+// Empty action for resets
+export type EmptyAction = {
+  type: string;
+};
+
 /*
  _____________________________
  Components Property Objects
@@ -194,6 +170,36 @@ export type InputUser = {
   password: string;
 };
 
+// Spoonacular Recipe type
+export type Recipe = {
+  id: number;
+  sourceUrl: string;
+  image: string | undefined;
+  imageType: string | undefined;
+  title: string;
+  diets: never[] | string[];
+  cuisines: string[];
+  dishTypes: string[];
+  vegetarian: Boolean;
+  vegan: Boolean;
+  glutenFree: Boolean;
+  dairyFree: Boolean;
+  veryHealthy: Boolean;
+  cheap: Boolean;
+  veryPopular: Boolean;
+  sustainable: Boolean;
+  aggregateLikes: number;
+  spoonacularScore: number;
+  healthScore: number;
+  pricePerServing: number;
+  readyInMinutes: number;
+  servings: number;
+  ingredients: string[];
+  smartFilterScore: number;
+  extendedIngredients?: Ingredient[]
+};
+
+// Spoonacular Ingredient type
 export type Ingredient = {
   id: number;
   aisle: string;
@@ -222,6 +228,7 @@ export type Ingredient = {
   };
 };
 
+// Recipe Screen Info type
 export type RecipeScreenInfo = {
   title: string;
   instructions: string;

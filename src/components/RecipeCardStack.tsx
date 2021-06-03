@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { StyleSheet, Dimensions, View, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { addtoUserRecipeList } from "../redux/actions";
+import { addtoUserRecipeList, triggerReload } from "../redux/actions";
 import axios from "axios";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import CardStack, { Card } from "react-native-card-stack-swiper";
@@ -18,7 +18,7 @@ const _screen = Dimensions.get("screen");
 
 export default function RecipeCardStack({
   randRecipes,
-  filtersState,
+  filtersState
 }: RecipeCardStackParamList) {
   const dispatch = useDispatch();
   const userState = useSelector<RootState, UserState>(
@@ -99,6 +99,11 @@ export default function RecipeCardStack({
     //     "Content-Type": "application/json",
     //   },
     // });
+
+    // If we are at the last card, trigger a reload
+    if (randRecipes.length - idx === 1) {
+      dispatch(triggerReload());
+    }
   }
 
   async function onSwipedRight(idx: number) {
@@ -169,6 +174,11 @@ export default function RecipeCardStack({
     //     "Content-Type": "application/json",
     //   },
     // });
+
+    // If we are at the last card, trigger a reload
+    if (randRecipes.length - idx === 1) {
+      dispatch(triggerReload());
+    }
   }
 
   function handleOnPressLeft() {

@@ -1,21 +1,21 @@
 import React from "react";
-import { Alert } from "react-native";
+import { Alert, TouchableOpacity, View, Text } from "react-native";
 import Constants from "expo-constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { resetReload } from "../redux/actions";
 import axios from "axios";
 import RecipeCardStack from "../components/RecipeCardStack";
 import LoadingCardStack from "../components/LoadingCardStack";
 import { applySmartFilter, removeViewedRecipes } from "../utils";
-
 // Importing JSON data for development and testing
-import * as recipesJson from "../data/100Recipes.json";
-import { initialState } from "../redux/reducers/recipe";
+import * as recipesJson from "../data/recipes.json";
 import {
   Recipe,
   RootState,
   FiltersState,
   UserRecipeListState,
   Ingredient,
+  ReloadRecipesState
 } from "../../types";
 
 // Initializing Spoonacular resources
@@ -23,15 +23,17 @@ const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
 const RAND_RECIPE_BASE_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&`;
 
 export default function MenuScreen() {
+  const dispatch = useDispatch();
   const userRecipeListState = useSelector<RootState, UserRecipeListState>(
     (state) => state.userRecipeListState
   );
   const filtersState = useSelector<RootState, FiltersState>(
     (state) => state.filtersState
   );
-  const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([
-    initialState.recipe,
-  ]);
+  const reloadRecipesState = useSelector<RootState, ReloadRecipesState>(
+    (state) => state.reloadRecipesState
+  );
+  const [randRecipes, setRandRecipes] = React.useState<Recipe[]>([]);
   const [isCardStackLoading, setIsCardStackLoading] =
     React.useState<boolean>(true);
 
@@ -170,18 +172,23 @@ export default function MenuScreen() {
     }
   }
 
-  // On update
+  // On filter update
   React.useEffect(() => {
     setIsCardStackLoading(true);
     fetchRandomRecipes();
   }, [filtersState]);
 
-  // Listen to when randRecipes get set
-  // TODO:
-  // - On load/before render make API requests for randomized Recipes (Spoonacular)
-  // - Apply filters
-  // - Compare against User"s viewed Recipes list if User is logged in
-  // - Apply score and sorting if smart filter is turned on
+// on reaload trigger
+  React.useEffect(() => {
+    // if reload recipe = true
+    if (reloadRecipesState.reload) {
+      console.log("Menu Screen Reload Attempt")
+      setIsCardStackLoading(true);
+      fetchRandomRecipes();
+      dispatch(resetReload());
+    }
+  }, [reloadRecipesState]);
+
 
   return isCardStackLoading ? (
     <LoadingCardStack />

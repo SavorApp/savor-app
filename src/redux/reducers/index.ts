@@ -1,5 +1,5 @@
 import { userReducer } from "./user";
-import { recipeReducer } from "./recipe"
+import { reloadRecipesReducer } from "./reloadRecipes"
 import { userRecipeListReducer } from "./UserRecipeList"
 import { filtersReducer } from "./filters"
 import { combineReducers } from "redux";
@@ -7,7 +7,7 @@ import { combineReducers } from "redux";
 
 const rootReducer = combineReducers({
     userState: userReducer,
-    recipeState: recipeReducer,
+    reloadRecipesState: reloadRecipesReducer,
     userRecipeListState: userRecipeListReducer,
     filtersState: filtersReducer
 });
