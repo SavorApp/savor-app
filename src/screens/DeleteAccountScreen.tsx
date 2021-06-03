@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch } from "react-redux";
-import { removeUser } from "../redux/actions";
+import { removeUser, resetFilters, resetUserRecipeListState } from "../redux/actions";
 import { ChefStackParamList } from "../../types"
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 
@@ -24,9 +24,12 @@ export default function DeleteAccountScreen({ navigation }: DeleteAccountScreenP
                 <TouchableOpacity
                     onPress={() => {
 
-                        // TODO: Sign Chef out & Delete Account
+                        // TODO: 
+                        // - Sign Chef out & Delete Account in DB
                         // - Update global state
                         dispatch(removeUser());
+                        dispatch(resetUserRecipeListState());
+                        dispatch(resetFilters());
                         navigation.goBack();
                     }}
                 >

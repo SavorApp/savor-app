@@ -28,7 +28,6 @@ export default function getCacheLoadData() {
             // TODO:
             // - Get cached data or,
             // - Make appropriate API requests
-            console.log(currentUser.id);
             // Add all recipe properties
             async function getCurrentUser() {
               const user = await axios(
@@ -55,7 +54,6 @@ export default function getCacheLoadData() {
                   },
                 }
               );
-              console.log(user.data.data.user?.recipes);
               if (Array.isArray(user.data.data.user?.recipes)) {
                 dispatch(setUserRecipeListState(user.data.data.user?.recipes));
               }

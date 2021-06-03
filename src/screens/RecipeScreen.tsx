@@ -1,95 +1,151 @@
 import React from "react";
-import { StyleSheet, Dimensions, View, Text, ScrollView, Platform } from "react-native";
+import {
+  StyleSheet,
+  Dimensions,
+  View,
+  Text,
+  ScrollView,
+  Platform,
+  Alert,
+} from "react-native";
+import Constants from "expo-constants";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import HTML from "react-native-render-html";
+import axios from "axios";
 import * as recipeJson from "../data/100Recipes.json";
 import { Ingredient, RecipeScreenInfo } from "../../types";
 import LoadingRecipeInfo from "../components/loadingRecipeInfo";
-import HTML from 'react-native-render-html';
-
 
 const _screen = Dimensions.get("screen");
 
+const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
+const RECIPE_INFO_BASE_URL = `https://api.spoonacular.com/recipes/`;
+
 export default function RecipeScreen({ route }: { route: any }) {
   const { recipeId } = route.params;
-  const [recipeInfos, setRecipeInfos] = React.useState<RecipeScreenInfo | undefined>({
+  const ENDPOINT = `${recipeId}/information?apiKey=${API_KEY}&includeNutrition=false`;
+
+  const [recipeInfo, setRecipeInfo] = React.useState<
+    RecipeScreenInfo | undefined
+  >({
     title: "",
     instructions: "",
     summary: "",
-    ingredients: [""],
+    ingredients: [""], // Change to array with ingredient objects that contain measurement information also
     veryHealthy: true,
     vegetarian: true,
     vegan: true,
     dairyFree: true,
     healthScore: 0,
     prepTime: 0,
-    diets: [""]
+    diets: [""],
   });
 
   const [isInfoLoading, setIsInfoLoading] = React.useState(true);
 
-  function getRecipeInfos() {
-    const recipes = recipeJson.recipes;
-
-    for (let recipe of recipes) {
-      if (recipe.id === recipeId) {
-        setRecipeInfos({
-          title: recipe.title,
-          instructions: recipe.instructions,
-          summary: recipe.summary,
-          ingredients: (recipe.extendedIngredients as Array<Ingredient>).map((recipeInfo: Ingredient) => {
-            return recipeInfo.name;
-          }),
-          veryHealthy: recipe.veryHealthy,
-          vegetarian: recipe.vegetarian,
-          vegan: recipe.vegan,
-          dairyFree: recipe.dairyFree,
-          healthScore: recipe.healthScore,
-          prepTime: recipe.readyInMinutes,
-          diets: recipe.diets,
-
-        })
-      }
+  async function getRecipeInfos() {
+    try {
+      const resp = await axios.get(RECIPE_INFO_BASE_URL + ENDPOINT);
+      const fetchedRecipe = resp.data;
+      setRecipeInfo({
+        title: fetchedRecipe.title,
+        instructions: fetchedRecipe.instructions,
+        summary: fetchedRecipe.summary,
+        ingredients: (
+          fetchedRecipe.extendedIngredients as Array<Ingredient>
+        ).map((ing: Ingredient) => {
+          return ing.name;
+        }),
+        veryHealthy: fetchedRecipe.veryHealthy,
+        vegetarian: fetchedRecipe.vegetarian,
+        vegan: fetchedRecipe.vegan,
+        dairyFree: fetchedRecipe.dairyFree,
+        healthScore: fetchedRecipe.healthScore,
+        prepTime: fetchedRecipe.readyInMinutes,
+        diets: fetchedRecipe.diets,
+      });
+      setIsInfoLoading(false);
+    } catch {
+      Alert.alert(
+        "Server Error 🤕",
+        "Sorry for the inconvenience, please try again later."
+      );
     }
-  }
 
+    // FOR TESTING USE JSON
+    // const recipes = recipeJson.recipes;
+
+    // for (let recipe of recipes) {
+    //   if (recipe.id === recipeId) {
+    //     setRecipeInfo({
+    //       title: recipe.title,
+    //       instructions: recipe.instructions,
+    //       summary: recipe.summary,
+    //       ingredients: (recipe.extendedIngredients as Array<Ingredient>).map((ing: Ingredient) => {
+    //         return ing.name;
+    //       }),
+    //       veryHealthy: recipe.veryHealthy,
+    //       vegetarian: recipe.vegetarian,
+    //       vegan: recipe.vegan,
+    //       dairyFree: recipe.dairyFree,
+    //       healthScore: recipe.healthScore,
+    //       prepTime: recipe.readyInMinutes,
+    //       diets: recipe.diets,
+
+    //     })
+    // }
+    // }
+  }
 
   React.useEffect(() => {
     getRecipeInfos();
-    setIsInfoLoading(false);
-
-    // Load data
-    //isLoading = false
-  }, [isInfoLoading])
+  }, []);
 
   // TODO: take recipeId and make API request for Recipe information
-  return (
-    recipeInfos?.title ?
+  return isInfoLoading ? (
+    <LoadingRecipeInfo recipeId={recipeId} />
+  ) : (
+    recipeInfo && (
       <View style={styles.container}>
         <View style={styles.subContainer}>
-          <Text style={styles.title}>{recipeInfos.title}</Text>
+          <Text style={styles.title}>{recipeInfo.title}</Text>
           <View style={styles.contentContainer}>
             <ScrollView style={styles.scrollView}>
-              <Text style={styles.subTitle}>Instructions</Text>
-              <HTML source={{ html: recipeInfos.instructions }} />
               <Text style={styles.subTitle}>Summary</Text>
-              <HTML source={{ html: recipeInfos.summary }} />
+              <HTML source={{ html: recipeInfo.summary }} />
               <Text style={styles.subTitle}>Ingredients</Text>
-              <Text style={styles.ingredients}>{recipeInfos.ingredients}</Text>
+              {recipeInfo.ingredients.map((ing) => {
+                return <Text>{ing}</Text>;
+              })}
+              <Text style={styles.subTitle}>Instructions</Text>
+              <HTML source={{ html: recipeInfo.instructions }} />
               <Text style={styles.subTitle}>Extra-Information</Text>
-              <Text style={styles.ingredients}>VeryHealthy: {recipeInfos.veryHealthy ? "✅" : "❌"}</Text>
-              <Text style={styles.ingredients}>Vegetarian: {recipeInfos.vegetarian ? "✅" : "❌"}</Text>
-              <Text style={styles.ingredients}>Vegan: {recipeInfos.vegan ? "✅" : "❌"}</Text>
-              <Text style={styles.ingredients}>Dairy-Free: {recipeInfos.dairyFree ? "✅" : "❌"}</Text>
+              <Text style={styles.ingredients}>
+                VeryHealthy: {recipeInfo.veryHealthy ? "✅" : "❌"}
+              </Text>
+              <Text style={styles.ingredients}>
+                Vegetarian: {recipeInfo.vegetarian ? "✅" : "❌"}
+              </Text>
+              <Text style={styles.ingredients}>
+                Vegan: {recipeInfo.vegan ? "✅" : "❌"}
+              </Text>
+              <Text style={styles.ingredients}>
+                Dairy-Free: {recipeInfo.dairyFree ? "✅" : "❌"}
+              </Text>
 
-              <Text style={styles.ingredients}>Health score:  {recipeInfos.healthScore}</Text>
-              <Text style={styles.ingredients}>Prep Time:  {recipeInfos.prepTime} min</Text>
-              <Text style={styles.ingredients}>Diets:  {(recipeInfos.diets)}</Text>
-
-            </ScrollView >
+              <Text style={styles.ingredients}>
+                Health score: {recipeInfo.healthScore}
+              </Text>
+              <Text style={styles.ingredients}>
+                Prep Time: {recipeInfo.prepTime} min
+              </Text>
+              <Text style={styles.ingredients}>Diets: {recipeInfo.diets}</Text>
+              <Text>{"\n\n\n"}</Text>
+            </ScrollView>
           </View>
         </View>
-      </View> :
-      <LoadingRecipeInfo recipeId={recipeId} />
+      </View>
+    )
   );
 }
 
@@ -108,7 +164,7 @@ const styles = StyleSheet.create({
     height: _screen.height * 0.8,
     borderRadius: 30,
     backgroundColor: colorPalette.primary,
-    ...shadowStyle
+    ...shadowStyle,
   },
   title: {
     marginVertical: 8,
@@ -130,7 +186,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 15,
     width: _screen.width * 0.7,
-    ...shadowStyle
+    ...shadowStyle,
   },
   contentContainer: {
     justifyContent: "center",
@@ -153,7 +209,5 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 5,
   },
-  ingredients: {
-
-  }
+  ingredients: {},
 });
