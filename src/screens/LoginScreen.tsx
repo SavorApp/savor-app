@@ -109,6 +109,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
         })
         .catch((error: any) => {
           // Handle Errors here.
+          console.log(error);
           const errorCode = error.code;
           const errorMessage = error.message;
         });
