@@ -47,7 +47,7 @@ export default function RecipeCardStack({
           ? filtersState.filters.dishType[0].toUpperCase() +
             filtersState.filters.dishType.slice(1)
           : randRecipes[idx].dishTypes.length === 0
-          ? "Many"
+          ? "Other"
           : randRecipes[idx].dishTypes[0][0].toUpperCase() +
             randRecipes[idx].dishTypes[0].slice(1),
       vegetarian: randRecipes[idx].vegetarian,
@@ -122,7 +122,7 @@ export default function RecipeCardStack({
           ? filtersState.filters.dishType[0].toUpperCase() +
             filtersState.filters.dishType.slice(1)
           : randRecipes[idx].dishTypes.length === 0
-          ? "Many"
+          ? "Other"
           : randRecipes[idx].dishTypes[0][0].toUpperCase() +
             randRecipes[idx].dishTypes[0].slice(1),
       vegetarian: randRecipes[idx].vegetarian,
