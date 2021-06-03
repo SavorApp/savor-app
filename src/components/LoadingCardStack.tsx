@@ -9,7 +9,7 @@ export default function LoadingCardStack() {
     <View style={styles.container}>
       <View style={styles.subContainer}>
           <View style={styles.loadingContent}>
-            <Text style={{color: "white", fontSize: 24}}>Loading...</Text>
+            <Text style={{color: "white", fontSize: 24}}>Loading Recipes...</Text>
           </View>
       </View>
     </View>

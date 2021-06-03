@@ -49,13 +49,13 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
         activeOpacity={0.8}
       >
         <View style={styles.recipeListItemInner}>
-          {cuisineMap[rcp.cuisine]}
+          {cuisineMap[rcp.cuisine] || cuisineMap["All"]}
           <View  style={styles.recipeListItemInnerContent}>
             <Text style={styles.recipeTitle}>{newTitle}</Text>
             <View style={styles.tagsContainer}>
               <View style={styles.singleTagContainer}>
-              {dishTypeMap[rcp.dishType]}
-                <Text style={styles.tag}>{rcp.dishType[0].toUpperCase() + rcp.dishType.slice(1)}</Text>
+              {dishTypeMap[rcp.dishType] || dishTypeMap["All"]}
+                <Text style={styles.tag}>{rcp.dishType}</Text>
               </View>
               {rcp.vegetarian && (
                 <View style={styles.singleTagContainer}>

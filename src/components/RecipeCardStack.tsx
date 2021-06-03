@@ -28,7 +28,6 @@ export default function RecipeCardStack({
   const cardStackRef = React.useRef<CardStack>();
 
   useEffect(() => {
-    console.log("UserState has probably updated", userState.user.id);
     userUID.current = userState.user.id;
   }, [userState]);
 
@@ -37,13 +36,20 @@ export default function RecipeCardStack({
       id: randRecipes[idx].id,
       title: randRecipes[idx].title,
       cuisine:
-        filtersState.filters.cuisine === ""
-          ? randRecipes[idx].cuisines.toString()
-          : filtersState.filters.cuisine,
+        filtersState.filters.cuisine !== ""
+          ? filtersState.filters.cuisine[0].toUpperCase() +
+            filtersState.filters.cuisine.slice(1)
+          : randRecipes[idx].cuisines.length === 0
+          ? "World Food"
+          : randRecipes[idx].cuisines[0],
       dishType:
-        filtersState.filters.dishType === ""
-          ? randRecipes[idx].dishTypes.toString()
-          : filtersState.filters.dishType,
+        filtersState.filters.dishType !== ""
+          ? filtersState.filters.dishType[0].toUpperCase() +
+            filtersState.filters.dishType.slice(1)
+          : randRecipes[idx].dishTypes.length === 0
+          ? "Many"
+          : randRecipes[idx].dishTypes[0][0].toUpperCase() +
+            randRecipes[idx].dishTypes[0].slice(1),
       vegetarian: randRecipes[idx].vegetarian,
       vegan: randRecipes[idx].vegan,
       glutenFree: randRecipes[idx].glutenFree,
@@ -100,13 +106,20 @@ export default function RecipeCardStack({
       id: randRecipes[idx].id,
       title: randRecipes[idx].title,
       cuisine:
-        filtersState.filters.cuisine === ""
-          ? randRecipes[idx].cuisines.toString()
-          : filtersState.filters.cuisine,
+        filtersState.filters.cuisine !== ""
+          ? filtersState.filters.cuisine[0].toUpperCase() +
+            filtersState.filters.cuisine.slice(1)
+          : randRecipes[idx].cuisines.length === 0
+          ? "World Food"
+          : randRecipes[idx].cuisines[0],
       dishType:
-        filtersState.filters.dishType === ""
-          ? randRecipes[idx].dishTypes.toString()
-          : filtersState.filters.dishType,
+        filtersState.filters.dishType !== ""
+          ? filtersState.filters.dishType[0].toUpperCase() +
+            filtersState.filters.dishType.slice(1)
+          : randRecipes[idx].dishTypes.length === 0
+          ? "Many"
+          : randRecipes[idx].dishTypes[0][0].toUpperCase() +
+            randRecipes[idx].dishTypes[0].slice(1),
       vegetarian: randRecipes[idx].vegetarian,
       vegan: randRecipes[idx].vegan,
       glutenFree: randRecipes[idx].glutenFree,
