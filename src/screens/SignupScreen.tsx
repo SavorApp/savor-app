@@ -7,7 +7,7 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Alert
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -17,6 +17,7 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
 import { setUser } from "../redux/actions";
 import axios from "axios";
+import { createUser } from "../db/db";
 const _screen = Dimensions.get("screen");
 export interface SignupScreenProps {
   navigation: StackNavigationProp<ChefStackParamList, "SignupScreen">;
@@ -46,20 +47,13 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
     // Also check that the email is somewhat valid
 
     if (!/^\S+@\S+\.\S+$/.test(email)) {
-      Alert.alert(
-        "Invalid Email",
-        "Please enter a valid email."
-      );
-    }
-
-    else if (password.length < 6) {
+      Alert.alert("Invalid Email", "Please enter a valid email.");
+    } else if (password.length < 6) {
       Alert.alert(
         "Invalid Password",
         "Password must be 6 characters or longer."
       );
-    }
-
-    else {
+    } else {
       try {
         const resp = await firebaseApp
           .auth()
@@ -93,11 +87,11 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
               image_url: resp.user?.photoURL,
             })
           );
+          createUser(resp.user?.uid, resp.user?.email, resp.user?.photoURL);
           navigation.goBack();
         }
       } catch (error) {
         Alert.alert("Invalid Request", error.message);
-
       }
     }
   }
@@ -126,8 +120,8 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
                   size={20}
                 />
               ) : (
-                  <></>
-                )}
+                <></>
+              )}
             </View>
 
             <View style={[styles.input, { justifyContent: "space-between" }]}>
@@ -150,17 +144,14 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
                     size={20}
                   />
                 ) : (
-                    <MaterialCommunityIcons name="eye" color="grey" size={20} />
-                  )}
+                  <MaterialCommunityIcons name="eye" color="grey" size={20} />
+                )}
               </TouchableOpacity>
             </View>
           </View>
 
           <View style={styles.signInButtonContainer}>
-            <TouchableOpacity
-              onPress={handleSignUp}
-              activeOpacity={0.8}
-            >
+            <TouchableOpacity onPress={handleSignUp} activeOpacity={0.8}>
               <LinearGradient
                 colors={[colorPalette.popLight, colorPalette.popDark]}
                 style={styles.signUpButton}
