@@ -26,7 +26,8 @@ export const initialState: RecipeState = {
         readyInMinutes: 0,
         servings: 0,
         ingredients: [],
-        smartFilterScore: 0
+        smartFilterScore: 0,
+        extendedIngredients: []
       }
 }
 
