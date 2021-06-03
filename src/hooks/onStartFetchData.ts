@@ -1,7 +1,7 @@
 import * as SplashScreen from "expo-splash-screen";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { setUser, setUserRecipeListState } from "../redux/actions";
+import { setUser, setUserRecipeList } from "../redux/actions";
 import { firebaseApp } from "../constants/Firebase";
 import axios from "axios";
 
@@ -15,8 +15,7 @@ export default function getCacheLoadData() {
       try {
         SplashScreen.preventAutoHideAsync();
 
-        // If authentication passes, setUser
-        // with currentUser
+        // If authentication passes, setUser, setUserRecipeList, setFilters
         firebaseApp.auth().onAuthStateChanged((user) => {
           const currentUser = {
             id: user?.uid,
@@ -28,7 +27,6 @@ export default function getCacheLoadData() {
             // TODO:
             // - Get cached data or,
             // - Make appropriate API requests
-            // Add all recipe properties
             async function getCurrentUser() {
               const user = await axios(
                 "https://savored-server.herokuapp.com/",
@@ -55,7 +53,7 @@ export default function getCacheLoadData() {
                 }
               );
               if (Array.isArray(user.data.data.user?.recipes)) {
-                dispatch(setUserRecipeListState(user.data.data.user?.recipes));
+                dispatch(setUserRecipeList(user.data.data.user?.recipes));
               }
             }
             getCurrentUser();
@@ -63,7 +61,7 @@ export default function getCacheLoadData() {
             //   - axios API call to recipe table with currentUser.id or currentUser.email
             //   - const resp = await axios.post();
             //   - resp.data should look like {userId: USER_ID, userRecipeList: UserRecipe[]}
-            //   - dispatch(setUserRecipeListState(resp.data))
+            //   - dispatch(setUserRecipeList(resp.data))
 
             // - Get user's filters & dispatch
             //   - axios API call to filters table with currentUser.id or currentUser.email

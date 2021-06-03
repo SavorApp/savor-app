@@ -15,7 +15,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { ChefStackParamList } from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
-import { setUser } from "../redux/actions";
+import { resetFilters, resetUserRecipeList, setUser } from "../redux/actions";
 import axios from "axios";
 const _screen = Dimensions.get("screen");
 export interface SignupScreenProps {
@@ -65,7 +65,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
           .auth()
           .createUserWithEmailAndPassword(email, password);
         if (resp.additionalUserInfo?.isNewUser) {
-          const newUser = await axios("https://savored-server.herokuapp.com/", {
+          await axios("https://savored-server.herokuapp.com/", {
             method: "POST",
             data: {
               query: `
@@ -86,6 +86,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
             },
           });
 
+          // setUser with new user
           dispatch(
             setUser({
               id: resp.user?.uid,
@@ -93,6 +94,11 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
               image_url: resp.user?.photoURL,
             })
           );
+          // Reset UserRecipeList
+          dispatch(resetUserRecipeList());
+          // Reset Filters
+          dispatch(resetFilters());
+          
           navigation.goBack();
         }
       } catch (error) {
