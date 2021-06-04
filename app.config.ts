@@ -1,4 +1,4 @@
-import 'dotenv/config';
+import "dotenv/config";
 
 export default ({ config }: any) => {
   return {
@@ -11,7 +11,8 @@ export default ({ config }: any) => {
       FIREBASE_STORAGE_BUCKET: process.env.FIREBASE_STORAGE_BUCKET,
       FIREBASE_MESSAGING_SENDER: process.env.FIREBASE_MESSAGING_SENDER,
       FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
-      FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID
-    }
-  }
+      FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
+      SAVORED_SERVER_API: process.env.SAVORED_SERVER_API,
+    },
+  };
 };

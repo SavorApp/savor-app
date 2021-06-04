@@ -1,6 +1,6 @@
 import axios from "axios";
 import { User, Filters, UserRecipe } from "../../types";
-import { useDispatch } from "react-redux";
+import { SAVORED_SERVER_API } from "../constants/api";
 
 // const dispatch = useDispatch();
 
@@ -270,5 +270,4 @@ export async function updateFiltersDb(
       "Content-Type": "application/json",
     },
   });
-  console.log(updatedFilters);
 }

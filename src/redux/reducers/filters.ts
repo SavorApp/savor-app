@@ -28,7 +28,7 @@ export const filtersReducer = (
     // When user changes a filter...
     case "UPDATE_FILTERS": {
       return {
-        filters: { ...action.payload },
+        filters: action.payload,
       };
     }
     case "RESET_FILTERS": {
