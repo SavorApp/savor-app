@@ -12,12 +12,6 @@ import {
 import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import {
-  SavoredListStackParamList,
-  RootState,
-  UserRecipeListState,
-  UserRecipe,
-} from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";

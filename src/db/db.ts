@@ -1,7 +1,5 @@
 import axios from "axios";
-import { UserRecipe } from "../../types";
-import { setUser, setUserRecipeListState } from "../redux/actions";
-import { User } from "../../types";
+import { setUser, setUserRecipeList } from "../redux/actions";
 import { useDispatch } from "react-redux";
 
 // const dispatch = useDispatch();

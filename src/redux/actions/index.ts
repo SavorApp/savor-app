@@ -1,15 +1,3 @@
-import {
-  User,
-  EmptyAction,
-  UserAction,
-  UserRecipeListAction,
-  Filters,
-  FiltersAction,
-  UserRecipe,
-  UserRecipeListState,
-  FiltersState,
-} from "../../../types";
-
 // User Actions
 export const setUser = (user: User): UserAction => {
   return {
@@ -67,5 +55,18 @@ export const updateFilters = (filters: Filters): FiltersAction => {
 export const resetFilters = (): EmptyAction => {
   return {
     type: "RESET_FILTERS",
+  };
+};
+
+// ReloadRecipes Actions
+export const triggerReload = (): EmptyAction => {
+  return {
+    type: "TRIGGER_RELOAD"
+  };
+};
+
+export const resetReload = (): EmptyAction => {
+  return {
+    type: "SET_RELOAD_FALSE",
   };
 };

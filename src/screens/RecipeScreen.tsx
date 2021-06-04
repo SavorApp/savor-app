@@ -13,7 +13,6 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import HTML from "react-native-render-html";
 import axios from "axios";
 import * as recipeJson from "../data/100Recipes.json";
-import { Ingredient, RecipeScreenInfo } from "../../types";
 import LoadingRecipeInfo from "../components/loadingRecipeInfo";
 
 const _screen = Dimensions.get("screen");

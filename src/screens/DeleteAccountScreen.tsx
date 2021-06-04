@@ -3,7 +3,6 @@ import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-nati
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch } from "react-redux";
 import { removeUser, resetFilters, resetUserRecipeList } from "../redux/actions";
-import { ChefStackParamList } from "../../types"
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 
 const _screen = Dimensions.get("screen");
