@@ -1,5 +1,3 @@
-import { UserRecipeListAction, UserRecipeListState } from "../../../types";
-
 // Initialize initial User Recipe List State
 const initialState: UserRecipeListState = {
   userRecipeList: [],

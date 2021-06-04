@@ -1,7 +1,6 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { ChefScreen, LoginScreen } from "../screens"
-import { RootState, UserState } from "../../types";
 import { useSelector } from "react-redux";
 
 const ChefStack = createStackNavigator();

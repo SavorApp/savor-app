@@ -2,9 +2,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import React, { useEffect, useRef } from "react";
 import { View, Image, StyleSheet, Text, Dimensions } from "react-native";
 import { useSelector } from "react-redux";
-import { RecipeCardParamList } from "../../types";
 import { shadowStyle, colorPalette } from "../constants/ColorPalette";
-import { RootState, FiltersState } from "../../types";
 
 const _screen = Dimensions.get("screen");
 

@@ -1,5 +1,3 @@
-import { FiltersAction, FiltersState } from "../../../types";
-
 // Initialize initial Filters State
 export const initialState: FiltersState = {
   filters: {

@@ -12,12 +12,6 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
-import {
-  ChefStackParamList,
-  RootState,
-  UserRecipeListState,
-  FiltersState,
-} from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
 import { resetFilters, resetUserRecipeList, setUser } from "../redux/actions";
