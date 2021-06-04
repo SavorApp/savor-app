@@ -1,10 +1,11 @@
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect} from "@react-navigation/native";
 import React, { useEffect, useRef } from "react";
-import { View, Image, StyleSheet, Text, Dimensions } from "react-native";
+import { View, Image, StyleSheet, Text, Dimensions, ScrollView, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 import { RecipeCardParamList } from "../../types";
 import { shadowStyle, colorPalette } from "../constants/ColorPalette";
 import { RootState, FiltersState } from "../../types";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 
 const _screen = Dimensions.get("screen");
 
@@ -16,6 +17,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
   //TODO: Need to modify the "Type" displayed
   return (
     <View style={styles.container}>
+          <ScrollView>
       <View style={styles.subContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.titleBackground}>{rcp.title}</Text>
@@ -73,8 +75,12 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
           <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>
             Prep time: {rcp.readyInMinutes} min
           </Text>
+          <TouchableOpacity onPress={() => {console.log('hello')}}>
+                <Ionicons name="md-information-circle-sharp" size={24} color="grey" />
+            </TouchableOpacity>
         </View>
       </View>
+    </ScrollView>
     </View>
   );
 }
