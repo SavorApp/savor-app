@@ -1,82 +1,92 @@
-import { useFocusEffect} from "@react-navigation/native";
+import { useFocusEffect } from "@react-navigation/native";
 import React, { useEffect, useRef } from "react";
-import { View, Image, StyleSheet, Text, Dimensions, ScrollView, TouchableOpacity } from "react-native";
+import { View, Image, StyleSheet, Text, Dimensions, ScrollView, TouchableOpacity, ImageBackground } from "react-native";
 import { useSelector } from "react-redux";
-import { RecipeCardParamList } from "../../types";
 import { shadowStyle, colorPalette } from "../constants/ColorPalette";
-import { RootState, FiltersState } from "../../types";
-import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-
 const _screen = Dimensions.get("screen");
 
 export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
   const filtersState = useSelector<RootState, FiltersState>(
     (state) => state.filtersState
   );
+  
+  const [scrollEnabled, setScrollEnabled] = React.useState<Boolean>(false);
+
+  const scrollInfoRef = useRef<any>();
 
   //TODO: Need to modify the "Type" displayed
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-          <ScrollView>
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleBackground}>{rcp.title}</Text>
-        </View>
-        {rcp.image ? (
-          <Image
-            key={id}
-            source={{ uri: rcp.image || " " }}
-            style={styles.picture}
-          />
-        ) : (
-          <View style={styles.pictureUnavailableContainer}>
-            <Text style={styles.pictureUnavailable}>
-              Picture unavailable for this recipe 😟 But believe us, it's
+        <ScrollView ref={scrollInfoRef}
+          centerContent={true}
+          directionalLockEnabled
+          scrollEnabled={scrollEnabled}
+          onTouchMove={() => {setScrollEnabled(true)}}
+        >
+          {rcp.image ? (
+            <ImageBackground
+              key={id}
+              source={{ uri: rcp.image || " " }}
+              style={styles.picture}
+            >
+              <View style={styles.titleContainer}>
+                <Text style={styles.titleBackground}>{rcp.title}</Text>
+              </View>
+            </ImageBackground>
+          ) : (
+              <View style={styles.pictureUnavailableContainer}>
+                <Text style={styles.pictureUnavailable}>
+                  Picture unavailable for this recipe 😟 But believe us, it's
               delicious!🍽{" "}
-            </Text>
-          </View>
-        )}
+                </Text>
+              </View>
+            )}
 
-        <View style={styles.rcpInfoContainer}>
-          <Text style={styles.rcpInfo}>
-            Type:{" "}
-            {filtersState.filters.dishType !== ""
-              ? filtersState.filters.dishType[0].toUpperCase() +
+          <View style={styles.rcpInfoContainer}>
+            <Text style={styles.rcpInfo}>
+              Type:{" "}
+              {filtersState.filters.dishType !== ""
+                ? filtersState.filters.dishType[0].toUpperCase() +
                 filtersState.filters.dishType.slice(1)
-              : rcp.dishTypes.length === 0
-              ? "Many"
-              : rcp.dishTypes[0][0].toUpperCase() + rcp.dishTypes[0].slice(1)}
-          </Text>
-          <Text style={styles.rcpInfo}>
-            Cuisine:{" "}
-            {filtersState.filters.cuisine !== ""
-              ? filtersState.filters.cuisine[0].toUpperCase() +
+                : rcp.dishTypes.length === 0
+                  ? "Many"
+                  : rcp.dishTypes[0][0].toUpperCase() + rcp.dishTypes[0].slice(1)}
+            </Text>
+            <Text style={styles.rcpInfo}>
+              Cuisine:{" "}
+              {filtersState.filters.cuisine !== ""
+                ? filtersState.filters.cuisine[0].toUpperCase() +
                 filtersState.filters.cuisine.slice(1)
-              : rcp.cuisines.length === 0
-              ? "World Food"
-              : rcp.cuisines[0]}
-          </Text>
-          <Text style={styles.rcpInfo}>
-            Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}
-          </Text>
-          <Text style={styles.rcpInfo}>
-            Gluten-free:{rcp.glutenFree ? " ✅  " : " ❌ "}
-          </Text>
-          <Text style={styles.rcpInfo}>
-            Vegetarian:{rcp.vegetarian ? " ✅  " : " ❌ "}
-          </Text>
-          <Text style={styles.rcpInfo}>
-            Vegan:{rcp.vegan ? " ✅  " : " ❌ "}
-          </Text>
+                : rcp.cuisines.length === 0
+                  ? "World Food"
+                  : rcp.cuisines[0]}
+            </Text>
+            <Text style={styles.rcpInfo}>
+              Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}
+            </Text>
+            <Text style={styles.rcpInfo}>
+              Gluten-free:{rcp.glutenFree ? " ✅  " : " ❌ "}
+            </Text>
+            <Text style={styles.rcpInfo}>
+              Vegetarian:{rcp.vegetarian ? " ✅  " : " ❌ "}
+            </Text>
+            <Text style={styles.rcpInfo}>
+              Vegan:{rcp.vegan ? " ✅  " : " ❌ "}
+            </Text>
 
-          <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>
-            Servings: {rcp.servings}
+            <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>
+              Servings: {rcp.servings}
+            </Text>
+            <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>
+              Prep time: {rcp.readyInMinutes} min
           </Text>
-          <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>
-            Prep time: {rcp.readyInMinutes} min
-          </Text>
-        </View>
-    </ScrollView>
+            <Text style={styles.subTitle}>Ingredients</Text>
+            {rcp.ingredients.map((ing) => {
+              return <Text>{ing}</Text>;
+            })}
+          </View>
+        </ScrollView>
       </View>
     </View>
   );
@@ -89,8 +99,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   picture: {
-    height: 300,
-    width: 300,
+    height: 400,
+    width: 400,
     resizeMode: "cover",
     borderRadius: 20,
     alignItems: "center",
@@ -118,8 +128,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 20,
     alignItems: "center",
-    width: _screen.width * 0.85,
-    height: _screen.height * 0.64,
+    width: _screen.width * 1,
+    height: _screen.height * 0.7,
     borderRadius: 30,
     backgroundColor: colorPalette.secondary,
   },

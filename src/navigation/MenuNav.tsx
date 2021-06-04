@@ -4,7 +4,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { TouchableOpacity } from "react-native";
 import { MenuScreen } from "../screens"
-import { MenuStackParamList, RootState, UserState } from "../../types"
 import { useSelector } from "react-redux";
 
 export interface MenuNavigatorProps {

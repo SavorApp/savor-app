@@ -7,7 +7,6 @@ import Emoji from "react-native-emoji";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState, FiltersState, UserState, MenuStackParamList } from "../../types";
 import { updateFilters } from "../redux/actions";
 
 const _screen = Dimensions.get("screen");

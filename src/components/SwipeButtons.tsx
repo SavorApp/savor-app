@@ -1,7 +1,6 @@
 import React from "react"
 import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native"
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
-import { SwipeButtonsParamList } from "../../types"
 import { shadowStyle } from "../constants/ColorPalette";
 
 

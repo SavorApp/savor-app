@@ -3,7 +3,6 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Colors from "../constants/Colors";
 import useColorScheme from "../hooks/useColorScheme";
-import { BottomTabParamList } from "../../types";
 import ChefNavigator from "./ChefNav";
 import MenuNavigator from "./MenuNav";
 import SavoredListNavigator from "./SavoredListNav";

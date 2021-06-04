@@ -1,25 +1,18 @@
 import React, { useEffect, useRef } from "react";
-import { StyleSheet, Dimensions, View, Text } from "react-native";
+import { StyleSheet, Dimensions, View, Text, ScrollView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { addtoUserRecipeList } from "../redux/actions";
-import axios from "axios";
+import { addtoUserRecipeList, triggerReload } from "../redux/actions";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
 import SwipeButtons from "../components/SwipeButtons";
-import {
-  Recipe,
-  RootState,
-  UserState,
-  RecipeCardStackParamList,
-} from "../../types";
 import { swipeToDb } from "../db/db";
 
 const _screen = Dimensions.get("screen");
 
 export default function RecipeCardStack({
   randRecipes,
-  filtersState,
+  filtersState
 }: RecipeCardStackParamList) {
   const dispatch = useDispatch();
   const userState = useSelector<RootState, UserState>(
@@ -30,7 +23,6 @@ export default function RecipeCardStack({
   const [currentRecipe, setCurrentRecipe] = React.useState<Recipe>(randRecipes[0]);
 
   useEffect(() => {
-    console.log("UserState has probably updated", userState.user.id);
     userId.current = userState.user.id;
   }, [userState]);
 
@@ -43,9 +35,13 @@ export default function RecipeCardStack({
           ? randRecipes[idx].cuisines.toString()
           : filtersState.filters.cuisine,
       dishType:
-        filtersState.filters.dishType === ""
-          ? randRecipes[idx].dishTypes.toString()
-          : filtersState.filters.dishType,
+        filtersState.filters.dishType !== ""
+          ? filtersState.filters.dishType[0].toUpperCase() +
+            filtersState.filters.dishType.slice(1)
+          : randRecipes[idx].dishTypes.length === 0
+          ? "Other"
+          : randRecipes[idx].dishTypes[0][0].toUpperCase() +
+            randRecipes[idx].dishTypes[0].slice(1),
       vegetarian: randRecipes[idx].vegetarian,
       vegan: randRecipes[idx].vegan,
       glutenFree: randRecipes[idx].glutenFree,
@@ -55,8 +51,15 @@ export default function RecipeCardStack({
       ingredients: randRecipes[idx].ingredients,
       isSavored: false,
     };
+    
+    // Add recipe to global state
     dispatch(addtoUserRecipeList(recipeToBeAdded));
+    // Add recipe to DB for given user
     swipeToDb(userId.current, false, recipeToBeAdded);
+    // If we are at the last card, trigger a reload
+    if (randRecipes.length - idx === 1) {
+      dispatch(triggerReload());
+    }
   }
 
   async function onSwipedRight(idx: number) {
@@ -68,9 +71,13 @@ export default function RecipeCardStack({
           ? randRecipes[idx].cuisines.toString()
           : filtersState.filters.cuisine,
       dishType:
-        filtersState.filters.dishType === ""
-          ? randRecipes[idx].dishTypes.toString()
-          : filtersState.filters.dishType,
+        filtersState.filters.dishType !== ""
+          ? filtersState.filters.dishType[0].toUpperCase() +
+            filtersState.filters.dishType.slice(1)
+          : randRecipes[idx].dishTypes.length === 0
+          ? "Other"
+          : randRecipes[idx].dishTypes[0][0].toUpperCase() +
+            randRecipes[idx].dishTypes[0].slice(1),
       vegetarian: randRecipes[idx].vegetarian,
       vegan: randRecipes[idx].vegan,
       glutenFree: randRecipes[idx].glutenFree,
@@ -80,8 +87,15 @@ export default function RecipeCardStack({
       ingredients: randRecipes[idx].ingredients,
       isSavored: true,
     };
+
+    // Add recipe to global state
     dispatch(addtoUserRecipeList(recipeToBeAdded));
+    // Add recipe to DB for given user
     swipeToDb(userId.current, true, recipeToBeAdded);
+    // If we are at the last card, trigger a reload
+    if (randRecipes.length - idx === 1) {
+      dispatch(triggerReload());
+    }
   }
 
   function handleOnPressLeft() {
@@ -98,7 +112,7 @@ export default function RecipeCardStack({
     <View style={styles.container}>
       <View style={styles.subContainer}>
         <CardStack
-          style={styles.cardStack}
+          style={{...styles.cardStack, flex: 1}}
           ref={(cardStack: CardStack) => {
             cardStackRef.current = cardStack;
           }}
