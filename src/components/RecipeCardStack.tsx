@@ -13,6 +13,7 @@ import {
   UserState,
   RecipeCardStackParamList,
 } from "../../types";
+import { swipeToDb } from "../db/db";
 
 const _screen = Dimensions.get("screen");
 
@@ -24,12 +25,13 @@ export default function RecipeCardStack({
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   );
-  const userUID = useRef<string | undefined>("");
+  const userId = useRef<string | undefined>("");
   const cardStackRef = React.useRef<CardStack>();
   const [currentRecipe, setCurrentRecipe] = React.useState<Recipe>(randRecipes[0]);
 
   useEffect(() => {
-    userUID.current = userState.user.id;
+    console.log("UserState has probably updated", userState.user.id);
+    userId.current = userState.user.id;
   }, [userState]);
 
   async function onSwipedLeft(idx: number) {
@@ -37,20 +39,13 @@ export default function RecipeCardStack({
       id: randRecipes[idx].id,
       title: randRecipes[idx].title,
       cuisine:
-        filtersState.filters.cuisine !== ""
-          ? filtersState.filters.cuisine[0].toUpperCase() +
-            filtersState.filters.cuisine.slice(1)
-          : randRecipes[idx].cuisines.length === 0
-          ? "World Food"
-          : randRecipes[idx].cuisines[0],
+        filtersState.filters.cuisine === ""
+          ? randRecipes[idx].cuisines.toString()
+          : filtersState.filters.cuisine,
       dishType:
-        filtersState.filters.dishType !== ""
-          ? filtersState.filters.dishType[0].toUpperCase() +
-            filtersState.filters.dishType.slice(1)
-          : randRecipes[idx].dishTypes.length === 0
-          ? "Many"
-          : randRecipes[idx].dishTypes[0][0].toUpperCase() +
-            randRecipes[idx].dishTypes[0].slice(1),
+        filtersState.filters.dishType === ""
+          ? randRecipes[idx].dishTypes.toString()
+          : filtersState.filters.dishType,
       vegetarian: randRecipes[idx].vegetarian,
       vegan: randRecipes[idx].vegan,
       glutenFree: randRecipes[idx].glutenFree,
@@ -61,46 +56,7 @@ export default function RecipeCardStack({
       isSavored: false,
     };
     dispatch(addtoUserRecipeList(recipeToBeAdded));
-    setCurrentRecipe(randRecipes[idx+1])
-
-    // await axios("https://savored-server.herokuapp.com/", {
-    //   method: "POST",
-    //   data: {
-    //     query: `
-    //         mutation addRcp(
-    //             $user_id: String!,
-    //             $recipe_id: Int!,
-    //             $title: String!,
-    //             $is_savored: Boolean!,
-    //             $summary: String!,
-    //             ) {
-    //           addRecipe(
-    //             user_id:$user_id,
-    //             recipe_id:$recipe_id,
-    //             title:$title,
-    //             is_savored:$is_savored,
-    //             summary:$summary,
-    //             ) {
-    //            user_id
-    //            recipe_id
-    //            title
-    //            is_savored
-    //            summary
-    //           }
-    //         }
-    //         `,
-    //     variables: {
-    //       user_id: userUID.current,
-    //       recipe_id: recipeToBeAdded.id,
-    //       title: recipeToBeAdded.title,
-    //       is_savored: false,
-    //       summary: "delicious dude",
-    //     },
-    //   },
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
+    swipeToDb(userId.current, false, recipeToBeAdded);
   }
 
   async function onSwipedRight(idx: number) {
@@ -108,20 +64,13 @@ export default function RecipeCardStack({
       id: randRecipes[idx].id,
       title: randRecipes[idx].title,
       cuisine:
-        filtersState.filters.cuisine !== ""
-          ? filtersState.filters.cuisine[0].toUpperCase() +
-            filtersState.filters.cuisine.slice(1)
-          : randRecipes[idx].cuisines.length === 0
-          ? "World Food"
-          : randRecipes[idx].cuisines[0],
+        filtersState.filters.cuisine === ""
+          ? randRecipes[idx].cuisines.toString()
+          : filtersState.filters.cuisine,
       dishType:
-        filtersState.filters.dishType !== ""
-          ? filtersState.filters.dishType[0].toUpperCase() +
-            filtersState.filters.dishType.slice(1)
-          : randRecipes[idx].dishTypes.length === 0
-          ? "Many"
-          : randRecipes[idx].dishTypes[0][0].toUpperCase() +
-            randRecipes[idx].dishTypes[0].slice(1),
+        filtersState.filters.dishType === ""
+          ? randRecipes[idx].dishTypes.toString()
+          : filtersState.filters.dishType,
       vegetarian: randRecipes[idx].vegetarian,
       vegan: randRecipes[idx].vegan,
       glutenFree: randRecipes[idx].glutenFree,
@@ -132,46 +81,7 @@ export default function RecipeCardStack({
       isSavored: true,
     };
     dispatch(addtoUserRecipeList(recipeToBeAdded));
-    setCurrentRecipe(randRecipes[idx+1]);
-
-    // await axios("https://savored-server.herokuapp.com/", {
-    //   method: "POST",
-    //   data: {
-    //     query: `
-    //         mutation addRcp(
-    //             $user_id: String!,
-    //             $recipe_id: Int!,
-    //             $title: String!,
-    //             $is_savored: Boolean!,
-    //             $summary: String!,
-    //             ) {
-    //           addRecipe(
-    //             user_id:$user_id,
-    //             recipe_id:$recipe_id,
-    //             title:$title,
-    //             is_savored:$is_savored,
-    //             summary:$summary,
-    //             ) {
-    //            user_id
-    //            recipe_id
-    //            title
-    //            is_savored
-    //            summary
-    //           }
-    //         }
-    //         `,
-    //     variables: {
-    //       user_id: userUID.current,
-    //       recipe_id: recipeToBeAdded.id,
-    //       title: recipeToBeAdded.title,
-    //       is_savored: true,
-    //       summary: "delicious dude",
-    //     },
-    //   },
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
+    swipeToDb(userId.current, true, recipeToBeAdded);
   }
 
   function handleOnPressLeft() {
@@ -199,8 +109,7 @@ export default function RecipeCardStack({
               </View>
             );
           }}
-          disableBottomSwipe
-          disableTopSwipe
+          verticalSwipe={false}
         >
           {randRecipes.map((rcp: Recipe, idx: number) => {
             return (

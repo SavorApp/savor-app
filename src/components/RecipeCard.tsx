@@ -17,8 +17,8 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
   //TODO: Need to modify the "Type" displayed
   return (
     <View style={styles.container}>
-          <ScrollView>
       <View style={styles.subContainer}>
+          <ScrollView>
         <View style={styles.titleContainer}>
           <Text style={styles.titleBackground}>{rcp.title}</Text>
         </View>
@@ -75,12 +75,9 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
           <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>
             Prep time: {rcp.readyInMinutes} min
           </Text>
-          <TouchableOpacity onPress={() => {console.log('hello')}}>
-                <Ionicons name="md-information-circle-sharp" size={24} color="grey" />
-            </TouchableOpacity>
         </View>
-      </View>
     </ScrollView>
+      </View>
     </View>
   );
 }

@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { setUser, setUserRecipeList } from "../redux/actions";
 import { firebaseApp } from "../constants/Firebase";
 import axios from "axios";
+import { getCurrentUser } from "../db/db";
 
 export default function getCacheLoadData() {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -24,50 +25,9 @@ export default function getCacheLoadData() {
           };
           if (user !== null) {
             dispatch(setUser(currentUser));
-            // TODO:
-            // - Get cached data or,
-            // - Make appropriate API requests
-            async function getCurrentUser() {
-              const user = await axios(
-                "https://savored-server.herokuapp.com/",
-                {
-                  method: "POST",
-                  data: {
-                    query: `
-                 query getUser($_id: String!)
-                 {user(_id:$_id) {
-                  _id
-                  username
-                  recipes{
-                  recipe_id
-                  title
-                  is_savored
-                  summary
-                   }         
-                 }}
-                    `,
-                    variables: {
-                      _id: currentUser.id,
-                    },
-                  },
-                }
-              );
-              if (Array.isArray(user.data.data.user?.recipes)) {
-                dispatch(setUserRecipeList(user.data.data.user?.recipes));
-              }
-            }
-            getCurrentUser();
-            // - Get user's UserRecipeList & dispatch
-            //   - axios API call to recipe table with currentUser.id or currentUser.email
-            //   - const resp = await axios.post();
-            //   - resp.data should look like {userId: USER_ID, userRecipeList: UserRecipe[]}
-            //   - dispatch(setUserRecipeList(resp.data))
-
-            // - Get user's filters & dispatch
-            //   - axios API call to filters table with currentUser.id or currentUser.email
-            //   - const resp = await axios.post();
-            //   - resp.data should look like {userId: USER_ID, filters: Filters}
-            //   - dispatch(setFilters(resp.data))
+            getCurrentUser(currentUser)
+              .then((resp) => dispatch(setUserRecipeList(resp.recipes)))
+              .catch((err: Error) => console.log(err));
           }
         });
       } catch (e) {
