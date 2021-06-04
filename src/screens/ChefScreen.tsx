@@ -18,6 +18,7 @@ import {
 } from "../redux/actions/index";
 
 const _screen = Dimensions.get("screen");
+
 export interface ChefScreenProps {
   navigation: StackNavigationProp<ChefStackParamList, "ChefScreen">;
 }
@@ -60,8 +61,6 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
                   dispatch(removeUser());
                   dispatch(resetUserRecipeList());
                   dispatch(resetFilters());
-
-                  navigation.goBack();
                 })
                 .catch((error) => {
                   // An error happened.

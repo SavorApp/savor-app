@@ -9,7 +9,6 @@ export async function swipeToDb(
   savored: boolean,
   rcp: UserRecipe
 ) {
-  console.log(user_id);
   const recipe = await axios("https://savored-server.herokuapp.com/", {
     method: "POST",
     data: {
@@ -84,14 +83,12 @@ export async function swipeToDb(
       "Content-Type": "application/json",
     },
   });
-  console.log(recipe);
 }
 
 export async function createUser(
   id: string | undefined,
   username: string | null | undefined
 ) {
-  console.log(id, username);
   const newUser = await axios("https://savored-server.herokuapp.com/", {
     method: "POST",
     data: {
@@ -112,11 +109,9 @@ export async function createUser(
       "Content-Type": "application/json",
     },
   });
-  console.log(newUser);
 }
 
 export async function getCurrentUser(currentUser: User) {
-  console.log(currentUser.id);
   const user = await axios("https://savored-server.herokuapp.com/", {
     method: "POST",
     data: {
@@ -146,6 +141,5 @@ export async function getCurrentUser(currentUser: User) {
       },
     },
   });
-  console.log(user.data.data.user);
   return user.data.data.user;
 }

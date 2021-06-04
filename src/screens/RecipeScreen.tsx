@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import {
   StyleSheet,
   Dimensions,
@@ -8,6 +9,8 @@ import {
   Platform,
   Alert,
 } from "react-native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RouteProp } from "@react-navigation/native";
 import Constants from "expo-constants";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import HTML from "react-native-render-html";
@@ -17,13 +20,21 @@ import LoadingRecipeInfo from "../components/loadingRecipeInfo";
 
 const _screen = Dimensions.get("screen");
 
+export interface RecipeScreenProps {
+  navigation: StackNavigationProp<RecipeScreenStackParamList, "RecipeScreen">;
+  route: RouteProp<{ params: { recipeId: string } }, "params">;
+}
+
 const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
 const RECIPE_INFO_BASE_URL = `https://api.spoonacular.com/recipes/`;
 
-export default function RecipeScreen({ route }: { route: any }) {
+export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
   const { recipeId } = route.params;
   const ENDPOINT = `${recipeId}/information?apiKey=${API_KEY}&includeNutrition=false`;
 
+  const userState = useSelector<RootState, UserState>(
+    (state) => state.userState
+  );
   const [recipeInfo, setRecipeInfo] = React.useState<
     RecipeScreenInfo | undefined
   >({
@@ -39,10 +50,9 @@ export default function RecipeScreen({ route }: { route: any }) {
     prepTime: 0,
     diets: [""],
   });
-
   const [isInfoLoading, setIsInfoLoading] = React.useState(true);
 
-  async function getRecipeInfos() {
+  async function fetchRecipeInfo() {
     try {
       const resp = await axios.get(RECIPE_INFO_BASE_URL + ENDPOINT);
       const fetchedRecipe = resp.data;
@@ -69,6 +79,7 @@ export default function RecipeScreen({ route }: { route: any }) {
         "Server Error 🤕",
         "Sorry for the inconvenience, please try again later."
       );
+      navigation.goBack();
     }
 
     // FOR TESTING USE JSON
@@ -96,11 +107,18 @@ export default function RecipeScreen({ route }: { route: any }) {
     // }
   }
 
+  // On load, fetch Recipe data via Spoonacular API
   React.useEffect(() => {
-    getRecipeInfos();
+    fetchRecipeInfo();
   }, []);
 
-  // TODO: take recipeId and make API request for Recipe information
+  // On User log out, goBack to SavoredListScreen
+  React.useEffect(() => {
+    if (userState.isLoggedIn === false) {
+      navigation.goBack();
+    }
+  }, [userState.isLoggedIn]);
+
   return isInfoLoading ? (
     <LoadingRecipeInfo recipeId={recipeId} />
   ) : (

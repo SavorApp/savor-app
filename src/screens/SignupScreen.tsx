@@ -17,7 +17,9 @@ import { firebaseApp } from "../constants/Firebase";
 import { resetFilters, resetUserRecipeList, setUser } from "../redux/actions";
 import axios from "axios";
 import { createUser } from "../db/db";
+
 const _screen = Dimensions.get("screen");
+
 export interface SignupScreenProps {
   navigation: StackNavigationProp<ChefStackParamList, "SignupScreen">;
 }
