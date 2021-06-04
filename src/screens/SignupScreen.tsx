@@ -14,26 +14,18 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
-import { resetFilters, resetUserRecipeList, setUser } from "../redux/actions";
-import axios from "axios";
 import { createUser, createFilters } from "../db/db";
+import { initialState } from "../redux/reducers/filters";
 const _screen = Dimensions.get("screen");
 export interface SignupScreenProps {
   navigation: StackNavigationProp<ChefStackParamList, "SignupScreen">;
 }
 
 export default function SignupScreen({ navigation }: SignupScreenProps) {
-  const userRecipeListState = useSelector<RootState, UserRecipeListState>(
-    (state) => state.userRecipeListState
-  );
-  const filtersState = useSelector<RootState, FiltersState>(
-    (state) => state.filtersState
-  );
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [validEmail, setValidEmail] = React.useState(false);
   const [hidePassword, setHidePassword] = React.useState(true);
-  const dispatch = useDispatch();
 
   React.useEffect(() => {
     if (/^\S+@\S+\.\S+$/.test(email)) {
@@ -65,7 +57,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
           .createUserWithEmailAndPassword(email, password);
         if (resp.additionalUserInfo?.isNewUser) {
           createUser(resp.user?.uid, resp.user?.email);
-          createFilters(resp.user?.uid, filtersState.filters);
+          createFilters(resp.user?.uid, initialState.filters);
           navigation.goBack();
         }
       } catch (error) {

@@ -16,7 +16,6 @@ export default function getCacheLoadData() {
   // Attempt to authenticate user
   React.useLayoutEffect(() => {
     function loadData() {
-      console.log("ONSTARTFETCH");
       try {
         SplashScreen.preventAutoHideAsync();
 
