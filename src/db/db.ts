@@ -1,6 +1,5 @@
 import axios from "axios";
-import { UserRecipe } from "../../types";
-import { User } from "../../types";
+import { User, Filters, UserRecipe } from "../../types";
 import { useDispatch } from "react-redux";
 
 // const dispatch = useDispatch();
@@ -132,6 +131,17 @@ export async function getCurrentUser(currentUser: User) {
           ingredients
           isSavored
            }
+          filters{
+            smartFilter
+            dishType
+            cuisine
+            vegetarian
+            vegan
+            glutenFree
+            dairyFree
+            readyInMinutes
+            servings
+          }
          }}
             `,
       variables: {
@@ -139,29 +149,126 @@ export async function getCurrentUser(currentUser: User) {
       },
     },
   });
-  console.log(user.data.data.user);
   return user.data.data.user;
 }
 
-export async function createFilters(user_id: string | undefined) {
-  console.log(user_id);
+export async function createFilters(
+  user_id: string | undefined,
+  filters: Filters
+) {
+  console.log(user_id, filters);
   const newFilters = await axios("https://savored-server.herokuapp.com/", {
     method: "POST",
     data: {
       query: `
-            mutation createFilters($user_id: String!) {
-              createFilters(user_id:$user_id) {
+            mutation createFilters($user_id: String!, 
+              $smartFilter: Boolean, 
+              $dishType: String, 
+              $cuisine: String, 
+              $vegetarian: Boolean,
+              $vegan: Boolean,
+              $glutenFree: Boolean,
+              $dairyFree: Boolean,
+              $readyInMinutes: Int,
+              $servings: Int) {
+              createFilters(user_id:$user_id, 
+                smartFilter:$smartFilter, 
+                dishType:$dishType, 
+                cuisine:$cuisine, 
+                vegetarian:$vegetarian,
+                vegan:$vegan,
+                glutenFree:$glutenFree,
+                dairyFree:$dairyFree,
+                readyInMinutes:$readyInMinutes,
+                servings:$servings) {
+               smartFilter
+               dishType
                cuisine
+               vegetarian
+               vegan
+               glutenFree
+               dairyFree
+               readyInMinutes
+               servings
               }
             }
             `,
       variables: {
         user_id: user_id,
+        smartFilter: filters.smartFilter,
+        dishType: filters.dishType,
+        cuisine: filters.cuisine,
+        vegetarian: filters.vegetarian,
+        vegan: filters.vegan,
+        glutenFree: filters.glutenFree,
+        dairyFree: filters.dairyFree,
+        readyInMinutes: filters.readyInMinutes,
+        servings: filters.servings,
       },
     },
     headers: {
       "Content-Type": "application/json",
     },
   });
-  console.log(newFilters);
+}
+
+export async function updateFiltersDb(
+  user_id: string | undefined,
+  filters: Filters
+) {
+  console.log(user_id, filters);
+  const updatedFilters = await axios("https://savored-server.herokuapp.com/", {
+    method: "POST",
+    data: {
+      query: `
+            mutation updateFilters($user_id: String!, 
+              $smartFilter: Boolean, 
+              $dishType: String, 
+              $cuisine: String, 
+              $vegetarian: Boolean,
+              $vegan: Boolean,
+              $glutenFree: Boolean,
+              $dairyFree: Boolean,
+              $readyInMinutes: Int,
+              $servings: Int) {
+              updateFilters(user_id:$user_id, 
+                smartFilter:$smartFilter, 
+                dishType:$dishType, 
+                cuisine:$cuisine, 
+                vegetarian:$vegetarian,
+                vegan:$vegan,
+                glutenFree:$glutenFree,
+                dairyFree:$dairyFree,
+                readyInMinutes:$readyInMinutes,
+                servings:$servings) {
+               smartFilter
+               dishType
+               cuisine
+               vegetarian
+               vegan
+               glutenFree
+               dairyFree
+               readyInMinutes
+               servings
+              }
+            }
+            `,
+      variables: {
+        user_id: user_id,
+        smartFilter: filters.smartFilter,
+        dishType: filters.dishType,
+        cuisine: filters.cuisine,
+        vegetarian: filters.vegetarian,
+        vegan: filters.vegan,
+        glutenFree: filters.glutenFree,
+        dairyFree: filters.dairyFree,
+        readyInMinutes: filters.readyInMinutes,
+        servings: filters.servings,
+      },
+    },
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(updatedFilters);
 }

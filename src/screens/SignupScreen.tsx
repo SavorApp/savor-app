@@ -16,12 +16,13 @@ import {
   ChefStackParamList,
   RootState,
   UserRecipeListState,
+  FiltersState,
 } from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
 import { resetFilters, resetUserRecipeList, setUser } from "../redux/actions";
 import axios from "axios";
-import { createUser } from "../db/db";
+import { createUser, createFilters } from "../db/db";
 const _screen = Dimensions.get("screen");
 export interface SignupScreenProps {
   navigation: StackNavigationProp<ChefStackParamList, "SignupScreen">;
@@ -30,6 +31,9 @@ export interface SignupScreenProps {
 export default function SignupScreen({ navigation }: SignupScreenProps) {
   const userRecipeListState = useSelector<RootState, UserRecipeListState>(
     (state) => state.userRecipeListState
+  );
+  const filtersState = useSelector<RootState, FiltersState>(
+    (state) => state.filtersState
   );
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -66,14 +70,8 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
           .auth()
           .createUserWithEmailAndPassword(email, password);
         if (resp.additionalUserInfo?.isNewUser) {
-          dispatch(
-            setUser({
-              id: resp.user?.uid,
-              username: resp.user?.email,
-              image_url: resp.user?.photoURL,
-            })
-          );
           createUser(resp.user?.uid, resp.user?.email);
+          createFilters(resp.user?.uid, filtersState.filters);
           navigation.goBack();
         }
       } catch (error) {

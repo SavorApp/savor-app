@@ -21,7 +21,7 @@ import {
   MenuStackParamList,
 } from "../../types";
 import { updateFilters } from "../redux/actions";
-import { createFilters } from "../db/db";
+import { updateFiltersDb } from "../db/db";
 
 const _screen = Dimensions.get("screen");
 
@@ -280,23 +280,23 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
 
   function handleApply() {
     // Update only changed values
-    dispatch(
-      updateFilters({
-        ...filtersState.filters,
-        smartFilter: smartFilter,
-        dishType: dishType,
-        cuisine: cuisine,
-        vegetarian: vegetarian,
-        vegan: vegan,
-        glutenFree: glutenFree,
-        dairyFree: dairyFree,
-      })
-    );
-    createFilters(userState.user.id);
+    const filters = {
+      ...filtersState.filters,
+      smartFilter: smartFilter,
+      dishType: dishType,
+      cuisine: cuisine,
+      vegetarian: vegetarian,
+      vegan: vegan,
+      glutenFree: glutenFree,
+      dairyFree: dairyFree,
+    };
+
+    dispatch(updateFilters(filters));
 
     // TODO: WRITE TO DB
     // - Update filters table with userState.id and,
     //   updated Filters.
+    updateFiltersDb(userState.user.id, filters);
 
     // Navigate back to MenuScreen
     navigation.goBack();
