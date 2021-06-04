@@ -292,7 +292,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
         dairyFree: dairyFree,
       })
     );
-    createFilters();
+    createFilters(userState.user.id);
 
     // TODO: WRITE TO DB
     // - Update filters table with userState.id and,

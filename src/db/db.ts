@@ -143,22 +143,20 @@ export async function getCurrentUser(currentUser: User) {
   return user.data.data.user;
 }
 
-export async function createFilters() {
-  console.log("Creating filters dude");
+export async function createFilters(user_id: string | undefined) {
+  console.log(user_id);
   const newFilters = await axios("https://savored-server.herokuapp.com/", {
     method: "POST",
     data: {
       query: `
-            mutation createFilters($user_id: String!, $cuisine: String!) {
-              createFilters(user_id:$user_id, cuisine:$cuisine) {
-               user_id
-              cuisine
+            mutation createFilters($user_id: String!) {
+              createFilters(user_id:$user_id) {
+               cuisine
               }
             }
             `,
       variables: {
-        user_id: "2",
-        cuisine: "japanese",
+        user_id: user_id,
       },
     },
     headers: {
