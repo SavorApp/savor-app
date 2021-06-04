@@ -43,9 +43,28 @@ export default function getCacheLoadData() {
                   recipes{
                   recipe_id
                   title
+                  dish_type
                   is_savored
-                  summary
-                   }         
+                  cuisine
+                  vegetarian
+                  vegan
+                  gluten_free
+                  dairy_free
+                  ready_in_minutes
+                  servings
+                  ingredients
+                   } 
+                   filters{
+                    smart_filter
+                    dish_type
+                    cuisine
+                    vegetarian
+                    vegan
+                    gluten_free
+                    dairy_free
+                    ready_in_minutes
+                    servings
+                   }        
                  }}
                     `,
                     variables: {
