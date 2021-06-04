@@ -79,14 +79,6 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             .signInWithEmailAndPassword(data.email, data.password);
         })
         .then((data) => {
-          dispatch(
-            setUser({
-              id: data.user?.uid,
-              username: data.user?.email,
-              image_url: data.user?.photoURL,
-            })
-          );
-          
           // TODO: Get UserRecipeList & Filters from Backend Server
 
           if (userRecipeListState.userRecipeList.length > 0) {
@@ -94,7 +86,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             // Update UserRecipeList with these new recipes
             for (const rcp of userRecipeListState.userRecipeList) {
               // WRITE TO DB EACH RECIPE (with data.user?.uid)
-            };
+            }
 
             // const concatUserRecipeList = [...USER_RECIPE_LIST_FROM_DB, ...userRecipeListState.userRecipeList];
             // dispatch(setUserRecipeList(concatUserRecipeList));

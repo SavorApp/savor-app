@@ -12,7 +12,7 @@ const _screen = Dimensions.get("screen");
 
 export default function RecipeCardStack({
   randRecipes,
-  filtersState
+  filtersState,
 }: RecipeCardStackParamList) {
   const dispatch = useDispatch();
   const userState = useSelector<RootState, UserState>(
@@ -50,11 +50,11 @@ export default function RecipeCardStack({
       ingredients: randRecipes[idx].ingredients,
       isSavored: false,
     };
-    
+
     // Add recipe to global state
     dispatch(addtoUserRecipeList(recipeToBeAdded));
     // Add recipe to DB for given user
-    swipeToDb(userId.current, false, recipeToBeAdded);
+    swipeToDb(userId.current, recipeToBeAdded);
     // If we are at the last card, trigger a reload
     if (randRecipes.length - idx === 1) {
       dispatch(triggerReload());
@@ -90,7 +90,7 @@ export default function RecipeCardStack({
     // Add recipe to global state
     dispatch(addtoUserRecipeList(recipeToBeAdded));
     // Add recipe to DB for given user
-    swipeToDb(userId.current, true, recipeToBeAdded);
+    swipeToDb(userId.current, recipeToBeAdded);
     // If we are at the last card, trigger a reload
     if (randRecipes.length - idx === 1) {
       dispatch(triggerReload());

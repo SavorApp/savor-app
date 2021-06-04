@@ -134,7 +134,7 @@ type FiltersAction = { type: string; payload: FiltersState | Filters };
 
 // Core ReloadRecipesState interface
 interface ReloadRecipesState {
-  reload: Boolean
+  reload: Boolean;
 }
 
 // Empty action for resets
@@ -201,7 +201,7 @@ type Recipe = {
   servings: number;
   ingredients: string[];
   smartFilterScore: number;
-  extendedIngredients?: Ingredient[]
+  extendedIngredients?: Ingredient[];
 };
 
 // Spoonacular Ingredient type
