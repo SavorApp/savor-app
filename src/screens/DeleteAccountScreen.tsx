@@ -2,8 +2,7 @@ import React from "react";
 import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useDispatch } from "react-redux";
-import { removeUser, resetFilters, resetUserRecipeListState } from "../redux/actions";
-import { ChefStackParamList } from "../../types"
+import { removeUser, resetFilters, resetUserRecipeList } from "../redux/actions";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 
 const _screen = Dimensions.get("screen");
@@ -26,9 +25,8 @@ export default function DeleteAccountScreen({ navigation }: DeleteAccountScreenP
 
                         // TODO: 
                         // - Sign Chef out & Delete Account in DB
-                        // - Update global state
                         dispatch(removeUser());
-                        dispatch(resetUserRecipeListState());
+                        dispatch(resetUserRecipeList());
                         dispatch(resetFilters());
                         navigation.goBack();
                     }}

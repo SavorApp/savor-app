@@ -9,12 +9,11 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { ChefStackParamList, RootState, UserState } from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
 import {
   removeUser,
-  resetUserRecipeListState,
+  resetUserRecipeList,
   resetFilters,
 } from "../redux/actions/index";
 
@@ -59,7 +58,7 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
                 .then(() => {
                   // - Update global state
                   dispatch(removeUser());
-                  dispatch(resetUserRecipeListState());
+                  dispatch(resetUserRecipeList());
                   dispatch(resetFilters());
 
                   navigation.goBack();

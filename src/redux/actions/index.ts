@@ -1,15 +1,3 @@
-import {
-  User,
-  EmptyAction,
-  UserAction,
-  UserRecipeListAction,
-  Filters,
-  FiltersAction,
-  UserRecipe,
-  UserRecipeListState,
-  FiltersState,
-} from "../../../types";
-
 // User Actions
 export const setUser = (user: User): UserAction => {
   return {
@@ -25,11 +13,11 @@ export const removeUser = (): EmptyAction => {
 };
 
 // User Recipe List Actions
-export const setUserRecipeListState = (
+export const setUserRecipeList = (
   userRecipeList: UserRecipe[]
 ): UserRecipeListAction => {
   return {
-    type: "SET_USER_RECIPE_LIST_STATE",
+    type: "SET_USER_RECIPE_LIST",
     payload: userRecipeList,
   };
 };
@@ -43,9 +31,9 @@ export const addtoUserRecipeList = (
   };
 };
 
-export const resetUserRecipeListState = (): EmptyAction => {
+export const resetUserRecipeList = (): EmptyAction => {
   return {
-    type: "RESET_USER_RECIPE_LIST_STATE",
+    type: "RESET_USER_RECIPE_LIST",
   };
 };
 
@@ -67,5 +55,18 @@ export const updateFilters = (filters: Filters): FiltersAction => {
 export const resetFilters = (): EmptyAction => {
   return {
     type: "RESET_FILTERS",
+  };
+};
+
+// ReloadRecipes Actions
+export const triggerReload = (): EmptyAction => {
+  return {
+    type: "TRIGGER_RELOAD"
+  };
+};
+
+export const resetReload = (): EmptyAction => {
+  return {
+    type: "SET_RELOAD_FALSE",
   };
 };

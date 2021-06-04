@@ -1,5 +1,3 @@
-import { UserRecipeListAction, UserRecipeListState } from "../../../types";
-
 // Initialize initial User Recipe List State
 const initialState: UserRecipeListState = {
   userRecipeList: [],
@@ -12,7 +10,7 @@ export const userRecipeListReducer = (
 ) => {
   switch (action.type) {
     // When user swipes...
-    case "SET_USER_RECIPE_LIST_STATE": {
+    case "SET_USER_RECIPE_LIST": {
       return {
         userRecipeList: action.payload,
       };
@@ -23,7 +21,7 @@ export const userRecipeListReducer = (
         userRecipeList: [...state.userRecipeList, action.payload],
       };
     }
-    case "RESET_USER_RECIPE_LIST_STATE": {
+    case "RESET_USER_RECIPE_LIST": {
       return {
         userRecipeList: [],
       };
