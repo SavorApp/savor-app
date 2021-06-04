@@ -1,11 +1,9 @@
 import axios from "axios";
 import { SAVORED_SERVER_API } from "../constants/api";
 
-// const dispatch = useDispatch();
-
 export async function swipeToDb(user_id: string | undefined, rcp: UserRecipe) {
   console.log(user_id);
-  const recipe = await axios("https://savored-server.herokuapp.com/", {
+  const recipe = await axios(SAVORED_SERVER_API, {
     method: "POST",
     data: {
       query: `
@@ -83,7 +81,7 @@ export async function createUser(
   username: string | null | undefined
 ) {
   console.log(id, username);
-  const newUser = await axios("https://savored-server.herokuapp.com/", {
+  const newUser = await axios(SAVORED_SERVER_API, {
     method: "POST",
     data: {
       query: `
@@ -108,7 +106,7 @@ export async function createUser(
 
 export async function getCurrentUser(currentUser: User) {
   console.log(currentUser.id);
-  const user = await axios("https://savored-server.herokuapp.com/", {
+  const user = await axios(SAVORED_SERVER_API, {
     method: "POST",
     data: {
       query: `
@@ -156,7 +154,7 @@ export async function createFilters(
   filters: Filters
 ) {
   console.log(user_id, filters);
-  const newFilters = await axios("https://savored-server.herokuapp.com/", {
+  const newFilters = await axios(SAVORED_SERVER_API, {
     method: "POST",
     data: {
       query: `
@@ -216,7 +214,7 @@ export async function updateFiltersDb(
   filters: Filters
 ) {
   console.log(user_id, filters);
-  const updatedFilters = await axios("https://savored-server.herokuapp.com/", {
+  const updatedFilters = await axios(SAVORED_SERVER_API, {
     method: "POST",
     data: {
       query: `

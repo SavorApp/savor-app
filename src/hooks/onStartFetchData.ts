@@ -1,7 +1,6 @@
 import * as SplashScreen from "expo-splash-screen";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, FiltersState } from "../../types";
 import { setUser, setUserRecipeList } from "../redux/actions";
 import { firebaseApp } from "../constants/Firebase";
 import axios from "axios";

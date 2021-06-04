@@ -1,5 +1,3 @@
-import "dotenv/config";
+import Constants from "expo-constants";
 
-console.log(process.env.SAVORED_SERVER_API);
-
-export const SAVORED_SERVER_API = process.env.SAVORED_SERVER_API;
+export const SAVORED_SERVER_API = Constants.manifest.extra?.SAVORED_SERVER_API;
