@@ -55,7 +55,7 @@ export default function RecipeCardStack({
       isSavored: false,
     };
     dispatch(addtoUserRecipeList(recipeToBeAdded));
-    swipeToDb(userId.current, false, recipeToBeAdded);
+    swipeToDb(userId.current, recipeToBeAdded);
   }
 
   async function onSwipedRight(idx: number) {
@@ -80,7 +80,7 @@ export default function RecipeCardStack({
       isSavored: true,
     };
     dispatch(addtoUserRecipeList(recipeToBeAdded));
-    swipeToDb(userId.current, true, recipeToBeAdded);
+    swipeToDb(userId.current, recipeToBeAdded);
   }
 
   function handleOnPressLeft() {

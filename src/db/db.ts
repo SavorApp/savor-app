@@ -1,16 +1,11 @@
 import axios from "axios";
 import { UserRecipe } from "../../types";
-import { setUser, setUserRecipeListState } from "../redux/actions";
 import { User } from "../../types";
 import { useDispatch } from "react-redux";
 
 // const dispatch = useDispatch();
 
-export async function swipeToDb(
-  user_id: string | undefined,
-  savored: boolean,
-  rcp: UserRecipe
-) {
+export async function swipeToDb(user_id: string | undefined, rcp: UserRecipe) {
   console.log(user_id);
   const recipe = await axios("https://savored-server.herokuapp.com/", {
     method: "POST",
@@ -30,10 +25,6 @@ export async function swipeToDb(
                   $servings: Int,
                   $ingredients: [String],
                   $isSavored: Boolean,
-  
-  
-              
-  
                 ) {
               addRecipe(
                 user_id:$user_id
@@ -150,4 +141,29 @@ export async function getCurrentUser(currentUser: User) {
   });
   console.log(user.data.data.user);
   return user.data.data.user;
+}
+
+export async function createFilters() {
+  console.log("Creating filters dude");
+  const newFilters = await axios("https://savored-server.herokuapp.com/", {
+    method: "POST",
+    data: {
+      query: `
+            mutation createFilters($user_id: String!, $cuisine: String!) {
+              createFilters(user_id:$user_id, cuisine:$cuisine) {
+               user_id
+              cuisine
+              }
+            }
+            `,
+      variables: {
+        user_id: "2",
+        cuisine: "japanese",
+      },
+    },
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+  console.log(newFilters);
 }

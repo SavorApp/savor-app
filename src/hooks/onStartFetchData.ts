@@ -13,6 +13,7 @@ export default function getCacheLoadData() {
   // Attempt to authenticate user
   React.useLayoutEffect(() => {
     function loadData() {
+      console.log("ONSTARTFETCH");
       try {
         SplashScreen.preventAutoHideAsync();
 
@@ -26,7 +27,12 @@ export default function getCacheLoadData() {
           if (user !== null) {
             dispatch(setUser(currentUser));
             getCurrentUser(currentUser)
-              .then((resp) => dispatch(setUserRecipeList(resp.recipes)))
+              .then((resp) => {
+                dispatch(setUserRecipeList(resp.recipes));
+                if (resp.filters === undefined) {
+                  console.log(resp.filters);
+                }
+              })
               .catch((err: Error) => console.log(err));
           }
         });
