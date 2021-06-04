@@ -11,9 +11,9 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useDispatch } from "react-redux";
-import { InputUser, ChefStackParamList } from "../../types";
-import { setUser } from "../redux/actions";
+import { useDispatch, useSelector } from "react-redux";
+import { InputUser, ChefStackParamList, RootState, UserRecipeListState } from "../../types";
+import { setUser, setFilters, setUserRecipeList } from "../redux/actions";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
 import firebase from "firebase";
@@ -26,6 +26,9 @@ export interface LoginScreenProps {
 
 export default function LoginScreen({ navigation }: LoginScreenProps) {
   const dispatch = useDispatch();
+  const userRecipeListState = useSelector<RootState, UserRecipeListState>(
+    (state) => state.userRecipeListState
+  );
   const [userInput, setUserInput] = React.useState<InputUser>({
     email: "",
     password: "",
@@ -84,6 +87,24 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
               image_url: data.user?.photoURL,
             })
           );
+          
+          // TODO: Get UserRecipeList & Filters from Backend Server
+
+          if (userRecipeListState.userRecipeList.length > 0) {
+            // Write to DB
+            // Update UserRecipeList with these new recipes
+            for (const rcp of userRecipeListState.userRecipeList) {
+              // WRITE TO DB EACH RECIPE (with data.user?.uid)
+            };
+
+            // const concatUserRecipeList = [...USER_RECIPE_LIST_FROM_DB, ...userRecipeListState.userRecipeList];
+            // dispatch(setUserRecipeList(concatUserRecipeList));
+          } else {
+            // dispatch(setUserRecipeList(USER_RECIPE_LIST_FROM_DB));
+          }
+
+          // dispatch(setFilters(USER_FILTERS_OBJ));
+
           navigation.goBack();
         })
         .catch((error: any) => {

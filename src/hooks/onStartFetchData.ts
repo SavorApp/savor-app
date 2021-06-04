@@ -1,7 +1,7 @@
 import * as SplashScreen from "expo-splash-screen";
 import React from "react";
 import { useDispatch } from "react-redux";
-import { setUser, setUserRecipeListState } from "../redux/actions";
+import { setUser, setUserRecipeList } from "../redux/actions";
 import { firebaseApp } from "../constants/Firebase";
 import axios from "axios";
 import { getCurrentUser } from "../db/db";
@@ -16,8 +16,7 @@ export default function getCacheLoadData() {
       try {
         SplashScreen.preventAutoHideAsync();
 
-        // If authentication passes, setUser
-        // with currentUser
+        // If authentication passes, setUser, setUserRecipeList, setFilters
         firebaseApp.auth().onAuthStateChanged((user) => {
           const currentUser = {
             id: user?.uid,
@@ -27,7 +26,7 @@ export default function getCacheLoadData() {
           if (user !== null) {
             dispatch(setUser(currentUser));
             getCurrentUser(currentUser)
-              .then((resp) => dispatch(setUserRecipeListState(resp.recipes)))
+              .then((resp) => dispatch(setUserRecipeList(resp.recipes)))
               .catch((err: Error) => console.log(err));
           }
         });
