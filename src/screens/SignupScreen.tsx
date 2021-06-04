@@ -7,16 +7,21 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Alert
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { ChefStackParamList, RootState, UserRecipeListState } from "../../types";
+import {
+  ChefStackParamList,
+  RootState,
+  UserRecipeListState,
+} from "../../types";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
 import { resetFilters, resetUserRecipeList, setUser } from "../redux/actions";
 import axios from "axios";
+import { createUser } from "../db/db";
 const _screen = Dimensions.get("screen");
 export interface SignupScreenProps {
   navigation: StackNavigationProp<ChefStackParamList, "SignupScreen">;
@@ -49,47 +54,18 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
     // Also check that the email is somewhat valid
 
     if (!/^\S+@\S+\.\S+$/.test(email)) {
-      Alert.alert(
-        "Invalid Email",
-        "Please enter a valid email."
-      );
-    }
-
-    else if (password.length < 6) {
+      Alert.alert("Invalid Email", "Please enter a valid email.");
+    } else if (password.length < 6) {
       Alert.alert(
         "Invalid Password",
         "Password must be 6 characters or longer."
       );
-    }
-
-    else {
+    } else {
       try {
         const resp = await firebaseApp
           .auth()
           .createUserWithEmailAndPassword(email, password);
         if (resp.additionalUserInfo?.isNewUser) {
-          await axios("https://savored-server.herokuapp.com/", {
-            method: "POST",
-            data: {
-              query: `
-            mutation createUser($_id: String!, $username: String!) {
-              createUser(_id:$_id, username:$username) {
-               _id
-                username
-              }
-            }
-            `,
-              variables: {
-                _id: resp.user?.uid,
-                username: resp.user?.email,
-              },
-            },
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
-
-          // setUser with new user
           dispatch(
             setUser({
               id: resp.user?.uid,
@@ -97,23 +73,11 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
               image_url: resp.user?.photoURL,
             })
           );
-
-          if (userRecipeListState.userRecipeList.length > 0) {
-            // Write to DB
-            // Update UserRecipeList with these new recipes for the new user
-            for (const rcp of userRecipeListState.userRecipeList) {
-              // WRITE TO DB EACH RECIPE (with resp.user?.uid)
-            };
-          } else {
-            // Reset UserRecipeList
-            dispatch(resetUserRecipeList());
-          }
-          
+          createUser(resp.user?.uid, resp.user?.email);
           navigation.goBack();
         }
       } catch (error) {
         Alert.alert("Invalid Request", error.message);
-
       }
     }
   }
@@ -142,8 +106,8 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
                   size={20}
                 />
               ) : (
-                  <></>
-                )}
+                <></>
+              )}
             </View>
 
             <View style={[styles.input, { justifyContent: "space-between" }]}>
@@ -166,17 +130,14 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
                     size={20}
                   />
                 ) : (
-                    <MaterialCommunityIcons name="eye" color="grey" size={20} />
-                  )}
+                  <MaterialCommunityIcons name="eye" color="grey" size={20} />
+                )}
               </TouchableOpacity>
             </View>
           </View>
 
           <View style={styles.signInButtonContainer}>
-            <TouchableOpacity
-              onPress={handleSignUp}
-              activeOpacity={0.8}
-            >
+            <TouchableOpacity onPress={handleSignUp} activeOpacity={0.8}>
               <LinearGradient
                 colors={[colorPalette.popLight, colorPalette.popDark]}
                 style={styles.signUpButton}

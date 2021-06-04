@@ -2,7 +2,6 @@ import React, { useEffect, useRef } from "react";
 import { StyleSheet, Dimensions, View, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { addtoUserRecipeList, triggerReload } from "../redux/actions";
-import axios from "axios";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
@@ -13,6 +12,7 @@ import {
   UserState,
   RecipeCardStackParamList,
 } from "../../types";
+import { swipeToDb } from "../db/db";
 
 const _screen = Dimensions.get("screen");
 
@@ -24,11 +24,12 @@ export default function RecipeCardStack({
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   );
-  const userUID = useRef<string | undefined>("");
+  const userId = useRef<string | undefined>("");
   const cardStackRef = React.useRef<CardStack>();
 
   useEffect(() => {
-    userUID.current = userState.user.id;
+    console.log("UserState has probably updated", userState.user.id);
+    userId.current = userState.user.id;
   }, [userState]);
 
   async function onSwipedLeft(idx: number) {
@@ -36,12 +37,9 @@ export default function RecipeCardStack({
       id: randRecipes[idx].id,
       title: randRecipes[idx].title,
       cuisine:
-        filtersState.filters.cuisine !== ""
-          ? filtersState.filters.cuisine[0].toUpperCase() +
-            filtersState.filters.cuisine.slice(1)
-          : randRecipes[idx].cuisines.length === 0
-          ? "World Food"
-          : randRecipes[idx].cuisines[0],
+        filtersState.filters.cuisine === ""
+          ? randRecipes[idx].cuisines.toString()
+          : filtersState.filters.cuisine,
       dishType:
         filtersState.filters.dishType !== ""
           ? filtersState.filters.dishType[0].toUpperCase() +
@@ -59,47 +57,11 @@ export default function RecipeCardStack({
       ingredients: randRecipes[idx].ingredients,
       isSavored: false,
     };
+    
+    // Add recipe to global state
     dispatch(addtoUserRecipeList(recipeToBeAdded));
-
-    // await axios("https://savored-server.herokuapp.com/", {
-    //   method: "POST",
-    //   data: {
-    //     query: `
-    //         mutation addRcp(
-    //             $user_id: String!,
-    //             $recipe_id: Int!,
-    //             $title: String!,
-    //             $is_savored: Boolean!,
-    //             $summary: String!,
-    //             ) {
-    //           addRecipe(
-    //             user_id:$user_id,
-    //             recipe_id:$recipe_id,
-    //             title:$title,
-    //             is_savored:$is_savored,
-    //             summary:$summary,
-    //             ) {
-    //            user_id
-    //            recipe_id
-    //            title
-    //            is_savored
-    //            summary
-    //           }
-    //         }
-    //         `,
-    //     variables: {
-    //       user_id: userUID.current,
-    //       recipe_id: recipeToBeAdded.id,
-    //       title: recipeToBeAdded.title,
-    //       is_savored: false,
-    //       summary: "delicious dude",
-    //     },
-    //   },
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-
+    // Add recipe to DB for given user
+    swipeToDb(userId.current, false, recipeToBeAdded);
     // If we are at the last card, trigger a reload
     if (randRecipes.length - idx === 1) {
       dispatch(triggerReload());
@@ -111,12 +73,9 @@ export default function RecipeCardStack({
       id: randRecipes[idx].id,
       title: randRecipes[idx].title,
       cuisine:
-        filtersState.filters.cuisine !== ""
-          ? filtersState.filters.cuisine[0].toUpperCase() +
-            filtersState.filters.cuisine.slice(1)
-          : randRecipes[idx].cuisines.length === 0
-          ? "World Food"
-          : randRecipes[idx].cuisines[0],
+        filtersState.filters.cuisine === ""
+          ? randRecipes[idx].cuisines.toString()
+          : filtersState.filters.cuisine,
       dishType:
         filtersState.filters.dishType !== ""
           ? filtersState.filters.dishType[0].toUpperCase() +
@@ -134,47 +93,11 @@ export default function RecipeCardStack({
       ingredients: randRecipes[idx].ingredients,
       isSavored: true,
     };
+
+    // Add recipe to global state
     dispatch(addtoUserRecipeList(recipeToBeAdded));
-
-    // await axios("https://savored-server.herokuapp.com/", {
-    //   method: "POST",
-    //   data: {
-    //     query: `
-    //         mutation addRcp(
-    //             $user_id: String!,
-    //             $recipe_id: Int!,
-    //             $title: String!,
-    //             $is_savored: Boolean!,
-    //             $summary: String!,
-    //             ) {
-    //           addRecipe(
-    //             user_id:$user_id,
-    //             recipe_id:$recipe_id,
-    //             title:$title,
-    //             is_savored:$is_savored,
-    //             summary:$summary,
-    //             ) {
-    //            user_id
-    //            recipe_id
-    //            title
-    //            is_savored
-    //            summary
-    //           }
-    //         }
-    //         `,
-    //     variables: {
-    //       user_id: userUID.current,
-    //       recipe_id: recipeToBeAdded.id,
-    //       title: recipeToBeAdded.title,
-    //       is_savored: true,
-    //       summary: "delicious dude",
-    //     },
-    //   },
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-
+    // Add recipe to DB for given user
+    swipeToDb(userId.current, true, recipeToBeAdded);
     // If we are at the last card, trigger a reload
     if (randRecipes.length - idx === 1) {
       dispatch(triggerReload());
