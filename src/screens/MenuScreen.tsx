@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert, TouchableOpacity, View, Text } from "react-native";
+import { Alert } from "react-native";
 import Constants from "expo-constants";
 import { useDispatch, useSelector } from "react-redux";
 import { resetReload } from "../redux/actions";
@@ -8,15 +8,8 @@ import RecipeCardStack from "../components/RecipeCardStack";
 import LoadingCardStack from "../components/LoadingCardStack";
 import { applySmartFilter, removeViewedRecipes } from "../utils";
 // Importing JSON data for development and testing
-import * as recipesJson from "../data/recipes.json";
-import {
-  Recipe,
-  RootState,
-  FiltersState,
-  UserRecipeListState,
-  Ingredient,
-  ReloadRecipesState
-} from "../../types";
+import * as recipesJson from "../data/100recipes.json";
+
 
 // Initializing Spoonacular resources
 const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
@@ -182,7 +175,6 @@ export default function MenuScreen() {
   React.useEffect(() => {
     // if reload recipe = true
     if (reloadRecipesState.reload) {
-      console.log("Menu Screen Reload Attempt")
       setIsCardStackLoading(true);
       fetchRandomRecipes();
       dispatch(resetReload());

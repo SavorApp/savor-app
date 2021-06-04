@@ -1,13 +1,3 @@
-import {
-  User,
-  EmptyAction,
-  UserAction,
-  UserRecipeListAction,
-  Filters,
-  FiltersAction,
-  UserRecipe,
-} from "../../../types";
-
 // User Actions
 export const setUser = (user: User): UserAction => {
   return {

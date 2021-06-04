@@ -1,5 +1,3 @@
-import { ReloadRecipesState, EmptyAction } from "../../../types";
-
 // Initialize initial ReloadRecipes State
 const initialState: ReloadRecipesState = {
   reload: false,

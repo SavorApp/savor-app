@@ -12,7 +12,6 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useDispatch, useSelector } from "react-redux";
-import { InputUser, ChefStackParamList, RootState, UserRecipeListState } from "../../types";
 import { setUser, setFilters, setUserRecipeList } from "../redux/actions";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";

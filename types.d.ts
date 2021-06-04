@@ -4,7 +4,7 @@
  _________________________
 */
 
-export type RootStackParamList = {
+type RootStackParamList = {
   Root: undefined;
   SignupScreen: undefined;
   AboutUsScreen: undefined;
@@ -14,13 +14,13 @@ export type RootStackParamList = {
   ProtectedBurgerScreen: undefined;
 };
 
-export type BottomTabParamList = {
+type BottomTabParamList = {
   Chef: undefined;
   Menu: undefined;
   SavoredList: undefined;
 };
 
-export type ChefStackParamList = {
+type ChefStackParamList = {
   LoginScreen: undefined;
   SignupScreen: undefined;
   ChefScreen: undefined;
@@ -28,14 +28,14 @@ export type ChefStackParamList = {
   DeleteAccountScreen: undefined;
 };
 
-export type MenuStackParamList = {
+type MenuStackParamList = {
   ChefScreen: undefined;
   MenuScreen: undefined;
   BurgerScreen: undefined;
   ProtectedBurgerScreen: undefined;
 };
 
-export type SavoredListStackParamList = {
+type SavoredListStackParamList = {
   SavoredListScreen: undefined;
   RecipeScreen: { recipeId: number };
 };
@@ -47,7 +47,7 @@ export type SavoredListStackParamList = {
 */
 
 // Core RootState interface
-export interface RootState {
+interface RootState {
   userState: UserState;
   recipeState: RecipeState;
   userRecipeListState: UserRecipeListState;
@@ -56,31 +56,31 @@ export interface RootState {
 }
 
 // Core User type
-export type User = {
+type User = {
   id: string | undefined;
   username: string | null | undefined;
   image_url: string | null | undefined;
 };
 
 // Core UserState interface
-export interface UserState {
+interface UserState {
   user: User;
   isLoggedIn: Boolean;
 }
 
 // Core User action
-export type UserAction = { type: string; payload: User };
+type UserAction = { type: string; payload: User };
 
 // Core RecipeState interface
-export interface RecipeState {
+interface RecipeState {
   recipe: Recipe;
 }
 
 // Core Recipe action
-export type RecipeAction = { type: string; payload: Recipe };
+type RecipeAction = { type: string; payload: Recipe };
 
 // Core UserRecipe type
-export type UserRecipe = {
+type UserRecipe = {
   id: number;
   title: string;
   cuisine: string;
@@ -96,18 +96,18 @@ export type UserRecipe = {
 };
 
 // Core UserRecipeListState interface
-export interface UserRecipeListState {
+interface UserRecipeListState {
   userRecipeList: UserRecipe[];
 }
 
 // Core UserRecipeList action
-export type UserRecipeListAction = {
+type UserRecipeListAction = {
   type: string;
   payload: UserRecipeListState | UserRecipe[] | UserRecipe;
 };
 
 // Core Filters type
-export type Filters = {
+type Filters = {
   smartFilter: Boolean;
   dishType: string;
   cuisine: string;
@@ -120,20 +120,20 @@ export type Filters = {
 };
 
 // Core FiltersState interface
-export interface FiltersState {
+interface FiltersState {
   filters: Filters;
 }
 
 // Core Filters action
-export type FiltersAction = { type: string; payload: FiltersState | Filters };
+type FiltersAction = { type: string; payload: FiltersState | Filters };
 
 // Core ReloadRecipesState interface
-export interface ReloadRecipesState {
+interface ReloadRecipesState {
   reload: Boolean
 }
 
 // Empty action for resets
-export type EmptyAction = {
+type EmptyAction = {
   type: string;
 };
 
@@ -143,17 +143,17 @@ export type EmptyAction = {
  _____________________________
 */
 
-export type RecipeCardParamList = {
+type RecipeCardParamList = {
   id: number;
   rcp: Recipe;
 };
 
-export type SwipeButtonsParamList = {
+type SwipeButtonsParamList = {
   handleOnPressLeft: () => void;
   handleOnPressRight: () => void;
 };
 
-export type RecipeCardStackParamList = {
+type RecipeCardStackParamList = {
   randRecipes: Recipe[];
   filtersState: FiltersState;
 };
@@ -165,13 +165,13 @@ export type RecipeCardStackParamList = {
 */
 
 // InputUser for when users log in
-export type InputUser = {
+type InputUser = {
   email: string;
   password: string;
 };
 
 // Spoonacular Recipe type
-export type Recipe = {
+type Recipe = {
   id: number;
   sourceUrl: string;
   image: string | undefined;
@@ -200,7 +200,7 @@ export type Recipe = {
 };
 
 // Spoonacular Ingredient type
-export type Ingredient = {
+type Ingredient = {
   id: number;
   aisle: string;
   image: string;
@@ -229,7 +229,7 @@ export type Ingredient = {
 };
 
 // Recipe Screen Info type
-export type RecipeScreenInfo = {
+type RecipeScreenInfo = {
   title: string;
   instructions: string;
   summary: string;

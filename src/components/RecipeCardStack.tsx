@@ -6,12 +6,6 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
 import SwipeButtons from "../components/SwipeButtons";
-import {
-  Recipe,
-  RootState,
-  UserState,
-  RecipeCardStackParamList,
-} from "../../types";
 import { swipeToDb } from "../db/db";
 
 const _screen = Dimensions.get("screen");
@@ -28,7 +22,6 @@ export default function RecipeCardStack({
   const cardStackRef = React.useRef<CardStack>();
 
   useEffect(() => {
-    console.log("UserState has probably updated", userState.user.id);
     userId.current = userState.user.id;
   }, [userState]);
 

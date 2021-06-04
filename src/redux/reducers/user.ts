@@ -1,5 +1,3 @@
-import { UserAction, UserState } from "../../../types";
-
 // Initialize initial User State
 const initialState: UserState = {
   user: {
