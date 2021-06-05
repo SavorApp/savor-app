@@ -135,7 +135,6 @@ export default function MenuScreen() {
       //   };
       // });
 
-      console.log("Recipe Count", fetchedRecipes.length);
       if (fetchedRecipes.length === 0) {
         Alert.alert(
           "No Recipes Found",
@@ -144,7 +143,6 @@ export default function MenuScreen() {
       } else {
         // Remove already viewed Recipes
         const removedViewedRecipes = removeRecentlyViewedRecipes(fetchedRecipes, userRecipeListState.userRecipeList);
-        console.log("Removed Viewed Recipe Count", removedViewedRecipes.length);
 
         // Apply smartFilter is set to true
         if (filtersState.filters.smartFilter) {
