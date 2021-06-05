@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { StyleSheet, Dimensions, View, Text } from "react-native";
+import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { addtoUserRecipeList, triggerReload } from "../redux/actions";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
@@ -7,6 +7,7 @@ import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
 import SwipeButtons from "../components/SwipeButtons";
 import { swipeToDb } from "../db/db";
+import { LinearGradient } from "expo-linear-gradient";
 
 const _screen = Dimensions.get("screen");
 
@@ -20,6 +21,7 @@ export default function RecipeCardStack({
   );
   const userId = useRef<string | undefined>("");
   const cardStackRef = React.useRef<CardStack>();
+  const [showReload, setShowReload] = React.useState(false);
 
   useEffect(() => {
     userId.current = userState.user.id;
@@ -105,6 +107,33 @@ export default function RecipeCardStack({
     cardStackRef.current?.swipeRight();
   }
 
+  function renderNoMoreCard() {
+    setTimeout(() => {
+      setShowReload(true);
+    }, 500);
+
+    return (
+      <View style={styles.renderNoMoreCardsContainer}>
+        <Text style={{color: "white"}}>No More Recipes...</Text>
+        <View>
+        {showReload && 
+          <TouchableOpacity
+            onPress={() => dispatch(triggerReload())}
+            activeOpacity={0.8}
+          >
+            <LinearGradient
+              colors={[colorPalette.popLight, colorPalette.popDark]}
+              style={styles.reloadButton}
+            >
+              <Text style={{ color: "black" }}>Reload Recipes</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        }
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
@@ -113,13 +142,7 @@ export default function RecipeCardStack({
           ref={(cardStack: CardStack) => {
             cardStackRef.current = cardStack;
           }}
-          renderNoMoreCards={() => {
-            return (
-              <View>
-                <Text style={styles.renderNoMoreCards}>No More Recipes</Text>
-              </View>
-            );
-          }}
+          renderNoMoreCards={renderNoMoreCard}
           disableBottomSwipe
           disableTopSwipe
         >
@@ -171,11 +194,21 @@ const styles = StyleSheet.create({
     ...shadowStyle,
   },
 
-  renderNoMoreCards: {
-    justifyContent: "center",
+  renderNoMoreCardsContainer: {
+    justifyContent: "space-between",
     alignItems: "center",
     textAlign: "center",
     marginBottom: 250,
+    height: _screen.height * 0.05,
     color: "white",
+  },
+
+  reloadButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 8,
+    width: 120,
+    borderRadius: 10,
+    padding: 8,
   },
 });
