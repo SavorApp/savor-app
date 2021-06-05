@@ -82,7 +82,6 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             .signInWithEmailAndPassword(data.email, data.password);
         })
         .then((userCreds) => {
-          console.log(userCreds);
           const accessToken = userCreds.user?.getIdToken();
           // Cache access-token on mobile storage
           cacheAccessToken(accessToken);
@@ -136,8 +135,8 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
       const accessToken = await PromisedAccessToken;
       try {
         await AsyncStorage.setItem("access-token", accessToken);
-      } catch (e) {
-        // Handle failed asyncStorage
+      } catch (err) {
+        // Handle failed asyncStorage error
       }
     } else {
       // Handle undefined Promise

@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useDispatch } from "react-redux";
 import {
@@ -38,6 +39,8 @@ export default function DeleteAccountScreen({
       .auth()
       .signOut()
       .then(() => {
+        // Remove cached access-token on mobile storage
+        removeCachedAccessToken()
         // - Update global state
         dispatch(removeUser());
         dispatch(resetUserRecipeList());
@@ -54,6 +57,15 @@ export default function DeleteAccountScreen({
         setBlockDeleteAccount(false);
       });
   }
+
+  async function removeCachedAccessToken() {
+    try {
+      await AsyncStorage.removeItem("access-token")
+    } catch(err) {
+      // Handle failed asyncStorage removal error
+    }
+  }
+
 
   return (
     <View style={styles.container}>
