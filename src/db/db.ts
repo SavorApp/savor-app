@@ -231,6 +231,8 @@ export async function updateFiltersDb(
                 dairyFree:$dairyFree,
                 readyInMinutes:$readyInMinutes,
                 servings:$servings) {
+                
+                user_id
                smartFilter
                dishType
                cuisine

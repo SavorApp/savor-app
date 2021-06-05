@@ -39,6 +39,7 @@ export const resetUserRecipeList = (): EmptyAction => {
 
 // Filters Actions
 export const setFilters = (filters: Filters): FiltersAction => {
+  console.log(filters);
   return {
     type: "SET_FILTERS",
     payload: filters,
@@ -61,7 +62,7 @@ export const resetFilters = (): EmptyAction => {
 // ReloadRecipes Actions
 export const triggerReload = (): EmptyAction => {
   return {
-    type: "TRIGGER_RELOAD"
+    type: "TRIGGER_RELOAD",
   };
 };
 
