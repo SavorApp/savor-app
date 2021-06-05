@@ -95,8 +95,6 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
           }
 
           // dispatch(setFilters(USER_FILTERS_OBJ));
-
-          navigation.goBack();
         })
         .catch((error: any) => {
           // Handle Errors here.

@@ -7,7 +7,7 @@ import { MenuScreen } from "../screens"
 import { useSelector } from "react-redux";
 
 export interface MenuNavigatorProps {
-    navigation: StackNavigationProp<MenuStackParamList, "BurgerScreen">
+    navigation: StackNavigationProp<MenuStackParamList, "MenuScreen">
 }
 
 const MenuStack = createStackNavigator();

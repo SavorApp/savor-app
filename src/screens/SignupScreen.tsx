@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   StyleSheet,
   Dimensions,
@@ -17,6 +16,7 @@ import { firebaseApp } from "../constants/Firebase";
 import { createUser, createFilters } from "../db/db";
 import { initialState } from "../redux/reducers/filters";
 const _screen = Dimensions.get("screen");
+
 export interface SignupScreenProps {
   navigation: StackNavigationProp<ChefStackParamList, "SignupScreen">;
 }
