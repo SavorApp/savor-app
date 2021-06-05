@@ -6,6 +6,7 @@ import {
   View,
   Text,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -28,6 +29,29 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
     (state) => state.userState
   );
   const dispatch = useDispatch();
+  const [blockLogout, setBlockLogout] = React.useState(false);
+
+  function handleLogout() {
+    setBlockLogout(true);
+    //Log out chef with firebase
+    firebaseApp
+      .auth()
+      .signOut()
+      .then(() => {
+        // - Update global state
+        dispatch(removeUser());
+        dispatch(resetUserRecipeList());
+        dispatch(resetFilters());
+        setBlockLogout(false);
+      })
+      .catch((err: { code: string; message: string }) => {
+        Alert.alert(
+          "Internal Error 🤕",
+          "Sorry for the inconvenience, please try again later."
+        );
+        setBlockLogout(false);
+      });
+  }
 
   return (
     <View style={styles.container}>
@@ -51,28 +75,20 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
 
         <View style={styles.bottomButtonsContainer}>
           <TouchableOpacity
-            onPress={() => {
-              //Log out chef with firebase
-              firebaseApp
-                .auth()
-                .signOut()
-                .then(() => {
-                  // - Update global state
-                  dispatch(removeUser());
-                  dispatch(resetUserRecipeList());
-                  dispatch(resetFilters());
-                })
-                .catch((error) => {
-                  // An error happened.
-                });
-            }}
+            onPress={
+              blockLogout
+                ? () => {} // Fake function while blocked
+                : handleLogout // Allow logout while unblocked
+            }
             activeOpacity={0.8}
           >
             <LinearGradient
               colors={[colorPalette.trimLight, colorPalette.trim]}
               style={styles.button}
             >
-              <Text style={{ color: "black" }}>Logout</Text>
+              <Text style={{ color: "black" }}>
+                {blockLogout ? "Processing..." : "Logout"}
+              </Text>
             </LinearGradient>
           </TouchableOpacity>
 

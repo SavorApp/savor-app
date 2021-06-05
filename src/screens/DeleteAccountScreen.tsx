@@ -16,6 +16,7 @@ import {
 } from "../redux/actions";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { LinearGradient } from "expo-linear-gradient";
+import { firebaseApp } from "../constants/Firebase";
 
 const _screen = Dimensions.get("screen");
 
@@ -28,6 +29,32 @@ export default function DeleteAccountScreen({
 }: DeleteAccountScreenProps) {
   const dispatch = useDispatch();
 
+  const [blockDeleteAccount, setBlockDeleteAccount] = React.useState(false);
+
+  function handleDeleteAccount() {
+    setBlockDeleteAccount(true);
+    // TODO: Delete Account in DB
+    firebaseApp
+      .auth()
+      .signOut()
+      .then(() => {
+        // - Update global state
+        dispatch(removeUser());
+        dispatch(resetUserRecipeList());
+        dispatch(resetFilters());
+        setBlockDeleteAccount(false);
+        Alert.alert("Enjoy your time off", "We hope you come back soon 👨‍🍳");
+        navigation.goBack();
+      })
+      .catch((err: { code: string; message: string }) => {
+        Alert.alert(
+          "Internal Error 🤕",
+          "Sorry for the inconvenience, please try again later."
+        );
+        setBlockDeleteAccount(false);
+      });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
@@ -37,22 +64,20 @@ export default function DeleteAccountScreen({
         <View style={styles.form}>
           <Text>Yes, I'm hanging my apron for now...</Text>
           <TouchableOpacity
-            onPress={() => {
-              // TODO:
-              // - Sign Chef out & Delete Account in DB
-              dispatch(removeUser());
-              dispatch(resetUserRecipeList());
-              dispatch(resetFilters());
-              Alert.alert("Enjoy your time off", "We hope you come back soon 👨‍🍳")
-              navigation.goBack();
-            }}
+            onPress={
+              blockDeleteAccount
+                ? () => {} // Fake function while blocked
+                : handleDeleteAccount // Allow delete account while unblocked
+            }
             activeOpacity={0.8}
           >
             <LinearGradient
               colors={["#ffe6e6", "#ff6666"]}
               style={styles.button}
             >
-              <Text style={{ color: "black" }}>Delete Account</Text>
+              <Text style={{ color: "black" }}>
+                {blockDeleteAccount ? "Processing..." : "Delete Account"}
+              </Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
