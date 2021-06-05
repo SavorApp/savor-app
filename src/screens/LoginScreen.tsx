@@ -6,9 +6,9 @@ import {
   Text,
   TouchableOpacity,
   TextInput,
-  Alert
+  Alert,
 } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -61,19 +61,6 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     }
   }, [userInput]);
 
-  async function cacheAccessToken(PromisedAccessToken: Promise<string> | undefined) {
-    if (PromisedAccessToken) {
-      const accessToken = await PromisedAccessToken
-      try {
-          await AsyncStorage.setItem('access-token', accessToken)
-      } catch (e) {
-        // Handle failed asyncStorage
-      }
-    } else {
-      // Handle undefined Promise
-    }
-  }
-
   function handleLogin(data: InputUser) {
     setBlockLogin(true);
     if (!/^\S+@\S+\.\S+$/.test(data.email)) {
@@ -95,24 +82,25 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             .signInWithEmailAndPassword(data.email, data.password);
         })
         .then((userCreds) => {
-          const accessToken = userCreds.user?.getIdToken()
+          console.log(userCreds);
+          const accessToken = userCreds.user?.getIdToken();
           // Cache access-token on mobile storage
           cacheAccessToken(accessToken);
           // TODO: Get UserRecipeList & Filters from Backend Server
-          
+
           if (userRecipeListState.userRecipeList.length > 0) {
             // Write to DB
             // Update UserRecipeList with these new recipes
             for (const rcp of userRecipeListState.userRecipeList) {
               // WRITE TO DB EACH RECIPE (with data.user?.uid)
             }
-            
+
             // const concatUserRecipeList = [...USER_RECIPE_LIST_FROM_DB, ...userRecipeListState.userRecipeList];
             // dispatch(setUserRecipeList(concatUserRecipeList));
           } else {
             // dispatch(setUserRecipeList(USER_RECIPE_LIST_FROM_DB));
           }
-          
+
           // dispatch(setFilters(USER_FILTERS_OBJ));
 
           setBlockLogin(false);
@@ -138,6 +126,21 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             setBlockLogin(false);
           }
         });
+    }
+  }
+
+  async function cacheAccessToken(
+    PromisedAccessToken: Promise<string> | undefined
+  ) {
+    if (PromisedAccessToken) {
+      const accessToken = await PromisedAccessToken;
+      try {
+        await AsyncStorage.setItem("access-token", accessToken);
+      } catch (e) {
+        // Handle failed asyncStorage
+      }
+    } else {
+      // Handle undefined Promise
     }
   }
 
