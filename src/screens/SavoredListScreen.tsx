@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
-// import { SwipeListView } from 'react-native-swipe-list-view';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -34,49 +34,58 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     return Math.floor(Math.random() * savoredList.length);
   }
 
+
+// Delete recipe workings
+  
+
+
+// below is the recipe list
+
   function RecipeListItem({rcp}: {rcp: UserRecipe}) {
     const newTitle = rcp.title.length >= 30 ? (rcp.title.slice(0, 30) + "...") : (rcp.title)
     return (
+      <View style={styles.rowFront}>
       <TouchableOpacity
-        style={styles.recipeListItem}
-        onPress={() => navigation.navigate("RecipeScreen", { recipeId: rcp.id})}
-        activeOpacity={0.8}
-      >
-        <View style={styles.recipeListItemInner}>
-          {cuisineMap[rcp.cuisine] || cuisineMap["All"]}
-          <View  style={styles.recipeListItemInnerContent}>
-            <Text style={styles.recipeTitle}>{newTitle}</Text>
-            <View style={styles.tagsContainer}>
-              <View style={styles.singleTagContainer}>
-              {dishTypeMap[rcp.dishType] || dishTypeMap["All"]}
-                <Text style={styles.tag}>{rcp.dishType}</Text>
+          style={styles.recipeListItem}
+          onPress={() => navigation.navigate("RecipeScreen", { recipeId: rcp.id})}
+          activeOpacity={0.8}
+        >
+          <View style={styles.recipeListItemInner}>
+            {cuisineMap[rcp.cuisine] || cuisineMap["All"]}
+            <View  style={styles.recipeListItemInnerContent}>
+              <Text style={styles.recipeTitle}>{newTitle}</Text>
+              <View style={styles.tagsContainer}>
+                <View style={styles.singleTagContainer}>
+                {dishTypeMap[rcp.dishType] || dishTypeMap["All"]}
+                  <Text style={styles.tag}>{rcp.dishType}</Text>
+                </View>
+                {rcp.vegetarian && (
+                  <View style={styles.singleTagContainer}>
+                    <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" />
+                    <Text style={styles.tag}>Vegetarian</Text>
+                  </View>
+                )}
+                {rcp.vegan && (
+                  <View style={styles.singleTagContainer}>
+                    <MaterialCommunityIcons name="alpha-v-circle" color="green" />
+                    <Text style={styles.tag}>Vegan</Text>
+                  </View>
+                )}
+                {rcp.glutenFree && (
+                  <View style={styles.singleTagContainer}>
+                    <Text style={[styles.tag, {fontWeight: "bold"}]}>GF</Text>
+                  </View>
+                )}
+                {rcp.dairyFree && (
+                  <View style={styles.singleTagContainer}>
+                    <Text style={[styles.tag, {fontWeight: "bold"}]}>DF</Text>
+                  </View>
+                )}
               </View>
-              {rcp.vegetarian && (
-                <View style={styles.singleTagContainer}>
-                  <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" />
-                  <Text style={styles.tag}>Vegetarian</Text>
-                </View>
-              )}
-              {rcp.vegan && (
-                <View style={styles.singleTagContainer}>
-                  <MaterialCommunityIcons name="alpha-v-circle" color="green" />
-                  <Text style={styles.tag}>Vegan</Text>
-                </View>
-              )}
-              {rcp.glutenFree && (
-                <View style={styles.singleTagContainer}>
-                  <Text style={[styles.tag, {fontWeight: "bold"}]}>GF</Text>
-                </View>
-              )}
-              {rcp.dairyFree && (
-                <View style={styles.singleTagContainer}>
-                  <Text style={[styles.tag, {fontWeight: "bold"}]}>DF</Text>
-                </View>
-              )}
             </View>
           </View>
+        </TouchableOpacity> 
         </View>
-      </TouchableOpacity>
     )
   };
 
@@ -84,19 +93,98 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     return <RecipeListItem rcp={item}/>;
   };
 
-  return (
+  // const HiddenItemWithActions = props => {
+  //   const {onClose, onDelete} = props;
+  // }
+
+  // function renderHiddenItem({data}: {data: UserRecipe}) {
+  //   return (
+  //         <View style={styles.rowBack}>
+  //                   <Text>Left</Text>
+  //                   <Text>Right</Text>
+  //               </View>
+  //   // <HiddenItemWithActions
+  //   //   data={data}
+  //   //   rowMap={rowMap}
+  //   //   onClose={() => closeRow(rowMap, data.item.key)}
+  //   //   onDelete={() => deleteRow(rowMap, data.item.key)}
+  //   //   />
+  //   )
+  // }
+  const closeRow = (rowMap, rowKey) => {
+    if(rowMap[rowKey]) {
+      rowMap[rowKey].closeRow();
+    }
+  }
+
+  const deleteRow = (rowMap, rowKey) => {
+    closeRow(rowMap, rowKey);
+    const newData = [...userRecipeListState.userRecipeList]
+    const prevIndex = newData.findIndex(item => item.key === rowKey);
+    newData.splice(prevIndex, 1);
+    // set new state, maybe dispatch?
+    // and call to backend to delete
+  }
+
+  const HiddenItemWithActions = props => {
+    const {onClose, onDelete} = props;
+    return (
+      <View style={styles.rowBack}>
+        <Text>Left</Text>
+        <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]} onPress={onClose}>
+          <Text>Close</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={onDelete}>
+          <Text>Delete</Text>
+        </TouchableOpacity>
+
+        
+      </View>
+    )
+  }
+  
+  // renderHiddenItem={ (data, rowMap) => (
+  //               <View style={styles.rowBack}>
+  //                 <Text>Left</Text>
+  //                 <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]} onPress={ _ => this.closeRow(rowMap, data.item.key) }>
+  //                   <Text style={styles.backTextWhite}>{data.title}</Text>
+  //                 </TouchableOpacity>
+  //                 <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={ _ => this.deleteRow(rowMap, data.item.key) }>
+  //                   <Text style={styles.backTextWhite}>Delete</Text>
+  //                 </TouchableOpacity>
+  //               </View>
+  //             )}
+
+
+  function renderHiddenItem (data, rowMap) {
+    return (
+      <HiddenItemWithActions 
+        data={data}
+        rowMap={rowMap}
+        onClose={() => closeRow(rowMap, data.item.key)}
+        onDelete={() => closeRow(rowMap, data.item.key)}
+      />
+    );
+  }
+
+return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
         <View style={styles.contentContainer}>
-          <FlatList
-            style={styles.flatList}
-            contentContainerStyle={styles.flatListContainer}
-            data={userRecipeListState.userRecipeList.filter((rcp) => {
-              // Select only Recipes where isSavored = true
-              return rcp.isSavored;
-            })}
-            renderItem={(item) => renderItem(item)}
-            keyExtractor={item => item.id.toString()}
+          <SwipeListView
+              useFlatList={true}
+              style={styles.flatList}
+              contentContainerStyle={styles.flatListContainer}
+              data={userRecipeListState.userRecipeList.filter((rcp) => {
+                // Select only Recipes where isSavored = true
+                return rcp.isSavored;
+              })}
+              renderItem={(item) => renderItem(item)}
+              renderHiddenItem={renderHiddenItem}
+              keyExtractor={item => item.id.toString()}
+              leftOpenValue={75}
+              rightOpenValue={-75}
+              disableRightSwipe
           />
         </View>
         <TouchableOpacity
