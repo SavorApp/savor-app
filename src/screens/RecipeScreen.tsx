@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import {
   StyleSheet,
   Dimensions,
@@ -32,9 +31,6 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
   const { recipeId } = route.params;
   const ENDPOINT = `${recipeId}/information?apiKey=${API_KEY}&includeNutrition=false`;
 
-  const userState = useSelector<RootState, UserState>(
-    (state) => state.userState
-  );
   const [recipeInfo, setRecipeInfo] = React.useState<
     RecipeScreenInfo | undefined
   >({
@@ -112,12 +108,14 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     fetchRecipeInfo();
   }, []);
 
-  // On User log out, goBack to SavoredListScreen
+  // On navigate away, goBack to SavoredListScreen
   React.useEffect(() => {
-    if (userState.isLoggedIn === false) {
+    const unsubscribe = navigation.addListener("blur", () => {
       navigation.goBack();
-    }
-  }, [userState.isLoggedIn]);
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   return isInfoLoading ? (
     <LoadingRecipeInfo recipeId={recipeId} />
