@@ -2,7 +2,6 @@ import axios from "axios";
 import { SAVORED_SERVER_API } from "../constants/api";
 
 export async function swipeToDb(user_id: string | undefined, rcp: UserRecipe) {
-  console.log(user_id);
   const recipe = await axios(SAVORED_SERVER_API, {
     method: "POST",
     data: {
@@ -73,14 +72,12 @@ export async function swipeToDb(user_id: string | undefined, rcp: UserRecipe) {
       "Content-Type": "application/json",
     },
   });
-  console.log(recipe);
 }
 
 export async function createUser(
   id: string | undefined,
   username: string | null | undefined
 ) {
-  console.log(id, username);
   const newUser = await axios(SAVORED_SERVER_API, {
     method: "POST",
     data: {
@@ -101,11 +98,9 @@ export async function createUser(
       "Content-Type": "application/json",
     },
   });
-  console.log(newUser);
 }
 
 export async function getCurrentUser(currentUser: User) {
-  console.log(currentUser.id);
   const user = await axios(SAVORED_SERVER_API, {
     method: "POST",
     data: {
@@ -153,7 +148,6 @@ export async function createFilters(
   user_id: string | undefined,
   filters: Filters
 ) {
-  console.log(user_id, filters);
   const newFilters = await axios(SAVORED_SERVER_API, {
     method: "POST",
     data: {
@@ -213,7 +207,6 @@ export async function updateFiltersDb(
   user_id: string | undefined,
   filters: Filters
 ) {
-  console.log(user_id, filters);
   const updatedFilters = await axios(SAVORED_SERVER_API, {
     method: "POST",
     data: {

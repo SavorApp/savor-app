@@ -8,11 +8,11 @@ import {
   TextInput,
   Alert,
 } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser, setFilters, setUserRecipeList } from "../redux/actions";
+import { useSelector } from "react-redux";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
 import firebase from "firebase";
@@ -24,7 +24,6 @@ export interface LoginScreenProps {
 }
 
 export default function LoginScreen({ navigation }: LoginScreenProps) {
-  const dispatch = useDispatch();
   const userRecipeListState = useSelector<RootState, UserRecipeListState>(
     (state) => state.userRecipeListState
   );
@@ -34,6 +33,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   });
   const [validEmail, setValidEmail] = React.useState(false);
   const [hidePassword, setHidePassword] = React.useState(true);
+  const [blockLogin, setBlockLogin] = React.useState(false);
 
   function emailInputChange(val: string) {
     setUserInput({
@@ -62,13 +62,16 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   }, [userInput]);
 
   function handleLogin(data: InputUser) {
+    setBlockLogin(true);
     if (!/^\S+@\S+\.\S+$/.test(data.email)) {
       Alert.alert("Invalid Email", "Please enter a valid email.");
+      setBlockLogin(false);
     } else if (data.password.length < 6) {
       Alert.alert(
         "Invalid Password",
         "Password must be 6 characters or longer."
       );
+      setBlockLogin(false);
     } else {
       firebaseApp
         .auth()
@@ -78,7 +81,11 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             .auth()
             .signInWithEmailAndPassword(data.email, data.password);
         })
-        .then((data) => {
+        .then((userCreds) => {
+          console.log(userCreds);
+          const accessToken = userCreds.user?.getIdToken();
+          // Cache access-token on mobile storage
+          cacheAccessToken(accessToken);
           // TODO: Get UserRecipeList & Filters from Backend Server
 
           if (userRecipeListState.userRecipeList.length > 0) {
@@ -96,14 +103,44 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
           // dispatch(setFilters(USER_FILTERS_OBJ));
 
-          navigation.goBack();
+          setBlockLogin(false);
         })
-        .catch((error: any) => {
-          // Handle Errors here.
-          console.log(error);
-          const errorCode = error.code;
-          const errorMessage = error.message;
+        .catch((err: { code: string; message: string }) => {
+          if (err.code === "auth/user-not-found") {
+            Alert.alert(
+              "User Not Found",
+              "We cannot find this user, please check your input."
+            );
+            setBlockLogin(false);
+          } else if (err.code === "auth/wrong-password") {
+            Alert.alert(
+              "Wrong Password",
+              "The password is invalid, please check your credentials."
+            );
+            setBlockLogin(false);
+          } else {
+            Alert.alert(
+              "Internal Error 🤕",
+              "Sorry for the inconvenience, please try again later."
+            );
+            setBlockLogin(false);
+          }
         });
+    }
+  }
+
+  async function cacheAccessToken(
+    PromisedAccessToken: Promise<string> | undefined
+  ) {
+    if (PromisedAccessToken) {
+      const accessToken = await PromisedAccessToken;
+      try {
+        await AsyncStorage.setItem("access-token", accessToken);
+      } catch (e) {
+        // Handle failed asyncStorage
+      }
+    } else {
+      // Handle undefined Promise
     }
   }
 
@@ -164,7 +201,9 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
           <View style={styles.signInButtonContainer}>
             <TouchableOpacity
               onPress={() => {
-                handleLogin(userInput);
+                blockLogin
+                  ? () => {} // Fake function while blocked
+                  : handleLogin(userInput); // Allow login while unblocked
               }}
               activeOpacity={0.8}
             >
@@ -172,7 +211,9 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
                 colors={[colorPalette.alternate, colorPalette.alternate2]}
                 style={styles.signUpButton}
               >
-                <Text style={{ color: colorPalette.background }}>Sign In</Text>
+                <Text style={{ color: colorPalette.background }}>
+                  {blockLogin ? "Processing..." : "Sign In"}
+                </Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>

@@ -29,7 +29,6 @@ type ChefStackParamList = {
 };
 
 type MenuStackParamList = {
-  ChefScreen: undefined;
   MenuScreen: undefined;
   BurgerScreen: undefined;
   ProtectedBurgerScreen: undefined;
@@ -39,6 +38,12 @@ type SavoredListStackParamList = {
   SavoredListScreen: undefined;
   RecipeScreen: { recipeId: number };
 };
+
+type RecipeScreenStackParamList = {
+  SavoredListScreen: undefined;
+  RecipeScreen: { recipeId: number };
+};
+
 
 /*
  _________________________
