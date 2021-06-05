@@ -1,7 +1,7 @@
 import * as SplashScreen from "expo-splash-screen";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser, setUserRecipeList } from "../redux/actions";
+import { setUser, setUserRecipeList, setFilters } from "../redux/actions";
 import { firebaseApp } from "../constants/Firebase";
 import axios from "axios";
 import { getCurrentUser, createFilters } from "../db/db";
@@ -31,7 +31,7 @@ export default function getCacheLoadData() {
             getCurrentUser(currentUser)
               .then((resp) => {
                 dispatch(setUserRecipeList(resp.recipes));
-                console.log(resp);
+                dispatch(setFilters(resp.filters[0]));
               })
               .catch((err: Error) => console.log(err));
           }
