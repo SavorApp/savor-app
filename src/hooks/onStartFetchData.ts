@@ -1,13 +1,16 @@
 import * as SplashScreen from "expo-splash-screen";
 import React from "react";
-import { useDispatch } from "react-redux";
-import { setUser, setUserRecipeList } from "../redux/actions";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser, setUserRecipeList, setFilters } from "../redux/actions";
 import { firebaseApp } from "../constants/Firebase";
-import axios from "axios";
-import { getCurrentUser } from "../db/db";
+import { getCurrentUser, createFilters } from "../db/db";
 
 export default function getCacheLoadData() {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
+  const filtersState = useSelector<RootState, FiltersState>(
+    (state) => state.filtersState
+  );
   const dispatch = useDispatch();
 
   // Attempt to authenticate user
@@ -18,15 +21,21 @@ export default function getCacheLoadData() {
 
         // If authentication passes, setUser, setUserRecipeList, setFilters
         firebaseApp.auth().onAuthStateChanged((user) => {
-          const currentUser = {
-            id: user?.uid,
-            username: user?.email,
-            image_url: user?.photoURL,
-          };
-          if (user !== null) {
+          if (user) {
+            const currentUser = {
+              id: user.uid,
+              username: user.email,
+              image_url: user.photoURL,
+            };
+            // Cache access-token on mobile storage
+            cacheAccessToken(user.getIdToken());
+            // Set gloabal state
             dispatch(setUser(currentUser));
             getCurrentUser(currentUser)
-              .then((resp) => dispatch(setUserRecipeList(resp.recipes)))
+              .then((resp) => {
+                dispatch(setUserRecipeList(resp.recipes));
+                dispatch(setFilters(resp.filters[0]));
+              })
               .catch((err: Error) => console.log(err));
           }
         });
@@ -41,6 +50,21 @@ export default function getCacheLoadData() {
 
     loadData();
   }, []);
+
+  async function cacheAccessToken(
+    PromisedAccessToken: Promise<string> | undefined
+  ) {
+    if (PromisedAccessToken) {
+      const accessToken = await PromisedAccessToken;
+      try {
+        await AsyncStorage.setItem("access-token", accessToken);
+      } catch (err) {
+        // Handle failed asyncStorage error
+      }
+    } else {
+      // Handle undefined Promise
+    }
+  }
 
   return isLoadingComplete;
 }

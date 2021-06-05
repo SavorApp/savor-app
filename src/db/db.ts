@@ -1,16 +1,8 @@
 import axios from "axios";
-import { setUser, setUserRecipeList } from "../redux/actions";
-import { useDispatch } from "react-redux";
+import { SAVORED_SERVER_API } from "../constants/api";
 
-// const dispatch = useDispatch();
-
-export async function swipeToDb(
-  user_id: string | undefined,
-  savored: boolean,
-  rcp: UserRecipe
-) {
-  console.log(user_id);
-  const recipe = await axios("https://savored-server.herokuapp.com/", {
+export async function swipeToDb(user_id: string | undefined, rcp: UserRecipe) {
+  const recipe = await axios(SAVORED_SERVER_API, {
     method: "POST",
     data: {
       query: `
@@ -28,10 +20,6 @@ export async function swipeToDb(
                   $servings: Int,
                   $ingredients: [String],
                   $isSavored: Boolean,
-  
-  
-              
-  
                 ) {
               addRecipe(
                 user_id:$user_id
@@ -84,15 +72,13 @@ export async function swipeToDb(
       "Content-Type": "application/json",
     },
   });
-  console.log(recipe);
 }
 
 export async function createUser(
   id: string | undefined,
   username: string | null | undefined
 ) {
-  console.log(id, username);
-  const newUser = await axios("https://savored-server.herokuapp.com/", {
+  const newUser = await axios(SAVORED_SERVER_API, {
     method: "POST",
     data: {
       query: `
@@ -112,12 +98,10 @@ export async function createUser(
       "Content-Type": "application/json",
     },
   });
-  console.log(newUser);
 }
 
 export async function getCurrentUser(currentUser: User) {
-  console.log(currentUser.id);
-  const user = await axios("https://savored-server.herokuapp.com/", {
+  const user = await axios(SAVORED_SERVER_API, {
     method: "POST",
     data: {
       query: `
@@ -139,6 +123,17 @@ export async function getCurrentUser(currentUser: User) {
           ingredients
           isSavored
            }
+          filters{
+            smartFilter
+            dishType
+            cuisine
+            vegetarian
+            vegan
+            glutenFree
+            dairyFree
+            readyInMinutes
+            servings
+          }
          }}
             `,
       variables: {
@@ -146,6 +141,125 @@ export async function getCurrentUser(currentUser: User) {
       },
     },
   });
-  console.log(user.data.data.user);
   return user.data.data.user;
+}
+
+export async function createFilters(
+  user_id: string | undefined,
+  filters: Filters
+) {
+  const newFilters = await axios(SAVORED_SERVER_API, {
+    method: "POST",
+    data: {
+      query: `
+            mutation createFilters($user_id: String!, 
+              $smartFilter: Boolean, 
+              $dishType: String, 
+              $cuisine: String, 
+              $vegetarian: Boolean,
+              $vegan: Boolean,
+              $glutenFree: Boolean,
+              $dairyFree: Boolean,
+              $readyInMinutes: Int,
+              $servings: Int) {
+              createFilters(user_id:$user_id, 
+                smartFilter:$smartFilter, 
+                dishType:$dishType, 
+                cuisine:$cuisine, 
+                vegetarian:$vegetarian,
+                vegan:$vegan,
+                glutenFree:$glutenFree,
+                dairyFree:$dairyFree,
+                readyInMinutes:$readyInMinutes,
+                servings:$servings) {
+               smartFilter
+               dishType
+               cuisine
+               vegetarian
+               vegan
+               glutenFree
+               dairyFree
+               readyInMinutes
+               servings
+              }
+            }
+            `,
+      variables: {
+        user_id: user_id,
+        smartFilter: filters.smartFilter,
+        dishType: filters.dishType,
+        cuisine: filters.cuisine,
+        vegetarian: filters.vegetarian,
+        vegan: filters.vegan,
+        glutenFree: filters.glutenFree,
+        dairyFree: filters.dairyFree,
+        readyInMinutes: filters.readyInMinutes,
+        servings: filters.servings,
+      },
+    },
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+export async function updateFiltersDb(
+  user_id: string | undefined,
+  filters: Filters
+) {
+  const updatedFilters = await axios(SAVORED_SERVER_API, {
+    method: "POST",
+    data: {
+      query: `
+            mutation updateFilters($user_id: String!, 
+              $smartFilter: Boolean, 
+              $dishType: String, 
+              $cuisine: String, 
+              $vegetarian: Boolean,
+              $vegan: Boolean,
+              $glutenFree: Boolean,
+              $dairyFree: Boolean,
+              $readyInMinutes: Int,
+              $servings: Int) {
+              updateFilters(user_id:$user_id, 
+                smartFilter:$smartFilter, 
+                dishType:$dishType, 
+                cuisine:$cuisine, 
+                vegetarian:$vegetarian,
+                vegan:$vegan,
+                glutenFree:$glutenFree,
+                dairyFree:$dairyFree,
+                readyInMinutes:$readyInMinutes,
+                servings:$servings) {
+                
+                user_id
+               smartFilter
+               dishType
+               cuisine
+               vegetarian
+               vegan
+               glutenFree
+               dairyFree
+               readyInMinutes
+               servings
+              }
+            }
+            `,
+      variables: {
+        user_id: user_id,
+        smartFilter: filters.smartFilter,
+        dishType: filters.dishType,
+        cuisine: filters.cuisine,
+        vegetarian: filters.vegetarian,
+        vegan: filters.vegan,
+        glutenFree: filters.glutenFree,
+        dairyFree: filters.dairyFree,
+        readyInMinutes: filters.readyInMinutes,
+        servings: filters.servings,
+      },
+    },
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 }

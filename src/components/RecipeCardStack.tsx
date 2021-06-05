@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { StyleSheet, Dimensions, View, Text } from "react-native";
+import { StyleSheet, Dimensions, View, Text, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { addtoUserRecipeList, triggerReload } from "../redux/actions";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
@@ -7,12 +7,13 @@ import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
 import SwipeButtons from "../components/SwipeButtons";
 import { swipeToDb } from "../db/db";
+import { LinearGradient } from "expo-linear-gradient";
 
 const _screen = Dimensions.get("screen");
 
 export default function RecipeCardStack({
   randRecipes,
-  filtersState
+  filtersState,
 }: RecipeCardStackParamList) {
   const dispatch = useDispatch();
   const userState = useSelector<RootState, UserState>(
@@ -20,41 +21,46 @@ export default function RecipeCardStack({
   );
   const userId = useRef<string | undefined>("");
   const cardStackRef = React.useRef<CardStack>();
+  const [showReload, setShowReload] = React.useState(false);
 
   useEffect(() => {
     userId.current = userState.user.id;
   }, [userState]);
 
   async function onSwipedLeft(idx: number) {
+    const randRecipe = randRecipes[idx]
+
     const recipeToBeAdded = {
-      id: randRecipes[idx].id,
-      title: randRecipes[idx].title,
+      id: randRecipe.id,
+      title: randRecipe.title,
       cuisine:
-        filtersState.filters.cuisine === ""
-          ? randRecipes[idx].cuisines.toString()
-          : filtersState.filters.cuisine,
+      filtersState.filters.cuisine
+      ? filtersState.filters.cuisine[0].toUpperCase() +
+        filtersState.filters.cuisine.slice(1)
+      : randRecipe.cuisines.length === 0
+      ? "World Food"
+      : randRecipe.cuisines[0],
       dishType:
-        filtersState.filters.dishType !== ""
-          ? filtersState.filters.dishType[0].toUpperCase() +
-            filtersState.filters.dishType.slice(1)
-          : randRecipes[idx].dishTypes.length === 0
-          ? "Other"
-          : randRecipes[idx].dishTypes[0][0].toUpperCase() +
-            randRecipes[idx].dishTypes[0].slice(1),
-      vegetarian: randRecipes[idx].vegetarian,
-      vegan: randRecipes[idx].vegan,
-      glutenFree: randRecipes[idx].glutenFree,
-      dairyFree: randRecipes[idx].dairyFree,
-      readyInMinutes: randRecipes[idx].readyInMinutes,
-      servings: randRecipes[idx].servings,
-      ingredients: randRecipes[idx].ingredients,
+        filtersState.filters.dishType
+        ? filtersState.filters.dishType[0].toUpperCase() +
+          filtersState.filters.dishType.slice(1)
+        : randRecipe.dishTypes.length === 0
+        ? "Many"
+        : randRecipe.dishTypes[0][0].toUpperCase() + randRecipe.dishTypes[0].slice(1),
+      vegetarian: randRecipe.vegetarian,
+      vegan: randRecipe.vegan,
+      glutenFree: randRecipe.glutenFree,
+      dairyFree: randRecipe.dairyFree,
+      readyInMinutes: randRecipe.readyInMinutes,
+      servings: randRecipe.servings,
+      ingredients: randRecipe.ingredients,
       isSavored: false,
     };
-    
+
     // Add recipe to global state
     dispatch(addtoUserRecipeList(recipeToBeAdded));
     // Add recipe to DB for given user
-    swipeToDb(userId.current, false, recipeToBeAdded);
+    swipeToDb(userId.current, recipeToBeAdded);
     // If we are at the last card, trigger a reload
     if (randRecipes.length - idx === 1) {
       dispatch(triggerReload());
@@ -62,35 +68,39 @@ export default function RecipeCardStack({
   }
 
   async function onSwipedRight(idx: number) {
+    const randRecipe = randRecipes[idx]
+
     const recipeToBeAdded = {
-      id: randRecipes[idx].id,
-      title: randRecipes[idx].title,
+      id: randRecipe.id,
+      title: randRecipe.title,
       cuisine:
-        filtersState.filters.cuisine === ""
-          ? randRecipes[idx].cuisines.toString()
-          : filtersState.filters.cuisine,
+      filtersState.filters.cuisine
+      ? filtersState.filters.cuisine[0].toUpperCase() +
+        filtersState.filters.cuisine.slice(1)
+      : randRecipe.cuisines.length === 0
+      ? "World Food"
+      : randRecipe.cuisines[0],
       dishType:
-        filtersState.filters.dishType !== ""
-          ? filtersState.filters.dishType[0].toUpperCase() +
-            filtersState.filters.dishType.slice(1)
-          : randRecipes[idx].dishTypes.length === 0
-          ? "Other"
-          : randRecipes[idx].dishTypes[0][0].toUpperCase() +
-            randRecipes[idx].dishTypes[0].slice(1),
-      vegetarian: randRecipes[idx].vegetarian,
-      vegan: randRecipes[idx].vegan,
-      glutenFree: randRecipes[idx].glutenFree,
-      dairyFree: randRecipes[idx].dairyFree,
-      readyInMinutes: randRecipes[idx].readyInMinutes,
-      servings: randRecipes[idx].servings,
-      ingredients: randRecipes[idx].ingredients,
+        filtersState.filters.dishType
+        ? filtersState.filters.dishType[0].toUpperCase() +
+          filtersState.filters.dishType.slice(1)
+        : randRecipe.dishTypes.length === 0
+        ? "Many"
+        : randRecipe.dishTypes[0][0].toUpperCase() + randRecipe.dishTypes[0].slice(1),
+      vegetarian: randRecipe.vegetarian,
+      vegan: randRecipe.vegan,
+      glutenFree: randRecipe.glutenFree,
+      dairyFree: randRecipe.dairyFree,
+      readyInMinutes: randRecipe.readyInMinutes,
+      servings: randRecipe.servings,
+      ingredients: randRecipe.ingredients,
       isSavored: true,
     };
 
     // Add recipe to global state
     dispatch(addtoUserRecipeList(recipeToBeAdded));
     // Add recipe to DB for given user
-    swipeToDb(userId.current, true, recipeToBeAdded);
+    swipeToDb(userId.current, recipeToBeAdded);
     // If we are at the last card, trigger a reload
     if (randRecipes.length - idx === 1) {
       dispatch(triggerReload());
@@ -105,6 +115,33 @@ export default function RecipeCardStack({
     cardStackRef.current?.swipeRight();
   }
 
+  function renderNoMoreCard() {
+    setTimeout(() => {
+      setShowReload(true);
+    }, 500);
+
+    return (
+      <View style={styles.renderNoMoreCardsContainer}>
+        <Text style={{color: "white"}}>No More Recipes...</Text>
+        <View>
+        {showReload && 
+          <TouchableOpacity
+            onPress={() => dispatch(triggerReload())}
+            activeOpacity={0.8}
+          >
+            <LinearGradient
+              colors={[colorPalette.popLight, colorPalette.popDark]}
+              style={styles.reloadButton}
+            >
+              <Text style={{ color: "black" }}>Reload Recipes</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        }
+        </View>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
@@ -113,13 +150,7 @@ export default function RecipeCardStack({
           ref={(cardStack: CardStack) => {
             cardStackRef.current = cardStack;
           }}
-          renderNoMoreCards={() => {
-            return (
-              <View>
-                <Text style={styles.renderNoMoreCards}>No More Recipes</Text>
-              </View>
-            );
-          }}
+          renderNoMoreCards={renderNoMoreCard}
           disableBottomSwipe
           disableTopSwipe
         >
@@ -171,11 +202,21 @@ const styles = StyleSheet.create({
     ...shadowStyle,
   },
 
-  renderNoMoreCards: {
-    justifyContent: "center",
+  renderNoMoreCardsContainer: {
+    justifyContent: "space-between",
     alignItems: "center",
     textAlign: "center",
     marginBottom: 250,
+    height: _screen.height * 0.05,
     color: "white",
+  },
+
+  reloadButton: {
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 8,
+    width: 120,
+    borderRadius: 10,
+    padding: 8,
   },
 });

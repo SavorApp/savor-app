@@ -29,7 +29,6 @@ type ChefStackParamList = {
 };
 
 type MenuStackParamList = {
-  ChefScreen: undefined;
   MenuScreen: undefined;
   BurgerScreen: undefined;
   ProtectedBurgerScreen: undefined;
@@ -39,6 +38,12 @@ type SavoredListStackParamList = {
   SavoredListScreen: undefined;
   RecipeScreen: { recipeId: number };
 };
+
+type RecipeScreenStackParamList = {
+  SavoredListScreen: undefined;
+  RecipeScreen: { recipeId: number };
+};
+
 
 /*
  _________________________
@@ -93,6 +98,7 @@ type UserRecipe = {
   servings: number;
   ingredients: string[];
   isSavored: Boolean;
+  updatedAt?: Date;
 };
 
 // Core UserRecipeListState interface
@@ -129,7 +135,7 @@ type FiltersAction = { type: string; payload: FiltersState | Filters };
 
 // Core ReloadRecipesState interface
 interface ReloadRecipesState {
-  reload: Boolean
+  reload: Boolean;
 }
 
 // Empty action for resets
@@ -196,7 +202,7 @@ type Recipe = {
   servings: number;
   ingredients: string[];
   smartFilterScore: number;
-  extendedIngredients?: Ingredient[]
+  extendedIngredients?: Ingredient[];
 };
 
 // Spoonacular Ingredient type

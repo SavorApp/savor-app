@@ -1,6 +1,6 @@
 import { userReducer } from "./user";
 import { reloadRecipesReducer } from "./reloadRecipes"
-import { userRecipeListReducer } from "./UserRecipeList"
+import { userRecipeListReducer } from "./userRecipeList"
 import { filtersReducer } from "./filters"
 import { combineReducers } from "redux";
 

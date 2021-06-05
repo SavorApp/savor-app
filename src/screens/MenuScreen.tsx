@@ -6,9 +6,9 @@ import { resetReload } from "../redux/actions";
 import axios from "axios";
 import RecipeCardStack from "../components/RecipeCardStack";
 import LoadingCardStack from "../components/LoadingCardStack";
-import { applySmartFilter, removeViewedRecipes } from "../utils";
+import { applySmartFilter, constructEndpoint, removeRecentlyViewedRecipes } from "../utils";
 // Importing JSON data for development and testing
-import * as recipesJson from "../data/100recipes.json";
+import * as recipesJson from "../data/100Recipes.json";
 
 
 // Initializing Spoonacular resources
@@ -35,16 +35,7 @@ export default function MenuScreen() {
     let fetchedRecipes: Recipe[];
 
     // Endpoint with filters included
-    const ENDPOINT =
-      "number=100&tags=" +
-      `${
-        filtersState.filters.dishType && filtersState.filters.dishType + ","
-      }` +
-      `${filtersState.filters.cuisine && filtersState.filters.cuisine + ","}` +
-      `${filtersState.filters.vegetarian ? "vegetarian," : ""}` +
-      `${filtersState.filters.vegan ? "vegan," : ""}` +
-      `${filtersState.filters.glutenFree ? "gluten%20free," : ""}` +
-      `${filtersState.filters.dairyFree ? "dairy%20free," : ""}`;
+    const ENDPOINT = constructEndpoint(filtersState.filters);      
 
     // Try to fatch data
     try {
@@ -55,57 +46,17 @@ export default function MenuScreen() {
       \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
       */
 
-      // Spoonacular GET request
-      const resp = await axios.get(RAND_RECIPE_BASE_URL + ENDPOINT);
-      // Assign parse data.recipes to fit our Recipep[] type
-      fetchedRecipes = resp.data.recipes.map((rcp: Recipe) => {
-        // For each Recipe, initialize an ingredients arrat containing ingredient names
-        const ingredientsArray = (
-          rcp.extendedIngredients as Array<Ingredient>
-        ).map((ing: Ingredient): string => {
-          return ing?.name;
-        });
-        // Return the Recipe object with ingredients = Ingredient[]
-        return {
-          id: rcp.id,
-          sourceUrl: rcp.sourceUrl,
-          image: rcp.image,
-          imageType: rcp.imageType,
-          title: rcp.title,
-          diets: rcp.diets,
-          cuisines: rcp.cuisines,
-          dishTypes: rcp.dishTypes,
-          vegetarian: rcp.vegetarian,
-          vegan: rcp.vegan,
-          glutenFree: rcp.glutenFree,
-          dairyFree: rcp.dairyFree,
-          veryHealthy: rcp.veryHealthy,
-          cheap: rcp.cheap,
-          veryPopular: rcp.veryPopular,
-          sustainable: rcp.sustainable,
-          aggregateLikes: rcp.aggregateLikes,
-          spoonacularScore: rcp.spoonacularScore,
-          healthScore: rcp.healthScore,
-          pricePerServing: rcp.pricePerServing,
-          readyInMinutes: rcp.readyInMinutes,
-          ingredients: ingredientsArray,
-          servings: rcp.servings,
-        };
-      });
-
-
-      /*
-      /\/\/\/\/\/\/\/\/\/\/\/\
-      UN-COMMENT FOR JSON DATA
-      \/\/\/\/\/\/\/\/\/\/\/\/
-      */
-
-      // fetchedRecipes = recipesJson.recipes.map((rcp) => {
+      // // Spoonacular GET request
+      // const resp = await axios.get(RAND_RECIPE_BASE_URL + ENDPOINT);
+      // // Assign parse data.recipes to fit our Recipep[] type
+      // fetchedRecipes = resp.data.recipes.map((rcp: Recipe) => {
+      //   // For each Recipe, initialize an ingredients arrat containing ingredient names
       //   const ingredientsArray = (
       //     rcp.extendedIngredients as Array<Ingredient>
       //   ).map((ing: Ingredient): string => {
       //     return ing?.name;
       //   });
+      //   // Return the Recipe object with ingredients = Ingredient[]
       //   return {
       //     id: rcp.id,
       //     sourceUrl: rcp.sourceUrl,
@@ -128,11 +79,52 @@ export default function MenuScreen() {
       //     healthScore: rcp.healthScore,
       //     pricePerServing: rcp.pricePerServing,
       //     readyInMinutes: rcp.readyInMinutes,
-      //     servings: rcp.servings,
       //     ingredients: ingredientsArray,
+      //     servings: rcp.servings,
       //     smartFilterScore: 0,
       //   };
       // });
+
+
+      /*
+      /\/\/\/\/\/\/\/\/\/\/\/\
+      UN-COMMENT FOR JSON DATA
+      \/\/\/\/\/\/\/\/\/\/\/\/
+      */
+
+      fetchedRecipes = recipesJson.recipes.map((rcp) => {
+        const ingredientsArray = (
+          rcp.extendedIngredients as Array<Ingredient>
+        ).map((ing: Ingredient): string => {
+          return ing?.name;
+        });
+        return {
+          id: rcp.id,
+          sourceUrl: rcp.sourceUrl,
+          image: rcp.image,
+          imageType: rcp.imageType,
+          title: rcp.title,
+          diets: rcp.diets,
+          cuisines: rcp.cuisines,
+          dishTypes: rcp.dishTypes,
+          vegetarian: rcp.vegetarian,
+          vegan: rcp.vegan,
+          glutenFree: rcp.glutenFree,
+          dairyFree: rcp.dairyFree,
+          veryHealthy: rcp.veryHealthy,
+          cheap: rcp.cheap,
+          veryPopular: rcp.veryPopular,
+          sustainable: rcp.sustainable,
+          aggregateLikes: rcp.aggregateLikes,
+          spoonacularScore: rcp.spoonacularScore,
+          healthScore: rcp.healthScore,
+          pricePerServing: rcp.pricePerServing,
+          readyInMinutes: rcp.readyInMinutes,
+          servings: rcp.servings,
+          ingredients: ingredientsArray,
+          smartFilterScore: 0,
+        };
+      });
 
       if (fetchedRecipes.length === 0) {
         Alert.alert(
@@ -141,7 +133,7 @@ export default function MenuScreen() {
         );
       } else {
         // Remove already viewed Recipes
-        const removedViewedRecipes = removeViewedRecipes(fetchedRecipes, userRecipeListState.userRecipeList);
+        const removedViewedRecipes = removeRecentlyViewedRecipes(fetchedRecipes, userRecipeListState.userRecipeList);
 
         // Apply smartFilter is set to true
         if (filtersState.filters.smartFilter) {
@@ -157,7 +149,8 @@ export default function MenuScreen() {
       setIsCardStackLoading(false);
 
       // Catch server erorrs
-    } catch {
+    } catch (err) {
+      console.log(err)
       Alert.alert(
         "Server Error 🤕",
         "Sorry for the inconvenience, please try again later."
