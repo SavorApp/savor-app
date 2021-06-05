@@ -1,3 +1,5 @@
+import { dishTypeBundler } from "../constants/Maps";
+
 interface CountMap {
     [ingredient: string]: number;
 }
@@ -83,4 +85,32 @@ export function applySmartFilter(fetchedRcps: Recipe[], userRcps: UserRecipe[]):
     });
 
     return fetchedRcps;
+}
+
+export function constructEndpoint(filters: Filters) {
+    let endpoint = "number=100&tags=";
+
+    // Bundle & format dishType filter using dishTypeBundler
+    if (filters.dishType) {
+        const bundledDishType = dishTypeBundler[filters.dishType];
+        endpoint += bundledDishType;
+    }
+
+    // Include cuisine filter if applied
+    endpoint += `${filters.cuisine && filters.cuisine + ","}`;
+
+    // If Vegan selected, use vegan filter
+    if (filters.vegan) {
+        endpoint += "vegan,"
+    } else {
+        // Otherwise, allow for vegetarian or diary free filter
+        endpoint+=
+            `${filters.vegetarian ? "vegetarian," : ""}` +
+            `${filters.dairyFree ? "dairy%20free," : ""}`;
+    }
+
+    // Apply gluten free filter if selected
+    endpoint += `${filters.glutenFree ? "gluten%20free," : ""}`;
+
+    return endpoint;
 }

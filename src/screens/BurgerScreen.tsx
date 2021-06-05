@@ -79,6 +79,13 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
       ),
     },
     {
+      label: "Appetizer",
+      value: "appetizer",
+      icon: () => (
+        <MaterialCommunityIcons name="silverware-spoon" size={18} />
+      ),
+    },
+    {
       label: "Dessert",
       value: "dessert",
       icon: () => <MaterialCommunityIcons name="cupcake" size={18} />,
@@ -363,6 +370,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
             ArrowDownIconComponent={({}) => (
               <MaterialCommunityIcons name="menu-down-outline" size={24} />
             )}
+            maxHeight={300}
           />
         </View>
 

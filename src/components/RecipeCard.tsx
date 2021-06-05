@@ -11,7 +11,6 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
     (state) => state.filtersState
   );
 
-  //TODO: Need to modify the "Type" displayed
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
@@ -36,7 +35,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
         <View style={styles.rcpInfoContainer}>
           <Text style={styles.rcpInfo}>
             Type:{" "}
-            {filtersState.filters.dishType !== ""
+            {filtersState.filters.dishType
               ? filtersState.filters.dishType[0].toUpperCase() +
                 filtersState.filters.dishType.slice(1)
               : rcp.dishTypes.length === 0
@@ -45,7 +44,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
           </Text>
           <Text style={styles.rcpInfo}>
             Cuisine:{" "}
-            {filtersState.filters.cuisine !== ""
+            {filtersState.filters.cuisine
               ? filtersState.filters.cuisine[0].toUpperCase() +
                 filtersState.filters.cuisine.slice(1)
               : rcp.cuisines.length === 0

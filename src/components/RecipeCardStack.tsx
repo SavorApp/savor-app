@@ -28,28 +28,32 @@ export default function RecipeCardStack({
   }, [userState]);
 
   async function onSwipedLeft(idx: number) {
+    const randRecipe = randRecipes[idx]
+
     const recipeToBeAdded = {
-      id: randRecipes[idx].id,
-      title: randRecipes[idx].title,
+      id: randRecipe.id,
+      title: randRecipe.title,
       cuisine:
-        filtersState.filters.cuisine === ""
-          ? randRecipes[idx].cuisines.toString()
-          : filtersState.filters.cuisine,
+      filtersState.filters.cuisine
+      ? filtersState.filters.cuisine[0].toUpperCase() +
+        filtersState.filters.cuisine.slice(1)
+      : randRecipe.cuisines.length === 0
+      ? "World Food"
+      : randRecipe.cuisines[0],
       dishType:
-        filtersState.filters.dishType !== ""
-          ? filtersState.filters.dishType[0].toUpperCase() +
-            filtersState.filters.dishType.slice(1)
-          : randRecipes[idx].dishTypes.length === 0
-          ? "Other"
-          : randRecipes[idx].dishTypes[0][0].toUpperCase() +
-            randRecipes[idx].dishTypes[0].slice(1),
-      vegetarian: randRecipes[idx].vegetarian,
-      vegan: randRecipes[idx].vegan,
-      glutenFree: randRecipes[idx].glutenFree,
-      dairyFree: randRecipes[idx].dairyFree,
-      readyInMinutes: randRecipes[idx].readyInMinutes,
-      servings: randRecipes[idx].servings,
-      ingredients: randRecipes[idx].ingredients,
+        filtersState.filters.dishType
+        ? filtersState.filters.dishType[0].toUpperCase() +
+          filtersState.filters.dishType.slice(1)
+        : randRecipe.dishTypes.length === 0
+        ? "Many"
+        : randRecipe.dishTypes[0][0].toUpperCase() + randRecipe.dishTypes[0].slice(1),
+      vegetarian: randRecipe.vegetarian,
+      vegan: randRecipe.vegan,
+      glutenFree: randRecipe.glutenFree,
+      dairyFree: randRecipe.dairyFree,
+      readyInMinutes: randRecipe.readyInMinutes,
+      servings: randRecipe.servings,
+      ingredients: randRecipe.ingredients,
       isSavored: false,
     };
 
@@ -64,28 +68,32 @@ export default function RecipeCardStack({
   }
 
   async function onSwipedRight(idx: number) {
+    const randRecipe = randRecipes[idx]
+
     const recipeToBeAdded = {
-      id: randRecipes[idx].id,
-      title: randRecipes[idx].title,
+      id: randRecipe.id,
+      title: randRecipe.title,
       cuisine:
-        filtersState.filters.cuisine === ""
-          ? randRecipes[idx].cuisines.toString()
-          : filtersState.filters.cuisine,
+      filtersState.filters.cuisine
+      ? filtersState.filters.cuisine[0].toUpperCase() +
+        filtersState.filters.cuisine.slice(1)
+      : randRecipe.cuisines.length === 0
+      ? "World Food"
+      : randRecipe.cuisines[0],
       dishType:
-        filtersState.filters.dishType !== ""
-          ? filtersState.filters.dishType[0].toUpperCase() +
-            filtersState.filters.dishType.slice(1)
-          : randRecipes[idx].dishTypes.length === 0
-          ? "Other"
-          : randRecipes[idx].dishTypes[0][0].toUpperCase() +
-            randRecipes[idx].dishTypes[0].slice(1),
-      vegetarian: randRecipes[idx].vegetarian,
-      vegan: randRecipes[idx].vegan,
-      glutenFree: randRecipes[idx].glutenFree,
-      dairyFree: randRecipes[idx].dairyFree,
-      readyInMinutes: randRecipes[idx].readyInMinutes,
-      servings: randRecipes[idx].servings,
-      ingredients: randRecipes[idx].ingredients,
+        filtersState.filters.dishType
+        ? filtersState.filters.dishType[0].toUpperCase() +
+          filtersState.filters.dishType.slice(1)
+        : randRecipe.dishTypes.length === 0
+        ? "Many"
+        : randRecipe.dishTypes[0][0].toUpperCase() + randRecipe.dishTypes[0].slice(1),
+      vegetarian: randRecipe.vegetarian,
+      vegan: randRecipe.vegan,
+      glutenFree: randRecipe.glutenFree,
+      dairyFree: randRecipe.dairyFree,
+      readyInMinutes: randRecipe.readyInMinutes,
+      servings: randRecipe.servings,
+      ingredients: randRecipe.ingredients,
       isSavored: true,
     };
 
