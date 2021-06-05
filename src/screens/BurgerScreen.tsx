@@ -79,6 +79,13 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
       ),
     },
     {
+      label: "Appetizer",
+      value: "appetizer",
+      icon: () => (
+        <MaterialCommunityIcons name="silverware-spoon" size={18} />
+      ),
+    },
+    {
       label: "Dessert",
       value: "dessert",
       icon: () => <MaterialCommunityIcons name="cupcake" size={18} />,
@@ -161,6 +168,15 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
     glutenFree,
     dairyFree,
   ]);
+
+  // Listen to when only vegan changes
+  React.useEffect(() => {
+    // If vegan is true, set appropriate filters to true
+    if (vegan) {
+      setVegetarian(true);
+      setDairyFree(true);
+    }
+  }, [vegan])
 
   // Compare smartFilter and decide to display the Apply button, or not
   function compareSmartFilter() {
@@ -354,6 +370,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
             ArrowDownIconComponent={({}) => (
               <MaterialCommunityIcons name="menu-down-outline" size={24} />
             )}
+            maxHeight={300}
           />
         </View>
 

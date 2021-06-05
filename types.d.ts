@@ -98,6 +98,7 @@ type UserRecipe = {
   servings: number;
   ingredients: string[];
   isSavored: Boolean;
+  updatedAt?: Date;
 };
 
 // Core UserRecipeListState interface
