@@ -162,6 +162,15 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
     dairyFree,
   ]);
 
+  // Listen to when only vegan changes
+  React.useEffect(() => {
+    // If vegan is true, set appropriate filters to true
+    if (vegan) {
+      setVegetarian(true);
+      setDairyFree(true);
+    }
+  }, [vegan])
+
   // Compare smartFilter and decide to display the Apply button, or not
   function compareSmartFilter() {
     // Simply Boolean comparison

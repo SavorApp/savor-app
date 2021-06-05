@@ -2,8 +2,33 @@ interface CountMap {
     [ingredient: string]: number;
 }
 
-export function removeViewedRecipes(fetchedRcps: Recipe[], userRcps: UserRecipe[]): Recipe[] {
-    // Create an array of IDs for Recipes we want to remove
+export function removeRecentlyViewedRecipes(fetchedRcps: Recipe[], userRcps: UserRecipe[]): Recipe[] {
+    
+    // For this block to work, we need TODO:
+    // - When user swipes, check DB first if user has viewed recipe in the past
+    // - if so, update recipes update_at column to current datetime
+    // - else, write to DB as normal
+
+
+    /* // Date at time of function call
+    const currDate = new Date();
+    const oneDay=1000*60*60*24;
+
+    // Create an array of Recipes viewed within 7 days
+    const rcpsViewedWithin7Days = userRcps.filter((rcp) => {
+        // Evaluate the date difference of,
+        // when the Recipe was viewed last and right now
+        const dateDiffInDays = (rcp.updatedAt.valueOf() - currDate.valueOf())/oneDay
+        // Return recipes where date difference is <= 7 days
+        return (dateDiffInDays <= 7);
+      })
+      
+    // Create an array of IDs for Recipes viewed within 7 days
+    const rcpIdsToRemove = rcpsViewedWithin7Days.map((rcp) => {
+        return rcp.id;
+      }); */
+
+    // Remove this .map() once we received updatedAt property from DB
     const rcpIdsToRemove = userRcps.map((rcp) => {
       return rcp.id;
     });
