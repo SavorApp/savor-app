@@ -105,11 +105,13 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
   const [cuisineItems, setCuisineItems] = React.useState([
     { label: "All", value: "", icon: () => <Emoji name="rainbow-flag" /> },
     { label: "American", value: "american", icon: () => <Emoji name="us" /> },
+    { label: "British", value: "british", icon: () => <Emoji name="gb" /> },
     { label: "Chinese", value: "chinese", icon: () => <Emoji name="cn" /> },
     { label: "French", value: "french", icon: () => <Emoji name="fr" /> },
     { label: "German", value: "german", icon: () => <Emoji name="de" /> },
     { label: "Greek", value: "greek", icon: () => <Emoji name="flag-gr" /> },
     { label: "Indian", value: "indian", icon: () => <Emoji name="flag-in" /> },
+    { label: "Irish", value: "irish", icon: () => <Emoji name="flag-ie" /> },
     { label: "Italian", value: "italian", icon: () => <Emoji name="it" /> },
     { label: "Japanese", value: "japanese", icon: () => <Emoji name="jp" /> },
     { label: "Korean", value: "korean", icon: () => <Emoji name="kr" /> },
@@ -118,6 +120,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
       value: "mexican",
       icon: () => <Emoji name="flag-mx" />,
     },
+    { label: "Spanish", value: "spanish", icon: () => <Emoji name="es" /> },
     { label: "Thai", value: "thai", icon: () => <Emoji name="flag-th" /> },
     {
       label: "Vietnamese",
