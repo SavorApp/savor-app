@@ -4,8 +4,6 @@
  _________________________
 */
 
-import { Dispatch } from "react";
-
 type RootStackParamList = {
   Root: undefined;
   SignupScreen: undefined;
@@ -151,11 +149,9 @@ type EmptyAction = {
  _____________________________
 */
 
-type RecipeCardParamList = {
+type RecipeCardParamList = { 
   id: number;
   rcp: Recipe;
-  isScrollEnabled: Boolean;
-  setIsScrollEnabled: Dispatch;
 };
 
 type SwipeButtonsParamList = {

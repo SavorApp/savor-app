@@ -5,11 +5,12 @@ import { useSelector } from "react-redux";
 import { shadowStyle, colorPalette } from "../constants/ColorPalette";
 const _screen = Dimensions.get("screen");
 
-export default function RecipeCard({ id, rcp, isScrollEnabled , setIsScrollEnabled}: RecipeCardParamList) {
+export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
   const filtersState = useSelector<RootState, FiltersState>(
     (state) => state.filtersState
   );
-console.log(isScrollEnabled)
+  const [isScrollEnabled, setIsScrollEnabled] = React.useState<boolean>(false);
+
   const scrollInfoRef = useRef<any>();
 
   return (
@@ -19,9 +20,8 @@ console.log(isScrollEnabled)
         style={{flex: 1}}
           centerContent={true}
           directionalLockEnabled
-          scrollEnabled={isScrollEnabled}
-          onTouchMove={() => {setIsScrollEnabled(true)}}
 
+          onScrollBeginDrag={() => {console.log('jghfhggj')}}
         >
           {rcp.image ? (
             <ImageBackground

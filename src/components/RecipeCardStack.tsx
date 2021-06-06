@@ -20,7 +20,6 @@ export default function RecipeCardStack({
     (state) => state.userState
   );
   const [blockSwipeButtons, setBlockSwipeButtons] = React.useState(false);
-  const [isScrollEnabled, setIsScrollEnabled] = React.useState<Boolean>(false);
   const userId = useRef<string | undefined>("");
   const cardStackRef = React.useRef<CardStack>();
   const [currentRecipe, setCurrentRecipe] = React.useState<Recipe>(randRecipes[0]);
@@ -68,7 +67,7 @@ export default function RecipeCardStack({
       dispatch(triggerReload());
     }
     setBlockSwipeButtons(false);
-    setIsScrollEnabled(false)
+    // setIsScrollEnabled(false);
   }
 
   function handleOnPressLeft() {
@@ -118,8 +117,7 @@ export default function RecipeCardStack({
                 <RecipeCard 
                   rcp={rcp} 
                   id={rcp.id} 
-                  isScrollEnabled={isScrollEnabled}
-                  setIsScrollEnabled={setIsScrollEnabled} />
+                   />
               </Card>
             );
           })}
