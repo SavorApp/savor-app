@@ -145,8 +145,8 @@ export default function MenuScreen() {
         } else {
           setRandRecipes(removedViewedRecipes);
         }
+        setIsCardStackLoading(false);
       }
-      setIsCardStackLoading(false);
 
       // Catch server erorrs
     } catch (err) {
