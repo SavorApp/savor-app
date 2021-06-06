@@ -31,6 +31,15 @@ export const addtoUserRecipeList = (
   };
 };
 
+export const unSavorRecipe = (
+  recipeId: number
+): UserRecipeListAction => {
+  return {
+    type: "UNSAVOR_RECIPE",
+    payload: recipeId,
+  };
+};
+
 export const resetUserRecipeList = (): EmptyAction => {
   return {
     type: "RESET_USER_RECIPE_LIST",

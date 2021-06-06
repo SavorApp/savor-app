@@ -26,17 +26,17 @@ export function removeRecentlyViewedRecipes(fetchedRcps: Recipe[], userRcps: Use
       })
       
     // Create an array of IDs for Recipes viewed within 7 days
-    const rcpIdsToRemove = rcpsViewedWithin7Days.map((rcp) => {
+    const rcpIdsToRemove = rcpsViewedWithin7Days.map((rcp: UserRecipe) => {
         return rcp.id;
       }); */
 
     // Remove this .map() once we received updatedAt property from DB
-    const rcpIdsToRemove = userRcps.map((rcp) => {
+    const rcpIdsToRemove = userRcps.map((rcp: UserRecipe) => {
       return rcp.id;
     });
 
     // Filter fetched Recipes by removing all Recipes where the ID is found in rcpIdsToRemove
-    const filteredRcps = fetchedRcps.filter((rcp) => {
+    const filteredRcps = fetchedRcps.filter((rcp: Recipe) => {
         return !rcpIdsToRemove.includes(rcp.id);
     });
 
