@@ -5,7 +5,6 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 const _screen = Dimensions.get("screen");
 
 export default function LoadingRecipeInfo({recipeId}: {recipeId: string}) {
-  //TODO: Display the titles of the recipes
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
