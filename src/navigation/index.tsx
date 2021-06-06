@@ -1,7 +1,7 @@
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
-import { ColorSchemeName, Text } from 'react-native';
+import { ColorSchemeName, StyleSheet, Text, View, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SignupScreen, AboutUsScreen, DeleteAccountScreen, BurgerScreen, ProtectedBurgerScreen } from '../screens';
 import BottomTabNavigator from "./BottomTab";
@@ -35,6 +35,13 @@ function RootNavigator() {
           headerBackTitleVisible: false,
           headerLeftContainerStyle: {
             marginLeft: 12
+          },
+          headerTitle: () => {
+            return (
+                <View style={styles.headerContainer}>
+                    <Image source={require("../../assets/header.png")} style={styles.headerImage}/>
+                </View>
+            )
           }
         }}/>
       <RootStack.Screen 
@@ -45,6 +52,13 @@ function RootNavigator() {
           headerBackTitleVisible: false,
           headerLeftContainerStyle: {
             marginLeft: 12
+          },
+          headerTitle: () => {
+            return (
+                <View style={styles.headerContainer}>
+                    <Image source={require("../../assets/header.png")} style={styles.headerImage}/>
+                </View>
+            )
           }
         }}/>
       <RootStack.Screen 
@@ -55,6 +69,13 @@ function RootNavigator() {
           headerBackTitleVisible: false,
           headerLeftContainerStyle: {
             marginLeft: 12
+          },
+          headerTitle: () => {
+            return (
+                <View style={styles.headerContainer}>
+                    <Image source={require("../../assets/header.png")} style={styles.headerImage}/>
+                </View>
+            )
           }
         }}/>
       <RootStack.Screen 
@@ -65,6 +86,13 @@ function RootNavigator() {
           headerBackTitleVisible: false,
           headerLeftContainerStyle: {
             marginLeft: 12
+          },
+          headerTitle: () => {
+            return (
+                <View style={styles.headerContainer}>
+                    <Image source={require("../../assets/header.png")} style={styles.headerImage}/>
+                </View>
+            )
           }
         }}/>
       <RootStack.Screen 
@@ -75,9 +103,30 @@ function RootNavigator() {
           headerBackTitleVisible: false,
           headerLeftContainerStyle: {
             marginLeft: 12
+          },
+          headerTitle: () => {
+            return (
+                <View style={styles.headerContainer}>
+                    <Image source={require("../../assets/header.png")} style={styles.headerImage}/>
+                </View>
+            )
           }
         }}/>
     </RootStack.Navigator>
   );
 }
 
+const styles = StyleSheet.create({
+  headerContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 8
+  },
+
+  headerImage: {
+    flex: 1,
+    resizeMode: "contain",
+    width: 200,
+  },
+});
