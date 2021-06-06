@@ -37,7 +37,7 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     title: "",
     instructions: "",
     summary: "",
-    ingredients: [""], // Change to array with ingredient objects that contain measurement information also
+    ingredients: [],
     veryHealthy: true,
     vegetarian: true,
     vegan: true,
@@ -56,11 +56,7 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
         title: fetchedRecipe.title,
         instructions: fetchedRecipe.instructions,
         summary: fetchedRecipe.summary,
-        ingredients: (
-          fetchedRecipe.extendedIngredients as Array<Ingredient>
-        ).map((ing: Ingredient) => {
-          return ing.name;
-        }),
+        ingredients: fetchedRecipe.extendedIngredients,
         veryHealthy: fetchedRecipe.veryHealthy,
         vegetarian: fetchedRecipe.vegetarian,
         vegan: fetchedRecipe.vegan,
@@ -77,30 +73,6 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
       );
       navigation.goBack();
     }
-
-    // FOR TESTING USE JSON
-    // const recipes = recipeJson.recipes;
-
-    // for (let recipe of recipes) {
-    //   if (recipe.id === recipeId) {
-    //     setRecipeInfo({
-    //       title: recipe.title,
-    //       instructions: recipe.instructions,
-    //       summary: recipe.summary,
-    //       ingredients: (recipe.extendedIngredients as Array<Ingredient>).map((ing: Ingredient) => {
-    //         return ing.name;
-    //       }),
-    //       veryHealthy: recipe.veryHealthy,
-    //       vegetarian: recipe.vegetarian,
-    //       vegan: recipe.vegan,
-    //       dairyFree: recipe.dairyFree,
-    //       healthScore: recipe.healthScore,
-    //       prepTime: recipe.readyInMinutes,
-    //       diets: recipe.diets,
-
-    //     })
-    // }
-    // }
   }
 
   // On load, fetch Recipe data via Spoonacular API
@@ -117,6 +89,21 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     return unsubscribe;
   }, [navigation]);
 
+  function Ingredients({ingredients}: {ingredients: Ingredient[]}) {
+    return (
+      <View>
+        {ingredients.map((ing) => {
+          return (
+          <View style={styles.ingredientContainer}>
+            <Text style={styles.ingredient}>{ing.name}</Text>
+            <Text style={styles.measurement}>({ing.measures.metric.amount}{ing.measures.metric.unitShort && " " + ing.measures.metric.unitShort})</Text>
+          </View>
+          )
+        })}
+      </View>
+    )
+  }
+
   return isInfoLoading ? (
     <LoadingRecipeInfo recipeId={recipeId} />
   ) : (
@@ -129,32 +116,30 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
               <Text style={styles.subTitle}>Summary</Text>
               <HTML source={{ html: recipeInfo.summary }} />
               <Text style={styles.subTitle}>Ingredients</Text>
-              {recipeInfo.ingredients.map((ing) => {
-                return <Text>{ing}</Text>;
-              })}
+              <Ingredients ingredients={recipeInfo.ingredients}/>
               <Text style={styles.subTitle}>Instructions</Text>
               <HTML source={{ html: recipeInfo.instructions }} />
-              <Text style={styles.subTitle}>Extra-Information</Text>
-              <Text style={styles.ingredients}>
+              <Text style={styles.subTitle}>Additional Information</Text>
+              <Text style={styles.extra}>
                 VeryHealthy: {recipeInfo.veryHealthy ? "✅" : "❌"}
               </Text>
-              <Text style={styles.ingredients}>
+              <Text style={styles.extra}>
                 Vegetarian: {recipeInfo.vegetarian ? "✅" : "❌"}
               </Text>
-              <Text style={styles.ingredients}>
+              <Text style={styles.extra}>
                 Vegan: {recipeInfo.vegan ? "✅" : "❌"}
               </Text>
-              <Text style={styles.ingredients}>
+              <Text style={styles.extra}>
                 Dairy-Free: {recipeInfo.dairyFree ? "✅" : "❌"}
               </Text>
 
-              <Text style={styles.ingredients}>
+              <Text style={styles.extra}>
                 Health score: {recipeInfo.healthScore}
               </Text>
-              <Text style={styles.ingredients}>
+              <Text style={styles.extra}>
                 Prep Time: {recipeInfo.prepTime} min
               </Text>
-              <Text style={styles.ingredients}>Diets: {recipeInfo.diets}</Text>
+              <Text style={styles.extra}>Diets: {recipeInfo.diets}</Text>
               <Text>{"\n\n\n"}</Text>
             </ScrollView>
           </View>
@@ -182,7 +167,7 @@ const styles = StyleSheet.create({
     ...shadowStyle,
   },
   title: {
-    marginVertical: 8,
+    margin: 8,
     fontSize: 25,
     fontWeight: "bold",
     color: colorPalette.background,
@@ -195,6 +180,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     height: _screen.height * 0.6,
   },
+
   summaryContainer: {
     marginBottom: 10,
     padding: 5,
@@ -203,6 +189,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.7,
     ...shadowStyle,
   },
+
   contentContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -211,6 +198,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: colorPalette.secondary,
   },
+
   scrollView: {
     padding: 8,
     marginVertical: Platform.OS === "android" ? 12 : 0,
@@ -218,11 +206,30 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: colorPalette.secondary,
   },
+
   subTitle: {
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 10,
     marginBottom: 5,
   },
-  ingredients: {},
+
+  ingredientContainer: {
+    flex: 1,
+    flexDirection: "row",
+  },
+
+  ingredient: {
+    justifyContent: "flex-start",
+    width: "60%"
+  },
+
+  measurement: {
+    justifyContent: "flex-start",
+    width: "40%"
+  },
+
+  extra: {
+
+  },
 });

@@ -239,7 +239,7 @@ type RecipeScreenInfo = {
   title: string;
   instructions: string;
   summary: string;
-  ingredients: string[];
+  ingredients: Ingredient[];
   veryHealthy: boolean;
   vegan: boolean;
   vegetarian: boolean;
