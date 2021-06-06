@@ -1,6 +1,6 @@
 import React from "react"
-import { View, Text, StyleSheet, TouchableOpacity, Button } from "react-native"
-import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import { View, StyleSheet, TouchableOpacity } from "react-native"
+import { Ionicons } from "@expo/vector-icons";
 import { shadowStyle } from "../constants/ColorPalette";
 
 
