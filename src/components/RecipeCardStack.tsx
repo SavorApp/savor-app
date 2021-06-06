@@ -20,6 +20,7 @@ export default function RecipeCardStack({
     (state) => state.userState
   );
   const [blockSwipeButtons, setBlockSwipeButtons] = React.useState(false);
+  const [isScrollEnabled, setIsScrollEnabled] = React.useState<Boolean>(false);
   const userId = useRef<string | undefined>("");
   const cardStackRef = React.useRef<CardStack>();
   const [currentRecipe, setCurrentRecipe] = React.useState<Recipe>(randRecipes[0]);
@@ -35,19 +36,19 @@ export default function RecipeCardStack({
       id: randRecipe.id,
       title: randRecipe.title,
       cuisine:
-      filtersState.filters.cuisine
-      ? filtersState.filters.cuisine[0].toUpperCase() +
-        filtersState.filters.cuisine.slice(1)
-      : randRecipe.cuisines.length === 0
-      ? "World Food"
-      : randRecipe.cuisines[0],
+        filtersState.filters.cuisine
+          ? filtersState.filters.cuisine[0].toUpperCase() +
+          filtersState.filters.cuisine.slice(1)
+          : randRecipe.cuisines.length === 0
+            ? "World Food"
+            : randRecipe.cuisines[0],
       dishType:
         filtersState.filters.dishType
-        ? filtersState.filters.dishType[0].toUpperCase() +
+          ? filtersState.filters.dishType[0].toUpperCase() +
           filtersState.filters.dishType.slice(1)
-        : randRecipe.dishTypes.length === 0
-        ? "Many"
-        : randRecipe.dishTypes[0][0].toUpperCase() + randRecipe.dishTypes[0].slice(1),
+          : randRecipe.dishTypes.length === 0
+            ? "Many"
+            : randRecipe.dishTypes[0][0].toUpperCase() + randRecipe.dishTypes[0].slice(1),
       vegetarian: randRecipe.vegetarian,
       vegan: randRecipe.vegan,
       glutenFree: randRecipe.glutenFree,
@@ -67,6 +68,7 @@ export default function RecipeCardStack({
       dispatch(triggerReload());
     }
     setBlockSwipeButtons(false);
+    setIsScrollEnabled(false)
   }
 
   function handleOnPressLeft() {
@@ -84,7 +86,7 @@ export default function RecipeCardStack({
       <View style={styles.renderNoMoreCardsContainer}>
         <Text style={styles.noMoreCardsText}>No More Recipes,</Text>
         <Text style={styles.noMoreCardsText}>please adjust your filters...</Text>
-        <Emoji style={{margin: 8}} name="male-cook" />
+        <Emoji style={{ margin: 8 }} name="male-cook" />
       </View>
     );
   }
@@ -95,7 +97,7 @@ export default function RecipeCardStack({
     <View style={styles.container}>
       <View style={styles.subContainer}>
         <CardStack
-          style={{...styles.cardStack, flex: 1}}
+          style={{ ...styles.cardStack, flex: 1 }}
           ref={(cardStack: CardStack) => {
             cardStackRef.current = cardStack;
           }}
@@ -113,7 +115,11 @@ export default function RecipeCardStack({
                   handleSwipe(idx, true);
                 }}
               >
-                <RecipeCard rcp={rcp} id={rcp.id} />
+                <RecipeCard 
+                  rcp={rcp} 
+                  id={rcp.id} 
+                  isScrollEnabled={isScrollEnabled}
+                  setIsScrollEnabled={setIsScrollEnabled} />
               </Card>
             );
           })}

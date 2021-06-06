@@ -1,27 +1,27 @@
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useEffect, useRef } from "react";
-import { View, Image, StyleSheet, Text, Dimensions, ScrollView, TouchableOpacity, ImageBackground } from "react-native";
+import { View, Image, StyleSheet, Text, Dimensions, ScrollView, TouchableOpacity, ImageBackground, Animated } from "react-native";
 import { useSelector } from "react-redux";
 import { shadowStyle, colorPalette } from "../constants/ColorPalette";
 const _screen = Dimensions.get("screen");
 
-export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
+export default function RecipeCard({ id, rcp, isScrollEnabled , setIsScrollEnabled}: RecipeCardParamList) {
   const filtersState = useSelector<RootState, FiltersState>(
     (state) => state.filtersState
   );
-  
-  const [scrollEnabled, setScrollEnabled] = React.useState<Boolean>(false);
-
+console.log(isScrollEnabled)
   const scrollInfoRef = useRef<any>();
 
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <ScrollView ref={scrollInfoRef}
+        <Animated.ScrollView ref={scrollInfoRef}
+        style={{flex: 1}}
           centerContent={true}
           directionalLockEnabled
-          scrollEnabled={scrollEnabled}
-          onTouchMove={() => {setScrollEnabled(true)}}
+          scrollEnabled={isScrollEnabled}
+          onTouchMove={() => {setIsScrollEnabled(true)}}
+
         >
           {rcp.image ? (
             <ImageBackground
@@ -85,7 +85,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
               return <Text>{ing}</Text>;
             })}
           </View>
-        </ScrollView>
+        </Animated.ScrollView>
       </View>
     </View>
   );
