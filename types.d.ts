@@ -109,7 +109,7 @@ interface UserRecipeListState {
 // Core UserRecipeList action
 type UserRecipeListAction = {
   type: string;
-  payload: UserRecipeListState | UserRecipe[] | UserRecipe;
+  payload: UserRecipeListState | UserRecipe[] | UserRecipe | number;
 };
 
 // Core Filters type
