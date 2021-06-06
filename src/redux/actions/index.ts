@@ -31,9 +31,7 @@ export const addtoUserRecipeList = (
   };
 };
 
-export const unSavorRecipe = (
-  recipeId: number
-): UserRecipeListAction => {
+export const unSavorRecipe = (recipeId: number): UserRecipeListAction => {
   return {
     type: "UNSAVOR_RECIPE",
     payload: recipeId,
@@ -48,7 +46,6 @@ export const resetUserRecipeList = (): EmptyAction => {
 
 // Filters Actions
 export const setFilters = (filters: Filters): FiltersAction => {
-  console.log(filters);
   return {
     type: "SET_FILTERS",
     payload: filters,

@@ -28,25 +28,24 @@ export default function RecipeCardStack({
   }, [userState]);
 
   async function handleSwipe(idx: number, savored: Boolean) {
-    const randRecipe = randRecipes[idx]
+    const randRecipe = randRecipes[idx];
 
     const recipeToBeAdded = {
       id: randRecipe.id,
       title: randRecipe.title,
-      cuisine:
-      filtersState.filters.cuisine
-      ? filtersState.filters.cuisine[0].toUpperCase() +
-        filtersState.filters.cuisine.slice(1)
-      : randRecipe.cuisines.length === 0
-      ? "World Food"
-      : randRecipe.cuisines[0],
-      dishType:
-        filtersState.filters.dishType
+      cuisine: filtersState.filters.cuisine
+        ? filtersState.filters.cuisine[0].toUpperCase() +
+          filtersState.filters.cuisine.slice(1)
+        : randRecipe.cuisines.length === 0
+        ? "World Food"
+        : randRecipe.cuisines[0],
+      dishType: filtersState.filters.dishType
         ? filtersState.filters.dishType[0].toUpperCase() +
           filtersState.filters.dishType.slice(1)
         : randRecipe.dishTypes.length === 0
         ? "Many"
-        : randRecipe.dishTypes[0][0].toUpperCase() + randRecipe.dishTypes[0].slice(1),
+        : randRecipe.dishTypes[0][0].toUpperCase() +
+          randRecipe.dishTypes[0].slice(1),
       vegetarian: randRecipe.vegetarian,
       vegan: randRecipe.vegan,
       glutenFree: randRecipe.glutenFree,
@@ -82,8 +81,10 @@ export default function RecipeCardStack({
     return (
       <View style={styles.renderNoMoreCardsContainer}>
         <Text style={styles.noMoreCardsText}>No More Recipes,</Text>
-        <Text style={styles.noMoreCardsText}>please adjust your filters...</Text>
-        <Emoji style={{margin: 8}} name="male-cook" />
+        <Text style={styles.noMoreCardsText}>
+          please adjust your filters...
+        </Text>
+        <Emoji style={{ margin: 8 }} name="male-cook" />
       </View>
     );
   }
