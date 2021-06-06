@@ -12,6 +12,7 @@ type RootStackParamList = {
   MenuScreen: undefined;
   BurgerScreen: undefined;
   ProtectedBurgerScreen: undefined;
+  InstructionsScreen: undefined
 };
 
 type BottomTabParamList = {
@@ -42,8 +43,14 @@ type SavoredListStackParamList = {
 type RecipeScreenStackParamList = {
   SavoredListScreen: undefined;
   RecipeScreen: { recipeId: number };
+  InstructionsScreen: {recipe: RecipeScreenInfo}
 };
 
+type InstructionsScreenStackParamList = {
+  SavoredListScreen: undefined;
+  RecipeScreen: { recipeId: number };
+  InstructionsScreen: {recipe: RecipeScreenInfo}
+};
 
 /*
  _________________________
@@ -239,7 +246,7 @@ type RecipeScreenInfo = {
   title: string;
   instructions: string;
   summary: string;
-  ingredients: string[];
+  ingredients: Ingredient[];
   veryHealthy: boolean;
   vegan: boolean;
   vegetarian: boolean;

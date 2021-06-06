@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { ColorSchemeName, StyleSheet, Text, View, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { SignupScreen, AboutUsScreen, DeleteAccountScreen, BurgerScreen, ProtectedBurgerScreen } from '../screens';
+import { SignupScreen, AboutUsScreen, DeleteAccountScreen, BurgerScreen, ProtectedBurgerScreen, InstructionsScreen } from '../screens';
 import BottomTabNavigator from "./BottomTab";
 
 
@@ -98,6 +98,23 @@ function RootNavigator() {
       <RootStack.Screen 
         name="ProtectedBurgerScreen"
         component={ProtectedBurgerScreen}
+        options={{
+          headerBackImage:  () => <Ionicons name="chevron-down-sharp" size={36} />,
+          headerBackTitleVisible: false,
+          headerLeftContainerStyle: {
+            marginLeft: 12
+          },
+          headerTitle: () => {
+            return (
+                <View style={styles.headerContainer}>
+                    <Image source={require("../../assets/header.png")} style={styles.headerImage}/>
+                </View>
+            )
+          }
+        }}/>
+      <RootStack.Screen 
+        name="InstructionsScreen"
+        component={InstructionsScreen}
         options={{
           headerBackImage:  () => <Ionicons name="chevron-down-sharp" size={36} />,
           headerBackTitleVisible: false,

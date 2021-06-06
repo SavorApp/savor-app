@@ -7,6 +7,7 @@ import {
   ScrollView,
   Platform,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RouteProp } from "@react-navigation/native";
@@ -27,7 +28,7 @@ export interface RecipeScreenProps {
 const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
 const RECIPE_INFO_BASE_URL = `https://api.spoonacular.com/recipes/`;
 
-export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
+export default function RecipeScreen({ navigation, route }: RecipeScreenProps) {
   const { recipeId } = route.params;
   const ENDPOINT = `${recipeId}/information?apiKey=${API_KEY}&includeNutrition=false`;
 
@@ -37,7 +38,7 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     title: "",
     instructions: "",
     summary: "",
-    ingredients: [""], // Change to array with ingredient objects that contain measurement information also
+    ingredients: [],
     veryHealthy: true,
     vegetarian: true,
     vegan: true,
@@ -47,60 +48,33 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     diets: [""],
   });
   const [isInfoLoading, setIsInfoLoading] = React.useState(true);
+  const [navToInstructions, setNavToInstructions] = React.useState(false);
 
   async function fetchRecipeInfo() {
     try {
-      const resp = await axios.get(RECIPE_INFO_BASE_URL + ENDPOINT);
-      const fetchedRecipe = resp.data;
-      setRecipeInfo({
-        title: fetchedRecipe.title,
-        instructions: fetchedRecipe.instructions,
-        summary: fetchedRecipe.summary,
-        ingredients: (
-          fetchedRecipe.extendedIngredients as Array<Ingredient>
-        ).map((ing: Ingredient) => {
-          return ing.name;
-        }),
-        veryHealthy: fetchedRecipe.veryHealthy,
-        vegetarian: fetchedRecipe.vegetarian,
-        vegan: fetchedRecipe.vegan,
-        dairyFree: fetchedRecipe.dairyFree,
-        healthScore: fetchedRecipe.healthScore,
-        prepTime: fetchedRecipe.readyInMinutes,
-        diets: fetchedRecipe.diets,
-      });
-      setIsInfoLoading(false);
+      // const resp = await axios.get(RECIPE_INFO_BASE_URL + ENDPOINT);
+      // const fetchedRecipe = resp.data;
+      // setRecipeInfo({
+      //   title: fetchedRecipe.title,
+      //   instructions: fetchedRecipe.instructions,
+      //   summary: fetchedRecipe.summary,
+      //   ingredients: (fetchedRecipe.extendedIngredients as Array<Ingredient>),
+      //   veryHealthy: fetchedRecipe.veryHealthy,
+      //   vegetarian: fetchedRecipe.vegetarian,
+      //   vegan: fetchedRecipe.vegan,
+      //   dairyFree: fetchedRecipe.dairyFree,
+      //   healthScore: fetchedRecipe.healthScore,
+      //   prepTime: fetchedRecipe.readyInMinutes,
+      //   diets: fetchedRecipe.diets,
+      // });
+      // setIsInfoLoading(false);
     } catch {
-      Alert.alert(
-        "Server Error 🤕",
-        "Sorry for the inconvenience, please try again later."
-      );
-      navigation.goBack();
+      // Alert.alert(
+      //   "Server Error 🤕",
+      //   "Sorry for the inconvenience, please try again later."
+      // );
+      // navigation.goBack();
     }
-
-    // FOR TESTING USE JSON
-    // const recipes = recipeJson.recipes;
-
-    // for (let recipe of recipes) {
-    //   if (recipe.id === recipeId) {
-    //     setRecipeInfo({
-    //       title: recipe.title,
-    //       instructions: recipe.instructions,
-    //       summary: recipe.summary,
-    //       ingredients: (recipe.extendedIngredients as Array<Ingredient>).map((ing: Ingredient) => {
-    //         return ing.name;
-    //       }),
-    //       veryHealthy: recipe.veryHealthy,
-    //       vegetarian: recipe.vegetarian,
-    //       vegan: recipe.vegan,
-    //       dairyFree: recipe.dairyFree,
-    //       healthScore: recipe.healthScore,
-    //       prepTime: recipe.readyInMinutes,
-    //       diets: recipe.diets,
-
-    //     })
-    // }
-    // }
   }
 
   // On load, fetch Recipe data via Spoonacular API
@@ -111,11 +85,26 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
   // On navigate away, goBack to SavoredListScreen
   React.useEffect(() => {
     const unsubscribe = navigation.addListener("blur", () => {
-      navigation.goBack();
-    });
-
-    return unsubscribe;
+          navigation.goBack();
+        });
+        return unsubscribe;
   }, [navigation]);
+
+
+  function Ingredients({ingredients}: {ingredients: Ingredient[]}) {
+    return (
+      <View>
+        {ingredients.map((ing) => {
+          return (
+            <View style={styles.ingContainer}>
+              <Text style={styles.ingredient}>{ing.name}</Text>
+              <Text style={styles.measurement}>- {ing.measures.metric.amount} {ing.measures.metric.unitShort}</Text>
+            </View>
+          )
+        })}
+      </View>
+    );
+  }
 
   return isInfoLoading ? (
     <LoadingRecipeInfo recipeId={recipeId} />
@@ -129,32 +118,36 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
               <Text style={styles.subTitle}>Summary</Text>
               <HTML source={{ html: recipeInfo.summary }} />
               <Text style={styles.subTitle}>Ingredients</Text>
-              {recipeInfo.ingredients.map((ing) => {
-                return <Text>{ing}</Text>;
-              })}
+              <Ingredients ingredients={recipeInfo.ingredients}/>
+              <TouchableOpacity onPress={() => {
+                  setNavToInstructions(true);
+                  navigation.navigate("InstructionsScreen", { recipe: recipeInfo})
+                }}>
+                <Text style={styles.subTitle}>Instructions</Text>
+              </TouchableOpacity>
               <Text style={styles.subTitle}>Instructions</Text>
               <HTML source={{ html: recipeInfo.instructions }} />
-              <Text style={styles.subTitle}>Extra-Information</Text>
-              <Text style={styles.ingredients}>
+              <Text style={styles.subTitle}>Extra Information</Text>
+              <Text style={styles.extra}>
                 VeryHealthy: {recipeInfo.veryHealthy ? "✅" : "❌"}
               </Text>
-              <Text style={styles.ingredients}>
+              <Text style={styles.extra}>
                 Vegetarian: {recipeInfo.vegetarian ? "✅" : "❌"}
               </Text>
-              <Text style={styles.ingredients}>
+              <Text style={styles.extra}>
                 Vegan: {recipeInfo.vegan ? "✅" : "❌"}
               </Text>
-              <Text style={styles.ingredients}>
+              <Text style={styles.extra}>
                 Dairy-Free: {recipeInfo.dairyFree ? "✅" : "❌"}
               </Text>
 
-              <Text style={styles.ingredients}>
+              <Text style={styles.extra}>
                 Health score: {recipeInfo.healthScore}
               </Text>
-              <Text style={styles.ingredients}>
+              <Text style={styles.extra}>
                 Prep Time: {recipeInfo.prepTime} min
               </Text>
-              <Text style={styles.ingredients}>Diets: {recipeInfo.diets}</Text>
+              <Text style={styles.extra}>Diets: {recipeInfo.diets}</Text>
               <Text>{"\n\n\n"}</Text>
             </ScrollView>
           </View>
@@ -181,6 +174,7 @@ const styles = StyleSheet.create({
     backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
+
   title: {
     marginVertical: 8,
     fontSize: 25,
@@ -189,20 +183,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  summaryBackground: {
-    color: "black",
-    marginTop: 5,
-    textAlign: "center",
-    height: _screen.height * 0.6,
-  },
-  summaryContainer: {
-    marginBottom: 10,
-    padding: 5,
-    backgroundColor: "white",
-    borderRadius: 15,
-    width: _screen.width * 0.7,
-    ...shadowStyle,
-  },
   contentContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -211,6 +191,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: colorPalette.secondary,
   },
+
   scrollView: {
     padding: 8,
     marginVertical: Platform.OS === "android" ? 12 : 0,
@@ -218,11 +199,31 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: colorPalette.secondary,
   },
+
   subTitle: {
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 10,
     marginBottom: 5,
   },
-  ingredients: {},
+
+  ingContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+
+  ingredient: {
+    width: "70%",
+    justifyContent: "flex-start"
+  },
+
+  measurement: {
+    width: "30%",
+    justifyContent: "flex-start"
+  },
+
+  extra: {
+
+  }
 });
