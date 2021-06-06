@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SAVORED_SERVER_API } from "../constants/api";
+import { SAVORED_SERVER_API } from "../constants/Api";
 
 export async function swipeToDb(user_id: string | undefined, rcp: UserRecipe) {
   const recipe = await axios(SAVORED_SERVER_API, {

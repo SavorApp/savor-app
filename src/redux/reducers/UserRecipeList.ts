@@ -22,12 +22,19 @@ export const userRecipeListReducer = (
       };
     }
     case "UNSAVOR_RECIPE": {
+      const newUserRecipeList = state.userRecipeList.map((rcp) => {
+        if (rcp.id === action.payload) {
+          rcp.isSavored = false;
+        }
+        return rcp
+      })
       return {
-        userRecipeList: state.userRecipeList.forEach((rcp) => {
-          if (rcp.id === action.payload) {
-            rcp.isSavored = false;
-          }
-        }),
+        // userRecipeList: state.userRecipeList.forEach((rcp) => {
+        //   if (rcp.id === action.payload) {
+        //     rcp.isSavored = false;
+        //   }
+        // }),
+        userRecipeList: newUserRecipeList
       };
     }
     case "RESET_USER_RECIPE_LIST": {

@@ -3,18 +3,22 @@ import {
   FlatList,
   StyleSheet,
   Dimensions,
+  Animated,
   View,
   Text,
   TouchableOpacity,
   Platform,
 } from "react-native";
 import { SwipeListView } from 'react-native-swipe-list-view';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { unSavorRecipe } from "../redux/actions";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
+// import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+import axios from "axios";
 
 const _screen = Dimensions.get("screen");
 
@@ -23,9 +27,18 @@ export interface SavoredListScreenProps {
 }
 
 export default function SavoredListScreen({ navigation }: SavoredListScreenProps) {
+  const dispatch = useDispatch();
   const userRecipeListState = useSelector<RootState, UserRecipeListState>(
     (state) => state.userRecipeListState
   );
+  const userState = useSelector<RootState, userSate>(
+    (state) => state.userState
+  )
+  console.log("user recipeListState is: ", userRecipeListState)
+  console.log("userRecipeList is: ", userRecipeListState.userRecipeList)
+  // const savoredList = userRecipeListState.userRecipeList.filter((rcp) => {
+  //     return rcp.isSavored === true;
+  //   })
 
   function getRandomNumber(): number {
     const savoredList = userRecipeListState.userRecipeList.filter((rcp) => {
@@ -41,8 +54,26 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
 
 // below is the recipe list
 
-  function RecipeListItem({rcp}: {rcp: UserRecipe}) {
+  function RecipeListItem({rcp, rowHeightAnimatedValue, removeRow, leftActionState, rightActionState}) { // {rcp}: {rcp: UserRecipe}
+    // const {
+    //   rowHeightAnimatedValue, 
+    //   removeRow, 
+    //   leftActionState, 
+    //   rightActionState,
+    //   rcp
+    //   } = props;
     const newTitle = rcp.title.length >= 30 ? (rcp.title.slice(0, 30) + "...") : (rcp.title)
+
+    if (rightActionState) {
+      Animated.timing(rowHeightAnimatedValue, {
+        toValue: 0,
+        // duration: 100,
+        useNativeDriver: false,
+      }).start(() => {
+        removeRow();
+      });
+    }
+
     return (
       
       <TouchableOpacity
@@ -89,28 +120,38 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     )
   };
 
-  function renderItem({item}: {item: UserRecipe}) {
-    return <RecipeListItem rcp={item}/>; // rowData used to be item
+  function renderItem({item}: {item: UserRecipe}, rowMap) {
+    const rowHeightAnimatedValue = new Animated.Value(60);
+    console.log("Type rowHeight: ", typeof rowHeightAnimatedValue)
+    console.log("Inside render item: ", item)
+    return (
+    <RecipeListItem 
+      rcp={item}
+      rowHeightAnimatedValue={rowHeightAnimatedValue} 
+      removeRow={() => deleteRow({item}, rowMap)} 
+    />
+    ); // rowData used to be item
   };
 
-  // const HiddenItemWithActions = props => {
-  //   const {onClose, onDelete} = props;
-  // }
+  const onRowDidOpen = (item, rowMap) => {
+    console.log('This row opened', item);
+  };
 
-  // function renderHiddenItem({data}: {data: UserRecipe}) {
-  //   return (
-  //         <View style={styles.rowBack}>
-  //                   <Text>Left</Text>
-  //                   <Text>Right</Text>
-  //               </View>
-  //   // <HiddenItemWithActions
-  //   //   data={data}
-  //   //   rowMap={rowMap}
-  //   //   onClose={() => closeRow(rowMap, data.item.key)}
-  //   //   onDelete={() => deleteRow(rowMap, data.item.key)}
-  //   //   />
-  //   )
-  // }
+  const onLeftActionStatusChange = (item, rowMap) => {
+    console.log('onLeftActionStatusChange', item);
+  };
+
+  const onRightActionStatusChange = (item, rowMap) => {
+    console.log('onRightActionStatusChange', item);
+  };
+
+  const onRightAction = (item, rowMap) => {
+    console.log('onRightAction', item);
+  };
+
+  const onLeftAction = (item, rowMap) => {
+    console.log('onLeftAction', item);
+  };
   const closedRow = ({item}, rowMap) => {
     console.log("You pressed me")
     console.log("You are rowMap: ", rowMap)
@@ -120,33 +161,113 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     }
   }
 
-  const deleteRow = (rowMap, rowKey) => {
-    closedRow(rowMap, rowKey);
-    const newData = [...userRecipeListState.userRecipeList]
-    const prevIndex = newData.findIndex(item => item.key === rowKey);
-    newData.splice(prevIndex, 1);
-    // set new state, maybe dispatch?
-    // and call to backend to delete
+  const deleteRow = ({item}, rowMap) => {
+    console.log("I'm inside delete");
+    console.log("What type am I: ", typeof item.id);
+    // console.log("I am dispatch: ", dispatch)
+    const recipeId = item.id
+    // closedRow({item}, rowMap);
+    dispatch(unSavorRecipe(recipeId))
+    // if userSate.loggedIn is true call unsavoredDB
+  /*
+  if (userState.isLoggedIn) {
+  async function unSavorDB(user_id: string | undefined, rcpId: number, isSavored: Boolean) {
+    try {
+      const recipe = await axios("https://localhost:4000/", {
+        method: "POST",
+        data: {
+          query: `
+                mutation updateRecipe(
+                      $user_id: String!,
+                      $id: Int!,
+                      $isSavored: Boolean,
+                `,
+          variables: {
+            // user_id: user_id,
+            // id: rcpId,
+            // isSavored: isSavored,
+            user_id: user_id,
+            id: rcpId,
+            isSavored: isSavored,
+          },
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+  } catch {
+    // Handle error
+  }
+    }
+// unSavorDB(userState.user.id, item.id, false)
+unSavorDB("2", 10050, false)
+  }  
+ */  
   }
 
   const HiddenItemWithActions = props => {
-    const {onClose, onDelete, data, rowMap} = props;
+    const {
+      swipeAnimatedValue, 
+      leftActionActivated, 
+      rightActionActivated, 
+      rowActionAnimatedValue, 
+      rowHeightAnimatedValue, 
+      onClose,
+      onDelete, 
+      data, 
+      rowMap
+      } = props;
+
+    if (rightActionActivated) {
+      Animated.spring(rowActionAnimatedValue, {
+        toValue: 500,
+        useNativeDriver: false
+      }).start();
+    } else {
+      Animated.spring(rowActionAnimatedValue, {
+        toValue: 75,
+        useNativeDriver: false
+      }).start();
+    }
+
     return (
       // <View style={[styles.rowBack, {justifyContent: "flex-end"}]}>
-      <View style={styles.rowBack}>
+      <Animated.View style={[styles.rowBack, {height: rowHeightAnimatedValue}]}>
         <Text>Left</Text>
         <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]} onPress={onClose}>
-          <Text>Close</Text>
+          <MaterialCommunityIcons name="close-circle-outline" size={25} style={styles.trash} color="#fff" />
         </TouchableOpacity>
+        <Animated.View style={[styles.backRightBtn, styles.backRightBtnRight, {
+          flex: 1, width: rowActionAnimatedValue
+        }]}>
         <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={onDelete}>
-          <Text>Delete</Text>
+           <Animated.View
+                style={[
+                  styles.trash,
+                  {
+                    transform: [
+                      {
+                        scale: swipeAnimatedValue.interpolate({
+                          inputRange: [-90, -45],
+                          outputRange: [1, 0],
+                          extrapolate: 'clamp',
+                        }),
+                      },
+                    ],
+                  },
+                ]}>
+                <MaterialCommunityIcons
+                  name="trash-can-outline"
+                  size={25}
+                  color="#fff"
+                />
+              </Animated.View>
         </TouchableOpacity>
-
+      </ Animated.View>
         
-      </View>
+      </ Animated.View>
     )
   }
-  
   // renderHiddenItem={ (data, rowMap) => (
   //               <View style={styles.rowBack}>
   //                 <Text>Left</Text>
@@ -159,17 +280,20 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
   //               </View>
   //             )}
 
-
   function renderHiddenItem({item}, rowMap) {
     console.log("find rowMap: ", rowMap)
     console.log("find data: ", {item})
     // console.log("find data id: ", rowData.item.id)
+    const rowActionAnimatedValue = new Animated.Value(75)
+    const rowHeightAnimatedValue = new Animated.Value(60)
+    console.log(rowHeightAnimatedValue)
     return (
-
       <HiddenItemWithActions 
         // style={{justifyContent: "flex-end"}}
         data={item}
         rowMap={rowMap}
+        rowActionAnimatedValue={rowActionAnimatedValue}
+        rowHeightAnimatedValue={rowHeightAnimatedValue}
         onClose={() => closedRow({item}, rowMap)}
         onDelete={() => deleteRow({item}, rowMap)}
       />
@@ -184,10 +308,12 @@ return (
               useFlatList={true}
               style={styles.flatList}
               contentContainerStyle={styles.flatListContainer}
-              data={userRecipeListState.userRecipeList.filter((rcp) => {
+              data={
+                userRecipeListState.userRecipeList.filter((rcp) => {
                 // Select only Recipes where isSavored = true
                 return rcp.isSavored;
-              })}
+              })
+              }
               keyExtractor={(rowData, index) => {
                 console.log("I am rowData: ", rowData)
                 console.log("I am rowData id: ", rowData.id)
@@ -205,6 +331,25 @@ return (
               leftOpenValue={75}
               rightOpenValue={-150}
               disableRightSwipe
+
+              onRowDidOpen={(rowData, rowMap) => onRowDidOpen(rowData, rowMap)}
+              leftActivationValue={100}
+              rightActivationValue={-200}
+              leftActionValue={0}
+              rightActionValue={-500}
+              onLeftAction={(rowData, rowMap) => {
+                console.log("Row Data: ", rowData)
+                console.log("Row Map: ", rowMap)
+                return onLeftAction(rowData, rowMap)}}
+              onRightAction={(rowData, rowMap) => {
+                console.log("Row Data: ", rowData)
+                console.log("Row Map: ", rowMap)
+                return onRightAction(rowData, rowMap)
+                }
+              }
+              onLeftActionStatusChange={(rowData, rowMap) => onLeftActionStatusChange(rowData, rowMap)}
+              onRightActionStatusChange={(rowData, rowMap) => onRightActionStatusChange(rowData, rowMap)}
+
           />
         </View>
         <TouchableOpacity
@@ -353,5 +498,10 @@ rowBack: {
     right: 0,
     borderTopRightRadius: 5,
     borderBottomRightRadius: 5,
+  },
+   trash: {
+    height: 25,
+    width: 25,
+    marginRight: 7,
   }
 });

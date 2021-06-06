@@ -15,7 +15,7 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import HTML from "react-native-render-html";
 import axios from "axios";
 import * as recipeJson from "../data/100Recipes.json";
-import LoadingRecipeInfo from "../components/loadingRecipeInfo";
+import LoadingRecipeInfo from "../components/LoadingRecipeInfo";
 
 const _screen = Dimensions.get("screen");
 
