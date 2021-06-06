@@ -1,4 +1,5 @@
 import React from "react";
+import { StyleSheet, View, Image } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { ChefScreen, LoginScreen } from "../screens"
 import { useSelector } from "react-redux";
@@ -18,14 +19,50 @@ export default function ChefNavigator() {
     return (
         <ChefStack.Navigator >
           {isLoggedIn ? (
-            <ChefStack.Screen name="ChefScreen" component={ChefScreen} />
+            <ChefStack.Screen
+                name="ChefScreen"
+                component={ChefScreen}
+                options={{
+                  headerTitle: () => {
+                    return (
+                        <View style={styles.headerContainer}>
+                            <Image source={require("../../assets/header.png")} style={styles.headerImage}/>
+                        </View>
+                    )
+                  }
+                }}
+            />
           ) : (
             <ChefStack.Screen
                 name="LoginScreen"
                 component={LoginScreen}
+                options={{
+                  headerTitle: () => {
+                    return (
+                        <View style={styles.headerContainer}>
+                            <Image source={require("../../assets/header.png")} style={styles.headerImage}/>
+                        </View>
+                    )
+                  }
+                }}
             />
           )}
         </ChefStack.Navigator>
     )
     
 }
+
+const styles = StyleSheet.create({
+  headerContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 8
+  },
+
+  headerImage: {
+    flex: 1,
+    resizeMode: "contain",
+    width: 200,
+  },
+});
