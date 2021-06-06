@@ -90,13 +90,15 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
   }, [navigation]);
 
   function Ingredients({ingredients}: {ingredients: Ingredient[]}) {
+    let idx = 0;
     return (
       <View>
         {ingredients.map((ing) => {
+          idx++;
           return (
-          <View style={styles.ingredientContainer}>
-            <Text style={styles.ingredient}>{ing.name}</Text>
-            <Text style={styles.measurement}>({ing.measures.metric.amount}{ing.measures.metric.unitShort && " " + ing.measures.metric.unitShort})</Text>
+          <View key={"c_" + ing.id.toString() + idx.toString()} style={styles.ingredientContainer}>
+            <Text key={"i_" + ing.id.toString() + idx.toString()} style={styles.ingredient}>{ing.name}</Text>
+            <Text key={"m_" + ing.id.toString() + idx.toString()} style={styles.measurement}>({ing.measures.metric.amount}{ing.measures.metric.unitShort && " " + ing.measures.metric.unitShort})</Text>
           </View>
           )
         })}
@@ -221,12 +223,12 @@ const styles = StyleSheet.create({
 
   ingredient: {
     justifyContent: "flex-start",
-    width: "60%"
+    width: "65%"
   },
 
   measurement: {
     justifyContent: "flex-start",
-    width: "40%"
+    width: "35%"
   },
 
   extra: {
