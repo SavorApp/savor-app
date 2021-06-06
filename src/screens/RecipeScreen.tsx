@@ -50,26 +50,26 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
 
   async function fetchRecipeInfo() {
     try {
-      const resp = await axios.get(RECIPE_INFO_BASE_URL + ENDPOINT);
-      const fetchedRecipe = resp.data;
-      setRecipeInfo({
-        title: fetchedRecipe.title,
-        instructions: fetchedRecipe.instructions,
-        summary: fetchedRecipe.summary,
-        ingredients: (
-          fetchedRecipe.extendedIngredients as Array<Ingredient>
-        ).map((ing: Ingredient) => {
-          return ing.name;
-        }),
-        veryHealthy: fetchedRecipe.veryHealthy,
-        vegetarian: fetchedRecipe.vegetarian,
-        vegan: fetchedRecipe.vegan,
-        dairyFree: fetchedRecipe.dairyFree,
-        healthScore: fetchedRecipe.healthScore,
-        prepTime: fetchedRecipe.readyInMinutes,
-        diets: fetchedRecipe.diets,
-      });
-      setIsInfoLoading(false);
+      // const resp = await axios.get(RECIPE_INFO_BASE_URL + ENDPOINT);
+      // const fetchedRecipe = resp.data;
+      // setRecipeInfo({
+      //   title: fetchedRecipe.title,
+      //   instructions: fetchedRecipe.instructions,
+      //   summary: fetchedRecipe.summary,
+      //   ingredients: (
+      //     fetchedRecipe.extendedIngredients as Array<Ingredient>
+      //   ).map((ing: Ingredient) => {
+      //     return ing.name;
+      //   }),
+      //   veryHealthy: fetchedRecipe.veryHealthy,
+      //   vegetarian: fetchedRecipe.vegetarian,
+      //   vegan: fetchedRecipe.vegan,
+      //   dairyFree: fetchedRecipe.dairyFree,
+      //   healthScore: fetchedRecipe.healthScore,
+      //   prepTime: fetchedRecipe.readyInMinutes,
+      //   diets: fetchedRecipe.diets,
+      // });
+      // setIsInfoLoading(false);
     } catch {
       Alert.alert(
         "Server Error 🤕",

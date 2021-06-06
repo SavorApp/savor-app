@@ -44,7 +44,7 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
   function RecipeListItem({rcp}: {rcp: UserRecipe}) {
     const newTitle = rcp.title.length >= 30 ? (rcp.title.slice(0, 30) + "...") : (rcp.title)
     return (
-      <View style={styles.rowFront}>
+      
       <TouchableOpacity
           style={styles.recipeListItem}
           onPress={() => navigation.navigate("RecipeScreen", { recipeId: rcp.id})}
@@ -85,12 +85,12 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
             </View>
           </View>
         </TouchableOpacity> 
-        </View>
+        
     )
   };
 
   function renderItem({item}: {item: UserRecipe}) {
-    return <RecipeListItem rcp={item}/>;
+    return <RecipeListItem rcp={item}/>; // rowData used to be item
   };
 
   // const HiddenItemWithActions = props => {
@@ -111,14 +111,17 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
   //   //   />
   //   )
   // }
-  const closeRow = (rowMap, rowKey) => {
-    if(rowMap[rowKey]) {
-      rowMap[rowKey].closeRow();
+  const closedRow = ({item}, rowMap) => {
+    console.log("You pressed me")
+    console.log("You are rowMap: ", rowMap)
+    console.log("You are rowData id: ", item.id)
+    if(rowMap[item.id]) {
+      rowMap[item.id].closeRow();
     }
   }
 
   const deleteRow = (rowMap, rowKey) => {
-    closeRow(rowMap, rowKey);
+    closedRow(rowMap, rowKey);
     const newData = [...userRecipeListState.userRecipeList]
     const prevIndex = newData.findIndex(item => item.key === rowKey);
     newData.splice(prevIndex, 1);
@@ -127,8 +130,9 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
   }
 
   const HiddenItemWithActions = props => {
-    const {onClose, onDelete} = props;
+    const {onClose, onDelete, data, rowMap} = props;
     return (
+      // <View style={[styles.rowBack, {justifyContent: "flex-end"}]}>
       <View style={styles.rowBack}>
         <Text>Left</Text>
         <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]} onPress={onClose}>
@@ -156,13 +160,18 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
   //             )}
 
 
-  function renderHiddenItem (data, rowMap) {
+  function renderHiddenItem({item}, rowMap) {
+    console.log("find rowMap: ", rowMap)
+    console.log("find data: ", {item})
+    // console.log("find data id: ", rowData.item.id)
     return (
+
       <HiddenItemWithActions 
-        data={data}
+        // style={{justifyContent: "flex-end"}}
+        data={item}
         rowMap={rowMap}
-        onClose={() => closeRow(rowMap, data.item.key)}
-        onDelete={() => closeRow(rowMap, data.item.key)}
+        onClose={() => closedRow({item}, rowMap)}
+        onDelete={() => deleteRow({item}, rowMap)}
       />
     );
   }
@@ -179,11 +188,22 @@ return (
                 // Select only Recipes where isSavored = true
                 return rcp.isSavored;
               })}
-              renderItem={(item) => renderItem(item)}
-              renderHiddenItem={renderHiddenItem}
-              keyExtractor={item => item.id.toString()}
+              keyExtractor={(rowData, index) => {
+                console.log("I am rowData: ", rowData)
+                console.log("I am rowData id: ", rowData.id)
+                console.log("I am rowData id string: ", rowData.id.toString())
+                return rowData.id.toString();
+              }}
+              renderItem={(rowData, rowMap) => renderItem(rowData, rowMap)}
+              renderHiddenItem={(rowData, rowMap) => {
+              console.log("Please rowMap: ", rowMap)
+              return renderHiddenItem(rowData, rowMap)}}
+              // keyExtractor={item => item.id.toString()}
+              // keyExtractor={item => item.text}
+              //keyExtractor={data => data.id.toString()}
+
               leftOpenValue={75}
-              rightOpenValue={-75}
+              rightOpenValue={-150}
               disableRightSwipe
           />
         </View>
@@ -299,5 +319,39 @@ const styles = StyleSheet.create({
     width: 120,
     borderRadius: 10,
     padding: 8
-}
+},
+
+rowBack: {
+    alignItems: 'center',
+    backgroundColor: '#DDD',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 15,
+    margin: 5,
+    // marginBottom: 15,
+    borderRadius: 5,
+  },
+
+  backRightBtn: {
+    alignItems: 'flex-end',
+    bottom: 0,
+    justifyContent: 'center',
+    position: 'absolute',
+    top: 0,
+    width: 75,
+    paddingRight: 17,
+  },
+
+  backRightBtnLeft: {
+    backgroundColor: '#1f65ff',
+    right: 75,
+  },
+
+  backRightBtnRight: {
+    backgroundColor: 'red',
+    right: 0,
+    borderTopRightRadius: 5,
+    borderBottomRightRadius: 5,
+  }
 });
