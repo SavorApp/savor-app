@@ -14,7 +14,6 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
 
   const scrollInfoRef = useRef<any>();
 
-  //TODO: Need to modify the "Type" displayed
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
@@ -43,20 +42,20 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
               </View>
             )}
 
-          <View style={styles.rcpInfoContainer}>
-            <Text style={styles.rcpInfo}>
-              Type:{" "}
-              {filtersState.filters.dishType !== ""
-                ? filtersState.filters.dishType[0].toUpperCase() +
+        <View style={styles.rcpInfoContainer}>
+          <Text style={styles.rcpInfo}>
+            Type:{" "}
+            {filtersState.filters.dishType
+              ? filtersState.filters.dishType[0].toUpperCase() +
                 filtersState.filters.dishType.slice(1)
-                : rcp.dishTypes.length === 0
-                  ? "Many"
-                  : rcp.dishTypes[0][0].toUpperCase() + rcp.dishTypes[0].slice(1)}
-            </Text>
-            <Text style={styles.rcpInfo}>
-              Cuisine:{" "}
-              {filtersState.filters.cuisine !== ""
-                ? filtersState.filters.cuisine[0].toUpperCase() +
+              : rcp.dishTypes.length === 0
+              ? "Many"
+              : rcp.dishTypes[0][0].toUpperCase() + rcp.dishTypes[0].slice(1)}
+          </Text>
+          <Text style={styles.rcpInfo}>
+            Cuisine:{" "}
+            {filtersState.filters.cuisine
+              ? filtersState.filters.cuisine[0].toUpperCase() +
                 filtersState.filters.cuisine.slice(1)
                 : rcp.cuisines.length === 0
                   ? "World Food"

@@ -21,6 +21,15 @@ export const userRecipeListReducer = (
         userRecipeList: [...state.userRecipeList, action.payload],
       };
     }
+    case "UNSAVOR_RECIPE": {
+      return {
+        userRecipeList: state.userRecipeList.forEach((rcp) => {
+          if (rcp.id === action.payload) {
+            rcp.isSavored = false;
+          }
+        }),
+      };
+    }
     case "RESET_USER_RECIPE_LIST": {
       return {
         userRecipeList: [],

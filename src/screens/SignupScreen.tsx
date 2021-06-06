@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import {
   StyleSheet,
   Dimensions,
@@ -14,23 +13,20 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
-import { resetFilters, resetUserRecipeList, setUser } from "../redux/actions";
-import axios from "axios";
-import { createUser } from "../db/db";
+import { createUser, createFilters } from "../db/db";
+import { initialState } from "../redux/reducers/filters";
 const _screen = Dimensions.get("screen");
+
 export interface SignupScreenProps {
   navigation: StackNavigationProp<ChefStackParamList, "SignupScreen">;
 }
 
 export default function SignupScreen({ navigation }: SignupScreenProps) {
-  const userRecipeListState = useSelector<RootState, UserRecipeListState>(
-    (state) => state.userRecipeListState
-  );
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [validEmail, setValidEmail] = React.useState(false);
   const [hidePassword, setHidePassword] = React.useState(true);
-  const dispatch = useDispatch();
+  const [blockSignup, setBlockSignup] = React.useState(false);
 
   React.useEffect(() => {
     if (/^\S+@\S+\.\S+$/.test(email)) {
@@ -47,32 +43,31 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
   async function handleSignUp() {
     // Check that both email and password field are populated.
     // Also check that the email is somewhat valid
+    setBlockSignup(true);
 
     if (!/^\S+@\S+\.\S+$/.test(email)) {
       Alert.alert("Invalid Email", "Please enter a valid email.");
+      setBlockSignup(false);
     } else if (password.length < 6) {
       Alert.alert(
         "Invalid Password",
         "Password must be 6 characters or longer."
       );
+      setBlockSignup(false);
     } else {
       try {
         const resp = await firebaseApp
           .auth()
           .createUserWithEmailAndPassword(email, password);
         if (resp.additionalUserInfo?.isNewUser) {
-          dispatch(
-            setUser({
-              id: resp.user?.uid,
-              username: resp.user?.email,
-              image_url: resp.user?.photoURL,
-            })
-          );
           createUser(resp.user?.uid, resp.user?.email);
+          createFilters(resp.user?.uid, initialState.filters);
           navigation.goBack();
+          setBlockSignup(false);
         }
       } catch (error) {
         Alert.alert("Invalid Request", error.message);
+        setBlockSignup(false);
       }
     }
   }
@@ -132,12 +127,19 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
           </View>
 
           <View style={styles.signInButtonContainer}>
-            <TouchableOpacity onPress={handleSignUp} activeOpacity={0.8}>
+            <TouchableOpacity
+              onPress={
+                blockSignup
+                  ? () => {} // Fake function while blocked
+                  : handleSignUp // Allow Register while unblocked
+              }
+              activeOpacity={0.8}
+            >
               <LinearGradient
                 colors={[colorPalette.popLight, colorPalette.popDark]}
                 style={styles.signUpButton}
               >
-                <Text>Register</Text>
+                <Text>{blockSignup ? "Processing..." : "Register"}</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>

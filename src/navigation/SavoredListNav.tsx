@@ -15,7 +15,8 @@ export default function SavoredListNavigator() {
             />
             <SavoredListStack.Screen
                 name="RecipeScreen"
-                component={RecipeScreen}
+                // TODO: Research whether there is another solution than to cast
+                component={(RecipeScreen as React.FC)}
                 options={{
                     headerBackImage:  () => <Ionicons name="chevron-back" size={36} />,
                     headerBackTitleVisible: false,
@@ -26,5 +27,4 @@ export default function SavoredListNavigator() {
             />
         </SavoredListStack.Navigator>
     )
-    
 }

@@ -6,7 +6,7 @@ import { resetReload } from "../redux/actions";
 import axios from "axios";
 import RecipeCardStack from "../components/RecipeCardStack";
 import LoadingCardStack from "../components/LoadingCardStack";
-import { applySmartFilter, removeViewedRecipes } from "../utils";
+import { applySmartFilter, constructEndpoint, removeRecentlyViewedRecipes } from "../utils";
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/100Recipes.json";
 
@@ -35,16 +35,7 @@ export default function MenuScreen() {
     let fetchedRecipes: Recipe[];
 
     // Endpoint with filters included
-    const ENDPOINT =
-      "number=100&tags=" +
-      `${
-        filtersState.filters.dishType && filtersState.filters.dishType + ","
-      }` +
-      `${filtersState.filters.cuisine && filtersState.filters.cuisine + ","}` +
-      `${filtersState.filters.vegetarian ? "vegetarian," : ""}` +
-      `${filtersState.filters.vegan ? "vegan," : ""}` +
-      `${filtersState.filters.glutenFree ? "gluten%20free," : ""}` +
-      `${filtersState.filters.dairyFree ? "dairy%20free," : ""}`;
+    const ENDPOINT = constructEndpoint(filtersState.filters);      
 
     // Try to fatch data
     try {
@@ -90,6 +81,7 @@ export default function MenuScreen() {
       //     readyInMinutes: rcp.readyInMinutes,
       //     ingredients: ingredientsArray,
       //     servings: rcp.servings,
+      //     smartFilterScore: 0,
       //   };
       // });
 
@@ -141,7 +133,7 @@ export default function MenuScreen() {
         );
       } else {
         // Remove already viewed Recipes
-        const removedViewedRecipes = removeViewedRecipes(fetchedRecipes, userRecipeListState.userRecipeList);
+        const removedViewedRecipes = removeRecentlyViewedRecipes(fetchedRecipes, userRecipeListState.userRecipeList);
 
         // Apply smartFilter is set to true
         if (filtersState.filters.smartFilter) {
@@ -157,7 +149,8 @@ export default function MenuScreen() {
       setIsCardStackLoading(false);
 
       // Catch server erorrs
-    } catch {
+    } catch (err) {
+      console.log(err)
       Alert.alert(
         "Server Error 🤕",
         "Sorry for the inconvenience, please try again later."

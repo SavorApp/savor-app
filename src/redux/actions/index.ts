@@ -31,6 +31,15 @@ export const addtoUserRecipeList = (
   };
 };
 
+export const unSavorRecipe = (
+  recipeId: number
+): UserRecipeListAction => {
+  return {
+    type: "UNSAVOR_RECIPE",
+    payload: recipeId,
+  };
+};
+
 export const resetUserRecipeList = (): EmptyAction => {
   return {
     type: "RESET_USER_RECIPE_LIST",
@@ -39,6 +48,7 @@ export const resetUserRecipeList = (): EmptyAction => {
 
 // Filters Actions
 export const setFilters = (filters: Filters): FiltersAction => {
+  console.log(filters);
   return {
     type: "SET_FILTERS",
     payload: filters,
@@ -61,7 +71,7 @@ export const resetFilters = (): EmptyAction => {
 // ReloadRecipes Actions
 export const triggerReload = (): EmptyAction => {
   return {
-    type: "TRIGGER_RELOAD"
+    type: "TRIGGER_RELOAD",
   };
 };
 
