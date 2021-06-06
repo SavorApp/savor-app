@@ -80,3 +80,16 @@ export const resetReload = (): EmptyAction => {
     type: "SET_RELOAD_FALSE",
   };
 };
+
+// EnableScroll on Recipe Card Actions
+export const enableScroll = (): EmptyAction => {
+  return {
+    type: "ENABLE_SCROLL",
+  };
+};
+
+export const disableScroll = (): EmptyAction => {
+  return {
+    type: "DISABLE_SCROLL",
+  };
+};

@@ -58,6 +58,7 @@ interface RootState {
   userRecipeListState: UserRecipeListState;
   filtersState: FiltersState;
   reloadRecipesState: ReloadRecipesState;
+  enableScrollState: EnableScrollState;
 }
 
 // Core User type
@@ -142,6 +143,11 @@ interface ReloadRecipesState {
 type EmptyAction = {
   type: string;
 };
+
+// Core EnableScroll interface
+interface EnableScrollState {
+  enable: boolean;
+}
 
 /*
  _____________________________

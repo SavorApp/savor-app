@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { StyleSheet, Dimensions, View, Text, ScrollView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { addtoUserRecipeList, triggerReload } from "../redux/actions";
+import { addtoUserRecipeList, disableScroll, enableScroll, triggerReload } from "../redux/actions";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
@@ -18,6 +18,9 @@ export default function RecipeCardStack({
   const dispatch = useDispatch();
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
+  );
+  const scrollState = useSelector<RootState, EnableScrollState>(
+    (state) => state.enableScrollState
   );
   const [blockSwipeButtons, setBlockSwipeButtons] = React.useState(false);
   const userId = useRef<string | undefined>("");
@@ -67,7 +70,7 @@ export default function RecipeCardStack({
       dispatch(triggerReload());
     }
     setBlockSwipeButtons(false);
-    // setIsScrollEnabled(false);
+    dispatch(disableScroll())
   }
 
   function handleOnPressLeft() {
@@ -90,8 +93,6 @@ export default function RecipeCardStack({
     );
   }
 
-
-
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
@@ -101,6 +102,7 @@ export default function RecipeCardStack({
             cardStackRef.current = cardStack;
           }}
           renderNoMoreCards={renderNoMoreCard}
+          onSwipeStart={() => dispatch(disableScroll())}
           verticalSwipe={false}
         >
           {randRecipes.map((rcp: Recipe, idx: number) => {

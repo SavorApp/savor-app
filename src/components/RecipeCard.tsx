@@ -1,8 +1,9 @@
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useEffect, useRef } from "react";
 import { View, Image, StyleSheet, Text, Dimensions, ScrollView, TouchableOpacity, ImageBackground, Animated } from "react-native";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { shadowStyle, colorPalette } from "../constants/ColorPalette";
+import { disableScroll, enableScroll } from "../redux/actions";
 const _screen = Dimensions.get("screen");
 
 export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
@@ -10,8 +11,12 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
     (state) => state.filtersState
   );
   const [isScrollEnabled, setIsScrollEnabled] = React.useState<boolean>(false);
-
+  const scrollState = useSelector<RootState, EnableScrollState>(
+    (state) => state.enableScrollState
+  ); 
   const scrollInfoRef = useRef<any>();
+  const dispatch = useDispatch();
+
 
   return (
     <View style={styles.container}>
@@ -20,8 +25,8 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
         style={{flex: 1}}
           centerContent={true}
           directionalLockEnabled
-
-          onScrollBeginDrag={() => {console.log('jghfhggj')}}
+          scrollEnabled={scrollState.enable}
+          onTouchStart={() => {dispatch(enableScroll())}}
         >
           {rcp.image ? (
             <ImageBackground
