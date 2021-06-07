@@ -1,9 +1,8 @@
-import { useFocusEffect } from "@react-navigation/native";
-import React, { useEffect, useRef } from "react";
-import { View, Image, StyleSheet, Text, Dimensions, ScrollView, TouchableOpacity, ImageBackground, Animated } from "react-native";
+import React from "react";
+import { View, StyleSheet, Text, Dimensions, ImageBackground, Animated } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { shadowStyle, colorPalette } from "../constants/ColorPalette";
-import { disableScroll, enableScroll } from "../redux/actions";
+import { enableScroll } from "../redux/actions";
 const _screen = Dimensions.get("screen");
 
 export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
@@ -13,15 +12,14 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
   const scrollState = useSelector<RootState, EnableScrollState>(
     (state) => state.enableScrollState
   ); 
-
   const dispatch = useDispatch();
-
+  let idx = 0;
 
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
         <Animated.ScrollView
-        style={{flex: 1}}
+          style={{flex: 1}}
           centerContent={true}
           directionalLockEnabled
           scrollEnabled={scrollState.enable}
@@ -86,7 +84,7 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
           </Text>
             <Text style={styles.subTitle}>Ingredients</Text>
             {rcp.ingredients.map((ing) => {
-              return <Text>{ing}</Text>;
+              return <Text key={idx++}>{ing}</Text>;
             })}
           </View>
         </Animated.ScrollView>
@@ -113,6 +111,9 @@ const styles = StyleSheet.create({
     marginTop: 5,
     justifyContent: "center",
     alignItems: "center",
+  },
+  subTitle: {
+
   },
   titleBackground: {
     color: "black",

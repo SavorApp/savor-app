@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: _screen.width * 0.9,
     height: _screen.height * 0.6,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     width: _screen.width * 0.85,
     height: _screen.height * 0.04,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.secondary,
   },
 
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: _screen.width * 0.5,
     height: _screen.height * 0.03,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.background,
   },
   

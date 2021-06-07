@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: _screen.width * 0.9,
     height: _screen.height * 0.7,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
@@ -278,7 +278,7 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     width: _screen.width * 0.83,
     height: _screen.height * 0.4,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.secondary,
   },
 
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
     padding: 8,
     marginVertical: Platform.OS === "android" ? 12 : 0,
     width: _screen.width * 0.8,
-    borderRadius: 30,
+    borderRadius: 15,
   },
 
   subTitle: {

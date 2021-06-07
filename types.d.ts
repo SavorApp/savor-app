@@ -86,6 +86,7 @@ type RecipeAction = { type: string; payload: Recipe };
 // Core UserRecipe type
 type UserRecipe = {
   id: number;
+  recipe_id?: number
   title: string;
   cuisine: string;
   dishType: string;
@@ -258,5 +259,4 @@ type RecipeScreenInfo = {
   servings: number;
   readyInMinutes: number;
   diets: string[];
-  recipeId?: number;
 };
