@@ -82,14 +82,9 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
               Vegan:{rcp.vegan ? " ✅  " : " ❌ "}
             </Text>
 
-            <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>
-              Servings: {rcp.servings}
-            </Text>
-            <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>
-              Prep time: {rcp.readyInMinutes} min
-          </Text>
+            
             <Text style={styles.subTitle}>Additional Information</Text>
-            <Text>Preparation time: {rcp.readyInMinutes} min</Text>
+            <Text>Preparation time: {rcp.readyInMinutes} min </Text>
             <Text>Servings: {rcp.servings}</Text>
             <View style={styles.tagsContainer}>
               {rcp.veryHealthy && (
@@ -222,7 +217,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     width: _screen.width * 0.75,
-    marginTop: 100,
+    marginTop: 150,
     alignContent: "stretch",
     marginBottom: 10,
   },
