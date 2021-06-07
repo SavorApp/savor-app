@@ -18,6 +18,8 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
 import { SAVORED_SERVER_API } from "../constants/Api";
+import { unSavorDB } from "../db/db";
+console.log("unSavorDB: ", unSavorDB());
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import axios from "axios";
 
@@ -159,48 +161,15 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     // console.log("I'm inside delete");
     // console.log("What type am I: ", typeof item.id);
     // console.log("I am dispatch: ", dispatch)
-    const recipeId = item.id
+    const rcpId = item.id
+    const user_id = userState.user.id
     // closedRow({item}, rowMap);
-    dispatch(unSavorRecipe(recipeId))
+    dispatch(unSavorRecipe(rcpId))
     // if userSate.loggedIn is true call unsavoredDB
   //"http://192.168.0.1:4000"
     if (userState.isLoggedIn) {
-        async function unSavorDB(user_id: string | undefined, rcpId: number | undefined, isSavored: boolean | undefined) {
-      console.log("🍔🍕🍔🍟🌭🍿 inside async function")
-          try {
-            const recipe = await axios(SAVORED_SERVER_API, { 
-              method: "POST",
-              data: {
-                query: `
-                      mutation updateRecipe($user_id: String!, $recipe_id: Int!, $isSavored: Boolean) {
-                        updateRecipe(user_id:$user_id, recipe_id:$recipe_id, isSavored:$isSavored)
-                        {
-                          isSavored
-                        }
-                      }
-
-                      `,
-                variables: {
-                  // user_id: user_id,
-                  // id: rcpId,
-                  // isSavored: isSavored,
-                  user_id: user_id,
-                  recipe_id: rcpId,
-                  isSavored: isSavored,
-                },
-              },
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-          
-          } catch (err) {
-            // Handle error
-          }
-      }
-    
       // unSavorDB(userState.user.id, item.id, false)
-      const waitingForUnSavor = await unSavorDB("2", 10050, false);
+      const waitingForUnSavor = await unSavorDB(user_id, rcpId, false);
       console.log(waitingForUnSavor);
     }    
   }
@@ -315,11 +284,8 @@ return (
               })
               }
               keyExtractor={(rowData, index) => {
-                // console.log("I am rowData: ", rowData)
-                // console.log("I am rowData id: ", rowData.id)
-                // console.log("I am rowData id string: ", rowData.id.toString())
-                return rowData.id.toString();
-              }}
+              console.log("I am rowData: ", rowData)
+              return rowData.id.toString()}}
               renderItem={(rowData, rowMap) => renderItem(rowData, rowMap)}
               renderHiddenItem={(rowData, rowMap) => {
               // console.log("Please rowMap: ", rowMap)
