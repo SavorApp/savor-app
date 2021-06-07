@@ -323,6 +323,4 @@ const styles = StyleSheet.create({
   tag: {
     fontSize: 10,
   },
-
-  extra: {},
 });
