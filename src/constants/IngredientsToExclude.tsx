@@ -15,6 +15,7 @@ export const INGS_TO_EXCLUDE = [
   "density",
   "cooking oil",
   "vegetable oil",
+  "olive oil",
   "extract",
   "nutmeg",
   "gelatin",
