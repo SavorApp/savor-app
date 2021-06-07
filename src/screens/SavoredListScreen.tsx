@@ -17,6 +17,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
+import { SAVORED_SERVER_API } from "../constants/Api";
 // import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import axios from "axios";
 
@@ -34,8 +35,8 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
   const userState = useSelector<RootState, userSate>(
     (state) => state.userState
   )
-  console.log("user recipeListState is: ", userRecipeListState)
-  console.log("userRecipeList is: ", userRecipeListState.userRecipeList)
+  // console.log("user recipeListState is: ", userRecipeListState)
+  // console.log("userRecipeList is: ", userRecipeListState.userRecipeList)
   // const savoredList = userRecipeListState.userRecipeList.filter((rcp) => {
   //     return rcp.isSavored === true;
   //   })
@@ -55,19 +56,12 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
 // below is the recipe list
 
   function RecipeListItem({rcp, rowHeightAnimatedValue, removeRow, leftActionState, rightActionState}) { // {rcp}: {rcp: UserRecipe}
-    // const {
-    //   rowHeightAnimatedValue, 
-    //   removeRow, 
-    //   leftActionState, 
-    //   rightActionState,
-    //   rcp
-    //   } = props;
     const newTitle = rcp.title.length >= 30 ? (rcp.title.slice(0, 30) + "...") : (rcp.title)
 
     if (rightActionState) {
       Animated.timing(rowHeightAnimatedValue, {
         toValue: 0,
-        // duration: 100,
+        duration: 5,
         useNativeDriver: false,
       }).start(() => {
         removeRow();
@@ -122,8 +116,8 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
 
   function renderItem({item}: {item: UserRecipe}, rowMap) {
     const rowHeightAnimatedValue = new Animated.Value(60);
-    console.log("Type rowHeight: ", typeof rowHeightAnimatedValue)
-    console.log("Inside render item: ", item)
+    // console.log("Type rowHeight: ", typeof rowHeightAnimatedValue)
+    // console.log("Inside render item: ", item)
     return (
     <RecipeListItem 
       rcp={item}
@@ -134,75 +128,81 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
   };
 
   const onRowDidOpen = (item, rowMap) => {
-    console.log('This row opened', item);
+    // console.log('This row opened', item);
   };
 
   const onLeftActionStatusChange = (item, rowMap) => {
-    console.log('onLeftActionStatusChange', item);
+  //   console.log('onLeftActionStatusChange', item);
   };
 
   const onRightActionStatusChange = (item, rowMap) => {
-    console.log('onRightActionStatusChange', item);
+    // console.log('onRightActionStatusChange', item);
   };
 
   const onRightAction = (item, rowMap) => {
-    console.log('onRightAction', item);
+    // console.log('onRightAction', item);
   };
 
   const onLeftAction = (item, rowMap) => {
-    console.log('onLeftAction', item);
+    // console.log('onLeftAction', item);
   };
   const closedRow = ({item}, rowMap) => {
-    console.log("You pressed me")
-    console.log("You are rowMap: ", rowMap)
-    console.log("You are rowData id: ", item.id)
+    // console.log("You pressed me")
+    // console.log("You are rowMap: ", rowMap)
+    // console.log("You are rowData id: ", item.id)
     if(rowMap[item.id]) {
       rowMap[item.id].closeRow();
     }
   }
 
-  const deleteRow = ({item}, rowMap) => {
-    console.log("I'm inside delete");
-    console.log("What type am I: ", typeof item.id);
+  const deleteRow = async ({item}, rowMap) => {
+    // console.log("I'm inside delete");
+    // console.log("What type am I: ", typeof item.id);
     // console.log("I am dispatch: ", dispatch)
     const recipeId = item.id
     // closedRow({item}, rowMap);
     dispatch(unSavorRecipe(recipeId))
     // if userSate.loggedIn is true call unsavoredDB
-  /*
-  if (userState.isLoggedIn) {
-  async function unSavorDB(user_id: string | undefined, rcpId: number, isSavored: Boolean) {
-    try {
-      const recipe = await axios("https://localhost:4000/", {
-        method: "POST",
-        data: {
-          query: `
-                mutation updateRecipe(
-                      $user_id: String!,
-                      $id: Int!,
-                      $isSavored: Boolean,
-                `,
-          variables: {
-            // user_id: user_id,
-            // id: rcpId,
-            // isSavored: isSavored,
-            user_id: user_id,
-            id: rcpId,
-            isSavored: isSavored,
-          },
-        },
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-  } catch {
-    // Handle error
-  }
-    }
-// unSavorDB(userState.user.id, item.id, false)
-unSavorDB("2", 10050, false)
-  }  
- */  
+  //"http://192.168.0.1:4000"
+    if (userState.isLoggedIn) {
+        async function unSavorDB(user_id: string | undefined, rcpId: number | undefined, isSavored: boolean | undefined) {
+      console.log("🍔🍕🍔🍟🌭🍿 inside async function")
+          try {
+            const recipe = await axios(SAVORED_SERVER_API, { 
+              method: "POST",
+              data: {
+                query: `
+                      mutation updateRecipe($user_id: String!, $recipe_id: Int!, $isSavored: Boolean) {
+                        updateRecipe(user_id:$user_id, recipe_id:$recipe_id, isSavored:$isSavored)
+                        {
+                          isSavored
+                        }
+                      }
+
+                      `,
+                variables: {
+                  // user_id: user_id,
+                  // id: rcpId,
+                  // isSavored: isSavored,
+                  user_id: user_id,
+                  recipe_id: rcpId,
+                  isSavored: isSavored,
+                },
+              },
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+          
+          } catch (err) {
+            // Handle error
+          }
+      }
+    
+      // unSavorDB(userState.user.id, item.id, false)
+      const waitingForUnSavor = await unSavorDB("2", 10050, false);
+      console.log(waitingForUnSavor);
+    }    
   }
 
   const HiddenItemWithActions = props => {
@@ -281,12 +281,12 @@ unSavorDB("2", 10050, false)
   //             )}
 
   function renderHiddenItem({item}, rowMap) {
-    console.log("find rowMap: ", rowMap)
-    console.log("find data: ", {item})
+    // console.log("find rowMap: ", rowMap)
+    // console.log("find data: ", {item})
     // console.log("find data id: ", rowData.item.id)
     const rowActionAnimatedValue = new Animated.Value(75)
     const rowHeightAnimatedValue = new Animated.Value(60)
-    console.log(rowHeightAnimatedValue)
+    // console.log(rowHeightAnimatedValue)
     return (
       <HiddenItemWithActions 
         // style={{justifyContent: "flex-end"}}
@@ -315,14 +315,14 @@ return (
               })
               }
               keyExtractor={(rowData, index) => {
-                console.log("I am rowData: ", rowData)
-                console.log("I am rowData id: ", rowData.id)
-                console.log("I am rowData id string: ", rowData.id.toString())
+                // console.log("I am rowData: ", rowData)
+                // console.log("I am rowData id: ", rowData.id)
+                // console.log("I am rowData id string: ", rowData.id.toString())
                 return rowData.id.toString();
               }}
               renderItem={(rowData, rowMap) => renderItem(rowData, rowMap)}
               renderHiddenItem={(rowData, rowMap) => {
-              console.log("Please rowMap: ", rowMap)
+              // console.log("Please rowMap: ", rowMap)
               return renderHiddenItem(rowData, rowMap)}}
               // keyExtractor={item => item.id.toString()}
               // keyExtractor={item => item.text}
@@ -338,12 +338,12 @@ return (
               leftActionValue={0}
               rightActionValue={-500}
               onLeftAction={(rowData, rowMap) => {
-                console.log("Row Data: ", rowData)
-                console.log("Row Map: ", rowMap)
+                // console.log("Row Data: ", rowData)
+                // console.log("Row Map: ", rowMap)
                 return onLeftAction(rowData, rowMap)}}
               onRightAction={(rowData, rowMap) => {
-                console.log("Row Data: ", rowData)
-                console.log("Row Map: ", rowMap)
+                // console.log("Row Data: ", rowData)
+                // console.log("Row Map: ", rowMap)
                 return onRightAction(rowData, rowMap)
                 }
               }
