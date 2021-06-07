@@ -118,6 +118,7 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
 
     return (
       <View>
+        <Text style={styles.subTitle2}>Taste Profile</Text>
         {cuisineArray[0] && (
           <Text style={styles.caption}>
             So far, you have savored
