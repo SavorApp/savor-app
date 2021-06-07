@@ -1,0 +1,23 @@
+export const INGS_TO_EXCLUDE = [
+  "salt",
+  "pepper",
+  "sugar",
+  "water",
+  "flour",
+  "baking",
+  "cream",
+  "vanilla",
+  "ice cubes",
+  "mayonnaise",
+  "mustard",
+  "ketchup",
+  "butter",
+  "density",
+  "cooking oil",
+  "vegetable oil",
+  "extract",
+  "nutmeg",
+  "gelatin",
+  "egg substitute",
+  "half n half"
+];

@@ -7,11 +7,14 @@ import {
   Text,
   TouchableOpacity,
   Alert,
+  ScrollView,
+  Platform,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { INGS_TO_EXCLUDE } from "../constants/IngredientsToExclude";
 import { firebaseApp } from "../constants/Firebase";
 import {
   removeUser,
@@ -21,6 +24,12 @@ import {
 
 const _screen = Dimensions.get("screen");
 
+interface CounterObj {
+  key: number;
+  name: string;
+  count: number;
+}
+
 export interface ChefScreenProps {
   navigation: StackNavigationProp<ChefStackParamList, "ChefScreen">;
 }
@@ -29,8 +38,127 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   );
+  const userRecipeListState = useSelector<RootState, UserRecipeListState>(
+    (state) => state.userRecipeListState
+  );
   const dispatch = useDispatch();
   const [blockLogout, setBlockLogout] = React.useState(false);
+
+  function Metrics({ recipeList }: { recipeList: UserRecipe[] }) {
+    // Object to contain overall counts for cuisines
+    const cuisineCount: CountMap = {};
+    const cuisineArray: CounterObj[] = [];
+    // Object to contain overall counts for each ingredient
+    const ingredientsCount: CountMap = {};
+    const ingredientsArray: CounterObj[] = [];
+
+    // Index for generating keys
+    let idx: number;
+
+    // Generate counts for each cuisine in user's UserRecipe list
+    for (const rcp of recipeList) {
+      // Do not include "World Food" in cuisine metrics
+      if (rcp.cuisine !== "World Food") {
+        if (cuisineCount[rcp.cuisine]) {
+          cuisineCount[rcp.cuisine]++;
+        } else {
+          cuisineCount[rcp.cuisine] = 1;
+        }
+      }
+    }
+    idx = 0;
+    // Generate cuisine Array based on counts object
+    for (const cuisine in cuisineCount) {
+      cuisineArray.push({
+        key: idx,
+        name: cuisine,
+        count: cuisineCount[cuisine],
+      });
+      idx++;
+    }
+    // Sort by descending count
+    cuisineArray.sort((a: CounterObj, b: CounterObj) => {
+      return b.count - a.count;
+    });
+
+    // Generate counts for each ingredient for each recipe in user's UserRecipe list
+    for (const idx in recipeList) {
+      recipeList[idx].ingredients.forEach((ing) => {
+        let skip = false;
+        // Skip any ingredients that are in INGS_TO_EXCLUDE
+        // (Skipped if exIng is a sub-string of ing)
+        for (const exIng of INGS_TO_EXCLUDE) {
+          if (ing.includes(exIng)) {
+            skip = true;
+          }
+        }
+        if (!skip) {
+          if (ingredientsCount[ing]) {
+            ingredientsCount[ing]++;
+          } else {
+            ingredientsCount[ing] = 1;
+          }
+        }
+      });
+    }
+    idx = 0;
+    // Generate ingredients Array based on counts object
+    for (const ing in ingredientsCount) {
+      ingredientsArray.push({
+        key: idx,
+        name: ing,
+        count: ingredientsCount[ing],
+      });
+      idx++;
+    }
+    // Sort by descending count
+    ingredientsArray.sort((a: CounterObj, b: CounterObj) => {
+      return b.count - a.count;
+    });
+
+    return (
+      <View>
+        {cuisineArray[0] && (
+          <Text style={styles.caption}>
+            So far, you have savored
+            <Text style={{ fontWeight: "bold" }}>
+              {" "}
+              {cuisineArray.length}
+              {" "}
+            </Text>
+            cuisine type(s). Your most savored cuisine is
+            <Text style={{ fontWeight: "bold" }}>
+              {" "}
+              {cuisineArray[0].name}
+            </Text>
+            {cuisineArray[1] ?
+              (<Text>
+                {" "}
+                but, it looks like
+                <Text style={{ fontWeight: "bold" }}>
+                  {" "}
+                  {cuisineArray[1].name}
+                  {" "}
+                </Text>
+                food is a close second!
+              </Text>)
+              : (<Text>.</Text>)
+            }
+          </Text>
+        )}
+        <Text style={styles.subTitle2}>Top Ingredients</Text>
+        {ingredientsArray.map((ingObj) => {
+          if (ingObj.count >= 5) {
+            return (
+              <Text key={"i_" + ingObj.key.toString()}>
+                {ingObj.name}: {ingObj.count}
+              </Text>
+            );
+          }
+        })}
+      </View>
+    );
+  }
 
   function handleLogout() {
     setBlockLogout(true);
@@ -40,7 +168,7 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
       .signOut()
       .then(() => {
         // Remove cached access-token on mobile storage
-        removeCachedAccessToken()
+        removeCachedAccessToken();
         // - Update global state
         dispatch(removeUser());
         dispatch(resetUserRecipeList());
@@ -58,20 +186,24 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
 
   async function removeCachedAccessToken() {
     try {
-      await AsyncStorage.removeItem("access-token")
-    } catch(err) {
+      await AsyncStorage.removeItem("access-token");
+    } catch (err) {
       // Handle failed asyncStorage removal error
     }
   }
 
-
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text style={styles.title}>
-          Chef{"\n"} {userState.user.username}
-        </Text>
-        <View style={styles.profileContainer}></View>
+        <Text style={styles.title}>Welcome Chef</Text>
+        <Text style={styles.username}>{userState.user.username}</Text>
+        <View style={styles.profileContainer}>
+          <ScrollView style={styles.scrollView}>
+            <Text style={styles.subTitle}>Your Metrics</Text>
+            <Metrics recipeList={userRecipeListState.userRecipeList} />
+            <Text>{"\n\n\n"}</Text>
+          </ScrollView>
+        </View>
 
         <TouchableOpacity
           onPress={() => navigation.navigate("AboutUsScreen")}
@@ -133,7 +265,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: _screen.width * 0.9,
-    height: _screen.height * 0.6,
+    height: _screen.height * 0.7,
     borderRadius: 30,
     backgroundColor: colorPalette.primary,
     ...shadowStyle,
@@ -142,19 +274,50 @@ const styles = StyleSheet.create({
   profileContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 48,
-    width: _screen.width * 0.8,
-    height: _screen.height * 0.3,
+    marginVertical: 16,
+    width: _screen.width * 0.83,
+    height: _screen.height * 0.4,
     borderRadius: 30,
     backgroundColor: colorPalette.secondary,
   },
 
   title: {
+    justifyContent: "flex-start",
     textAlign: "center",
-    marginVertical: 8,
     fontSize: 28,
     fontWeight: "bold",
     color: colorPalette.background,
+  },
+
+  username: {
+    textAlign: "center",
+    marginBottom: 8,
+    fontSize: 24,
+    fontWeight: "bold",
+    color: colorPalette.popDark,
+  },
+
+  scrollView: {
+    padding: 8,
+    marginVertical: Platform.OS === "android" ? 12 : 0,
+    width: _screen.width * 0.8,
+    borderRadius: 30,
+  },
+
+  subTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 6,
+  },
+
+  subTitle2: {
+    fontWeight: "bold",
+    marginVertical: 6,
+  },
+
+  caption: {
+    fontStyle: "italic",
   },
 
   button: {
