@@ -103,6 +103,7 @@ export default function RecipeCardStack({
           }}
           renderNoMoreCards={renderNoMoreCard}
           onSwipeStart={() => dispatch(disableScroll())}
+          horizontalThreshold={0}
           verticalSwipe={false}
         >
           {randRecipes.map((rcp: Recipe, idx: number) => {
