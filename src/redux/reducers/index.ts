@@ -3,13 +3,15 @@ import { reloadRecipesReducer } from "./reloadRecipes"
 import { userRecipeListReducer } from "./userRecipeList"
 import { filtersReducer } from "./filters"
 import { combineReducers } from "redux";
+import { enableScrollReducer } from "./enableScroll";
 
 
 const rootReducer = combineReducers({
     userState: userReducer,
     reloadRecipesState: reloadRecipesReducer,
     userRecipeListState: userRecipeListReducer,
-    filtersState: filtersReducer
+    filtersState: filtersReducer,
+    enableScrollState: enableScrollReducer,
 });
 
 export default rootReducer;

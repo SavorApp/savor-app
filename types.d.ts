@@ -57,6 +57,7 @@ interface RootState {
   userRecipeListState: UserRecipeListState;
   filtersState: FiltersState;
   reloadRecipesState: ReloadRecipesState;
+  enableScrollState: EnableScrollState;
 }
 
 // Core User type
@@ -141,13 +142,18 @@ type EmptyAction = {
   type: string;
 };
 
+// Core EnableScroll interface
+interface EnableScrollState {
+  enable: boolean;
+}
+
 /*
  _____________________________
  Components Property Objects
  _____________________________
 */
 
-type RecipeCardParamList = {
+type RecipeCardParamList = { 
   id: number;
   rcp: Recipe;
 };

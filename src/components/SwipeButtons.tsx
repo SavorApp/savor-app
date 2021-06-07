@@ -4,7 +4,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { shadowStyle } from "../constants/ColorPalette";
 
 
-export default function SwipeButtons({ handleOnPressLeft, handleOnPressRight }: SwipeButtonsParamList) {
+export default function SwipeButtons({ handleOnPressLeft, handleOnPressRight}: SwipeButtonsParamList) {
+
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.button} onPress={handleOnPressLeft}>

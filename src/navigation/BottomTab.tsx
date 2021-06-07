@@ -1,4 +1,5 @@
 import React from "react";
+import { StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Colors from "../constants/Colors";
@@ -56,3 +57,18 @@ function TabBarIcon(props: {
     <MaterialCommunityIcons size={30} style={{ marginBottom: -3 }} {...props} />
   );
 }
+
+const styles = StyleSheet.create({
+  headerContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 8
+  },
+
+  headerImage: {
+    flex: 1,
+    resizeMode: "contain",
+    width: 200,
+  },
+});
