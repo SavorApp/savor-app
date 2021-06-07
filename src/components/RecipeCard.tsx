@@ -31,20 +31,19 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
             <ImageBackground
               key={id}
               source={{ uri: rcp.image || " " }}
-              style={styles.picture}
+              style={styles.image}
             >
               <View style={styles.titleContainer}>
-                <Text style={styles.titleBackground}>{rcp.title}</Text>
+                <Text style={styles.title}>{rcp.title}</Text>
               </View>
             </ImageBackground>
           ) : (
-              <ImageBackground key={id} source={require("../../assets/icon.png")} style={styles.picture}>
+              <ImageBackground key={id} source={require("../../assets/icon.png")} style={styles.image}>
                 <View style={styles.titleContainer}>
-                  <Text style={styles.titleBackground}>{rcp.title}</Text>
+                  <Text style={styles.title}>{rcp.title}</Text>
                 </View>
-                <Text style={styles.pictureUnavailable}>
-                  Picture unavailable for this recipe 😟 But believe us, it's
-              delicious!🍽{" "}
+                <Text style={styles.noImageMsg}>
+                😟 No Image 😟
                 </Text>
               </ImageBackground>
             )}
@@ -68,7 +67,7 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
                   ? "World Food"
                   : rcp.cuisines[0]}
             </Text>
-            <Text style={styles.rcpInfo}>
+            {/* <Text style={styles.rcpInfo}>
               Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}
             </Text>
             <Text style={styles.rcpInfo}>
@@ -79,7 +78,7 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
             </Text>
             <Text style={styles.rcpInfo}>
               Vegan:{rcp.vegan ? " ✅  " : " ❌ "}
-            </Text>
+            </Text> */}
 
             
             <Text style={styles.subTitle}>Additional Information</Text>
@@ -138,36 +137,48 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-
-  picture: {
-    height: 350,
-    width: 350,
-    resizeMode: "cover",
-    borderRadius: 20,
-    alignItems: "center",
-    overflow: "hidden",
-  },
-
-  title: {
-    color: "white",
-    marginTop: 5,
     justifyContent: "center",
     alignItems: "center",
   },
-  titleBackground: {
-    color: "black",
-    marginTop: 5,
-    textAlign: "center",
+
+  subContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    paddingTop: 20,
+    width: _screen.width * 0.88,
+    height: _screen.height * 0.6,
+    borderRadius: 15,
+    backgroundColor: colorPalette.secondary,
   },
 
-  titleContainer: {
-    marginBottom: 10,
-    padding: 5,
-    backgroundColor: "white",
-    width: 250,
+  scrollViewContainer: {
+    flexGrow: 1,
+    alignItems: "center",
+  },
+
+  image: {
+    alignItems: "center",
+    height: 350,
+    width: 350,
+    resizeMode: "cover",
+    overflow: "hidden",
     borderRadius: 15,
-    ...shadowStyle,
+  },
+
+  
+  titleContainer: {
+    marginVertical: 3,
+    padding: 3,
+    width: _screen.width * 0.85,
+    borderRadius: 15,
+    backgroundColor: "rgba(0, 0, 0, 0.7)",
+  },
+  
+  title: {
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 20,
+    color: "white",
   },
 
   subTitle: {
@@ -177,33 +188,14 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 
-  subContainer: {
-    alignItems: "center",
-    paddingTop: 20,
-    width: _screen.width * 0.9,
-    height: _screen.height * 0.6,
-    borderRadius: 30,
-    backgroundColor: colorPalette.secondary,
-  },
 
-  pictureUnavailable: {
+  noImageMsg: {
     textAlign: "center",
     marginTop: 50,
     borderRadius: 10,
     fontSize: 20,
-    backgroundColor: "white",
+    backgroundColor: "rgba(255, 255, 255, 0.8)",
     overflow: "hidden"
-  },
-
-  pictureUnavailableContainer: {
-    marginBottom: 10,
-    padding: 5,
-    backgroundColor: "white",
-    width: 250,
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    height: _screen.height * 0.25,
   },
 
   rcpInfoContainer: {
@@ -224,11 +216,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 10,
     width: "50%",
-  },
-
-  scrollViewContainer: {
-    flexGrow: 1,
-    alignItems: "center",
   },
 
   measurement: {
