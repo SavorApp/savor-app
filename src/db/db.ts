@@ -290,3 +290,38 @@ export async function updateFiltersDb(
     return new Error(err);
   }
 }
+
+export async function unSavorDB(user_id: string | undefined, rcpId: number | undefined, isSavored: boolean | undefined) {
+      console.log("🍔🍕🍔🍟🌭🍿 inside async function")
+          try {
+            const recipe = await axios(SAVORED_SERVER_API, { 
+              method: "POST",
+              data: {
+                query: `
+                      mutation updateRecipe($user_id: String!, $recipe_id: Int!, $isSavored: Boolean) {
+                        updateRecipe(user_id:$user_id, recipe_id:$recipe_id, isSavored:$isSavored)
+                        {
+                          isSavored
+                        }
+                      }
+
+                      `,
+                variables: {
+                  // user_id: user_id,
+                  // id: rcpId,
+                  // isSavored: isSavored,
+                  user_id: user_id,
+                  recipe_id: rcpId,
+                  isSavored: isSavored,
+                },
+              },
+              headers: {
+                "Content-Type": "application/json",
+              },
+            });
+          
+          } catch (err) {
+            // Handle error
+             return new Error(err);
+          }
+      }
