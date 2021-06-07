@@ -9,7 +9,7 @@ import {
   Alert,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import HTML from "react-native-render-html";
 import Constants from "expo-constants";
@@ -94,21 +94,37 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     return unsubscribe;
   }, [navigation]);
 
-  function Ingredients({ingredients}: {ingredients: Ingredient[]}) {
+  function Ingredients({ ingredients }: { ingredients: Ingredient[] }) {
     let idx = 0;
     return (
       <View>
         {ingredients.map((ing) => {
           idx++;
           return (
-          <View key={"c_" + ing.id.toString() + idx.toString()} style={styles.ingredientContainer}>
-            <Text key={"i_" + ing.id.toString() + idx.toString()} style={styles.ingredient}>{ing.name}</Text>
-            <Text key={"m_" + ing.id.toString() + idx.toString()} style={styles.measurement}>({ing.measures.metric.amount}{ing.measures.metric.unitShort && " " + ing.measures.metric.unitShort})</Text>
-          </View>
-          )
+            <View
+              key={"c_" + ing.id.toString() + idx.toString()}
+              style={styles.ingredientContainer}
+            >
+              <Text
+                key={"i_" + ing.id.toString() + idx.toString()}
+                style={styles.ingredient}
+              >
+                {ing.name}
+              </Text>
+              <Text
+                key={"m_" + ing.id.toString() + idx.toString()}
+                style={styles.measurement}
+              >
+                ({ing.measures.metric.amount}
+                {ing.measures.metric.unitShort &&
+                  " " + ing.measures.metric.unitShort}
+                )
+              </Text>
+            </View>
+          );
         })}
       </View>
-    )
+    );
   }
 
   return isInfoLoading ? (
@@ -123,43 +139,61 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
               <Text style={styles.subTitle}>Summary</Text>
               <HTML source={{ html: recipeInfo.summary }} />
               <Text style={styles.subTitle}>Ingredients</Text>
-              <Ingredients ingredients={recipeInfo.ingredients}/>
+              <Ingredients ingredients={recipeInfo.ingredients} />
               <Text style={styles.subTitle}>Instructions</Text>
               <HTML source={{ html: recipeInfo.instructions }} />
               <Text style={styles.subTitle}>Additional Information</Text>
               <Text>Preparation time: {recipeInfo.readyInMinutes} min</Text>
               <Text>Servings: {recipeInfo.servings}</Text>
               <View style={styles.tagsContainer}>
-              {recipeInfo.veryHealthy && (
+                {recipeInfo.veryHealthy && (
                   <View style={styles.singleTagContainer}>
-                    <MaterialCommunityIcons name="food-apple-outline" color="green" />
+                    <MaterialCommunityIcons
+                      name="food-apple-outline"
+                      color="green"
+                    />
                     <Text style={styles.tag}>Healthy Choice</Text>
                   </View>
                 )}
                 {recipeInfo.vegetarian && (
                   <View style={styles.singleTagContainer}>
-                    <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" />
+                    <MaterialCommunityIcons
+                      name="alpha-v-circle-outline"
+                      color="green"
+                    />
                     <Text style={styles.tag}>Vegetarian</Text>
                   </View>
                 )}
                 {recipeInfo.vegan && (
                   <View style={styles.singleTagContainer}>
-                    <MaterialCommunityIcons name="alpha-v-circle" color="green" />
+                    <MaterialCommunityIcons
+                      name="alpha-v-circle"
+                      color="green"
+                    />
                     <Text style={styles.tag}>Vegan</Text>
                   </View>
                 )}
                 {recipeInfo.glutenFree && (
                   <View style={styles.singleTagContainer}>
-                    <Text style={[styles.tag, {fontWeight: "bold"}]}>Gluten Free</Text>
+                    <Text style={[styles.tag, { fontWeight: "bold" }]}>
+                      Gluten Free
+                    </Text>
                   </View>
                 )}
                 {recipeInfo.dairyFree && (
                   <View style={styles.singleTagContainer}>
-                    <Text style={[styles.tag, {fontWeight: "bold"}]}>Dairy Free</Text>
+                    <Text style={[styles.tag, { fontWeight: "bold" }]}>
+                      Dairy Free
+                    </Text>
                   </View>
-                )} 
+                )}
               </View>
-
+              
+              {/* Hesitant to include this because we may not want to show
+              that a recipe is NOT veryHealthy, or NOT anyother things. It may
+              make users feel bad when looking at recipes. I think we
+              should stay as unbiased as possible and, only show tags for
+              when they are true. I've included a Healthy choice tag */}
               {/* <Text style={styles.extra}>
                 VeryHealthy: {recipeInfo.veryHealthy ? "✅" : "❌"}
               </Text>
@@ -180,6 +214,7 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
                 Prep Time: {recipeInfo.readyInMinutes} min
               </Text>
               <Text style={styles.extra}>Diets: {recipeInfo.diets}</Text> */}
+
               <Text>{"\n\n\n"}</Text>
             </ScrollView>
           </View>
@@ -261,18 +296,18 @@ const styles = StyleSheet.create({
 
   ingredient: {
     justifyContent: "flex-start",
-    width: "65%"
+    width: "65%",
   },
 
   measurement: {
     justifyContent: "flex-start",
-    width: "35%"
+    width: "35%",
   },
 
   tagsContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    marginTop: 8
+    marginTop: 8,
   },
 
   singleTagContainer: {
@@ -282,15 +317,13 @@ const styles = StyleSheet.create({
     marginRight: 3,
     marginTop: 3,
     padding: 4,
-    borderRadius:8,
-    backgroundColor: colorPalette.trimLight
+    borderRadius: 8,
+    backgroundColor: colorPalette.trimLight,
   },
 
   tag: {
     fontSize: 10,
   },
 
-  extra: {
-
-  },
+  extra: {},
 });
