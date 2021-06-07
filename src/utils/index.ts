@@ -1,8 +1,5 @@
 import { dishTypeBundler } from "../constants/Maps";
 
-interface CountMap {
-    [ingredient: string]: number;
-}
 
 export function removeRecentlyViewedRecipes(fetchedRcps: Recipe[], userRcps: UserRecipe[]): Recipe[] {
     
@@ -56,7 +53,7 @@ export function applySmartFilter(fetchedRcps: Recipe[], userRcps: UserRecipe[]):
     // Generate counts for each ingredient for each recipe in user's UserRecipe list
     for (const idx in userSavoredList) {
         userSavoredList[idx].ingredients.forEach((ing) => {
-            if(ingredientsCount[ing]) {
+            if (ingredientsCount[ing]) {
                 ingredientsCount[ing]++;
             } else {
                 ingredientsCount[ing] = 1;
