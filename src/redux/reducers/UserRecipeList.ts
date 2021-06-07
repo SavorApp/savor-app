@@ -29,11 +29,7 @@ export const userRecipeListReducer = (
         return rcp
       })
       return {
-        // userRecipeList: state.userRecipeList.forEach((rcp) => {
-        //   if (rcp.id === action.payload) {
-        //     rcp.isSavored = false;
-        //   }
-        // }),
+    
         userRecipeList: newUserRecipeList
       };
     }

@@ -37,11 +37,6 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
   const userState = useSelector<RootState, userSate>(
     (state) => state.userState
   )
-  // console.log("user recipeListState is: ", userRecipeListState)
-  // console.log("userRecipeList is: ", userRecipeListState.userRecipeList)
-  // const savoredList = userRecipeListState.userRecipeList.filter((rcp) => {
-  //     return rcp.isSavored === true;
-  //   })
 
   function getRandomNumber(): number {
     const savoredList = userRecipeListState.userRecipeList.filter((rcp) => {
@@ -51,7 +46,7 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
   }
 
 
-// Delete recipe workings
+
   
 
 
@@ -71,7 +66,6 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     }
 
     return (
-      
       <TouchableOpacity
           style={styles.recipeListItem}
           onPress={() => navigation.navigate("RecipeScreen", { recipeId: rcp.id})}
@@ -118,57 +112,43 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
 
   function renderItem({item}: {item: UserRecipe}, rowMap) {
     const rowHeightAnimatedValue = new Animated.Value(60);
-    // console.log("Type rowHeight: ", typeof rowHeightAnimatedValue)
-    // console.log("Inside render item: ", item)
+   
     return (
     <RecipeListItem 
       rcp={item}
       rowHeightAnimatedValue={rowHeightAnimatedValue} 
       removeRow={() => deleteRow({item}, rowMap)} 
     />
-    ); // rowData used to be item
+    ); 
   };
 
-  const onRowDidOpen = (item, rowMap) => {
-    // console.log('This row opened', item);
-  };
+  // const onRowDidOpen = (item, rowMap) => {
+  // };
 
-  const onLeftActionStatusChange = (item, rowMap) => {
-  //   console.log('onLeftActionStatusChange', item);
-  };
+  // const onLeftActionStatusChange = (item, rowMap) => {
+  // };
 
-  const onRightActionStatusChange = (item, rowMap) => {
-    // console.log('onRightActionStatusChange', item);
-  };
+  // const onRightActionStatusChange = (item, rowMap) => {
+  // };
 
-  const onRightAction = (item, rowMap) => {
-    // console.log('onRightAction', item);
-  };
+  // const onRightAction = (item, rowMap) => {
+  // };
 
-  const onLeftAction = (item, rowMap) => {
-    // console.log('onLeftAction', item);
-  };
+  // const onLeftAction = (item, rowMap) => {
+  // };
   const closedRow = ({item}, rowMap) => {
-    // console.log("You pressed me")
-    // console.log("You are rowMap: ", rowMap)
-    // console.log("You are rowData id: ", item.id)
     if(rowMap[item.id]) {
       rowMap[item.id].closeRow();
     }
   }
 
   const deleteRow = async ({item}, rowMap) => {
-    // console.log("I'm inside delete");
-    // console.log("What type am I: ", typeof item.id);
-    // console.log("I am dispatch: ", dispatch)
     const rcpId = item.id
     const user_id = userState.user.id
-    // closedRow({item}, rowMap);
+ 
     dispatch(unSavorRecipe(rcpId))
-    // if userSate.loggedIn is true call unsavoredDB
-  //"http://192.168.0.1:4000"
+  
     if (userState.isLoggedIn) {
-      // unSavorDB(userState.user.id, item.id, false)
       const waitingForUnSavor = await unSavorDB(user_id, rcpId, false);
       console.log(waitingForUnSavor);
     }    
@@ -200,7 +180,6 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     }
 
     return (
-      // <View style={[styles.rowBack, {justifyContent: "flex-end"}]}>
       <Animated.View style={[styles.rowBack, {height: rowHeightAnimatedValue}]}>
         <Text>Left</Text>
         <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]} onPress={onClose}>
@@ -237,28 +216,12 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
       </ Animated.View>
     )
   }
-  // renderHiddenItem={ (data, rowMap) => (
-  //               <View style={styles.rowBack}>
-  //                 <Text>Left</Text>
-  //                 <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]} onPress={ _ => this.closeRow(rowMap, data.item.key) }>
-  //                   <Text style={styles.backTextWhite}>{data.title}</Text>
-  //                 </TouchableOpacity>
-  //                 <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnRight]} onPress={ _ => this.deleteRow(rowMap, data.item.key) }>
-  //                   <Text style={styles.backTextWhite}>Delete</Text>
-  //                 </TouchableOpacity>
-  //               </View>
-  //             )}
 
   function renderHiddenItem({item}, rowMap) {
-    // console.log("find rowMap: ", rowMap)
-    // console.log("find data: ", {item})
-    // console.log("find data id: ", rowData.item.id)
     const rowActionAnimatedValue = new Animated.Value(75)
     const rowHeightAnimatedValue = new Animated.Value(60)
-    // console.log(rowHeightAnimatedValue)
     return (
       <HiddenItemWithActions 
-        // style={{justifyContent: "flex-end"}}
         data={item}
         rowMap={rowMap}
         rowActionAnimatedValue={rowActionAnimatedValue}
@@ -279,7 +242,7 @@ return (
               contentContainerStyle={styles.flatListContainer}
               data={
                 userRecipeListState.userRecipeList.filter((rcp) => {
-                // Select only Recipes where isSavored = true
+                
                 return rcp.isSavored;
               })
               }
@@ -287,32 +250,17 @@ return (
               console.log("I am rowData: ", rowData)
               return rowData.id.toString()}}
               renderItem={(rowData, rowMap) => renderItem(rowData, rowMap)}
-              renderHiddenItem={(rowData, rowMap) => {
-              // console.log("Please rowMap: ", rowMap)
-              return renderHiddenItem(rowData, rowMap)}}
-              // keyExtractor={item => item.id.toString()}
-              // keyExtractor={item => item.text}
-              //keyExtractor={data => data.id.toString()}
-
+              renderHiddenItem={(rowData, rowMap) => {return renderHiddenItem(rowData, rowMap)}}
               leftOpenValue={75}
               rightOpenValue={-150}
               disableRightSwipe
-
               onRowDidOpen={(rowData, rowMap) => onRowDidOpen(rowData, rowMap)}
               leftActivationValue={100}
               rightActivationValue={-200}
               leftActionValue={0}
               rightActionValue={-500}
-              onLeftAction={(rowData, rowMap) => {
-                // console.log("Row Data: ", rowData)
-                // console.log("Row Map: ", rowMap)
-                return onLeftAction(rowData, rowMap)}}
-              onRightAction={(rowData, rowMap) => {
-                // console.log("Row Data: ", rowData)
-                // console.log("Row Map: ", rowMap)
-                return onRightAction(rowData, rowMap)
-                }
-              }
+              onLeftAction={(rowData, rowMap) => {return onLeftAction(rowData, rowMap)}}
+              onRightAction={(rowData, rowMap) => {return onRightAction(rowData, rowMap)}}
               onLeftActionStatusChange={(rowData, rowMap) => onLeftActionStatusChange(rowData, rowMap)}
               onRightActionStatusChange={(rowData, rowMap) => onRightActionStatusChange(rowData, rowMap)}
 
