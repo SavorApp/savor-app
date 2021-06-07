@@ -46,7 +46,7 @@ export default function MenuScreen() {
       \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/
       */
 
-      // // Spoonacular GET request
+      // Spoonacular GET request
       // const resp = await axios.get(RAND_RECIPE_BASE_URL + ENDPOINT);
       // // Assign parse data.recipes to fit our Recipep[] type
       // fetchedRecipes = resp.data.recipes.map((rcp: Recipe) => {
@@ -178,6 +178,6 @@ export default function MenuScreen() {
   return isCardStackLoading ? (
     <LoadingCardStack />
   ) : (
-    <RecipeCardStack randRecipes={randRecipes} filtersState={filtersState} />
+    <RecipeCardStack randRecipes={randRecipes} filtersState={filtersState}  />
   );
 }
