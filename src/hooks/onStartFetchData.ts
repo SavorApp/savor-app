@@ -36,8 +36,10 @@ export default function getCacheLoadData() {
             dispatch(setUser(currentUser));
             getCurrentUser(currentUser)
               .then((resp) => {
-                
-                dispatch(setUserRecipeList(resp.recipes));
+                if (resp.recipes[0]) {
+                  dispatch(setUserRecipeList(resp.recipes));
+                }
+               
                 dispatch(setFilters(resp.filters[0]));
               })
               .catch((err: Error) => console.log(err));
