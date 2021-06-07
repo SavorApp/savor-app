@@ -8,12 +8,13 @@ import {
   TextInput,
   Alert,
 } from "react-native";
+import { useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
-import { createUser, createFilters } from "../db/db";
+import { createUser, createFilters, swipeToDb, getCurrentUser } from "../db/db";
 import { initialState } from "../redux/reducers/filters";
 const _screen = Dimensions.get("screen");
 
@@ -27,6 +28,10 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
   const [validEmail, setValidEmail] = React.useState(false);
   const [hidePassword, setHidePassword] = React.useState(true);
   const [blockSignup, setBlockSignup] = React.useState(false);
+
+  const userRecipeListState = useSelector<RootState, UserRecipeListState>(
+    (state) => state.userRecipeListState
+  );
 
   React.useEffect(() => {
     if (/^\S+@\S+\.\S+$/.test(email)) {
@@ -59,9 +64,25 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
         const resp = await firebaseApp
           .auth()
           .createUserWithEmailAndPassword(email, password);
+
+        const createUserResult = await createUser(
+          resp.user?.uid,
+          resp.user?.email
+        );
+        const createFiltersResult = await createFilters(
+          resp.user?.uid,
+          initialState.filters
+        );
+
         if (resp.additionalUserInfo?.isNewUser) {
-          createUser(resp.user?.uid, resp.user?.email);
-          createFilters(resp.user?.uid, initialState.filters);
+          if (userRecipeListState.userRecipeList.length !== 0) {
+            for (const savoredRcp of userRecipeListState.userRecipeList) {
+              const swipeToDbResult = await swipeToDb(
+                resp.user?.uid,
+                savoredRcp
+              );
+            }
+          }
           navigation.goBack();
           setBlockSignup(false);
         }
