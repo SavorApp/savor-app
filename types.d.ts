@@ -174,6 +174,11 @@ type RecipeCardStackParamList = {
  _________________________
 */
 
+// A object used to count elements and reference counts
+interface CountMap {
+  [ingredient: string]: number;
+}
+
 // InputUser for when users log in
 type InputUser = {
   email: string;
@@ -243,13 +248,15 @@ type RecipeScreenInfo = {
   title: string;
   instructions: string;
   summary: string;
-  ingredients: string[];
+  ingredients: Ingredient[];
   veryHealthy: boolean;
   vegan: boolean;
   vegetarian: boolean;
+  glutenFree: boolean;
   dairyFree: boolean;
   healthScore: number;
-  prepTime: number;
+  servings: number;
+  readyInMinutes: number;
   diets: string[];
   recipeId?: number;
 };

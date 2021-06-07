@@ -11,6 +11,12 @@ export const userRecipeListReducer = (
   switch (action.type) {
     // When user swipes...
     case "SET_USER_RECIPE_LIST": {
+      // TODO: clean this up
+      // Rename references to recipe's id
+      action.payload.map((item) => {
+        item["id"] = item["recipe_id"];
+        delete item["recipe_id"];
+      });
       return {
         userRecipeList: action.payload,
       };
@@ -26,11 +32,10 @@ export const userRecipeListReducer = (
         if (rcp.id === action.payload) {
           rcp.isSavored = false;
         }
-        return rcp
-      })
+        return rcp;
+      });
       return {
-    
-        userRecipeList: newUserRecipeList
+        userRecipeList: newUserRecipeList,
       };
     }
     case "RESET_USER_RECIPE_LIST": {

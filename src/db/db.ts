@@ -2,7 +2,7 @@ import axios from "axios";
 import { SAVORED_SERVER_API } from "../constants/Api";
 
 export async function swipeToDb(user_id: string | undefined, rcp: UserRecipe) {
-  console.log(rcp);
+  // console.log(rcp);
   try {
     const recipe = await axios(SAVORED_SERVER_API, {
       method: "POST",
@@ -74,7 +74,7 @@ export async function swipeToDb(user_id: string | undefined, rcp: UserRecipe) {
         "Content-Type": "application/json",
       },
     });
-    console.log(recipe);
+    // console.log(recipe);
     return recipe;
   } catch (err) {
     return new Error(err);

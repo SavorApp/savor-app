@@ -150,7 +150,7 @@ export default function MenuScreen() {
 
       // Catch server erorrs
     } catch (err) {
-      console.log(err)
+      // console.log(err)
       Alert.alert(
         "Server Error 🤕",
         "Sorry for the inconvenience, please try again later."

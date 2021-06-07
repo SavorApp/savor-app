@@ -13,7 +13,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 import { useSelector, useDispatch } from "react-redux";
 import { unSavorRecipe } from "../redux/actions";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
@@ -26,7 +26,10 @@ import axios from "axios";
 const _screen = Dimensions.get("screen");
 
 export interface SavoredListScreenProps {
-  navigation: StackNavigationProp<SavoredListStackParamList, "SavoredListScreen">;
+  navigation: StackNavigationProp<
+    SavoredListStackParamList,
+    "SavoredListScreen"
+  >;
 }
 
 export default function SavoredListScreen({ navigation }: SavoredListScreenProps) {
@@ -41,7 +44,7 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
   function getRandomNumber(): number {
     const savoredList = userRecipeListState.userRecipeList.filter((rcp) => {
       return rcp.isSavored;
-    })
+    });
     return Math.floor(Math.random() * savoredList.length);
   }
 
@@ -122,20 +125,20 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     ); 
   };
 
-  // const onRowDidOpen = (item, rowMap) => {
-  // };
+  const onRowDidOpen = (item, rowMap) => {
+  };
 
-  // const onLeftActionStatusChange = (item, rowMap) => {
-  // };
+  const onLeftActionStatusChange = (item, rowMap) => {
+  };
 
-  // const onRightActionStatusChange = (item, rowMap) => {
-  // };
+  const onRightActionStatusChange = (item, rowMap) => {
+  };
 
-  // const onRightAction = (item, rowMap) => {
-  // };
+  const onRightAction = (item, rowMap) => {
+  };
 
-  // const onLeftAction = (item, rowMap) => {
-  // };
+  const onLeftAction = (item, rowMap) => {
+  };
   const closedRow = ({item}, rowMap) => {
     if(rowMap[item.id]) {
       rowMap[item.id].closeRow();
@@ -267,20 +270,20 @@ return (
           />
         </View>
         <TouchableOpacity
-            onPress={() => navigation.navigate("RecipeScreen", {
-              recipeId: userRecipeListState.userRecipeList[getRandomNumber()].id
-            })}
-            activeOpacity={0.8}
+          onPress={() =>
+            navigation.navigate("RecipeScreen", {
+              recipeId:
+                userRecipeListState.userRecipeList[getRandomNumber()].id,
+            })
+          }
+          activeOpacity={0.8}
         >
-            <LinearGradient
-                colors={[colorPalette.popLight, colorPalette.popDark]}
-                style={styles.truffleShuffleButton}
-            >
-                <Text
-                    style={{color: "black"}}
-                >Truffle Shuffle</Text>
-            </LinearGradient>
-
+          <LinearGradient
+            colors={[colorPalette.popLight, colorPalette.popDark]}
+            style={styles.truffleShuffleButton}
+          >
+            <Text style={{ color: "black" }}>Truffle Shuffle</Text>
+          </LinearGradient>
         </TouchableOpacity>
       </View>
     </View>
@@ -342,7 +345,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 6,
-    width: _screen.width * 0.81
+    width: _screen.width * 0.81,
   },
 
   recipeListItemInnerContent: {
@@ -363,8 +366,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 3,
     padding: 4,
-    borderRadius:8,
-    backgroundColor: colorPalette.trimLight
+    borderRadius: 8,
+    backgroundColor: colorPalette.trimLight,
   },
 
   tag: {
