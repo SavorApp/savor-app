@@ -11,6 +11,10 @@ export const userRecipeListReducer = (
   switch (action.type) {
     // When user swipes...
     case "SET_USER_RECIPE_LIST": {
+      action.payload.map((item) => {
+        item["id"] = item["recipe_id"];
+        delete item["recipe_id"];
+      });
       return {
         userRecipeList: action.payload,
       };
@@ -22,12 +26,14 @@ export const userRecipeListReducer = (
       };
     }
     case "UNSAVOR_RECIPE": {
+      const newUserRecipeList = state.userRecipeList.map((rcp) => {
+        if (rcp.id === action.payload) {
+          rcp.isSavored = false;
+        }
+        return rcp;
+      });
       return {
-        userRecipeList: state.userRecipeList.forEach((rcp) => {
-          if (rcp.id === action.payload) {
-            rcp.isSavored = false;
-          }
-        }),
+        userRecipeList: newUserRecipeList,
       };
     }
     case "RESET_USER_RECIPE_LIST": {
