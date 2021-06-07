@@ -243,13 +243,15 @@ type RecipeScreenInfo = {
   title: string;
   instructions: string;
   summary: string;
-  ingredients: string[];
+  ingredients: Ingredient[];
   veryHealthy: boolean;
   vegan: boolean;
   vegetarian: boolean;
+  glutenFree: boolean;
   dairyFree: boolean;
   healthScore: number;
-  prepTime: number;
+  servings: number;
+  readyInMinutes: number;
   diets: string[];
   recipeId?: number;
 };
