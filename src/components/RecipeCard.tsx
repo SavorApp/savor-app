@@ -10,18 +10,17 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
   const filtersState = useSelector<RootState, FiltersState>(
     (state) => state.filtersState
   );
-  const [isScrollEnabled, setIsScrollEnabled] = React.useState<boolean>(false);
   const scrollState = useSelector<RootState, EnableScrollState>(
     (state) => state.enableScrollState
   ); 
-  const scrollInfoRef = useRef<any>();
+
   const dispatch = useDispatch();
 
 
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Animated.ScrollView ref={scrollInfoRef}
+        <Animated.ScrollView
         style={{flex: 1}}
           centerContent={true}
           directionalLockEnabled
