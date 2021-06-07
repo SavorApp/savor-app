@@ -163,7 +163,6 @@ type RecipeCardParamList = {
 type SwipeButtonsParamList = {
   handleOnPressLeft: () => void;
   handleOnPressRight: () => void;
-  currentRecipe: Recipe;
 };
 
 type RecipeCardStackParamList = {
