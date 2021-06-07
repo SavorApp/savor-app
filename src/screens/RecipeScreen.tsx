@@ -9,13 +9,14 @@ import {
   Alert,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { RouteProp } from "@react-navigation/native";
-import Constants from "expo-constants";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import HTML from "react-native-render-html";
+import Constants from "expo-constants";
 import axios from "axios";
-import * as recipeJson from "../data/100Recipes.json";
+import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import LoadingRecipeInfo from "../components/LoadingRecipeInfo";
+import { dishTypeMap } from "../constants/Maps";
 
 const _screen = Dimensions.get("screen");
 
@@ -41,9 +42,11 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     veryHealthy: true,
     vegetarian: true,
     vegan: true,
+    glutenFree: true,
     dairyFree: true,
     healthScore: 0,
-    prepTime: 0,
+    servings: 0,
+    readyInMinutes: 0,
     diets: [""],
   });
   const [isInfoLoading, setIsInfoLoading] = React.useState(true);
@@ -60,9 +63,11 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
         veryHealthy: fetchedRecipe.veryHealthy,
         vegetarian: fetchedRecipe.vegetarian,
         vegan: fetchedRecipe.vegan,
+        glutenFree: fetchedRecipe.glutenFree,
         dairyFree: fetchedRecipe.dairyFree,
         healthScore: fetchedRecipe.healthScore,
-        prepTime: fetchedRecipe.readyInMinutes,
+        servings: fetchedRecipe.servings,
+        readyInMinutes: fetchedRecipe.readyInMinutes,
         diets: fetchedRecipe.diets,
       });
       setIsInfoLoading(false);
@@ -122,7 +127,34 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
               <Text style={styles.subTitle}>Instructions</Text>
               <HTML source={{ html: recipeInfo.instructions }} />
               <Text style={styles.subTitle}>Additional Information</Text>
-              <Text style={styles.extra}>
+              <Text>Preparation time: {recipeInfo.readyInMinutes} min</Text>
+              <Text>Servings: {recipeInfo.servings}</Text>
+              <View style={styles.tagsContainer}>
+                {recipeInfo.vegetarian && (
+                  <View style={styles.singleTagContainer}>
+                    <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" />
+                    <Text style={styles.tag}>Vegetarian</Text>
+                  </View>
+                )}
+                {recipeInfo.vegan && (
+                  <View style={styles.singleTagContainer}>
+                    <MaterialCommunityIcons name="alpha-v-circle" color="green" />
+                    <Text style={styles.tag}>Vegan</Text>
+                  </View>
+                )}
+                {recipeInfo.glutenFree && (
+                  <View style={styles.singleTagContainer}>
+                    <Text style={[styles.tag, {fontWeight: "bold"}]}>Gluten Free</Text>
+                  </View>
+                )}
+                {recipeInfo.dairyFree && (
+                  <View style={styles.singleTagContainer}>
+                    <Text style={[styles.tag, {fontWeight: "bold"}]}>Dairy Free</Text>
+                  </View>
+                )} 
+              </View>
+
+              {/* <Text style={styles.extra}>
                 VeryHealthy: {recipeInfo.veryHealthy ? "✅" : "❌"}
               </Text>
               <Text style={styles.extra}>
@@ -139,9 +171,9 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
                 Health score: {recipeInfo.healthScore}
               </Text>
               <Text style={styles.extra}>
-                Prep Time: {recipeInfo.prepTime} min
+                Prep Time: {recipeInfo.readyInMinutes} min
               </Text>
-              <Text style={styles.extra}>Diets: {recipeInfo.diets}</Text>
+              <Text style={styles.extra}>Diets: {recipeInfo.diets}</Text> */}
               <Text>{"\n\n\n"}</Text>
             </ScrollView>
           </View>
@@ -229,6 +261,25 @@ const styles = StyleSheet.create({
   measurement: {
     justifyContent: "flex-start",
     width: "35%"
+  },
+
+  tagsContainer: {
+    flexDirection: "row",
+    marginTop: 8
+  },
+
+  singleTagContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 3,
+    padding: 4,
+    borderRadius:8,
+    backgroundColor: colorPalette.trimLight
+  },
+
+  tag: {
+    fontSize: 10,
   },
 
   extra: {
