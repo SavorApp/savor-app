@@ -19,8 +19,7 @@ import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
 import { SAVORED_SERVER_API } from "../constants/Api";
 import { unSavorDB } from "../db/db";
-console.log("unSavorDB: ", unSavorDB());
-// import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
+
 import axios from "axios";
 
 const _screen = Dimensions.get("screen");
@@ -37,7 +36,7 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
   const userRecipeListState = useSelector<RootState, UserRecipeListState>(
     (state) => state.userRecipeListState
   );
-  const userState = useSelector<RootState, userSate>(
+  const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   )
 
