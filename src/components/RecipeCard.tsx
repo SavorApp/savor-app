@@ -1,36 +1,50 @@
 import { useFocusEffect } from "@react-navigation/native";
 import React, { useEffect, useRef } from "react";
-import { View, Image, StyleSheet, Text, Dimensions } from "react-native";
-import { useSelector } from "react-redux";
+import { View, Image, StyleSheet, Text, Dimensions, ScrollView, TouchableOpacity, ImageBackground, Animated } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import { shadowStyle, colorPalette } from "../constants/ColorPalette";
-
+import { disableScroll, enableScroll } from "../redux/actions";
 const _screen = Dimensions.get("screen");
 
-export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
+export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
   const filtersState = useSelector<RootState, FiltersState>(
     (state) => state.filtersState
   );
+  const scrollState = useSelector<RootState, EnableScrollState>(
+    (state) => state.enableScrollState
+  ); 
+
+  const dispatch = useDispatch();
+
 
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleBackground}>{rcp.title}</Text>
-        </View>
-        {rcp.image ? (
-          <Image
-            key={id}
-            source={{ uri: rcp.image || " " }}
-            style={styles.picture}
-          />
-        ) : (
-          <View style={styles.pictureUnavailableContainer}>
-            <Text style={styles.pictureUnavailable}>
-              Picture unavailable for this recipe 😟 But believe us, it's
+        <Animated.ScrollView
+        style={{flex: 1}}
+          centerContent={true}
+          directionalLockEnabled
+          scrollEnabled={scrollState.enable}
+          onTouchStart={() => {dispatch(enableScroll())}}
+        >
+          {rcp.image ? (
+            <ImageBackground
+              key={id}
+              source={{ uri: rcp.image || " " }}
+              style={styles.picture}
+            >
+              <View style={styles.titleContainer}>
+                <Text style={styles.titleBackground}>{rcp.title}</Text>
+              </View>
+            </ImageBackground>
+          ) : (
+              <View style={styles.pictureUnavailableContainer}>
+                <Text style={styles.pictureUnavailable}>
+                  Picture unavailable for this recipe 😟 But believe us, it's
               delicious!🍽{" "}
-            </Text>
-          </View>
-        )}
+                </Text>
+              </View>
+            )}
 
         <View style={styles.rcpInfoContainer}>
           <Text style={styles.rcpInfo}>
@@ -47,30 +61,35 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
             {filtersState.filters.cuisine
               ? filtersState.filters.cuisine[0].toUpperCase() +
                 filtersState.filters.cuisine.slice(1)
-              : rcp.cuisines.length === 0
-              ? "World Food"
-              : rcp.cuisines[0]}
-          </Text>
-          <Text style={styles.rcpInfo}>
-            Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}
-          </Text>
-          <Text style={styles.rcpInfo}>
-            Gluten-free:{rcp.glutenFree ? " ✅  " : " ❌ "}
-          </Text>
-          <Text style={styles.rcpInfo}>
-            Vegetarian:{rcp.vegetarian ? " ✅  " : " ❌ "}
-          </Text>
-          <Text style={styles.rcpInfo}>
-            Vegan:{rcp.vegan ? " ✅  " : " ❌ "}
-          </Text>
+                : rcp.cuisines.length === 0
+                  ? "World Food"
+                  : rcp.cuisines[0]}
+            </Text>
+            <Text style={styles.rcpInfo}>
+              Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}
+            </Text>
+            <Text style={styles.rcpInfo}>
+              Gluten-free:{rcp.glutenFree ? " ✅  " : " ❌ "}
+            </Text>
+            <Text style={styles.rcpInfo}>
+              Vegetarian:{rcp.vegetarian ? " ✅  " : " ❌ "}
+            </Text>
+            <Text style={styles.rcpInfo}>
+              Vegan:{rcp.vegan ? " ✅  " : " ❌ "}
+            </Text>
 
-          <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>
-            Servings: {rcp.servings}
+            <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>
+              Servings: {rcp.servings}
+            </Text>
+            <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>
+              Prep time: {rcp.readyInMinutes} min
           </Text>
-          <Text style={{ fontWeight: "bold", ...styles.rcpInfo }}>
-            Prep time: {rcp.readyInMinutes} min
-          </Text>
-        </View>
+            <Text style={styles.subTitle}>Ingredients</Text>
+            {rcp.ingredients.map((ing) => {
+              return <Text>{ing}</Text>;
+            })}
+          </View>
+        </Animated.ScrollView>
       </View>
     </View>
   );
@@ -83,8 +102,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   picture: {
-    height: 300,
-    width: 300,
+    height: 400,
+    width: 400,
     resizeMode: "cover",
     borderRadius: 20,
     alignItems: "center",
@@ -112,8 +131,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingTop: 20,
     alignItems: "center",
-    width: _screen.width * 0.85,
-    height: _screen.height * 0.64,
+    width: _screen.width * 1,
+    height: _screen.height * 0.7,
     borderRadius: 30,
     backgroundColor: colorPalette.secondary,
   },
