@@ -11,6 +11,10 @@ export default function getCacheLoadData() {
   const filtersState = useSelector<RootState, FiltersState>(
     (state) => state.filtersState
   );
+
+  const userRecipeListState = useSelector<RootState, UserRecipeListState>(
+    (state) => state.userRecipeListState
+  );
   const dispatch = useDispatch();
 
   // Attempt to authenticate user
@@ -25,7 +29,6 @@ export default function getCacheLoadData() {
             const currentUser = {
               id: user.uid,
               username: user.email,
-              image_url: user.photoURL,
             };
             // Cache access-token on mobile storage
             cacheAccessToken(user.getIdToken());
@@ -33,7 +36,9 @@ export default function getCacheLoadData() {
             dispatch(setUser(currentUser));
             getCurrentUser(currentUser)
               .then((resp) => {
-                dispatch(setUserRecipeList(resp.recipes));
+                if (resp.recipes[0] !== null) {
+                  dispatch(setUserRecipeList(resp.recipes));
+                }
                 dispatch(setFilters(resp.filters[0]));
               })
               .catch((err: Error) => console.log(err));

@@ -44,7 +44,6 @@ type RecipeScreenStackParamList = {
   RecipeScreen: { recipeId: number };
 };
 
-
 /*
  _________________________
  Redux Store Objects
@@ -65,7 +64,6 @@ interface RootState {
 type User = {
   id: string | undefined;
   username: string | null | undefined;
-  image_url: string | null | undefined;
 };
 
 // Core UserState interface
