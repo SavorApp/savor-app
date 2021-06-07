@@ -2,60 +2,61 @@ import axios from "axios";
 import { SAVORED_SERVER_API } from "../constants/Api";
 
 export async function swipeToDb(user_id: string | undefined, rcp: UserRecipe) {
+  console.log(rcp);
   try {
     const recipe = await axios(SAVORED_SERVER_API, {
       method: "POST",
       data: {
         query: `
-              mutation addRcp(
-                    $user_id: String!,
-                    $id: Int!,
-                    $title: String!,
-                    $cuisine: String,
-                    $dishType: String,
-                    $vegetarian: Boolean,
-                    $vegan: Boolean,
-                    $glutenFree: Boolean,
-                    $dairyFree: Boolean,
-                    $readyInMinutes: Int,
-                    $servings: Int,
-                    $ingredients: [String],
-                    $isSavored: Boolean,
-                  ) {
-                addRecipe(
-                  user_id:$user_id
-                  id:$id,
-                  title:$title,
-                  cuisine:$cuisine,
-                  dishType:$dishType,
-                  vegetarian:$vegetarian,
-                  vegan:$vegan,
-                  glutenFree:$glutenFree,
-                  dairyFree:$dairyFree,
-                  readyInMinutes:$readyInMinutes,
-                  servings:$servings,
-                  ingredients:$ingredients,
-                  isSavored:$isSavored,
-                  ) {
-                    user_id
-                    id
-                    title
-                    cuisine
-                    dishType
-                    vegetarian
-                    vegan
-                    glutenFree
-                    dairyFree
-                    readyInMinutes
-                    servings
-                    ingredients
-                    isSavored
-                }
-              }
-              `,
+        mutation addRcp(
+          $user_id: String!,
+          $recipe_id: Int!,
+          $title: String!,
+          $cuisine: String,
+          $dishType: String,
+          $vegetarian: Boolean,
+          $vegan: Boolean,
+          $glutenFree: Boolean,
+          $dairyFree: Boolean,
+          $readyInMinutes: Int,
+          $servings: Int,
+          $ingredients: [String],
+          $isSavored: Boolean,
+        ) {
+      addRecipe(
+        user_id:$user_id,
+        recipe_id:$recipe_id,
+        title:$title,
+        cuisine:$cuisine,
+        dishType:$dishType,
+        vegetarian:$vegetarian,
+        vegan:$vegan,
+        glutenFree:$glutenFree,
+        dairyFree:$dairyFree,
+        readyInMinutes:$readyInMinutes,
+        servings:$servings,
+        ingredients:$ingredients,
+        isSavored:$isSavored,
+        ) {
+          user_id
+          recipe_id
+          title
+          cuisine
+          dishType
+          vegetarian
+          vegan
+          glutenFree
+          dairyFree
+          readyInMinutes
+          servings
+          ingredients
+          isSavored
+      }
+    }
+    `,
         variables: {
           user_id: user_id,
-          id: rcp.id,
+          recipe_id: rcp.id,
           title: rcp.title,
           cuisine: rcp.cuisine,
           dishType: rcp.dishType,
@@ -73,8 +74,10 @@ export async function swipeToDb(user_id: string | undefined, rcp: UserRecipe) {
         "Content-Type": "application/json",
       },
     });
+    console.log(recipe);
+    return recipe;
   } catch (err) {
-    // Handle rejected axios POST request Promise
+    return new Error(err);
   }
 }
 
@@ -103,8 +106,9 @@ export async function createUser(
         "Content-Type": "application/json",
       },
     });
+    return newUser;
   } catch (err) {
-    // Handle rejected axios POST request Promise
+    return new Error(err);
   }
 }
 
@@ -119,7 +123,7 @@ export async function getCurrentUser(currentUser: User) {
             _id
             username
             recipes{
-            id
+            recipe_id
             title
             cuisine
             dishType
@@ -152,7 +156,7 @@ export async function getCurrentUser(currentUser: User) {
     });
     return user.data.data.user;
   } catch (err) {
-    // Handle rejected axios POST request Promise
+    return new Error(err);
   }
 }
 
@@ -214,8 +218,10 @@ export async function createFilters(
         "Content-Type": "application/json",
       },
     });
+    return newFilters;
   } catch (err) {
     // Handle rejected axios POST request Promise
+    return new Error(err);
   }
 }
 
@@ -281,5 +287,6 @@ export async function updateFiltersDb(
     });
   } catch (err) {
     // Handle rejected axios POST request Promise
+    return new Error(err);
   }
 }

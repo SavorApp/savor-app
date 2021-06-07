@@ -31,11 +31,12 @@ export default function RecipeCardStack({
   }, [userState]);
 
   async function handleSwipe(idx: number, savored: Boolean) {
-    const randRecipe = randRecipes[idx]
+    const randRecipe = randRecipes[idx];
 
     const recipeToBeAdded = {
       id: randRecipe.id,
       title: randRecipe.title,
+
       cuisine:
         filtersState.filters.cuisine
           ? filtersState.filters.cuisine[0].toUpperCase() +
@@ -85,6 +86,7 @@ export default function RecipeCardStack({
     return (
       <View style={styles.renderNoMoreCardsContainer}>
         <Text style={styles.noMoreCardsText}>No More Recipes,</Text>
+
         <Text style={styles.noMoreCardsText}>please adjust your filters...</Text>
         <Emoji style={{ margin: 8 }} name="male-cook" />
       </View>
