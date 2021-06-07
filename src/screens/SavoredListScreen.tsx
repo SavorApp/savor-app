@@ -11,7 +11,7 @@ import {
 // import { SwipeListView } from 'react-native-swipe-list-view';
 import { useSelector } from "react-redux";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
@@ -19,41 +19,53 @@ import { LinearGradient } from "expo-linear-gradient";
 const _screen = Dimensions.get("screen");
 
 export interface SavoredListScreenProps {
-  navigation: StackNavigationProp<SavoredListStackParamList, "SavoredListScreen">;
+  navigation: StackNavigationProp<
+    SavoredListStackParamList,
+    "SavoredListScreen"
+  >;
 }
 
-export default function SavoredListScreen({ navigation }: SavoredListScreenProps) {
+export default function SavoredListScreen({
+  navigation,
+}: SavoredListScreenProps) {
   const userRecipeListState = useSelector<RootState, UserRecipeListState>(
     (state) => state.userRecipeListState
   );
+  console.log(userRecipeListState);
 
   function getRandomNumber(): number {
     const savoredList = userRecipeListState.userRecipeList.filter((rcp) => {
       return rcp.isSavored;
-    })
+    });
     return Math.floor(Math.random() * savoredList.length);
   }
 
-  function RecipeListItem({rcp}: {rcp: UserRecipe}) {
-    const newTitle = rcp.title.length >= 30 ? (rcp.title.slice(0, 30) + "...") : (rcp.title)
+  function RecipeListItem({ rcp }: { rcp: UserRecipe }) {
+    const newTitle =
+      rcp.title.length >= 30 ? rcp.title.slice(0, 30) + "..." : rcp.title;
     return (
       <TouchableOpacity
         style={styles.recipeListItem}
-        onPress={() => navigation.navigate("RecipeScreen", { recipeId: rcp.id})}
+        onPress={() =>
+          navigation.navigate("RecipeScreen", { recipeId: rcp.id })
+        }
         activeOpacity={0.8}
       >
         <View style={styles.recipeListItemInner}>
           {cuisineMap[rcp.cuisine] || cuisineMap["All"]}
-          <View  style={styles.recipeListItemInnerContent}>
+          <View style={styles.recipeListItemInnerContent}>
             <Text style={styles.recipeTitle}>{newTitle}</Text>
             <View style={styles.tagsContainer}>
               <View style={styles.singleTagContainer}>
-              {dishTypeMap[rcp.dishType] || dishTypeMap["All"]}
+                {dishTypeMap[rcp.dishType] || dishTypeMap["All"]}
                 <Text style={styles.tag}>{rcp.dishType}</Text>
               </View>
               {rcp.vegetarian && (
                 <View style={styles.singleTagContainer}>
-                  <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" />
+                  <MaterialCommunityIcons
+                    name="alpha-v-circle-outline"
+                    color="green"
+                  />
                   <Text style={styles.tag}>Vegetarian</Text>
                 </View>
               )}
@@ -65,24 +77,24 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
               )}
               {rcp.glutenFree && (
                 <View style={styles.singleTagContainer}>
-                  <Text style={[styles.tag, {fontWeight: "bold"}]}>GF</Text>
+                  <Text style={[styles.tag, { fontWeight: "bold" }]}>GF</Text>
                 </View>
               )}
               {rcp.dairyFree && (
                 <View style={styles.singleTagContainer}>
-                  <Text style={[styles.tag, {fontWeight: "bold"}]}>DF</Text>
+                  <Text style={[styles.tag, { fontWeight: "bold" }]}>DF</Text>
                 </View>
               )}
             </View>
           </View>
         </View>
       </TouchableOpacity>
-    )
-  };
+    );
+  }
 
-  function renderItem({item}: {item: UserRecipe}) {
-    return <RecipeListItem rcp={item}/>;
-  };
+  function renderItem({ item }: { item: UserRecipe }) {
+    return <RecipeListItem rcp={item} />;
+  }
 
   return (
     <View style={styles.container}>
@@ -96,24 +108,27 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
               return rcp.isSavored;
             })}
             renderItem={(item) => renderItem(item)}
-            keyExtractor={item => item.id.toString()}
+            keyExtractor={(item) => {
+              console.log(item);
+              return item.id.toString();
+            }}
           />
         </View>
         <TouchableOpacity
-            onPress={() => navigation.navigate("RecipeScreen", {
-              recipeId: userRecipeListState.userRecipeList[getRandomNumber()].id
-            })}
-            activeOpacity={0.8}
+          onPress={() =>
+            navigation.navigate("RecipeScreen", {
+              recipeId:
+                userRecipeListState.userRecipeList[getRandomNumber()].id,
+            })
+          }
+          activeOpacity={0.8}
         >
-            <LinearGradient
-                colors={[colorPalette.popLight, colorPalette.popDark]}
-                style={styles.truffleShuffleButton}
-            >
-                <Text
-                    style={{color: "black"}}
-                >Truffle Shuffle</Text>
-            </LinearGradient>
-
+          <LinearGradient
+            colors={[colorPalette.popLight, colorPalette.popDark]}
+            style={styles.truffleShuffleButton}
+          >
+            <Text style={{ color: "black" }}>Truffle Shuffle</Text>
+          </LinearGradient>
         </TouchableOpacity>
       </View>
     </View>
@@ -175,7 +190,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     paddingHorizontal: 6,
-    width: _screen.width * 0.81
+    width: _screen.width * 0.81,
   },
 
   recipeListItemInnerContent: {
@@ -196,8 +211,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 3,
     padding: 4,
-    borderRadius:8,
-    backgroundColor: colorPalette.trimLight
+    borderRadius: 8,
+    backgroundColor: colorPalette.trimLight,
   },
 
   tag: {
@@ -210,6 +225,6 @@ const styles = StyleSheet.create({
     marginTop: 8,
     width: 120,
     borderRadius: 10,
-    padding: 8
-}
+    padding: 8,
+  },
 });
