@@ -130,6 +130,12 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
               <Text>Preparation time: {recipeInfo.readyInMinutes} min</Text>
               <Text>Servings: {recipeInfo.servings}</Text>
               <View style={styles.tagsContainer}>
+              {recipeInfo.veryHealthy && (
+                  <View style={styles.singleTagContainer}>
+                    <MaterialCommunityIcons name="food-apple-outline" color="green" />
+                    <Text style={styles.tag}>Healthy Choice</Text>
+                  </View>
+                )}
                 {recipeInfo.vegetarian && (
                   <View style={styles.singleTagContainer}>
                     <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" />
@@ -265,6 +271,7 @@ const styles = StyleSheet.create({
 
   tagsContainer: {
     flexDirection: "row",
+    flexWrap: "wrap",
     marginTop: 8
   },
 
@@ -273,6 +280,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginRight: 3,
+    marginTop: 3,
     padding: 4,
     borderRadius:8,
     backgroundColor: colorPalette.trimLight
