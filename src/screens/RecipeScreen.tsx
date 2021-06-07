@@ -16,7 +16,6 @@ import Constants from "expo-constants";
 import axios from "axios";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import LoadingRecipeInfo from "../components/LoadingRecipeInfo";
-import { dishTypeMap } from "../constants/Maps";
 
 const _screen = Dimensions.get("screen");
 
