@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  FlatList,
+  // FlatList,
   StyleSheet,
   Dimensions,
   Animated,
@@ -17,10 +17,10 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
-import { SAVORED_SERVER_API } from "../constants/Api";
+// import { SAVORED_SERVER_API } from "../constants/Api";
 import { unSavorDB } from "../db/db";
 
-import axios from "axios";
+// import axios from "axios";
 
 const _screen = Dimensions.get("screen");
 
@@ -46,15 +46,11 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     });
     return Math.floor(Math.random() * savoredList.length);
   }
-
-
-
   
 
+  // below is the recipe list
 
-// below is the recipe list
-
-  function RecipeListItem({rcp, rowHeightAnimatedValue, removeRow, leftActionState, rightActionState}) { // {rcp}: {rcp: UserRecipe}
+  function RecipeListItem({ rcp }: { rcp: UserRecipe }, rowHeightAnimatedValue: any, removeRow: any, rightActionState: any) { // {rcp}: {rcp: UserRecipe}
     const newTitle = rcp.title.length >= 30 ? (rcp.title.slice(0, 30) + "...") : (rcp.title)
 
     if (rightActionState) {
@@ -69,82 +65,82 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
 
     return (
       <TouchableOpacity
-          style={styles.recipeListItem}
-          onPress={() => navigation.navigate("RecipeScreen", { recipeId: rcp.id})}
-          activeOpacity={0.8}
-        >
-          <View style={styles.recipeListItemInner}>
-            {cuisineMap[rcp.cuisine] || cuisineMap["All"]}
-            <View  style={styles.recipeListItemInnerContent}>
-              <Text style={styles.recipeTitle}>{newTitle}</Text>
-              <View style={styles.tagsContainer}>
-                <View style={styles.singleTagContainer}>
+        style={styles.recipeListItem}
+        onPress={() => navigation.navigate("RecipeScreen", { recipeId: rcp.id })}
+        activeOpacity={0.8}
+      >
+        <View style={styles.recipeListItemInner}>
+          {cuisineMap[rcp.cuisine] || cuisineMap["All"]}
+          <View style={styles.recipeListItemInnerContent}>
+            <Text style={styles.recipeTitle}>{newTitle}</Text>
+            <View style={styles.tagsContainer}>
+              <View style={styles.singleTagContainer}>
                 {dishTypeMap[rcp.dishType] || dishTypeMap["All"]}
-                  <Text style={styles.tag}>{rcp.dishType}</Text>
-                </View>
-                {rcp.vegetarian && (
-                  <View style={styles.singleTagContainer}>
-                    <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" />
-                    <Text style={styles.tag}>Vegetarian</Text>
-                  </View>
-                )}
-                {rcp.vegan && (
-                  <View style={styles.singleTagContainer}>
-                    <MaterialCommunityIcons name="alpha-v-circle" color="green" />
-                    <Text style={styles.tag}>Vegan</Text>
-                  </View>
-                )}
-                {rcp.glutenFree && (
-                  <View style={styles.singleTagContainer}>
-                    <Text style={[styles.tag, {fontWeight: "bold"}]}>GF</Text>
-                  </View>
-                )}
-                {rcp.dairyFree && (
-                  <View style={styles.singleTagContainer}>
-                    <Text style={[styles.tag, {fontWeight: "bold"}]}>DF</Text>
-                  </View>
-                )}
+                <Text style={styles.tag}>{rcp.dishType}</Text>
               </View>
+              {rcp.vegetarian && (
+                <View style={styles.singleTagContainer}>
+                  <MaterialCommunityIcons name="alpha-v-circle-outline" color="green" />
+                  <Text style={styles.tag}>Vegetarian</Text>
+                </View>
+              )}
+              {rcp.vegan && (
+                <View style={styles.singleTagContainer}>
+                  <MaterialCommunityIcons name="alpha-v-circle" color="green" />
+                  <Text style={styles.tag}>Vegan</Text>
+                </View>
+              )}
+              {rcp.glutenFree && (
+                <View style={styles.singleTagContainer}>
+                  <Text style={[styles.tag, { fontWeight: "bold" }]}>GF</Text>
+                </View>
+              )}
+              {rcp.dairyFree && (
+                <View style={styles.singleTagContainer}>
+                  <Text style={[styles.tag, { fontWeight: "bold" }]}>DF</Text>
+                </View>
+              )}
             </View>
           </View>
-        </TouchableOpacity> 
+        </View>
+      </TouchableOpacity>
         
     )
   };
 
-  function renderItem({item}: {item: UserRecipe}, rowMap) {
+  function renderItem({ item }: { item: UserRecipe }, rowMap: object) {
     const rowHeightAnimatedValue = new Animated.Value(60);
    
     return (
-    <RecipeListItem 
-      rcp={item}
-      rowHeightAnimatedValue={rowHeightAnimatedValue} 
-      removeRow={() => deleteRow({item}, rowMap)} 
-    />
-    ); 
+      <RecipeListItem
+        rcp={item}
+        rowHeightAnimatedValue={rowHeightAnimatedValue}
+        removeRow={() => deleteRow({ item }, rowMap)}
+      />
+    );
   };
 
-  const onRowDidOpen = (item, rowMap) => {
+  const onRowDidOpen = ({ item }: { item: UserRecipe }, rowMap: object) => {
   };
 
-  const onLeftActionStatusChange = (item, rowMap) => {
+  // const onLeftActionStatusChange = ({ item }: { item: UserRecipe }, rowMap: object) => {
+  // };
+
+  // const onRightActionStatusChange = ({ item }: { item: UserRecipe }, rowMap: object) => {
+  // };
+
+  const onRightAction = ({ item }: { item: UserRecipe }, rowMap: object) => {
   };
 
-  const onRightActionStatusChange = (item, rowMap) => {
+  const onLeftAction = ({ item }: { item: UserRecipe }, rowMap: object) => {
   };
-
-  const onRightAction = (item, rowMap) => {
-  };
-
-  const onLeftAction = (item, rowMap) => {
-  };
-  const closedRow = ({item}, rowMap) => {
-    if(rowMap[item.id]) {
+  const closedRow = ({ item }: { item: UserRecipe }, rowMap: object) => {
+    if (rowMap[item.id]) {
       rowMap[item.id].closeRow();
     }
   }
 
-  const deleteRow = async ({item}, rowMap) => {
+  const deleteRow = async ({ item }: { item: UserRecipe }) => { // , rowMap: object
     const rcpId = item.id
     const user_id = userState.user.id
  
@@ -153,10 +149,10 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     if (userState.isLoggedIn) {
       const waitingForUnSavor = await unSavorDB(user_id, rcpId, false);
       console.log(waitingForUnSavor);
-    }    
+    }
   }
 
-  const HiddenItemWithActions = props => {
+  const HiddenItemWithActions = (props: { swipeAnimatedValue: any; leftActionActivated: any; rightActionActivated: any; rowActionAnimatedValue: any; rowHeightAnimatedValue: any; onClose: any; onDelete: any; data: any; rowMap: any; }) => {
     const {
       swipeAnimatedValue, 
       leftActionActivated, 
@@ -183,7 +179,6 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
 
     return (
       <Animated.View style={[styles.rowBack, {height: rowHeightAnimatedValue}]}>
-        <Text>Left</Text>
         <TouchableOpacity style={[styles.backRightBtn, styles.backRightBtnLeft]} onPress={onClose}>
           <MaterialCommunityIcons name="close-circle-outline" size={25} style={styles.trash} color="#fff" />
         </TouchableOpacity>
@@ -219,11 +214,12 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     )
   }
 
-  function renderHiddenItem({item}, rowMap) {
+  function renderHiddenItem({ item }: { item: UserRecipe }, rowMap: object) {
+    console.log("I am rowMap: ", rowMap)
     const rowActionAnimatedValue = new Animated.Value(75)
     const rowHeightAnimatedValue = new Animated.Value(60)
     return (
-      <HiddenItemWithActions 
+      <HiddenItemWithActions
         data={item}
         rowMap={rowMap}
         rowActionAnimatedValue={rowActionAnimatedValue}
@@ -248,7 +244,7 @@ return (
                 return rcp.isSavored;
               })
               }
-              keyExtractor={(rowData, index) => {
+              keyExtractor={(rowData) => { // index was another parameter
               console.log("I am rowData: ", rowData)
               return rowData.id.toString()}}
               renderItem={(rowData, rowMap) => renderItem(rowData, rowMap)}
@@ -256,15 +252,19 @@ return (
               leftOpenValue={75}
               rightOpenValue={-150}
               disableRightSwipe
-              onRowDidOpen={(rowData, rowMap) => onRowDidOpen(rowData, rowMap)}
+          onRowDidOpen={(rowData, rowMap) => {
+            console.log("Typeof rowData: ", typeof rowData)
+            console.log("Type of rowMap: ", rowMap)
+            return onRowDidOpen(rowData, rowMap)
+          }}
               leftActivationValue={100}
               rightActivationValue={-200}
               leftActionValue={0}
               rightActionValue={-500}
               onLeftAction={(rowData, rowMap) => {return onLeftAction(rowData, rowMap)}}
               onRightAction={(rowData, rowMap) => {return onRightAction(rowData, rowMap)}}
-              onLeftActionStatusChange={(rowData, rowMap) => onLeftActionStatusChange(rowData, rowMap)}
-              onRightActionStatusChange={(rowData, rowMap) => onRightActionStatusChange(rowData, rowMap)}
+              // onLeftActionStatusChange={(rowData, rowMap) => onLeftActionStatusChange(rowData, rowMap)}
+              // onRightActionStatusChange={(rowData, rowMap) => onRightActionStatusChange(rowData, rowMap)}
 
           />
         </View>

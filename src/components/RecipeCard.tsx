@@ -102,9 +102,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   picture: {
-    height: 400,
-    width: 400,
+    
+    height: 300,
+    width: 500,
     resizeMode: "cover",
+    // aspectRatio: 1, 
+    // resizeMode: 'none',
+    transform: [{ scale: 0.75 }],
     borderRadius: 20,
     alignItems: "center",
   },
