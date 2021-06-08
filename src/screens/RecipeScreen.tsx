@@ -16,11 +16,12 @@ import Constants from "expo-constants";
 import axios from "axios";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import LoadingRecipeInfo from "../components/LoadingRecipeInfo";
+import { useSelector } from "react-redux";
 
 const _screen = Dimensions.get("screen");
 
 export interface RecipeScreenProps {
-  navigation: StackNavigationProp<RecipeScreenStackParamList, "RecipeScreen">;
+  navigation: StackNavigationProp<SavoredListStackParamList, "RecipeScreen">;
   route: RouteProp<{ params: { recipeId: string } }, "params">;
 }
 
@@ -31,6 +32,9 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
   const { recipeId } = route.params;
   const ENDPOINT = `${recipeId}/information?apiKey=${API_KEY}&includeNutrition=false`;
 
+  const leaveRecipeScreen = useSelector<RootState, LeaveRecipeScreenState>(
+    (state) => state.leaveRecipeScreenState
+  );
   const [recipeInfo, setRecipeInfo] = React.useState<
     RecipeScreenInfo | undefined
   >({
@@ -75,7 +79,7 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
         "Server Error 🤕",
         "Sorry for the inconvenience, please try again later."
       );
-      navigation.goBack();
+      // navigation.goBack();
     }
   }
 
@@ -84,14 +88,12 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     fetchRecipeInfo();
   }, []);
 
-  // On navigate away, goBack to SavoredListScreen
+  // Listen to leaveRecipeScreen global state, goBack to SavoredListScreen if true
   React.useEffect(() => {
-    const unsubscribe = navigation.addListener("blur", () => {
-      navigation.goBack();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
+    if (leaveRecipeScreen.leave) {
+      navigation.popToTop();
+    }
+  }, [leaveRecipeScreen]);
 
   function Ingredients({ ingredients }: { ingredients: Ingredient[] }) {
     let idx = 0;

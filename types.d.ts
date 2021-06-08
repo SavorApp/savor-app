@@ -39,11 +39,6 @@ type SavoredListStackParamList = {
   RecipeScreen: { recipeId: number };
 };
 
-type RecipeScreenStackParamList = {
-  SavoredListScreen: undefined;
-  RecipeScreen: { recipeId: number };
-};
-
 /*
  _________________________
  Redux Store Objects
@@ -58,6 +53,7 @@ interface RootState {
   filtersState: FiltersState;
   reloadRecipesState: ReloadRecipesState;
   enableScrollState: EnableScrollState;
+  leaveRecipeScreenState: LeaveRecipeScreenState;
 }
 
 // Core User type
@@ -138,16 +134,20 @@ interface ReloadRecipesState {
   reload: Boolean;
 }
 
-// Empty action for resets
-type EmptyAction = {
-  type: string;
-};
-
 // Core EnableScroll interface
 interface EnableScrollState {
   enable: boolean;
 }
 
+// Core ReloadRecipesState interface
+interface LeaveRecipeScreenState {
+  leave: Boolean;
+}
+
+// Empty action for resets
+type EmptyAction = {
+  type: string;
+};
 /*
  _____________________________
  Components Property Objects

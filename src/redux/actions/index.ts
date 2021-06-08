@@ -90,3 +90,16 @@ export const disableScroll = (): EmptyAction => {
     type: "DISABLE_SCROLL",
   };
 };
+
+// leaveRecipeScreen Actions
+export const leaveRecipeScreen = (): EmptyAction => {
+  return {
+    type: "TRIGGER_LEAVE",
+  };
+};
+
+export const resetRecipeScreenLeave = (): EmptyAction => {
+  return {
+    type: "SET_LEAVE_FALSE",
+  };
+};
