@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   image: {
     alignItems: "center",
     height: _screen.height * 0.5,
-    width: _screen.width * 0.8,
+    width: _screen.width * 0.85,
     resizeMode: "contain",
     overflow: "hidden",
     borderRadius: 15,
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     width: _screen.width * 0.75,
-    marginTop: 150,
+    // marginTop: 150,
     alignContent: "stretch",
     marginBottom: 10,
   },
