@@ -1,10 +1,8 @@
 import React from "react";
-import { Alert, TouchableOpacity } from "react-native";
+import { Alert } from "react-native";
 import Constants from "expo-constants";
 import { useDispatch, useSelector } from "react-redux";
 import { resetReload } from "../redux/actions";
-import { Ionicons } from "@expo/vector-icons";
-
 import axios from "axios";
 import RecipeCardStack from "../components/RecipeCardStack";
 import LoadingCardStack from "../components/LoadingCardStack";
@@ -188,9 +186,9 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
   }, [reloadRecipesState]);
 
 
-  return  (
-    <TouchableOpacity onPress={() => {navigateToMoreInfoScreen(randRecipes[0])}}>
-                <Ionicons name="md-information-circle-sharp" size={24} color="grey" />
-            </TouchableOpacity>
+  return isCardStackLoading ? (
+    <LoadingCardStack />
+  ) : (
+    <RecipeCardStack randRecipes={randRecipes} filtersState={filtersState} navigateToMoreInfoScreen={navigateToMoreInfoScreen}/>
   );
 }
