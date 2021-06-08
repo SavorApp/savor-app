@@ -1,21 +1,28 @@
 import React from "react";
-import { Alert } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
 import Constants from "expo-constants";
 import { useDispatch, useSelector } from "react-redux";
 import { resetReload } from "../redux/actions";
+import { Ionicons } from "@expo/vector-icons";
+
 import axios from "axios";
 import RecipeCardStack from "../components/RecipeCardStack";
 import LoadingCardStack from "../components/LoadingCardStack";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { applySmartFilter, constructEndpoint, removeRecentlyViewedRecipes } from "../utils";
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/100Recipes.json";
 
 
+export interface MenuScreenProps {
+  navigation: StackNavigationProp<MenuStackParamList, "MenuScreen">;
+}
+
 // Initializing Spoonacular resources
 const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
 const RAND_RECIPE_BASE_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&`;
 
-export default function MenuScreen() {
+export default function MenuScreen({ navigation }: MenuScreenProps) {
   const dispatch = useDispatch();
   const userRecipeListState = useSelector<RootState, UserRecipeListState>(
     (state) => state.userRecipeListState
@@ -158,6 +165,12 @@ export default function MenuScreen() {
     }
   }
 
+  function navigateToMoreInfoScreen(rcp: Recipe) {
+    navigation.navigate("MoreInfoScreen", {
+      rcp: rcp,
+    })
+  } 
+
   // On filter update
   React.useEffect(() => {
     setIsCardStackLoading(true);
@@ -175,9 +188,9 @@ export default function MenuScreen() {
   }, [reloadRecipesState]);
 
 
-  return isCardStackLoading ? (
-    <LoadingCardStack />
-  ) : (
-    <RecipeCardStack randRecipes={randRecipes} filtersState={filtersState}  />
+  return  (
+    <TouchableOpacity onPress={() => {navigateToMoreInfoScreen(randRecipes[0])}}>
+                <Ionicons name="md-information-circle-sharp" size={24} color="grey" />
+            </TouchableOpacity>
   );
 }
