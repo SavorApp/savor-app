@@ -36,11 +36,18 @@ export default function getCacheLoadData() {
             dispatch(setUser(currentUser));
             getCurrentUser(currentUser)
               .then((resp) => {
-                if (resp.recipes[0]) {
-                  dispatch(setUserRecipeList(resp.recipes));
+                // If we get a successful response...
+                if (resp) {
+                  // if recipes has an array of any length
+                  if (resp.recipes) {
+                    dispatch(setUserRecipeList(resp.recipes));
+                  }
+                  // if we have a filters record for the user
+                  if (resp.filters[0]) {
+                    dispatch(setFilters(resp.filters[0]));
+                  }
                 }
-               
-                dispatch(setFilters(resp.filters[0]));
+                
               })
               .catch((err: Error) => console.log(err));
           }
