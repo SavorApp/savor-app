@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: _screen.width * 0.9,
     height: _screen.height * 0.75,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
