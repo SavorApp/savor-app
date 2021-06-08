@@ -79,7 +79,7 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
         "Server Error 🤕",
         "Sorry for the inconvenience, please try again later."
       );
-      // navigation.goBack();
+      navigation.goBack();
     }
   }
 
@@ -94,6 +94,7 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
       navigation.popToTop();
     }
   }, [leaveRecipeScreen]);
+
 
   function Ingredients({ ingredients }: { ingredients: Ingredient[] }) {
     let idx = 0;
