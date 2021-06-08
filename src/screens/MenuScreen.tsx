@@ -47,57 +47,16 @@ export default function MenuScreen() {
       */
 
       // Spoonacular GET request
-      const resp = await axios.get(RAND_RECIPE_BASE_URL + ENDPOINT);
-      // Assign parse data.recipes to fit our Recipep[] type
-      fetchedRecipes = resp.data.recipes.map((rcp: Recipe) => {
-        // For each Recipe, initialize an ingredients arrat containing ingredient names
-        const ingredientsArray = (
-          rcp.extendedIngredients as Array<Ingredient>
-        ).map((ing: Ingredient): string => {
-          return ing?.name;
-        });
-        // Return the Recipe object with ingredients = Ingredient[]
-        return {
-          id: rcp.id,
-          sourceUrl: rcp.sourceUrl,
-          image: rcp.image,
-          imageType: rcp.imageType,
-          title: rcp.title,
-          diets: rcp.diets,
-          cuisines: rcp.cuisines,
-          dishTypes: rcp.dishTypes,
-          vegetarian: rcp.vegetarian,
-          vegan: rcp.vegan,
-          glutenFree: rcp.glutenFree,
-          dairyFree: rcp.dairyFree,
-          veryHealthy: rcp.veryHealthy,
-          cheap: rcp.cheap,
-          veryPopular: rcp.veryPopular,
-          sustainable: rcp.sustainable,
-          aggregateLikes: rcp.aggregateLikes,
-          spoonacularScore: rcp.spoonacularScore,
-          healthScore: rcp.healthScore,
-          pricePerServing: rcp.pricePerServing,
-          readyInMinutes: rcp.readyInMinutes,
-          ingredients: ingredientsArray,
-          servings: rcp.servings,
-          smartFilterScore: 0,
-        };
-      });
-
-
-      /*
-      /\/\/\/\/\/\/\/\/\/\/\/\
-      UN-COMMENT FOR JSON DATA
-      \/\/\/\/\/\/\/\/\/\/\/\/
-      */
-
-      // fetchedRecipes = recipesJson.recipes.map((rcp) => {
+      // const resp = await axios.get(RAND_RECIPE_BASE_URL + ENDPOINT);
+      // // Assign parse data.recipes to fit our Recipep[] type
+      // fetchedRecipes = resp.data.recipes.map((rcp: Recipe) => {
+      //   // For each Recipe, initialize an ingredients arrat containing ingredient names
       //   const ingredientsArray = (
       //     rcp.extendedIngredients as Array<Ingredient>
       //   ).map((ing: Ingredient): string => {
       //     return ing?.name;
       //   });
+      //   // Return the Recipe object with ingredients = Ingredient[]
       //   return {
       //     id: rcp.id,
       //     sourceUrl: rcp.sourceUrl,
@@ -120,11 +79,52 @@ export default function MenuScreen() {
       //     healthScore: rcp.healthScore,
       //     pricePerServing: rcp.pricePerServing,
       //     readyInMinutes: rcp.readyInMinutes,
-      //     servings: rcp.servings,
       //     ingredients: ingredientsArray,
+      //     servings: rcp.servings,
       //     smartFilterScore: 0,
       //   };
       // });
+
+
+      /*
+      /\/\/\/\/\/\/\/\/\/\/\/\
+      UN-COMMENT FOR JSON DATA
+      \/\/\/\/\/\/\/\/\/\/\/\/
+      */
+
+      fetchedRecipes = recipesJson.recipes.map((rcp) => {
+        const ingredientsArray = (
+          rcp.extendedIngredients as Array<Ingredient>
+        ).map((ing: Ingredient): string => {
+          return ing?.name;
+        });
+        return {
+          id: rcp.id,
+          sourceUrl: rcp.sourceUrl,
+          image: rcp.image,
+          imageType: rcp.imageType,
+          title: rcp.title,
+          diets: rcp.diets,
+          cuisines: rcp.cuisines,
+          dishTypes: rcp.dishTypes,
+          vegetarian: rcp.vegetarian,
+          vegan: rcp.vegan,
+          glutenFree: rcp.glutenFree,
+          dairyFree: rcp.dairyFree,
+          veryHealthy: rcp.veryHealthy,
+          cheap: rcp.cheap,
+          veryPopular: rcp.veryPopular,
+          sustainable: rcp.sustainable,
+          aggregateLikes: rcp.aggregateLikes,
+          spoonacularScore: rcp.spoonacularScore,
+          healthScore: rcp.healthScore,
+          pricePerServing: rcp.pricePerServing,
+          readyInMinutes: rcp.readyInMinutes,
+          servings: rcp.servings,
+          ingredients: ingredientsArray,
+          smartFilterScore: 0,
+        };
+      });
 
       if (fetchedRecipes.length === 0) {
         Alert.alert(

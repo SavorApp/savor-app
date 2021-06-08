@@ -107,7 +107,7 @@ export default function SavoredListScreen({
 
     if (userState.isLoggedIn) {
       const waitingForUnSavor = await unSavorDB(user_id, rcpId, false);
-      console.log(waitingForUnSavor);
+      // console.log(waitingForUnSavor);
     }
   };
 

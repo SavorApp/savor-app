@@ -4,6 +4,7 @@ import { userRecipeListReducer } from "./userRecipeList"
 import { filtersReducer } from "./filters"
 import { combineReducers } from "redux";
 import { enableScrollReducer } from "./enableScroll";
+import { leaveRecipeScreenReducer } from "./leaveRecipeScreen";
 
 
 const rootReducer = combineReducers({
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
     userRecipeListState: userRecipeListReducer,
     filtersState: filtersReducer,
     enableScrollState: enableScrollReducer,
+    leaveRecipeScreenState: leaveRecipeScreenReducer
 });
 
 export default rootReducer;

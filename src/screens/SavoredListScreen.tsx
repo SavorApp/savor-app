@@ -152,7 +152,7 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
   
     if (userState.isLoggedIn) {
       const waitingForUnSavor = await unSavorDB(user_id, rcpId, false);
-      console.log(waitingForUnSavor);
+      // console.log(waitingForUnSavor);
     }    
   }
 
@@ -249,7 +249,7 @@ return (
               })
               }
               keyExtractor={(rowData, index) => {
-              console.log("I am rowData: ", rowData)
+              // console.log("I am rowData: ", rowData)
               return rowData.id.toString()}}
               renderItem={(rowData, rowMap) => renderItem(rowData, rowMap)}
               renderHiddenItem={(rowData, rowMap) => {return renderHiddenItem(rowData, rowMap)}}
