@@ -291,7 +291,7 @@ export async function updateFiltersDb(
   }
 }
 
-export async function unSavorDB(user_id: string | undefined, rcpId: number | undefined, isSavored: boolean | undefined) {
+export async function toggleSavorDB(user_id: string | undefined, rcpId: number, isSavored: Boolean) {
       // ("🍔🍕🍔🍟🌭🍿 inside async function")
           try {
             const recipe = await axios(SAVORED_SERVER_API, { 

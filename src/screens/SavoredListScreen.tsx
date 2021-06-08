@@ -18,7 +18,7 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
 import { SAVORED_SERVER_API } from "../constants/Api";
-import { unSavorDB } from "../db/db";
+import { toggleSavorDB } from "../db/db";
 
 import axios from "axios";
 
@@ -151,7 +151,7 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     dispatch(unSavorRecipe(rcpId))
   
     if (userState.isLoggedIn) {
-      const waitingForUnSavor = await unSavorDB(user_id, rcpId, false);
+      const waitingForUnSavor = await toggleSavorDB(user_id, rcpId, false);
       // console.log(waitingForUnSavor);
     }    
   }

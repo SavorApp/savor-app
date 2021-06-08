@@ -49,7 +49,7 @@ export default function MenuNavigator({ navigation }: MenuNavigatorProps) {
                 }
               }}
             >
-              <MaterialCommunityIcons name="menu" size={36} />
+              <MaterialCommunityIcons name="food-apple-outline" size={36} style={{marginRight: 6}} />
             </TouchableOpacity>
           ),
           headerTitle: () => {
