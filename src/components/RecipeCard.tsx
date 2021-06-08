@@ -28,17 +28,20 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
           onScrollEndDrag={() => { dispatch(disableScroll()) }}
         >
           {rcp.image ? (
-            <ImageBackground
-              key={id}
-              source={{ uri: rcp.image || " " }}
-              style={styles.image}
-            >
-              <View style={styles.titleContainer}>
-                <Text style={styles.title}>{rcp.title}</Text>
-              </View>
-            </ImageBackground>
+            <View style={styles.imageContainer}>
+              <ImageBackground
+                key={id}
+                source={{ uri: rcp.image || " " }}
+                style={styles.image}
+              >
+                <View style={styles.titleContainer}>
+                  <Text style={styles.title}>{rcp.title}</Text>
+                </View>
+              </ImageBackground>
+            </View>
           ) : (
-              <ImageBackground key={id} source={require("../../assets/icon.png")} style={styles.image}>
+            <View style={styles.noImageContainer}>
+              <ImageBackground key={id} source={require("../../assets/icon.png")} style={styles.noImage}>
                 <View style={styles.titleContainer}>
                   <Text style={styles.title}>{rcp.title}</Text>
                 </View>
@@ -46,6 +49,7 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
                 😟 No Image 😟
                 </Text>
               </ImageBackground>
+            </View>
             )}
 
           <View style={styles.rcpInfoContainer}>
@@ -143,33 +147,55 @@ const styles = StyleSheet.create({
 
   subContainer: {
     justifyContent: "center",
-    alignItems: "center",
     paddingTop: 20,
-    width: _screen.width * 0.88,
     height: _screen.height * 0.6,
+    width: _screen.width * 0.88,
     borderRadius: 15,
     backgroundColor: colorPalette.secondary,
   },
 
   scrollViewContainer: {
     flexGrow: 1,
+    justifyContent: "center",
     alignItems: "center",
+  },
+  
+  imageContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: _screen.height * 0.6,
+    width: _screen.width * 0.88,
+  },
+
+  noImageContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: _screen.height * 0.6,
+    width: _screen.width * 0.88,
   },
 
   image: {
     alignItems: "center",
-    height: 350,
-    width: 350,
-    resizeMode: "cover",
+    height: _screen.height * 0.5,
+    width: _screen.width * 0.8,
+    resizeMode: "contain",
     overflow: "hidden",
     borderRadius: 15,
   },
 
+  noImage: {
+    alignItems: "center",
+    height: _screen.height * 0.5,
+    width: _screen.width * 0.8,
+    resizeMode: "contain",
+    overflow: "hidden",
+    borderRadius: 15,
+  },
   
   titleContainer: {
     marginVertical: 3,
     padding: 3,
-    width: _screen.width * 0.85,
+    width: _screen.width * 0.78,
     borderRadius: 15,
     backgroundColor: "rgba(0, 0, 0, 0.7)",
   },
@@ -191,7 +217,7 @@ const styles = StyleSheet.create({
 
   noImageMsg: {
     textAlign: "center",
-    marginTop: 50,
+    marginTop: 18,
     borderRadius: 10,
     fontSize: 20,
     backgroundColor: "rgba(255, 255, 255, 0.8)",
