@@ -2,6 +2,9 @@ import { dishTypeBundler } from "../constants/Maps";
 
 // Removes recipes viewed in the last 3 days
 export function removeRecentlyViewedRecipes(fetchedRcps: Recipe[], userRcps: UserRecipe[]): Recipe[] {
+    if (userRcps.length > 0) {
+        console.log(userRcps[0].updatedAt);
+    }
      // Date at time of function call
     const currDate = new Date();
     const oneDay=1000*60*60*24;

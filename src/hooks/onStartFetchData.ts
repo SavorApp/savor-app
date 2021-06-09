@@ -36,13 +36,15 @@ export default function getCacheLoadData() {
             dispatch(setUser(currentUser));
             getUserDb(currentUser)
               .then((resp) => {
+                console.log("RESP", resp);
                 // If we get a successful response...
                 if (resp) {
+                console.log("RECIPES", resp.recipes);
                   // if recipes has an array of any length
                   if (resp.recipes) {
-                    console.log(resp.recipes);
                     dispatch(setUserRecipeList(resp.recipes));
                   }
+                console.log("FILTERS", resp.filters);
                   // if we have a filters record for the user
                   if (resp.filters[0]) {
                     dispatch(setFilters(resp.filters[0]));
