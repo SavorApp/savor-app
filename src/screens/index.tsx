@@ -8,7 +8,7 @@ import BurgerScreen from "./BurgerScreen";
 import ProtectedBurgerScreen from "./ProtectedBurgerScreen";
 import SavoredListScreen from "./SavoredListScreen"
 import RecipeScreen from "./RecipeScreen";
-import MoreInfoScreen from "./RecipeScreen";
+import MoreInfoScreen from "./MoreInfoScreen";
 
 export {
     LoginScreen,

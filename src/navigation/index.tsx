@@ -162,6 +162,7 @@ function RootNavigator() {
       />
       <RootStack.Screen
         name="MoreInfoScreen"
+        // TODO: Research whether there is another solution than to cast
         component={MoreInfoScreen as React.FC}
         options={{
           headerBackImage: () => (
