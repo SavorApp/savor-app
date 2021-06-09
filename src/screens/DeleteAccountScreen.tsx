@@ -35,12 +35,12 @@ export default function DeleteAccountScreen({
   function handleDeleteAccount() {
     setBlockDeleteAccount(true);
     // TODO: Delete Account in DB
-    firebaseApp
-      .auth()
-      .signOut()
+    const user = firebaseApp.auth().currentUser;
+    user
+      ?.delete()
       .then(() => {
         // Remove cached access-token on mobile storage
-        removeCachedAccessToken()
+        removeCachedAccessToken();
         // - Update global state
         dispatch(removeUser());
         dispatch(resetUserRecipeList());
@@ -60,12 +60,11 @@ export default function DeleteAccountScreen({
 
   async function removeCachedAccessToken() {
     try {
-      await AsyncStorage.removeItem("access-token")
-    } catch(err) {
+      await AsyncStorage.removeItem("access-token");
+    } catch (err) {
       // Handle failed asyncStorage removal error
     }
   }
-
 
   return (
     <View style={styles.container}>
