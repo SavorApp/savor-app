@@ -96,30 +96,37 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
   }, [leaveRecipeScreen]);
 
 
+  // Filter through an array of ingredient name to remove duplicates and set the display
   function Ingredients({ ingredients }: { ingredients: Ingredient[] }) {
     let idx = 0;
+    const filteredIngredients = Array.from(new Set(ingredients
+    .map(ing => ing.name)))
+    .map(name => { 
+      return ingredients.find(ing => ing.name === name) 
+    });
+
     return (
       <View>
-        {ingredients.map((ing) => {
+        {filteredIngredients.map((ing) => {
           idx++;
           return (
             <View
-              key={"c_" + ing.id.toString() + idx.toString()}
+              key={"c_" + ing?.id.toString() + idx.toString()}
               style={styles.ingredientContainer}
             >
               <Text
-                key={"i_" + ing.id.toString() + idx.toString()}
+                key={"i_" + ing?.id.toString() + idx.toString()}
                 style={styles.ingredient}
               >
-                {ing.name}
+                {ing?.name}
               </Text>
               <Text
-                key={"m_" + ing.id.toString() + idx.toString()}
+                key={"m_" + ing?.id.toString() + idx.toString()}
                 style={styles.measurement}
               >
-                ({ing.measures.metric.amount}
-                {ing.measures.metric.unitShort &&
-                  " " + ing.measures.metric.unitShort}
+                ({ing?.measures.metric.amount}
+                {ing?.measures.metric.unitShort &&
+                  " " + ing?.measures.metric.unitShort}
                 )
               </Text>
             </View>
@@ -132,71 +139,71 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
   return isInfoLoading ? (
     <LoadingRecipeInfo recipeId={recipeId} />
   ) : (
-    recipeInfo && (
-      <View style={styles.container}>
-        <View style={styles.subContainer}>
-          <Text style={styles.title}>{recipeInfo.title}</Text>
-          <View style={styles.contentContainer}>
-            <ScrollView style={styles.scrollView}>
-              <Text style={styles.subTitle}>Summary</Text>
-              <HTML source={{ html: recipeInfo.summary }} />
-              <Text style={styles.subTitle}>Ingredients</Text>
-              <Ingredients ingredients={recipeInfo.ingredients} />
-              <Text style={styles.subTitle}>Instructions</Text>
-              <HTML source={{ html: recipeInfo.instructions }} />
-              <Text style={styles.subTitle}>Additional Information</Text>
-              <Text>Preparation time: {recipeInfo.readyInMinutes} min</Text>
-              <Text>Servings: {recipeInfo.servings}</Text>
-              <View style={styles.tagsContainer}>
-                {recipeInfo.veryHealthy && (
-                  <View style={styles.singleTagContainer}>
-                    <MaterialCommunityIcons
-                      name="food-apple-outline"
-                      color="green"
-                    />
-                    <Text style={styles.tag}>Healthy Choice</Text>
-                  </View>
-                )}
-                {recipeInfo.vegetarian && (
-                  <View style={styles.singleTagContainer}>
-                    <MaterialCommunityIcons
-                      name="alpha-v-circle-outline"
-                      color="green"
-                    />
-                    <Text style={styles.tag}>Vegetarian</Text>
-                  </View>
-                )}
-                {recipeInfo.vegan && (
-                  <View style={styles.singleTagContainer}>
-                    <MaterialCommunityIcons
-                      name="alpha-v-circle"
-                      color="green"
-                    />
-                    <Text style={styles.tag}>Vegan</Text>
-                  </View>
-                )}
-                {recipeInfo.glutenFree && (
-                  <View style={styles.singleTagContainer}>
-                    <Text style={[styles.tag, { fontWeight: "bold" }]}>
-                      Gluten Free
+      recipeInfo && (
+        <View style={styles.container}>
+          <View style={styles.subContainer}>
+            <Text style={styles.title}>{recipeInfo.title}</Text>
+            <View style={styles.contentContainer}>
+              <ScrollView style={styles.scrollView}>
+                <Text style={styles.subTitle}>Summary</Text>
+                <HTML source={{ html: recipeInfo.summary }} />
+                <Text style={styles.subTitle}>Ingredients</Text>
+                <Ingredients ingredients={recipeInfo.ingredients} />
+                <Text style={styles.subTitle}>Instructions</Text>
+                <HTML source={{ html: recipeInfo.instructions }} />
+                <Text style={styles.subTitle}>Additional Information</Text>
+                <Text>Preparation time: {recipeInfo.readyInMinutes} min</Text>
+                <Text>Servings: {recipeInfo.servings}</Text>
+                <View style={styles.tagsContainer}>
+                  {recipeInfo.veryHealthy && (
+                    <View style={styles.singleTagContainer}>
+                      <MaterialCommunityIcons
+                        name="food-apple-outline"
+                        color="green"
+                      />
+                      <Text style={styles.tag}>Healthy Choice</Text>
+                    </View>
+                  )}
+                  {recipeInfo.vegetarian && (
+                    <View style={styles.singleTagContainer}>
+                      <MaterialCommunityIcons
+                        name="alpha-v-circle-outline"
+                        color="green"
+                      />
+                      <Text style={styles.tag}>Vegetarian</Text>
+                    </View>
+                  )}
+                  {recipeInfo.vegan && (
+                    <View style={styles.singleTagContainer}>
+                      <MaterialCommunityIcons
+                        name="alpha-v-circle"
+                        color="green"
+                      />
+                      <Text style={styles.tag}>Vegan</Text>
+                    </View>
+                  )}
+                  {recipeInfo.glutenFree && (
+                    <View style={styles.singleTagContainer}>
+                      <Text style={[styles.tag, { fontWeight: "bold" }]}>
+                        Gluten Free
                     </Text>
-                  </View>
-                )}
-                {recipeInfo.dairyFree && (
-                  <View style={styles.singleTagContainer}>
-                    <Text style={[styles.tag, { fontWeight: "bold" }]}>
-                      Dairy Free
+                    </View>
+                  )}
+                  {recipeInfo.dairyFree && (
+                    <View style={styles.singleTagContainer}>
+                      <Text style={[styles.tag, { fontWeight: "bold" }]}>
+                        Dairy Free
                     </Text>
-                  </View>
-                )}
-              </View>
-              
-              {/* Hesitant to include this because we may not want to show
+                    </View>
+                  )}
+                </View>
+
+                {/* Hesitant to include this because we may not want to show
               that a recipe is NOT veryHealthy, or NOT anyother things. It may
               make users feel bad when looking at recipes. I think we
               should stay as unbiased as possible and, only show tags for
               when they are true. I've included a Healthy choice tag */}
-              {/* <Text style={styles.extra}>
+                {/* <Text style={styles.extra}>
                 VeryHealthy: {recipeInfo.veryHealthy ? "✅" : "❌"}
               </Text>
               <Text style={styles.extra}>
@@ -217,13 +224,13 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
               </Text>
               <Text style={styles.extra}>Diets: {recipeInfo.diets}</Text> */}
 
-              <Text>{"\n\n\n"}</Text>
-            </ScrollView>
+                <Text>{"\n\n\n"}</Text>
+              </ScrollView>
+            </View>
           </View>
         </View>
-      </View>
-    )
-  );
+      )
+    );
 }
 
 const styles = StyleSheet.create({
