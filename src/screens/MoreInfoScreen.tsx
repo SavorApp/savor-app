@@ -13,11 +13,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import HTML from "react-native-render-html";
 import Constants from "expo-constants";
-import axios from "axios";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
-import LoadingRecipeInfo from "../components/LoadingRecipeInfo";
-import { useSelector } from "react-redux";
-
 
 const _screen = Dimensions.get("screen");
 
