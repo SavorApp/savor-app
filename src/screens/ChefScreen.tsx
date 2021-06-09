@@ -21,6 +21,7 @@ import {
   resetUserRecipeList,
   resetFilters,
 } from "../redux/actions/index";
+import { deleteAccount } from "../db/db";
 
 const _screen = Dimensions.get("screen");
 
@@ -47,7 +48,7 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
   function Metrics({ recipeList }: { recipeList: UserRecipe[] }) {
     const savoredRecipes = recipeList.filter((rcp) => {
       return rcp.isSavored;
-    })
+    });
 
     // Object to contain overall counts for cuisines
     const cuisineCount: CountMap = {};
@@ -126,29 +127,22 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
         {cuisineArray[0] && (
           <Text style={styles.caption}>
             So far, you have savored
-            <Text style={{ fontWeight: "bold" }}>
-              {" "}
-              {cuisineArray.length}
-              {" "}
-            </Text>
+            <Text style={{ fontWeight: "bold" }}> {cuisineArray.length} </Text>
             cuisine type(s). Your most savored cuisine is
-            <Text style={{ fontWeight: "bold" }}>
-              {" "}
-              {cuisineArray[0].name}
-            </Text>
-            {cuisineArray[1] ?
-              (<Text>
+            <Text style={{ fontWeight: "bold" }}> {cuisineArray[0].name}</Text>
+            {cuisineArray[1] ? (
+              <Text>
                 {" "}
                 but, it looks like
                 <Text style={{ fontWeight: "bold" }}>
                   {" "}
-                  {cuisineArray[1].name}
-                  {" "}
+                  {cuisineArray[1].name}{" "}
                 </Text>
                 food is a close second!
-              </Text>)
-              : (<Text>.</Text>)
-            }
+              </Text>
+            ) : (
+              <Text>.</Text>
+            )}
           </Text>
         )}
         <Text style={styles.subTitle2}>Top Ingredients</Text>
