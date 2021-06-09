@@ -135,6 +135,7 @@ export async function getCurrentUser(currentUser: User) {
             servings
             ingredients
             isSavored
+            updatedAt
              }
             filters{
               smartFilter
@@ -291,7 +292,7 @@ export async function updateFiltersDb(
   }
 }
 
-export async function unSavorDB(
+export async function unSavorDb(
   user_id: string | undefined,
   rcpId: number | undefined,
   isSavored: boolean | undefined
