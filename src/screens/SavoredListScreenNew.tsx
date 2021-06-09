@@ -16,7 +16,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
-import { unSavorDB } from "../db/db";
+import { unSavorDb } from "../db/db";
 
 const _screen = Dimensions.get("screen");
 
@@ -44,7 +44,6 @@ export default function SavoredListScreen({
     });
     return Math.floor(Math.random() * savoredList.length);
   }
-
 
   function renderItem({ item }: { item: UserRecipe }) {
     const newTitle =
@@ -99,21 +98,19 @@ export default function SavoredListScreen({
     );
   }
 
-  async function deleteRow({item}: {item: UserRecipe}) {
+  async function deleteRow({ item }: { item: UserRecipe }) {
     const rcpId = item.id;
     const user_id = userState.user.id;
 
     dispatch(unSavorRecipe(rcpId));
 
     if (userState.isLoggedIn) {
-      const waitingForUnSavor = await unSavorDB(user_id, rcpId, false);
+      const waitingForUnSavor = await unSavorDb(user_id, rcpId, false);
       // console.log(waitingForUnSavor);
     }
-  };
+  }
 
-
-  function renderHiddenItem({ item }: {item: UserRecipe}) {
-
+  function renderHiddenItem({ item }: { item: UserRecipe }) {
     return (
       <Animated.View>
         <Text>Left</Text>
