@@ -17,8 +17,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
-import { SAVORED_SERVER_API } from "../constants/Api";
-import { unSavorDB } from "../db/db";
+import { unSavorDb } from "../db/db";
 
 import axios from "axios";
 
@@ -38,6 +37,7 @@ export default function SavoredListScreen({
   const userRecipeListState = useSelector<RootState, UserRecipeListState>(
     (state) => state.userRecipeListState
   );
+  console.log(userRecipeListState.userRecipeList);
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   );
@@ -157,7 +157,7 @@ export default function SavoredListScreen({
     if (userState.isLoggedIn) {
       console.log(typeof rcpId);
       console.log(typeof user_id);
-      const waitingForUnSavor = await unSavorDB(user_id, rcpId, false);
+      const waitingForUnSavor = await unSavorDb(user_id, rcpId, false);
       // console.log(waitingForUnSavor);
     }
   };

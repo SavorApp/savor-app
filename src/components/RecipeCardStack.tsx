@@ -1,7 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import { StyleSheet, Dimensions, View, Text, ScrollView } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { addtoUserRecipeList, disableScroll, enableScroll, triggerReload } from "../redux/actions";
+import {
+  addtoUserRecipeList,
+  disableScroll,
+  enableScroll,
+  triggerReload,
+} from "../redux/actions";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
@@ -25,7 +30,7 @@ export default function RecipeCardStack({
   const [blockSwipeButtons, setBlockSwipeButtons] = React.useState(false);
   const userId = useRef<string | undefined>("");
   const cardStackRef = React.useRef<CardStack>();
-  
+
   useEffect(() => {
     userId.current = userState.user.id;
   }, [userState]);
@@ -37,20 +42,19 @@ export default function RecipeCardStack({
       id: randRecipe.id,
       title: randRecipe.title,
 
-      cuisine:
-        filtersState.filters.cuisine
-          ? filtersState.filters.cuisine[0].toUpperCase() +
+      cuisine: filtersState.filters.cuisine
+        ? filtersState.filters.cuisine[0].toUpperCase() +
           filtersState.filters.cuisine.slice(1)
-          : randRecipe.cuisines.length === 0
-            ? "World Food"
-            : randRecipe.cuisines[0],
-      dishType:
-        filtersState.filters.dishType
-          ? filtersState.filters.dishType[0].toUpperCase() +
+        : randRecipe.cuisines.length === 0
+        ? "World Food"
+        : randRecipe.cuisines[0],
+      dishType: filtersState.filters.dishType
+        ? filtersState.filters.dishType[0].toUpperCase() +
           filtersState.filters.dishType.slice(1)
-          : randRecipe.dishTypes.length === 0
-            ? "Many"
-            : randRecipe.dishTypes[0][0].toUpperCase() + randRecipe.dishTypes[0].slice(1),
+        : randRecipe.dishTypes.length === 0
+        ? "Many"
+        : randRecipe.dishTypes[0][0].toUpperCase() +
+          randRecipe.dishTypes[0].slice(1),
       vegetarian: randRecipe.vegetarian,
       vegan: randRecipe.vegan,
       glutenFree: randRecipe.glutenFree,
@@ -87,7 +91,9 @@ export default function RecipeCardStack({
       <View style={styles.renderNoMoreCardsContainer}>
         <Text style={styles.noMoreCardsText}>No More Recipes,</Text>
 
-        <Text style={styles.noMoreCardsText}>please adjust your filters...</Text>
+        <Text style={styles.noMoreCardsText}>
+          please adjust your filters...
+        </Text>
         <Emoji style={{ margin: 8 }} name="male-cook" />
       </View>
     );
@@ -117,10 +123,7 @@ export default function RecipeCardStack({
                   handleSwipe(idx, true);
                 }}
               >
-                <RecipeCard 
-                  rcp={rcp} 
-                  id={rcp.id} 
-                   />
+                <RecipeCard rcp={rcp} id={rcp.id} />
               </Card>
             );
           })}

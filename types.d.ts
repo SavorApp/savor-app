@@ -82,7 +82,7 @@ type RecipeAction = { type: string; payload: Recipe };
 // Core UserRecipe type
 type UserRecipe = {
   id: number;
-  recipe_id?: number
+  recipe_id?: number;
   title: string;
   cuisine: string;
   dishType: string;
@@ -154,7 +154,7 @@ type EmptyAction = {
  _____________________________
 */
 
-type RecipeCardParamList = { 
+type RecipeCardParamList = {
   id: number;
   rcp: Recipe;
 };
