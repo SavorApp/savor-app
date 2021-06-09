@@ -12,7 +12,8 @@ export function removeRecentlyViewedRecipes(fetchedRcps: Recipe[], userRcps: Use
         // Evaluate the date difference of,
         // current datetime and when the recipe was updated last
         if (rcp.updatedAt) {
-            const dateDiffInDays = (currDate.valueOf() - new Date(rcp.updatedAt).valueOf())/oneDay
+            const updatedAtDate = new Date(rcp.updatedAt)
+            const dateDiffInDays = (currDate.valueOf() - updatedAtDate.valueOf())/oneDay
             // Return recipes where date difference is <= 3 days
             return (dateDiffInDays <= 3);
         }
