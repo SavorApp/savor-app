@@ -291,13 +291,17 @@ export async function updateFiltersDb(
   }
 }
 
-export async function unSavorDB(user_id: string | undefined, rcpId: number | undefined, isSavored: boolean | undefined) {
-      // ("🍔🍕🍔🍟🌭🍿 inside async function")
-          try {
-            const recipe = await axios(SAVORED_SERVER_API, { 
-              method: "POST",
-              data: {
-                query: `
+export async function unSavorDB(
+  user_id: string | undefined,
+  rcpId: number | undefined,
+  isSavored: boolean | undefined
+) {
+  // ("🍔🍕🍔🍟🌭🍿 inside async function")
+  try {
+    const recipe = await axios(SAVORED_SERVER_API, {
+      method: "POST",
+      data: {
+        query: `
                       mutation updateRecipe($user_id: String!, $recipe_id: Int!, $isSavored: Boolean) {
                         updateRecipe(user_id:$user_id, recipe_id:$recipe_id, isSavored:$isSavored)
                         {
@@ -306,22 +310,48 @@ export async function unSavorDB(user_id: string | undefined, rcpId: number | und
                       }
 
                       `,
-                variables: {
-                  // user_id: user_id,
-                  // id: rcpId,
-                  // isSavored: isSavored,
-                  user_id: user_id,
-                  recipe_id: rcpId,
-                  isSavored: isSavored,
-                },
-              },
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-          
-          } catch (err) {
-            // Handle error
-             return new Error(err);
-          }
-      }
+        variables: {
+          // user_id: user_id,
+          // id: rcpId,
+          // isSavored: isSavored,
+          user_id: user_id,
+          recipe_id: rcpId,
+          isSavored: isSavored,
+        },
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (err) {
+    // Handle error
+    return new Error(err);
+  }
+}
+
+export async function deleteAccount(user_id: string) {
+  try {
+    const deleteAccount = await axios(SAVORED_SERVER_API, {
+      method: "POST",
+      data: {
+        query: `
+                    mutation deleteUser($user_id: String!) {
+                      deleteUser(_id:$user_id) {
+                          _id
+                      }
+                    }
+                    `,
+        variables: {
+          user_id: user_id,
+        },
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(deleteAccount);
+  } catch (err) {
+    // Handle rejected axios POST request Promise
+    return new Error(err);
+  }
+}
