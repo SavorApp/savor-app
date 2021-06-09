@@ -37,7 +37,7 @@ export default function DeleteAccountScreen({
     setBlockDeleteAccount(true);
     // TODO: Delete Account in DB
     const user = firebaseApp.auth().currentUser;
-    console.log(user?.uid);
+    // console.log(user?.uid);
     user
       ?.delete()
       .then(async () => {
