@@ -77,7 +77,7 @@ export default function DeleteAccountScreen({
           Are you sure you want to delete your account?
         </Text>
         <View style={styles.form}>
-          <Text>Yes, I'm hanging my apron for now...</Text>
+          <Text>Yes, I'm hanging up my apron for now...</Text>
           <TouchableOpacity
             onPress={
               blockDeleteAccount
