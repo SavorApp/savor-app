@@ -110,12 +110,14 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
 
   function renderItem({ item }: { item: UserRecipe }, rowMap: object) {
     const rowHeightAnimatedValue = new Animated.Value(60);
+    const rightActionState = new Animated.Value(0)
    
     return (
       <RecipeListItem
         rcp={item}
         rowHeightAnimatedValue={rowHeightAnimatedValue}
         removeRow={() => deleteRow({ item }, rowMap)}
+        rightActionState={rightActionState}
       />
     );
   };
