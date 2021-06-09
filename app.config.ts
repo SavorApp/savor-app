@@ -12,7 +12,7 @@ export default ({ config }: any) => {
       FIREBASE_MESSAGING_SENDER: process.env.FIREBASE_MESSAGING_SENDER,
       FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
       FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
-      SAVORED_SERVER_API: process.env.SAVORED_SERVER_API,
+      SAVORED_SERVER_ENDPOINT: process.env.SAVORED_SERVER_ENDPOINT,
     },
   };
 };

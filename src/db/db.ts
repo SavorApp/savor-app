@@ -1,10 +1,13 @@
 import axios from "axios";
-import { SAVORED_SERVER_API } from "../constants/Api";
+import { SAVORED_SERVER_ENDPOINT } from "../constants/Api";
 
-export async function swipeToDb(user_id: string | undefined, rcp: UserRecipe) {
+export async function postRecipeDb(
+  user_id: string | undefined,
+  rcp: UserRecipe
+) {
   // console.log(rcp);
   try {
-    const recipe = await axios(SAVORED_SERVER_API, {
+    const recipe = await axios(SAVORED_SERVER_ENDPOINT, {
       method: "POST",
       data: {
         query: `
@@ -81,12 +84,12 @@ export async function swipeToDb(user_id: string | undefined, rcp: UserRecipe) {
   }
 }
 
-export async function createUser(
+export async function postUserDb(
   id: string | undefined,
   username: string | null | undefined
 ) {
   try {
-    const newUser = await axios(SAVORED_SERVER_API, {
+    const newUser = await axios(SAVORED_SERVER_ENDPOINT, {
       method: "POST",
       data: {
         query: `
@@ -112,9 +115,9 @@ export async function createUser(
   }
 }
 
-export async function getCurrentUser(currentUser: User) {
+export async function getUserDb(currentUser: User) {
   try {
-    const user = await axios(SAVORED_SERVER_API, {
+    const user = await axios(SAVORED_SERVER_ENDPOINT, {
       method: "POST",
       data: {
         query: `
@@ -161,12 +164,12 @@ export async function getCurrentUser(currentUser: User) {
   }
 }
 
-export async function createFilters(
+export async function postFiltersDb(
   user_id: string | undefined,
   filters: Filters
 ) {
   try {
-    const newFilters = await axios(SAVORED_SERVER_API, {
+    const newFilters = await axios(SAVORED_SERVER_ENDPOINT, {
       method: "POST",
       data: {
         query: `
@@ -231,7 +234,7 @@ export async function updateFiltersDb(
   filters: Filters
 ) {
   try {
-    const updatedFilters = await axios(SAVORED_SERVER_API, {
+    const updatedFilters = await axios(SAVORED_SERVER_ENDPOINT, {
       method: "POST",
       data: {
         query: `
@@ -292,14 +295,14 @@ export async function updateFiltersDb(
   }
 }
 
-export async function unSavorDb(
+export async function updateSavorDb(
   user_id: string | undefined,
-  rcpId: number | undefined,
-  isSavored: boolean | undefined
+  rcpId: number,
+  isSavored: Boolean
 ) {
   // ("🍔🍕🍔🍟🌭🍿 inside async function")
   try {
-    const recipe = await axios(SAVORED_SERVER_API, {
+    const recipe = await axios(SAVORED_SERVER_ENDPOINT, {
       method: "POST",
       data: {
         query: `
@@ -332,7 +335,7 @@ export async function unSavorDb(
 
 export async function deleteAccount(user_id: string) {
   try {
-    const deleteAccount = await axios(SAVORED_SERVER_API, {
+    const deleteAccount = await axios(SAVORED_SERVER_ENDPOINT, {
       method: "POST",
       data: {
         query: `
@@ -350,7 +353,7 @@ export async function deleteAccount(user_id: string) {
         "Content-Type": "application/json",
       },
     });
-    console.log(deleteAccount);
+    // console.log(deleteAccount);
   } catch (err) {
     // Handle rejected axios POST request Promise
     return new Error(err);

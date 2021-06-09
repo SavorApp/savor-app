@@ -14,7 +14,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
-import { createUser, createFilters, swipeToDb, getCurrentUser } from "../db/db";
+import { postUserDb, postFiltersDb, postRecipeDb } from "../db/db";
 import { initialState } from "../redux/reducers/filters";
 const _screen = Dimensions.get("screen");
 
@@ -65,11 +65,11 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
           .auth()
           .createUserWithEmailAndPassword(email, password);
 
-        const createUserResult = await createUser(
+        const createUserResult = await postUserDb(
           resp.user?.uid,
           resp.user?.email
         );
-        const createFiltersResult = await createFilters(
+        const createFiltersResult = await postFiltersDb(
           resp.user?.uid,
           initialState.filters
         );
@@ -77,7 +77,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
         if (resp.additionalUserInfo?.isNewUser) {
           if (userRecipeListState.userRecipeList.length !== 0) {
             for (const savoredRcp of userRecipeListState.userRecipeList) {
-              const swipeToDbResult = await swipeToDb(
+              const swipeToDbResult = await postRecipeDb(
                 resp.user?.uid,
                 savoredRcp
               );

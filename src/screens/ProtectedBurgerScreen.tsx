@@ -67,11 +67,6 @@ function FakeBurgerScreen() {
                 style={[styles.checkboxBase, { marginRight: 35 }]}
                 onPress={() => {}}
               >
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
-                />
               </Pressable>
             </View>
             <View style={styles.labelAndCheckbox}>
@@ -80,11 +75,6 @@ function FakeBurgerScreen() {
                 style={[styles.checkboxBase, { marginRight: 35 }]}
                 onPress={() => {}}
               >
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
-                />
               </Pressable>
             </View>
           </View>
@@ -96,11 +86,6 @@ function FakeBurgerScreen() {
                 style={[styles.checkboxBase, { marginRight: 35 }]}
                 onPress={() => {}}
               >
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
-                />
               </Pressable>
             </View>
             <View style={styles.labelAndCheckbox}>
@@ -109,11 +94,6 @@ function FakeBurgerScreen() {
                 style={[styles.checkboxBase, { marginRight: 35 }]}
                 onPress={() => {}}
               >
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
-                />
               </Pressable>
             </View>
           </View>
@@ -126,7 +106,10 @@ function FakeBurgerScreen() {
 export default function ProtectedBurgerScreen() {
   React.useEffect(() => {
     setTimeout(() => {
-      Alert.alert("😕Uh-Oh...", "Please create a Savored account or, login to apply Recipe Filters.")
+      Alert.alert(
+        "😕Uh-Oh...",
+        "Please create a Savored account or, login to apply Recipe Filters.\n\n" +
+        "You will get access to our Smart Recommendation feature and, it's completely free!")
     }, 500);
   })
   return (

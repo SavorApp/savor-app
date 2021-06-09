@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  FlatList,
   StyleSheet,
   Dimensions,
   Animated,
@@ -17,7 +16,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
-import { unSavorDb } from "../db/db";
+import { updateSavorDb } from "../db/db";
 
 import axios from "axios";
 
@@ -34,19 +33,23 @@ export default function SavoredListScreen({
   navigation,
 }: SavoredListScreenProps) {
   const dispatch = useDispatch();
-  const userRecipeListState = useSelector<RootState, UserRecipeListState>(
-    (state) => state.userRecipeListState
-  );
-  console.log(userRecipeListState.userRecipeList);
+  const savoredList = useSelector<RootState, UserRecipe[]>((state) => {
+    return state.userRecipeListState.userRecipeList.filter((rcp) => {
+      return rcp.isSavored;
+    });
+  });
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   );
 
   function getRandomNumber(): number {
-    const savoredList = userRecipeListState.userRecipeList.filter((rcp) => {
-      return rcp.isSavored;
-    });
     return Math.floor(Math.random() * savoredList.length);
+  }
+
+  function handleTruffleShuffle() {
+    navigation.navigate("RecipeScreen", {
+      recipeId: savoredList[getRandomNumber()].id,
+    });
   }
 
   // below is the recipe list
@@ -155,9 +158,7 @@ export default function SavoredListScreen({
     dispatch(unSavorRecipe(rcpId));
 
     if (userState.isLoggedIn) {
-      console.log(typeof rcpId);
-      console.log(typeof user_id);
-      const waitingForUnSavor = await unSavorDb(user_id, rcpId, false);
+      const waitingForUnSavor = await updateSavorDb(user_id, rcpId, false);
       // console.log(waitingForUnSavor);
     }
   };
@@ -268,9 +269,7 @@ export default function SavoredListScreen({
             useFlatList={true}
             style={styles.flatList}
             contentContainerStyle={styles.flatListContainer}
-            data={userRecipeListState.userRecipeList.filter((rcp) => {
-              return rcp.isSavored;
-            })}
+            data={savoredList}
             keyExtractor={(rowData, index) => {
               // console.log("I am rowData: ", rowData)
               return rowData.id.toString();
@@ -302,12 +301,7 @@ export default function SavoredListScreen({
           />
         </View>
         <TouchableOpacity
-          onPress={() =>
-            navigation.navigate("RecipeScreen", {
-              recipeId:
-                userRecipeListState.userRecipeList[getRandomNumber()].id,
-            })
-          }
+          onPress={savoredList.length === 0 ? () => {} : handleTruffleShuffle}
           activeOpacity={0.8}
         >
           <LinearGradient

@@ -42,6 +42,17 @@ export const userRecipeListReducer = (
         userRecipeList: newUserRecipeList,
       };
     }
+    case "SAVOR_RECIPE": {
+      const newUserRecipeList = state.userRecipeList.map((rcp) => {
+        if (rcp.id === action.payload) {
+          rcp.isSavored = true;
+        }
+        return rcp;
+      });
+      return {
+        userRecipeList: newUserRecipeList,
+      };
+    }
     case "RESET_USER_RECIPE_LIST": {
       return {
         userRecipeList: [],
