@@ -216,6 +216,7 @@ type Recipe = {
   readyInMinutes: number;
   servings: number;
   ingredients: string[];
+  instructions: string;
   smartFilterScore: number;
   extendedIngredients?: Ingredient[];
 };

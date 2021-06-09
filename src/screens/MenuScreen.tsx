@@ -40,7 +40,7 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
     let fetchedRecipes: Recipe[];
 
     // Endpoint with filters included
-    const ENDPOINT = constructEndpoint(filtersState.filters);      
+    const ENDPOINT = constructEndpoint(filtersState.filters);
 
     // Try to fatch data
     try {
@@ -85,51 +85,53 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
       //     pricePerServing: rcp.pricePerServing,
       //     readyInMinutes: rcp.readyInMinutes,
       //     ingredients: ingredientsArray,
-      //     servings: rcp.servings,
-      //     smartFilterScore: 0,
-      //   };
-      // });
+      //     instructions: rcp.instructions,
+        //     servings: rcp.servings,
+        //     smartFilterScore: 0,
+        //   };
+        // });
 
 
-      /*
-      /\/\/\/\/\/\/\/\/\/\/\/\
-      UN-COMMENT FOR JSON DATA
-      \/\/\/\/\/\/\/\/\/\/\/\/
-      */
+        /*
+        /\/\/\/\/\/\/\/\/\/\/\/\
+        UN-COMMENT FOR JSON DATA
+        \/\/\/\/\/\/\/\/\/\/\/\/
+        */
 
-      fetchedRecipes = recipesJson.recipes.map((rcp) => {
-        const ingredientsArray = (
-          rcp.extendedIngredients as Array<Ingredient>
-        ).map((ing: Ingredient): string => {
-          return ing?.name;
+        fetchedRecipes = recipesJson.recipes.map((rcp) => {
+          const ingredientsArray = (
+            rcp.extendedIngredients as Array<Ingredient>
+          ).map((ing: Ingredient): string => {
+            return ing?.name;
+          });
+          return {
+            id: rcp.id,
+            sourceUrl: rcp.sourceUrl,
+            image: rcp.image,
+            imageType: rcp.imageType,
+            title: rcp.title,
+            diets: rcp.diets,
+            cuisines: rcp.cuisines,
+            dishTypes: rcp.dishTypes,
+            vegetarian: rcp.vegetarian,
+            vegan: rcp.vegan,
+            glutenFree: rcp.glutenFree,
+            dairyFree: rcp.dairyFree,
+            veryHealthy: rcp.veryHealthy,
+            cheap: rcp.cheap,
+            veryPopular: rcp.veryPopular,
+            sustainable: rcp.sustainable,
+            aggregateLikes: rcp.aggregateLikes,
+            spoonacularScore: rcp.spoonacularScore,
+            healthScore: rcp.healthScore,
+            pricePerServing: rcp.pricePerServing,
+            readyInMinutes: rcp.readyInMinutes,
+            servings: rcp.servings,
+            ingredients: ingredientsArray,
+            instructions: rcp.instructions,
+            smartFilterScore: 0,
+          };
         });
-        return {
-          id: rcp.id,
-          sourceUrl: rcp.sourceUrl,
-          image: rcp.image,
-          imageType: rcp.imageType,
-          title: rcp.title,
-          diets: rcp.diets,
-          cuisines: rcp.cuisines,
-          dishTypes: rcp.dishTypes,
-          vegetarian: rcp.vegetarian,
-          vegan: rcp.vegan,
-          glutenFree: rcp.glutenFree,
-          dairyFree: rcp.dairyFree,
-          veryHealthy: rcp.veryHealthy,
-          cheap: rcp.cheap,
-          veryPopular: rcp.veryPopular,
-          sustainable: rcp.sustainable,
-          aggregateLikes: rcp.aggregateLikes,
-          spoonacularScore: rcp.spoonacularScore,
-          healthScore: rcp.healthScore,
-          pricePerServing: rcp.pricePerServing,
-          readyInMinutes: rcp.readyInMinutes,
-          servings: rcp.servings,
-          ingredients: ingredientsArray,
-          smartFilterScore: 0,
-        };
-      });
 
       if (fetchedRecipes.length === 0) {
         Alert.alert(
@@ -167,7 +169,7 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
     navigation.navigate("MoreInfoScreen", {
       rcp: rcp,
     })
-  } 
+  }
 
   // On filter update
   React.useEffect(() => {
@@ -175,7 +177,7 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
     fetchRandomRecipes();
   }, [filtersState]);
 
-// on reaload trigger
+  // on reaload trigger
   React.useEffect(() => {
     // if reload recipe = true
     if (reloadRecipesState.reload) {
@@ -189,6 +191,6 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
   return isCardStackLoading ? (
     <LoadingCardStack />
   ) : (
-    <RecipeCardStack randRecipes={randRecipes} filtersState={filtersState} navigateToMoreInfoScreen={navigateToMoreInfoScreen}/>
-  );
+      <RecipeCardStack randRecipes={randRecipes} filtersState={filtersState} navigateToMoreInfoScreen={navigateToMoreInfoScreen} />
+    );
 }
