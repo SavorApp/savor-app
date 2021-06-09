@@ -16,9 +16,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
-import { updateSavorDb } from "../db/db";
-
-import axios from "axios";
+import { unSavorDb } from "../db/db";
 
 const _screen = Dimensions.get("screen");
 
@@ -36,7 +34,6 @@ export default function SavoredListScreen({
   const userRecipeListState = useSelector<RootState, UserRecipeListState>(
     (state) => state.userRecipeListState
   );
-  console.log(userRecipeListState.userRecipeList);
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   );
@@ -48,47 +45,28 @@ export default function SavoredListScreen({
     return Math.floor(Math.random() * savoredList.length);
   }
 
-  // below is the recipe list
-
-  function RecipeListItem({
-    rcp,
-    rowHeightAnimatedValue,
-    removeRow,
-    leftActionState,
-    rightActionState,
-  }) {
-    // {rcp}: {rcp: UserRecipe}
+  function renderItem({ item }: { item: UserRecipe }) {
     const newTitle =
-      rcp.title.length >= 30 ? rcp.title.slice(0, 30) + "..." : rcp.title;
-
-    if (rightActionState) {
-      Animated.timing(rowHeightAnimatedValue, {
-        toValue: 0,
-        duration: 5,
-        useNativeDriver: false,
-      }).start(() => {
-        removeRow();
-      });
-    }
+      item.title.length >= 30 ? item.title.slice(0, 30) + "..." : item.title;
 
     return (
       <TouchableOpacity
         style={styles.recipeListItem}
         onPress={() =>
-          navigation.navigate("RecipeScreen", { recipeId: rcp.id })
+          navigation.navigate("RecipeScreen", { recipeId: item.id })
         }
         activeOpacity={0.8}
       >
         <View style={styles.recipeListItemInner}>
-          {cuisineMap[rcp.cuisine] || cuisineMap["All"]}
+          {cuisineMap[item.cuisine] || cuisineMap["All"]}
           <View style={styles.recipeListItemInnerContent}>
             <Text style={styles.recipeTitle}>{newTitle}</Text>
             <View style={styles.tagsContainer}>
               <View style={styles.singleTagContainer}>
-                {dishTypeMap[rcp.dishType] || dishTypeMap["All"]}
-                <Text style={styles.tag}>{rcp.dishType}</Text>
+                {dishTypeMap[item.dishType] || dishTypeMap["All"]}
+                <Text style={styles.tag}>{item.dishType}</Text>
               </View>
-              {rcp.vegetarian && (
+              {item.vegetarian && (
                 <View style={styles.singleTagContainer}>
                   <MaterialCommunityIcons
                     name="alpha-v-circle-outline"
@@ -97,18 +75,18 @@ export default function SavoredListScreen({
                   <Text style={styles.tag}>Vegetarian</Text>
                 </View>
               )}
-              {rcp.vegan && (
+              {item.vegan && (
                 <View style={styles.singleTagContainer}>
                   <MaterialCommunityIcons name="alpha-v-circle" color="green" />
                   <Text style={styles.tag}>Vegan</Text>
                 </View>
               )}
-              {rcp.glutenFree && (
+              {item.glutenFree && (
                 <View style={styles.singleTagContainer}>
                   <Text style={[styles.tag, { fontWeight: "bold" }]}>GF</Text>
                 </View>
               )}
-              {rcp.dairyFree && (
+              {item.dairyFree && (
                 <View style={styles.singleTagContainer}>
                   <Text style={[styles.tag, { fontWeight: "bold" }]}>DF</Text>
                 </View>
@@ -120,140 +98,23 @@ export default function SavoredListScreen({
     );
   }
 
-  function renderItem({ item }: { item: UserRecipe }, rowMap) {
-    const rowHeightAnimatedValue = new Animated.Value(60);
-
-    return (
-      <RecipeListItem
-        rcp={item}
-        rowHeightAnimatedValue={rowHeightAnimatedValue}
-        removeRow={() => deleteRow({ item }, rowMap)}
-      />
-    );
-  }
-
-  const onRowDidOpen = (item, rowMap) => {};
-
-  const onLeftActionStatusChange = (item, rowMap) => {};
-
-  const onRightActionStatusChange = (item, rowMap) => {};
-
-  const onRightAction = (item, rowMap) => {};
-
-  const onLeftAction = (item, rowMap) => {};
-  const closedRow = ({ item }, rowMap) => {
-    if (rowMap[item.id]) {
-      rowMap[item.id].closeRow();
-    }
-  };
-
-  const deleteRow = async ({ item }, rowMap) => {
+  async function deleteRow({ item }: { item: UserRecipe }) {
     const rcpId = item.id;
     const user_id = userState.user.id;
 
     dispatch(unSavorRecipe(rcpId));
 
     if (userState.isLoggedIn) {
-      const waitingForUnSavor = await updateSavorDb(user_id, rcpId, false);
+      const waitingForUnSavor = await unSavorDb(user_id, rcpId, false);
       // console.log(waitingForUnSavor);
     }
-  };
+  }
 
-  const HiddenItemWithActions = (props) => {
-    const {
-      swipeAnimatedValue,
-      leftActionActivated,
-      rightActionActivated,
-      rowActionAnimatedValue,
-      rowHeightAnimatedValue,
-      onClose,
-      onDelete,
-      data,
-      rowMap,
-    } = props;
-
-    if (rightActionActivated) {
-      Animated.spring(rowActionAnimatedValue, {
-        toValue: 500,
-        useNativeDriver: false,
-      }).start();
-    } else {
-      Animated.spring(rowActionAnimatedValue, {
-        toValue: 75,
-        useNativeDriver: false,
-      }).start();
-    }
-
+  function renderHiddenItem({ item }: { item: UserRecipe }) {
     return (
-      <Animated.View
-        style={[styles.rowBack, { height: rowHeightAnimatedValue }]}
-      >
+      <Animated.View>
         <Text>Left</Text>
-        <TouchableOpacity
-          style={[styles.backRightBtn, styles.backRightBtnLeft]}
-          onPress={onClose}
-        >
-          <MaterialCommunityIcons
-            name="close-circle-outline"
-            size={25}
-            style={styles.trash}
-            color="#fff"
-          />
-        </TouchableOpacity>
-        <Animated.View
-          style={[
-            styles.backRightBtn,
-            styles.backRightBtnRight,
-            {
-              flex: 1,
-              width: rowActionAnimatedValue,
-            },
-          ]}
-        >
-          <TouchableOpacity
-            style={[styles.backRightBtn, styles.backRightBtnRight]}
-            onPress={onDelete}
-          >
-            <Animated.View
-              style={[
-                styles.trash,
-                {
-                  transform: [
-                    {
-                      scale: swipeAnimatedValue.interpolate({
-                        inputRange: [-90, -45],
-                        outputRange: [1, 0],
-                        extrapolate: "clamp",
-                      }),
-                    },
-                  ],
-                },
-              ]}
-            >
-              <MaterialCommunityIcons
-                name="trash-can-outline"
-                size={25}
-                color="#fff"
-              />
-            </Animated.View>
-          </TouchableOpacity>
-        </Animated.View>
       </Animated.View>
-    );
-  };
-
-  function renderHiddenItem({ item }, rowMap) {
-    const rowActionAnimatedValue = new Animated.Value(75);
-    const rowHeightAnimatedValue = new Animated.Value(60);
-    return (
-      <HiddenItemWithActions
-        data={item}
-        rowMap={rowMap}
-        rowActionAnimatedValue={rowActionAnimatedValue}
-        rowHeightAnimatedValue={rowHeightAnimatedValue}
-        onClose={() => closedRow({ item }, rowMap)}
-        onDelete={() => deleteRow({ item }, rowMap)}
-      />
     );
   }
 
@@ -268,34 +129,20 @@ export default function SavoredListScreen({
             data={userRecipeListState.userRecipeList.filter((rcp) => {
               return rcp.isSavored;
             })}
-            keyExtractor={(rowData, index) => {
-              // console.log("I am rowData: ", rowData)
-              return rowData.id.toString();
+            keyExtractor={(item) => {
+              return item.id.toString();
             }}
-            renderItem={(rowData, rowMap) => renderItem(rowData, rowMap)}
-            renderHiddenItem={(rowData, rowMap) => {
-              return renderHiddenItem(rowData, rowMap);
+            renderItem={(item) => renderItem(item)}
+            renderHiddenItem={(item) => {
+              return renderHiddenItem(item);
             }}
             leftOpenValue={75}
             rightOpenValue={-150}
             disableRightSwipe
-            onRowDidOpen={(rowData, rowMap) => onRowDidOpen(rowData, rowMap)}
             leftActivationValue={100}
             rightActivationValue={-200}
             leftActionValue={0}
             rightActionValue={-500}
-            onLeftAction={(rowData, rowMap) => {
-              return onLeftAction(rowData, rowMap);
-            }}
-            onRightAction={(rowData, rowMap) => {
-              return onRightAction(rowData, rowMap);
-            }}
-            onLeftActionStatusChange={(rowData, rowMap) =>
-              onLeftActionStatusChange(rowData, rowMap)
-            }
-            onRightActionStatusChange={(rowData, rowMap) =>
-              onRightActionStatusChange(rowData, rowMap)
-            }
           />
         </View>
         <TouchableOpacity

@@ -48,7 +48,6 @@ export default function getCacheLoadData() {
                     dispatch(setFilters(resp.filters[0]));
                   }
                 }
-                
               })
               .catch((err: Error) => console.log(err));
           }

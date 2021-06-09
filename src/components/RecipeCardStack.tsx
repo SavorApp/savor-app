@@ -14,6 +14,7 @@ const _screen = Dimensions.get("screen");
 export default function RecipeCardStack({
   randRecipes,
   filtersState,
+  navigateToMoreInfoScreen,
 }: RecipeCardStackParamList) {
   const dispatch = useDispatch();
   const userState = useSelector<RootState, UserState>(
@@ -25,32 +26,32 @@ export default function RecipeCardStack({
   const [blockSwipeButtons, setBlockSwipeButtons] = React.useState(false);
   const userRef = useRef<UserState>();
   const cardStackRef = React.useRef<CardStack>();
-  
+  const [currentRcp, setCurrentRcp] = React.useState<Recipe>(randRecipes[0])
+
   useEffect(() => {
     userRef.current = userState;
   }, [userState]);
 
   async function handleSwipe(idx: number, savored: Boolean) {
     const randRecipe = randRecipes[idx];
-
+    
     const recipeToBeAdded = {
       id: randRecipe.id,
       title: randRecipe.title,
 
-      cuisine:
-        filtersState.filters.cuisine
-          ? filtersState.filters.cuisine[0].toUpperCase() +
+      cuisine: filtersState.filters.cuisine
+        ? filtersState.filters.cuisine[0].toUpperCase() +
           filtersState.filters.cuisine.slice(1)
-          : randRecipe.cuisines.length === 0
-            ? "World Food"
-            : randRecipe.cuisines[0],
-      dishType:
-        filtersState.filters.dishType
-          ? filtersState.filters.dishType[0].toUpperCase() +
+        : randRecipe.cuisines.length === 0
+        ? "World Food"
+        : randRecipe.cuisines[0],
+      dishType: filtersState.filters.dishType
+        ? filtersState.filters.dishType[0].toUpperCase() +
           filtersState.filters.dishType.slice(1)
-          : randRecipe.dishTypes.length === 0
-            ? "Many"
-            : randRecipe.dishTypes[0][0].toUpperCase() + randRecipe.dishTypes[0].slice(1),
+        : randRecipe.dishTypes.length === 0
+        ? "Many"
+        : randRecipe.dishTypes[0][0].toUpperCase() +
+          randRecipe.dishTypes[0].slice(1),
       vegetarian: randRecipe.vegetarian,
       vegan: randRecipe.vegan,
       glutenFree: randRecipe.glutenFree,
@@ -94,7 +95,9 @@ export default function RecipeCardStack({
     // If we are at the last card, trigger a reload
     if (randRecipes.length - idx === 1) {
       dispatch(triggerReload());
+      
     }
+    setCurrentRcp(randRecipes[idx+1])
     setBlockSwipeButtons(false);
   }
 
@@ -108,12 +111,16 @@ export default function RecipeCardStack({
     !blockSwipeButtons && cardStackRef.current?.swipeRight();
   }
 
+  
+
   function renderNoMoreCard() {
     return (
       <View style={styles.renderNoMoreCardsContainer}>
         <Text style={styles.noMoreCardsText}>No More Recipes,</Text>
 
-        <Text style={styles.noMoreCardsText}>please adjust your filters...</Text>
+        <Text style={styles.noMoreCardsText}>
+          please adjust your filters...
+        </Text>
         <Emoji style={{ margin: 8 }} name="male-cook" />
       </View>
     );
@@ -143,10 +150,7 @@ export default function RecipeCardStack({
                   handleSwipe(idx, true);
                 }}
               >
-                <RecipeCard 
-                  rcp={rcp} 
-                  id={rcp.id} 
-                   />
+                <RecipeCard rcp={rcp} id={rcp.id} />
               </Card>
             );
           })}
@@ -154,6 +158,8 @@ export default function RecipeCardStack({
         <SwipeButtons
           handleOnPressLeft={handleOnPressLeft}
           handleOnPressRight={handleOnPressRight}
+          rcp={currentRcp}
+          navigateToMoreInfoScreen={navigateToMoreInfoScreen}
         />
       </View>
     </View>

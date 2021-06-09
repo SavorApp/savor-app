@@ -135,6 +135,7 @@ export async function getUserDb(currentUser: User) {
             servings
             ingredients
             isSavored
+            updatedAt
              }
             filters{
               smartFilter
@@ -306,22 +307,48 @@ export async function updateSavorDb(user_id: string | undefined, rcpId: number, 
                       }
 
                       `,
-                variables: {
-                  // user_id: user_id,
-                  // id: rcpId,
-                  // isSavored: isSavored,
-                  user_id: user_id,
-                  recipe_id: rcpId,
-                  isSavored: isSavored,
-                },
-              },
-              headers: {
-                "Content-Type": "application/json",
-              },
-            });
-          
-          } catch (err) {
-            // Handle error
-             return new Error(err);
-          }
-      }
+        variables: {
+          // user_id: user_id,
+          // id: rcpId,
+          // isSavored: isSavored,
+          user_id: user_id,
+          recipe_id: rcpId,
+          isSavored: isSavored,
+        },
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  } catch (err) {
+    // Handle error
+    return new Error(err);
+  }
+}
+
+export async function deleteUser(user_id: string) {
+  try {
+    const deleteAccount = await axios(SAVORED_SERVER_ENDPOINT, {
+      method: "POST",
+      data: {
+        query: `
+                    mutation deleteUser($user_id: String!) {
+                      deleteUser(_id:$user_id) {
+                          _id
+                      }
+                    }
+                    `,
+        variables: {
+          user_id: user_id,
+        },
+      },
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    // console.log(deleteAccount);
+  } catch (err) {
+    // Handle rejected axios POST request Promise
+    return new Error(err);
+  }
+}
