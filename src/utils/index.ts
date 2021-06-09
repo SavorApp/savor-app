@@ -3,14 +3,14 @@ import { dishTypeBundler } from "../constants/Maps";
 // Removes recipes viewed in the last 3 days
 export function removeRecentlyViewedRecipes(fetchedRcps: Recipe[], userRcps: UserRecipe[]): Recipe[] {
 
-     // Date at time of function call
+    // Date at time of function call
     const currDate = new Date();
     const oneDay=1000*60*60*24;
 
     // Create an array of Recipes viewed within the last 3 days
     const rcpsViewedLast3Days = userRcps.filter((rcp) => {
         // Evaluate the date difference of,
-        // when the Recipe was viewed last and, right noww
+        // current datetime and when the recipe was updated last
         if (rcp.updatedAt) {
             const dateDiffInDays = (currDate.valueOf() - new Date(rcp.updatedAt).valueOf())/oneDay
             // Return recipes where date difference is <= 3 days
