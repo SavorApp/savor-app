@@ -13,6 +13,7 @@ import {
   DeleteAccountScreen,
   BurgerScreen,
   ProtectedBurgerScreen,
+  MoreInfoScreen,
 } from "../screens";
 import BottomTabNavigator from "./BottomTab";
 
@@ -139,6 +140,30 @@ function RootNavigator() {
       <RootStack.Screen
         name="ProtectedBurgerScreen"
         component={ProtectedBurgerScreen}
+        options={{
+          headerBackImage: () => (
+            <Ionicons name="chevron-down-sharp" size={36} />
+          ),
+          headerBackTitleVisible: false,
+          headerLeftContainerStyle: {
+            marginLeft: 12,
+          },
+          headerTitle: () => {
+            return (
+              <View style={styles.headerContainer}>
+                <Image
+                  source={require("../../assets/header.png")}
+                  style={styles.headerImage}
+                />
+              </View>
+            );
+          },
+        }}
+      />
+      <RootStack.Screen
+        name="MoreInfoScreen"
+        // TODO: Research whether there is another solution than to cast
+        component={MoreInfoScreen as React.FC}
         options={{
           headerBackImage: () => (
             <Ionicons name="chevron-down-sharp" size={36} />

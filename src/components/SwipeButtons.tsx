@@ -2,14 +2,17 @@ import React from "react"
 import { View, StyleSheet, TouchableOpacity } from "react-native"
 import { Ionicons } from "@expo/vector-icons";
 import { shadowStyle } from "../constants/ColorPalette";
+import { StackNavigationProp } from "@react-navigation/stack";
 
-
-export default function SwipeButtons({ handleOnPressLeft, handleOnPressRight}: SwipeButtonsParamList) {
+export default function SwipeButtons({ handleOnPressLeft, handleOnPressRight, rcp, navigateToMoreInfoScreen}: SwipeButtonsParamList) {
 
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.button} onPress={handleOnPressLeft}>
                 <Ionicons name="thumbs-down-sharp" size={24} color="#B50000" />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button} onPress={() => {navigateToMoreInfoScreen(rcp)}}>
+                <Ionicons name="md-information-circle-sharp" size={24} color="grey" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={handleOnPressRight}>
                 <Ionicons name="thumbs-up-sharp" size={24} color="green" />

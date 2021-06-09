@@ -19,6 +19,7 @@ const _screen = Dimensions.get("screen");
 export default function RecipeCardStack({
   randRecipes,
   filtersState,
+  navigateToMoreInfoScreen,
 }: RecipeCardStackParamList) {
   const dispatch = useDispatch();
   const userState = useSelector<RootState, UserState>(
@@ -30,6 +31,7 @@ export default function RecipeCardStack({
   const [blockSwipeButtons, setBlockSwipeButtons] = React.useState(false);
   const userId = useRef<string | undefined>("");
   const cardStackRef = React.useRef<CardStack>();
+  const [currentRcp, setCurrentRcp] = React.useState<Recipe>(randRecipes[0])
 
   useEffect(() => {
     userId.current = userState.user.id;
@@ -37,7 +39,7 @@ export default function RecipeCardStack({
 
   async function handleSwipe(idx: number, savored: Boolean) {
     const randRecipe = randRecipes[idx];
-
+    
     const recipeToBeAdded = {
       id: randRecipe.id,
       title: randRecipe.title,
@@ -72,7 +74,9 @@ export default function RecipeCardStack({
     // If we are at the last card, trigger a reload
     if (randRecipes.length - idx === 1) {
       dispatch(triggerReload());
+      
     }
+    setCurrentRcp(randRecipes[idx+1])
     setBlockSwipeButtons(false);
   }
 
@@ -85,6 +89,8 @@ export default function RecipeCardStack({
     setBlockSwipeButtons(true);
     !blockSwipeButtons && cardStackRef.current?.swipeRight();
   }
+
+  
 
   function renderNoMoreCard() {
     return (
@@ -131,6 +137,8 @@ export default function RecipeCardStack({
         <SwipeButtons
           handleOnPressLeft={handleOnPressLeft}
           handleOnPressRight={handleOnPressRight}
+          rcp={currentRcp}
+          navigateToMoreInfoScreen={navigateToMoreInfoScreen}
         />
       </View>
     </View>

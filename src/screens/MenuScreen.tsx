@@ -6,16 +6,21 @@ import { resetReload } from "../redux/actions";
 import axios from "axios";
 import RecipeCardStack from "../components/RecipeCardStack";
 import LoadingCardStack from "../components/LoadingCardStack";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { applySmartFilter, constructEndpoint, removeRecentlyViewedRecipes } from "../utils";
 // Importing JSON data for development and testing
 import * as recipesJson from "../data/100Recipes.json";
 
 
+export interface MenuScreenProps {
+  navigation: StackNavigationProp<MenuStackParamList, "MenuScreen">;
+}
+
 // Initializing Spoonacular resources
 const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
 const RAND_RECIPE_BASE_URL = `https://api.spoonacular.com/recipes/random?apiKey=${API_KEY}&`;
 
-export default function MenuScreen() {
+export default function MenuScreen({ navigation }: MenuScreenProps) {
   const dispatch = useDispatch();
   const userRecipeListState = useSelector<RootState, UserRecipeListState>(
     (state) => state.userRecipeListState
@@ -158,6 +163,12 @@ export default function MenuScreen() {
     }
   }
 
+  function navigateToMoreInfoScreen(rcp: Recipe) {
+    navigation.navigate("MoreInfoScreen", {
+      rcp: rcp,
+    })
+  } 
+
   // On filter update
   React.useEffect(() => {
     setIsCardStackLoading(true);
@@ -178,6 +189,6 @@ export default function MenuScreen() {
   return isCardStackLoading ? (
     <LoadingCardStack />
   ) : (
-    <RecipeCardStack randRecipes={randRecipes} filtersState={filtersState}  />
+    <RecipeCardStack randRecipes={randRecipes} filtersState={filtersState} navigateToMoreInfoScreen={navigateToMoreInfoScreen}/>
   );
 }
