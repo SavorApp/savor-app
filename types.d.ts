@@ -12,6 +12,7 @@ type RootStackParamList = {
   MenuScreen: undefined;
   BurgerScreen: undefined;
   ProtectedBurgerScreen: undefined;
+  MoreInfoScreen: { rcp: Recipe };
 };
 
 type BottomTabParamList = {
@@ -32,6 +33,7 @@ type MenuStackParamList = {
   MenuScreen: undefined;
   BurgerScreen: undefined;
   ProtectedBurgerScreen: undefined;
+  MoreInfoScreen: { rcp: Recipe };
 };
 
 type SavoredListStackParamList = {
@@ -162,11 +164,14 @@ type RecipeCardParamList = {
 type SwipeButtonsParamList = {
   handleOnPressLeft: () => void;
   handleOnPressRight: () => void;
+  rcp: Recipe;
+  navigateToMoreInfoScreen: (rcp:Recipe) => void;
 };
 
 type RecipeCardStackParamList = {
   randRecipes: Recipe[];
   filtersState: FiltersState;
+  navigateToMoreInfoScreen: (rcp:Recipe) => void;
 };
 
 /*
