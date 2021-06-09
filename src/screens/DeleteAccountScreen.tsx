@@ -18,6 +18,7 @@ import {
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { LinearGradient } from "expo-linear-gradient";
 import { firebaseApp } from "../constants/Firebase";
+import { deleteAccount } from "../db/db";
 
 const _screen = Dimensions.get("screen");
 
@@ -36,9 +37,10 @@ export default function DeleteAccountScreen({
     setBlockDeleteAccount(true);
     // TODO: Delete Account in DB
     const user = firebaseApp.auth().currentUser;
+    console.log(user?.uid);
     user
       ?.delete()
-      .then(() => {
+      .then(async () => {
         // Remove cached access-token on mobile storage
         removeCachedAccessToken();
         // - Update global state
@@ -46,6 +48,8 @@ export default function DeleteAccountScreen({
         dispatch(resetUserRecipeList());
         dispatch(resetFilters());
         setBlockDeleteAccount(false);
+        // - Delete from DB
+        await deleteAccount(user?.uid);
         Alert.alert("Enjoy your time off", "We hope you come back soon 👨‍🍳");
         navigation.goBack();
       })

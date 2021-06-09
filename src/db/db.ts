@@ -330,15 +330,14 @@ export async function unSavorDB(
 }
 
 export async function deleteAccount(user_id: string) {
-  console.log(user_id);
   try {
-    const updatedFilters = await axios(SAVORED_SERVER_API, {
+    const deleteAccount = await axios(SAVORED_SERVER_API, {
       method: "POST",
       data: {
         query: `
-                    mutation updateFilters($user_id: String!) {
-                      updateFilters(user_id:$user_id) {
-                          user_id
+                    mutation deleteUser($user_id: String!) {
+                      deleteUser(_id:$user_id) {
+                          _id
                       }
                     }
                     `,
@@ -350,6 +349,7 @@ export async function deleteAccount(user_id: string) {
         "Content-Type": "application/json",
       },
     });
+    console.log(deleteAccount);
   } catch (err) {
     // Handle rejected axios POST request Promise
     return new Error(err);
