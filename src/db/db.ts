@@ -1,7 +1,10 @@
 import axios from "axios";
 import { SAVORED_SERVER_ENDPOINT } from "../constants/Api";
 
-export async function postRecipeDb(user_id: string | undefined, rcp: UserRecipe) {
+export async function postRecipeDb(
+  user_id: string | undefined,
+  rcp: UserRecipe
+) {
   // console.log(rcp);
   try {
     const recipe = await axios(SAVORED_SERVER_ENDPOINT, {
@@ -292,13 +295,17 @@ export async function updateFiltersDb(
   }
 }
 
-export async function updateSavorDb(user_id: string | undefined, rcpId: number, isSavored: Boolean) {
-      // ("🍔🍕🍔🍟🌭🍿 inside async function")
-          try {
-            const recipe = await axios(SAVORED_SERVER_ENDPOINT, { 
-              method: "POST",
-              data: {
-                query: `
+export async function updateSavorDb(
+  user_id: string | undefined,
+  rcpId: number,
+  isSavored: Boolean
+) {
+  // ("🍔🍕🍔🍟🌭🍿 inside async function")
+  try {
+    const recipe = await axios(SAVORED_SERVER_ENDPOINT, {
+      method: "POST",
+      data: {
+        query: `
                       mutation updateRecipe($user_id: String!, $recipe_id: Int!, $isSavored: Boolean) {
                         updateRecipe(user_id:$user_id, recipe_id:$recipe_id, isSavored:$isSavored)
                         {
@@ -326,7 +333,7 @@ export async function updateSavorDb(user_id: string | undefined, rcpId: number, 
   }
 }
 
-export async function deleteUser(user_id: string) {
+export async function deleteAccount(user_id: string) {
   try {
     const deleteAccount = await axios(SAVORED_SERVER_ENDPOINT, {
       method: "POST",
