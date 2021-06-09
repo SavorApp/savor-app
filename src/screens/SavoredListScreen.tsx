@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  FlatList,
   StyleSheet,
   Dimensions,
   Animated,
@@ -17,8 +16,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
-import { SAVORED_SERVER_API } from "../constants/Api";
-import { toggleSavorDB } from "../db/db";
+import { updateSavorDb } from "../db/db";
 
 import axios from "axios";
 
@@ -151,7 +149,7 @@ export default function SavoredListScreen({ navigation }: SavoredListScreenProps
     dispatch(unSavorRecipe(rcpId))
   
     if (userState.isLoggedIn) {
-      const waitingForUnSavor = await toggleSavorDB(user_id, rcpId, false);
+      const waitingForUnSavor = await updateSavorDb(user_id, rcpId, false);
       // console.log(waitingForUnSavor);
     }    
   }

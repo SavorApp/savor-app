@@ -6,7 +6,7 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
 import SwipeButtons from "../components/SwipeButtons";
-import { swipeToDb, toggleSavorDB } from "../db/db";
+import { postRecipeDb, updateSavorDb } from "../db/db";
 import Emoji from "react-native-emoji";
 
 const _screen = Dimensions.get("screen");
@@ -23,11 +23,11 @@ export default function RecipeCardStack({
     (state) => state.userRecipeListState
   );
   const [blockSwipeButtons, setBlockSwipeButtons] = React.useState(false);
-  const userId = useRef<string | undefined>("");
+  const userRef = useRef<UserState>();
   const cardStackRef = React.useRef<CardStack>();
   
   useEffect(() => {
-    userId.current = userState.user.id;
+    userRef.current = userState;
   }, [userState]);
 
   async function handleSwipe(idx: number, savored: Boolean) {
@@ -74,8 +74,8 @@ export default function RecipeCardStack({
       // Add recipe to global state
       dispatch(addtoUserRecipeList(recipeToBeAdded));
       // Add recipe to DB for given user, if logged in
-      if (userState.isLoggedIn) {
-        await swipeToDb(userId.current, recipeToBeAdded);
+      if (userRef.current?.isLoggedIn) {
+        await postRecipeDb(userRef.current?.user.id, recipeToBeAdded);
       }
     } else {
       // If this recipe has been acted upon...
@@ -85,9 +85,9 @@ export default function RecipeCardStack({
       } else {
         dispatch(unSavorRecipe(recipeToBeAdded.id))
       }
-      if (userState.isLoggedIn) {
+      if (userRef.current?.isLoggedIn) {
         // Update DB record based on savored value
-        await toggleSavorDB(userId.current, recipeToBeAdded.id, savored);
+        await updateSavorDb(userRef.current?.user.id, recipeToBeAdded.id, savored);
       }
     }
     
