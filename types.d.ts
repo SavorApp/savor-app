@@ -215,6 +215,7 @@ type Recipe = {
   pricePerServing: number;
   readyInMinutes: number;
   servings: number;
+  summary: string;
   ingredients: string[];
   instructions: string;
   smartFilterScore: number;

@@ -6,13 +6,11 @@ import {
     Text,
     ScrollView,
     Platform,
-    Alert,
+    TouchableOpacity,
 } from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import HTML from "react-native-render-html";
-import Constants from "expo-constants";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 
 const _screen = Dimensions.get("screen");
@@ -23,6 +21,9 @@ export interface MoreInfoScreenProps {
 
 export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
     const { rcp } = route.params;
+    const [showSummary, setShowSummary] = React.useState(false);
+    const [showIngredients, setShowIngredients] = React.useState(false);
+    const [showInstructions, setShowInstructions] = React.useState(false);
 
 
     // Remove duplicates in array of elements and then map through it to organize the layout
@@ -52,175 +53,226 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.subContainer}>
-                <Text style={styles.title}>{rcp.title}</Text>
-                <View style={styles.contentContainer}>
-                    <ScrollView style={styles.scrollView}>
-                        <Text style={styles.infoTitle}>Quick Info</Text>
-                        <Text style={styles.subTitle}>What you will need</Text>
-                        <Ingredients ingredients={rcp.ingredients} />
-                        <Text style={styles.subTitle}>Instructions</Text>
-                        <HTML source={{ html: rcp.instructions }} />
-                        <Text style={styles.subTitle}>Additional Information</Text>
-                        <Text>Preparation time: {rcp.readyInMinutes} min</Text>
-                        <Text>Servings: {rcp.servings}</Text>
-                        <View style={styles.tagsContainer}>
-                            {rcp.veryHealthy && (
-                                <View style={styles.singleTagContainer}>
-                                    <MaterialCommunityIcons
-                                        name="food-apple-outline"
-                                        color="green"
-                                    />
-                                    <Text style={styles.tag}>Healthy Choice</Text>
-                                </View>
-                            )}
-                            {rcp.vegetarian && (
-                                <View style={styles.singleTagContainer}>
-                                    <MaterialCommunityIcons
-                                        name="alpha-v-circle-outline"
-                                        color="green"
-                                    />
-                                    <Text style={styles.tag}>Vegetarian</Text>
-                                </View>
-                            )}
-                            {rcp.vegan && (
-                                <View style={styles.singleTagContainer}>
-                                    <MaterialCommunityIcons
-                                        name="alpha-v-circle"
-                                        color="green"
-                                    />
-                                    <Text style={styles.tag}>Vegan</Text>
-                                </View>
-                            )}
-                            {rcp.glutenFree && (
-                                <View style={styles.singleTagContainer}>
-                                    <Text style={[styles.tag, { fontWeight: "bold" }]}>
-                                        Gluten Free
-                    </Text>
-                                </View>
-                            )}
-                            {rcp.dairyFree && (
-                                <View style={styles.singleTagContainer}>
-                                    <Text style={[styles.tag, { fontWeight: "bold" }]}>
-                                        Dairy Free
-                    </Text>
-                                </View>
-                            )}
-                        </View>
-                        <Text>{"\n\n\n"}</Text>
-                    </ScrollView>
+        <View style={styles.subContainer}>
+          <Text style={styles.title}>{rcp.title}</Text>
+          <View style={styles.contentContainer}>
+            <ScrollView style={styles.scrollView}>
+              <TouchableOpacity
+                onPress={() => {
+                  setShowSummary(!showSummary);
+                }}
+                activeOpacity={0.8}
+              >
+                <View style={styles.accordion}>
+                  <Text style={styles.subTitle}>Summary</Text>
+                  <Ionicons
+                    name={
+                      showSummary ? "chevron-up-sharp" : "chevron-down-sharp"
+                    }
+                    size={24}
+                  />
                 </View>
-            </View>
+              </TouchableOpacity>
+              {showSummary && <HTML source={{ html: rcp.summary }} />}
+              <TouchableOpacity
+                style={styles.touchableHeader}
+                onPress={() => {
+                  setShowIngredients(!showIngredients);
+                }}
+                activeOpacity={0.8}
+              >
+                <View style={styles.accordion}>
+                  <Text style={styles.subTitle}>Ingredients</Text>
+                  <Ionicons
+                    name={
+                      showIngredients
+                        ? "chevron-up-sharp"
+                        : "chevron-down-sharp"
+                    }
+                    size={24}
+                  />
+                </View>
+              </TouchableOpacity>
+              {showIngredients && (
+                <Ingredients ingredients={rcp.ingredients} />
+              )}
+              <TouchableOpacity
+                style={styles.touchableHeader}
+                onPress={() => {
+                  setShowInstructions(!showInstructions);
+                }}
+                activeOpacity={0.8}
+              >
+                <View style={styles.accordion}>
+                  <Text style={styles.subTitle}>Instructions</Text>
+                  <Ionicons
+                    name={
+                      showInstructions
+                        ? "chevron-up-sharp"
+                        : "chevron-down-sharp"
+                    }
+                    size={24}
+                  />
+                </View>
+              </TouchableOpacity>
+              {showInstructions && (
+                <>
+                  <Text style={{ fontWeight: "bold" }}>
+                    Preparation time:{" "}
+                    <Text style={{ fontWeight: "normal" }}>
+                      {rcp.readyInMinutes} min
+                    </Text>
+                  </Text>
+                  <Text style={{ fontWeight: "bold" }}>
+                    Servings:{" "}
+                    <Text style={{ fontWeight: "normal" }}>
+                      {rcp.servings}
+                    </Text>
+                    {"\n"}
+                  </Text>
+                  <HTML source={{ html: rcp.instructions }} />
+                </>
+              )}
+              <Text>{"\n\n\n"}</Text>
+            </ScrollView>
+          </View>
+          <View style={styles.tagsContainer}>
+            {rcp.veryHealthy && (
+              <View style={styles.singleTagContainer}>
+                <MaterialCommunityIcons
+                  name="food-apple-outline"
+                  color="green"
+                />
+                <Text style={styles.tag}>Healthy Choice</Text>
+              </View>
+            )}
+            {rcp.vegetarian && (
+              <View style={styles.singleTagContainer}>
+                <MaterialCommunityIcons
+                  name="alpha-v-circle-outline"
+                  color="green"
+                />
+                <Text style={styles.tag}>Vegetarian</Text>
+              </View>
+            )}
+            {rcp.vegan && (
+              <View style={styles.singleTagContainer}>
+                <MaterialCommunityIcons name="alpha-v-circle" color="green" />
+                <Text style={styles.tag}>Vegan</Text>
+              </View>
+            )}
+            {rcp.glutenFree && (
+              <View style={styles.singleTagContainer}>
+                <Text style={[styles.tag, { fontWeight: "bold" }]}>
+                  Gluten Free
+                </Text>
+              </View>
+            )}
+            {rcp.dairyFree && (
+              <View style={styles.singleTagContainer}>
+                <Text style={[styles.tag, { fontWeight: "bold" }]}>
+                  Dairy Free
+                </Text>
+              </View>
+            )}
+          </View>
         </View>
+      </View>
     )
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: colorPalette.background,
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      backgroundColor: colorPalette.background,
     },
-
+  
     subContainer: {
-        justifyContent: "center",
-        alignItems: "center",
-        width: _screen.width * 0.9,
-        height: _screen.height * 0.8,
-        borderRadius: 15,
-        backgroundColor: colorPalette.primary,
-        ...shadowStyle,
+      justifyContent: "center",
+      alignItems: "center",
+      width: _screen.width * 0.9,
+      height: _screen.height * 0.75,
+      borderRadius: 15,
+      backgroundColor: colorPalette.primary,
+      ...shadowStyle,
     },
+  
     title: {
-        margin: 8,
-        fontSize: 25,
-        fontWeight: "bold",
-        color: colorPalette.background,
-        textAlign: "center",
+      margin: 8,
+      fontSize: 25,
+      fontWeight: "bold",
+      color: colorPalette.background,
+      textAlign: "center",
     },
-
-    infoTitle: {
-        fontSize: 25,
-        fontWeight: "bold",
-        marginTop: 10,
-        marginBottom: 5,
-        textAlign: "center"
-    },
-
-    summaryBackground: {
-        color: "black",
-        marginTop: 5,
-        textAlign: "center",
-        height: _screen.height * 0.6,
-    },
-
-    summaryContainer: {
-        marginBottom: 10,
-        padding: 5,
-        backgroundColor: "white",
-        borderRadius: 15,
-        width: _screen.width * 0.7,
-        ...shadowStyle,
-    },
-
-    contentContainer: {
-        justifyContent: "center",
-        alignItems: "center",
-        width: _screen.width * 0.85,
-        height: _screen.height * 0.65,
-        borderRadius: 15,
-        backgroundColor: colorPalette.secondary,
-    },
-
-    scrollView: {
-        padding: 8,
-        marginVertical: Platform.OS === "android" ? 12 : 0,
-        width: _screen.width * 0.83,
-        borderRadius: 15,
-        backgroundColor: colorPalette.secondary,
-    },
-
+  
     subTitle: {
-        fontSize: 20,
-        fontWeight: "bold",
-        marginTop: 10,
-        marginBottom: 5,
+      fontSize: 20,
+      fontWeight: "bold",
     },
-
+  
+    touchableHeader: {
+      marginTop: 30,
+    },
+  
+    accordion: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: 10,
+    },
+  
+    contentContainer: {
+      justifyContent: "center",
+      alignItems: "center",
+      width: _screen.width * 0.85,
+      height: _screen.height * 0.55,
+      borderRadius: 15,
+      backgroundColor: colorPalette.secondary,
+    },
+  
+    scrollView: {
+      padding: 8,
+      marginVertical: Platform.OS === "android" ? 12 : 0,
+      width: _screen.width * 0.83,
+      borderRadius: 15,
+      backgroundColor: colorPalette.secondary,
+    },
+  
     ingredientContainer: {
-        flex: 1,
-        flexDirection: "row",
+      flex: 1,
+      flexDirection: "row",
     },
-
+  
     ingredient: {
-        justifyContent: "flex-start",
-        width: "65%",
+      justifyContent: "flex-start",
+      width: "65%",
     },
-
+  
     measurement: {
-        justifyContent: "flex-start",
-        width: "35%",
+      justifyContent: "flex-start",
+      width: "35%",
     },
-
+  
     tagsContainer: {
-        flexDirection: "row",
-        flexWrap: "wrap",
-        marginTop: 8,
+      flexDirection: "row",
+      flexWrap: "wrap",
+      marginTop: 8,
+      marginHorizontal: 16,
     },
-
+  
     singleTagContainer: {
-        flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
-        marginRight: 3,
-        marginTop: 3,
-        padding: 4,
-        borderRadius: 8,
-        backgroundColor: colorPalette.trimLight,
+      flexDirection: "row",
+      justifyContent: "center",
+      alignItems: "center",
+      marginRight: 3,
+      marginTop: 3,
+      padding: 4,
+      borderRadius: 8,
+      backgroundColor: colorPalette.trimLight,
     },
-
+  
     tag: {
-        fontSize: 10,
+      fontSize: 10,
     },
-});
+  });
