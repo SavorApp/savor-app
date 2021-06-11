@@ -111,11 +111,11 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
           idx++;
           return (
             <View
-              key={"c_" + ing?.id.toString() + idx.toString()}
+              key={"c_" + idx.toString()}
               style={styles.ingredientContainer}
             >
               <Text
-                key={"i_" + ing?.id.toString() + idx.toString()}
+                key={"i_" + idx.toString()}
                 style={styles.ingredient}
               >
                 {ing?.name}
