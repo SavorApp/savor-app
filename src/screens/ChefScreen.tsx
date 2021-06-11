@@ -22,6 +22,7 @@ import {
   resetFilters,
 } from "../redux/actions/index";
 import { deleteAccount } from "../db/db";
+import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
 
@@ -121,8 +122,13 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
       return b.count - a.count;
     });
 
+    const [loaded] = useFonts({
+      Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
+    });
+
     return (
       <View>
+        <View style={{ ...styles.borderline, marginTop: 30 }} />
         <Text style={styles.subTitle2}>Taste Profile</Text>
         {cuisineArray[0] && (
           <Text style={styles.caption}>
@@ -145,6 +151,7 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
             )}
           </Text>
         )}
+        <View style={{ ...styles.borderline, marginTop: 45 }} />
         <Text style={styles.subTitle2}>Top Ingredients</Text>
         {ingredientsArray.map((ingObj) => {
           if (ingObj.count >= 5) {
@@ -198,7 +205,7 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
         <Text style={styles.username}>{userState.user.username}</Text>
         <View style={styles.profileContainer}>
           <ScrollView style={styles.scrollView}>
-            <Text style={styles.subTitle}>Your Metrics</Text>
+            {/* <Text style={styles.subTitle}>Your Metrics</Text> */}
             <Metrics recipeList={userRecipeListState.userRecipeList} />
             <Text>{"\n\n\n"}</Text>
           </ScrollView>
@@ -257,7 +264,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
@@ -266,7 +273,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.9,
     height: _screen.height * 0.7,
     borderRadius: 15,
-    backgroundColor: colorPalette.primary,
+    // backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
 
@@ -277,23 +284,26 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.83,
     height: _screen.height * 0.4,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.secondary,
   },
 
   title: {
     justifyContent: "flex-start",
     textAlign: "center",
-    fontSize: 28,
+    fontSize: 36,
     fontWeight: "bold",
-    color: colorPalette.background,
+    fontFamily: "Satisfy",
+    marginTop: -50,
+    // color: colorPalette.background,
   },
 
   username: {
     textAlign: "center",
     marginBottom: 8,
     fontSize: 24,
-    fontWeight: "bold",
-    color: colorPalette.popDark,
+    fontFamily: "Satisfy",
+    // fontWeight: "bold",
+    // color: colorPalette.popDark,
   },
 
   scrollView: {
@@ -312,7 +322,10 @@ const styles = StyleSheet.create({
 
   subTitle2: {
     fontWeight: "bold",
+    fontSize: 24,
     marginVertical: 6,
+    height: 125,
+    fontFamily: "Satisfy",
   },
 
   caption: {
@@ -332,5 +345,14 @@ const styles = StyleSheet.create({
   bottomButtonsContainer: {
     flexDirection: "row",
     margin: 8,
+  },
+  borderline: {
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+    opacity: 0.2,
+    shadowOpacity: 0.8,
+    shadowRadius: 1,
+    shadowOffset: { width: 1, height: 1 },
+    marginBottom: 10,
   },
 });

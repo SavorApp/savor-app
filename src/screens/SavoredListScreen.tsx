@@ -86,7 +86,16 @@ export default function SavoredListScreen({
         <View style={styles.recipeListItemInner}>
           {cuisineMap[rcp.cuisine] || cuisineMap["All"]}
           <View style={styles.recipeListItemInnerContent}>
-            <Text style={styles.recipeTitle}>{newTitle}</Text>
+            <Text
+              style={{
+                ...styles.recipeTitle,
+                fontSize: 24,
+                padding: 9,
+                marginTop: -5,
+              }}
+            >
+              {newTitle}
+            </Text>
             <View style={styles.tagsContainer}>
               <View style={styles.singleTagContainer}>
                 {dishTypeMap[rcp.dishType] || dishTypeMap["All"]}
@@ -330,7 +339,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.9,
     height: _screen.height * 0.75,
     borderRadius: 15,
-    backgroundColor: colorPalette.primary,
+    // backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
 
@@ -340,15 +349,15 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.86,
     height: _screen.height * 0.68,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.secondary,
   },
 
   flatList: {
     padding: 8,
     marginVertical: Platform.OS === "android" ? 12 : 0,
-    width: _screen.width * 0.83,
+    width: _screen.width * 0.93,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.secondary,
   },
 
   flatListContainer: {
@@ -360,11 +369,14 @@ const styles = StyleSheet.create({
   recipeListItem: {
     justifyContent: "center",
     alignItems: "center",
-    margin: 1,
-    padding: 8,
-    width: _screen.width * 0.81,
+    margin: 4,
+    padding: 3,
+    width: _screen.width * 0.9,
     borderRadius: 10,
     backgroundColor: colorPalette.background,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    shadowOffset: { width: 1, height: 1 },
   },
 
   recipeListItemInner: {
@@ -392,6 +404,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 3,
     padding: 4,
+    marginLeft: 10,
+    marginBottom: 5,
     borderRadius: 8,
     backgroundColor: colorPalette.trimLight,
   },

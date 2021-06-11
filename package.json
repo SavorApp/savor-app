@@ -19,6 +19,7 @@
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
     "expo": "~41.0.1",
+    "expo-font": "~9.1.0",
     "expo-linear-gradient": "~9.1.0",
     "expo-linking": "~2.2.3",
     "expo-permissions": "~12.0.1",
@@ -34,6 +35,7 @@
     "react-native-dropdown-picker": "^5.1.19",
     "react-native-emoji": "^1.8.0",
     "react-native-gesture-handler": "~1.10.2",
+    "react-native-material-menu": "^1.2.0",
     "react-native-reanimated": "~2.1.0",
     "react-native-render-html": "^5.1.0",
     "react-native-safe-area-context": "^3.2.0",
@@ -48,6 +50,7 @@
     "@babel/core": "^7.9.0",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
+    "@types/react-native-material-menu": "^1.0.4",
     "ts-node": "^10.0.0",
     "typescript": "~4.0.0"
   },
