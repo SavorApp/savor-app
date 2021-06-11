@@ -11,7 +11,7 @@ export default function SwipeButtons({ handleOnPressLeft, handleOnPressRight, rc
             <TouchableOpacity style={styles.button} onPress={handleOnPressLeft}>
                 <Ionicons name="thumbs-down-sharp" size={24} color="#B50000" />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button} onPress={() => {navigateToMoreInfoScreen(rcp)}}>
+            <TouchableOpacity style={styles.button} onPress={() => {rcp && navigateToMoreInfoScreen(rcp)}}>
                 <Ionicons name="md-information-circle-sharp" size={24} color="grey" />
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={handleOnPressRight}>

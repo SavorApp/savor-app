@@ -86,9 +86,10 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
       //     healthScore: rcp.healthScore,
       //     pricePerServing: rcp.pricePerServing,
       //     readyInMinutes: rcp.readyInMinutes,
+      //     summary: rcp.summary,
+      //     servings: rcp.servings,
       //     ingredients: ingredientsArray,
       //     instructions: rcp.instructions,
-      //     servings: rcp.servings,
       //     smartFilterScore: 0,
       //   };
       // });
@@ -130,6 +131,7 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
             pricePerServing: rcp.pricePerServing,
             readyInMinutes: rcp.readyInMinutes,
             servings: rcp.servings,
+            summary: rcp.summary,
             ingredients: ingredientsArray,
             instructions: rcp.instructions,
             smartFilterScore: 0,
@@ -166,6 +168,7 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
             pricePerServing: rcp.pricePerServing,
             readyInMinutes: rcp.readyInMinutes,
             servings: rcp.servings,
+            summary: rcp.summary,
             ingredients: ingredientsArray,
             instructions: rcp.instructions,
             smartFilterScore: 0,
