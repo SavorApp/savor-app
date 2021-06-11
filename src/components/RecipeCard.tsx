@@ -15,9 +15,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 
 export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
-  if (rcp.title.split(" ").length > 3) {
-    rcp.title = rcp.title.split(" ").splice(0, 3).join(" ");
-  }
+  // if (rcp.title.split(" ").length > 3) {
+  //   rcp.title = rcp.title.split(" ").splice(0, 3).join(" ");
+  // }
   const filtersState = useSelector<RootState, FiltersState>(
     (state) => state.filtersState
   );
@@ -188,6 +188,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: _screen.height * 0.6,
     width: _screen.width * 0.88,
+    ...shadowStyle,
   },
 
   noImageContainer: {
@@ -220,15 +221,16 @@ const styles = StyleSheet.create({
     marginVertical: 3,
     padding: 3,
     width: _screen.width * 0.78,
-    borderRadius: 15,
+    borderRadius: 5,
     backgroundColor: "rgba(255, 255, 255, 0.6)",
     justifyContent: "center",
     marginBottom: 15,
+    ...shadowStyle,
   },
 
   title: {
     textAlign: "center",
-    fontSize: 42,
+    fontSize: 28,
     color: "black",
     fontFamily: "Satisfy",
   },

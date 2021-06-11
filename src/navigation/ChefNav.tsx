@@ -8,9 +8,6 @@ import {
 import { ChefScreen, LoginScreen } from "../screens";
 import { useSelector, useDispatch } from "react-redux";
 import { leaveRecipeScreen } from "../redux/actions";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Menu, { MenuItem, MenuDivider } from "react-native-material-menu";
 
 export interface ChefNavigatorProps {
   navigation: StackNavigationProp<ChefStackParamList, "ChefScreen">;
@@ -24,8 +21,6 @@ export default function ChefNavigator({ navigation }: ChefNavigatorProps) {
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   );
-
-  const [isClicked, setIsClicked] = React.useState(false);
 
   // Set leaveRecipeScreenState leave to true so that,
   // when user navigates away from SavoredList,

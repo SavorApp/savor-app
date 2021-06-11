@@ -17,8 +17,7 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
 import { updateSavorDb } from "../db/db";
-
-import axios from "axios";
+import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
 
@@ -41,6 +40,10 @@ export default function SavoredListScreen({
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   );
+
+  const [loaded] = useFonts({
+    Itim: require("../../assets/fonts/Karla-Italic-VariableFont_wght.ttf"),
+  });
 
   function getRandomNumber(): number {
     return Math.floor(Math.random() * savoredList.length);
@@ -92,6 +95,7 @@ export default function SavoredListScreen({
                 fontSize: 24,
                 padding: 9,
                 marginTop: -5,
+                fontFamily: "Itim",
               }}
             >
               {newTitle}
