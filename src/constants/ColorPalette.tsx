@@ -5,8 +5,8 @@ export const colorPalette = {
   alternate2: "#003459",
   trimLight: "#c6c9cc",
   trim: "#85909C",
-  popLight: "#ffffb7",
-  popDark: "#ffda0a",
+  popLight: "#fc6f03",
+  popDark: "#fc4e03",
   background: "#ffffff",
 };
 

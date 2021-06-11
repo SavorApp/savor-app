@@ -126,7 +126,7 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
     });
 
     return (
-      <View>
+      <View style={styles.scrollable}>
         <View style={{ ...styles.borderline, marginTop: 30 }} />
         <Text style={styles.subTitle2}>Taste Profile</Text>
         {cuisineArray[0] && (
@@ -210,7 +210,7 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
           </ScrollView>
         </View>
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate("AboutUsScreen")}
           activeOpacity={0.8}
         >
@@ -220,9 +220,9 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
           >
             <Text style={{ color: "black" }}>About Us</Text>
           </LinearGradient>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
-        <View style={styles.bottomButtonsContainer}>
+        {/* <View style={styles.bottomButtonsContainer}>
           <TouchableOpacity
             onPress={
               blockLogout
@@ -251,8 +251,8 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
             >
               <Text style={{ color: "black" }}>Delete Account</Text>
             </LinearGradient>
-          </TouchableOpacity>
-        </View>
+          </TouchableOpacity> */}
+        {/* </View> */}
       </View>
     </View>
   );
@@ -272,6 +272,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.9,
     height: _screen.height * 0.7,
     borderRadius: 15,
+    marginTop: 100,
     // backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
@@ -281,7 +282,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 16,
     width: _screen.width * 0.83,
-    height: _screen.height * 0.4,
+    height: _screen.height * 0.7,
     borderRadius: 15,
     // backgroundColor: colorPalette.secondary,
   },
@@ -292,7 +293,7 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: "bold",
     fontFamily: "Satisfy",
-    marginTop: -50,
+    // marginTop: -50,
     // color: colorPalette.background,
   },
 
@@ -323,7 +324,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 24,
     marginVertical: 6,
-    height: 125,
+    height: 45,
     fontFamily: "Satisfy",
   },
 
@@ -331,20 +332,21 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
 
-  button: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 8,
-    marginHorizontal: 8,
-    width: 120,
-    borderRadius: 10,
-    padding: 8,
-  },
+  // button: {
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   marginTop: 8,
+  //   marginHorizontal: 8,
+  //   width: 120,
+  //   borderRadius: 10,
+  //   padding: 8,
+  // },
 
-  bottomButtonsContainer: {
-    flexDirection: "row",
-    margin: 8,
-  },
+  // bottomButtonsContainer: {
+  //   flexDirection: "row",
+  //   margin: 8,
+  // },
+
   borderline: {
     borderBottomColor: "black",
     borderBottomWidth: 1,

@@ -18,6 +18,7 @@ import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
 import { updateSavorDb } from "../db/db";
 import { useFonts } from "expo-font";
+import { NONAME } from "dns";
 
 const _screen = Dimensions.get("screen");
 
@@ -42,7 +43,7 @@ export default function SavoredListScreen({
   );
 
   const [loaded] = useFonts({
-    Itim: require("../../assets/fonts/Karla-Italic-VariableFont_wght.ttf"),
+    Itim: require("../../assets/fonts/OpenSans-Regular.ttf"),
   });
 
   function getRandomNumber(): number {
@@ -87,20 +88,18 @@ export default function SavoredListScreen({
         activeOpacity={0.8}
       >
         <View style={styles.recipeListItemInner}>
-          {cuisineMap[rcp.cuisine] || cuisineMap["All"]}
           <View style={styles.recipeListItemInnerContent}>
             <Text
               style={{
                 ...styles.recipeTitle,
-                fontSize: 24,
-                padding: 9,
-                marginTop: -5,
-                fontFamily: "Itim",
               }}
             >
               {newTitle}
             </Text>
             <View style={styles.tagsContainer}>
+              <View style={{ ...styles.singleTagContainer, borderWidth: 0 }}>
+                {cuisineMap[rcp.cuisine] || cuisineMap["All"]}
+              </View>
               <View style={styles.singleTagContainer}>
                 {dishTypeMap[rcp.dishType] || dishTypeMap["All"]}
                 <Text style={styles.tag}>{rcp.dishType}</Text>
@@ -321,7 +320,16 @@ export default function SavoredListScreen({
             colors={[colorPalette.popLight, colorPalette.popDark]}
             style={styles.truffleShuffleButton}
           >
-            <Text style={{ color: "black" }}>Truffle Shuffle</Text>
+            <Text
+              style={{
+                color: "black",
+                fontFamily: "Itim",
+                fontSize: 24,
+                fontStyle: "bold",
+              }}
+            >
+              Truffle Shuffle
+            </Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -376,7 +384,7 @@ const styles = StyleSheet.create({
     margin: 4,
     padding: 3,
     width: _screen.width * 0.9,
-    borderRadius: 10,
+    borderRadius: 7,
     backgroundColor: colorPalette.background,
     shadowOpacity: 0.2,
     shadowRadius: 3,
@@ -386,16 +394,20 @@ const styles = StyleSheet.create({
   recipeListItemInner: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 6,
     width: _screen.width * 0.81,
   },
 
   recipeListItemInnerContent: {
-    paddingLeft: 6,
+    paddingLeft: 3,
+    marginLeft: -15,
   },
 
   recipeTitle: {
-    fontSize: 16,
+    fontSize: 20,
+    padding: 9,
+    marginTop: -5,
+
+    fontFamily: "Itim",
   },
 
   tagsContainer: {
@@ -410,8 +422,9 @@ const styles = StyleSheet.create({
     padding: 4,
     marginLeft: 10,
     marginBottom: 5,
+    borderColor: "black",
+    borderWidth: 0.3,
     borderRadius: 8,
-    backgroundColor: colorPalette.trimLight,
   },
 
   tag: {
@@ -422,7 +435,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 8,
-    width: 120,
+    width: 200,
+    height: 50,
     borderRadius: 10,
     padding: 8,
   },
@@ -435,7 +449,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingLeft: 15,
     margin: 5,
-    // marginBottom: 15,
     borderRadius: 5,
   },
 

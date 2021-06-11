@@ -27,7 +27,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
   const dispatch = useDispatch();
 
   const [loaded] = useFonts({
-    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
+    Satisfy: require("../../assets/fonts/OpenSans-Regular.ttf"),
   });
 
   if (!loaded) {
