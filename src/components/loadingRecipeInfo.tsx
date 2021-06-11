@@ -9,7 +9,7 @@ export default function LoadingRecipeInfo({recipeId}: {recipeId: string}) {
     <View style={styles.container}>
       <View style={styles.subContainer}>
         <View style={styles.loadingContent}>
-          <Text style={styles.loadingText}>Loading Recipe {recipeId}...</Text>
+          <Text style={styles.loadingText}>Loading Recipe 😋...</Text>
         </View>
       </View>
     </View>

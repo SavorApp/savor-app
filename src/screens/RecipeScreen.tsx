@@ -7,9 +7,10 @@ import {
   ScrollView,
   Platform,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import HTML from "react-native-render-html";
 import Constants from "expo-constants";
@@ -52,6 +53,9 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     readyInMinutes: 0,
     diets: [""],
   });
+  const [showSummary, setShowSummary] = React.useState(false);
+  const [showIngredients, setShowIngredients] = React.useState(false);
+  const [showInstructions, setShowInstructions] = React.useState(false);
   const [isInfoLoading, setIsInfoLoading] = React.useState(true);
 
   async function fetchRecipeInfo() {
@@ -95,31 +99,34 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     }
   }, [leaveRecipeScreen]);
 
-
+  // Filter through an array of ingredient name to remove duplicates and set the display
   function Ingredients({ ingredients }: { ingredients: Ingredient[] }) {
     let idx = 0;
+    const filteredIngredients = Array.from(
+      new Set(ingredients.map((ing) => ing.name))
+    ).map((name) => {
+      return ingredients.find((ing) => ing.name === name);
+    });
+
     return (
       <View>
-        {ingredients.map((ing) => {
+        {filteredIngredients.map((ing) => {
           idx++;
           return (
             <View
-              key={"c_" + ing.id.toString() + idx.toString()}
+              key={"c_" + idx.toString()}
               style={styles.ingredientContainer}
             >
-              <Text
-                key={"i_" + ing.id.toString() + idx.toString()}
-                style={styles.ingredient}
-              >
-                {ing.name}
+              <Text key={"i_" + idx.toString()} style={styles.ingredient}>
+                {ing?.name}
               </Text>
               <Text
-                key={"m_" + ing.id.toString() + idx.toString()}
+                key={"m_" + ing?.id.toString() + idx.toString()}
                 style={styles.measurement}
               >
-                ({ing.measures.metric.amount}
-                {ing.measures.metric.unitShort &&
-                  " " + ing.measures.metric.unitShort}
+                ({ing?.measures.metric.amount}
+                {ing?.measures.metric.unitShort &&
+                  " " + ing?.measures.metric.unitShort}
                 )
               </Text>
             </View>
@@ -138,87 +145,124 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
           <Text style={styles.title}>{recipeInfo.title}</Text>
           <View style={styles.contentContainer}>
             <ScrollView style={styles.scrollView}>
-              <Text style={styles.subTitle}>Summary</Text>
-              <HTML source={{ html: recipeInfo.summary }} />
-              <Text style={styles.subTitle}>Ingredients</Text>
-              <Ingredients ingredients={recipeInfo.ingredients} />
-              <Text style={styles.subTitle}>Instructions</Text>
-              <HTML source={{ html: recipeInfo.instructions }} />
-              <Text style={styles.subTitle}>Additional Information</Text>
-              <Text>Preparation time: {recipeInfo.readyInMinutes} min</Text>
-              <Text>Servings: {recipeInfo.servings}</Text>
-              <View style={styles.tagsContainer}>
-                {recipeInfo.veryHealthy && (
-                  <View style={styles.singleTagContainer}>
-                    <MaterialCommunityIcons
-                      name="food-apple-outline"
-                      color="green"
-                    />
-                    <Text style={styles.tag}>Healthy Choice</Text>
-                  </View>
-                )}
-                {recipeInfo.vegetarian && (
-                  <View style={styles.singleTagContainer}>
-                    <MaterialCommunityIcons
-                      name="alpha-v-circle-outline"
-                      color="green"
-                    />
-                    <Text style={styles.tag}>Vegetarian</Text>
-                  </View>
-                )}
-                {recipeInfo.vegan && (
-                  <View style={styles.singleTagContainer}>
-                    <MaterialCommunityIcons
-                      name="alpha-v-circle"
-                      color="green"
-                    />
-                    <Text style={styles.tag}>Vegan</Text>
-                  </View>
-                )}
-                {recipeInfo.glutenFree && (
-                  <View style={styles.singleTagContainer}>
-                    <Text style={[styles.tag, { fontWeight: "bold" }]}>
-                      Gluten Free
+              <TouchableOpacity
+                onPress={() => {
+                  setShowSummary(!showSummary);
+                }}
+                activeOpacity={0.8}
+              >
+                <View style={styles.accordion}>
+                  <Text style={styles.subTitle}>Summary</Text>
+                  <Ionicons
+                    name={
+                      showSummary ? "chevron-up-sharp" : "chevron-down-sharp"
+                    }
+                    size={24}
+                  />
+                </View>
+              </TouchableOpacity>
+              {showSummary && <HTML source={{ html: recipeInfo.summary }} />}
+              <TouchableOpacity
+                style={styles.touchableHeader}
+                onPress={() => {
+                  setShowIngredients(!showIngredients);
+                }}
+                activeOpacity={0.8}
+              >
+                <View style={styles.accordion}>
+                  <Text style={styles.subTitle}>Ingredients</Text>
+                  <Ionicons
+                    name={
+                      showIngredients
+                        ? "chevron-up-sharp"
+                        : "chevron-down-sharp"
+                    }
+                    size={24}
+                  />
+                </View>
+              </TouchableOpacity>
+              {showIngredients && (
+                <Ingredients ingredients={recipeInfo.ingredients} />
+              )}
+              <TouchableOpacity
+                style={styles.touchableHeader}
+                onPress={() => {
+                  setShowInstructions(!showInstructions);
+                }}
+                activeOpacity={0.8}
+              >
+                <View style={styles.accordion}>
+                  <Text style={styles.subTitle}>Instructions</Text>
+                  <Ionicons
+                    name={
+                      showInstructions
+                        ? "chevron-up-sharp"
+                        : "chevron-down-sharp"
+                    }
+                    size={24}
+                  />
+                </View>
+              </TouchableOpacity>
+              {showInstructions && (
+                <>
+                  <Text style={{ fontWeight: "bold" }}>
+                    Preparation time:{" "}
+                    <Text style={{ fontWeight: "normal" }}>
+                      {recipeInfo.readyInMinutes} min
                     </Text>
-                  </View>
-                )}
-                {recipeInfo.dairyFree && (
-                  <View style={styles.singleTagContainer}>
-                    <Text style={[styles.tag, { fontWeight: "bold" }]}>
-                      Dairy Free
+                  </Text>
+                  <Text style={{ fontWeight: "bold" }}>
+                    Servings:{" "}
+                    <Text style={{ fontWeight: "normal" }}>
+                      {recipeInfo.servings}
                     </Text>
-                  </View>
-                )}
-              </View>
-              
-              {/* Hesitant to include this because we may not want to show
-              that a recipe is NOT veryHealthy, or NOT anyother things. It may
-              make users feel bad when looking at recipes. I think we
-              should stay as unbiased as possible and, only show tags for
-              when they are true. I've included a Healthy choice tag */}
-              {/* <Text style={styles.extra}>
-                VeryHealthy: {recipeInfo.veryHealthy ? "✅" : "❌"}
-              </Text>
-              <Text style={styles.extra}>
-                Vegetarian: {recipeInfo.vegetarian ? "✅" : "❌"}
-              </Text>
-              <Text style={styles.extra}>
-                Vegan: {recipeInfo.vegan ? "✅" : "❌"}
-              </Text>
-              <Text style={styles.extra}>
-                Dairy-Free: {recipeInfo.dairyFree ? "✅" : "❌"}
-              </Text>
-
-              <Text style={styles.extra}>
-                Health score: {recipeInfo.healthScore}
-              </Text>
-              <Text style={styles.extra}>
-                Prep Time: {recipeInfo.readyInMinutes} min
-              </Text>
-              <Text style={styles.extra}>Diets: {recipeInfo.diets}</Text> */}
-
+                    {"\n"}
+                  </Text>
+                  <HTML source={{ html: recipeInfo.instructions }} />
+                </>
+              )}
               <Text>{"\n\n\n"}</Text>
             </ScrollView>
+          </View>
+          <View style={styles.tagsContainer}>
+            {recipeInfo.veryHealthy && (
+              <View style={styles.singleTagContainer}>
+                <MaterialCommunityIcons
+                  name="food-apple-outline"
+                  color="green"
+                />
+                <Text style={styles.tag}>Healthy Choice</Text>
+              </View>
+            )}
+            {recipeInfo.vegetarian && (
+              <View style={styles.singleTagContainer}>
+                <MaterialCommunityIcons
+                  name="alpha-v-circle-outline"
+                  color="green"
+                />
+                <Text style={styles.tag}>Vegetarian</Text>
+              </View>
+            )}
+            {recipeInfo.vegan && (
+              <View style={styles.singleTagContainer}>
+                <MaterialCommunityIcons name="alpha-v-circle" color="green" />
+                <Text style={styles.tag}>Vegan</Text>
+              </View>
+            )}
+            {recipeInfo.glutenFree && (
+              <View style={styles.singleTagContainer}>
+                <Text style={[styles.tag, { fontWeight: "bold" }]}>
+                  Gluten Free
+                </Text>
+              </View>
+            )}
+            {recipeInfo.dairyFree && (
+              <View style={styles.singleTagContainer}>
+                <Text style={[styles.tag, { fontWeight: "bold" }]}>
+                  Dairy Free
+                </Text>
+              </View>
+            )}
           </View>
         </View>
       </View>
@@ -238,11 +282,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: _screen.width * 0.9,
-    height: _screen.height * 0.8,
+    height: _screen.height * 0.75,
     borderRadius: 15,
     backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
+
   title: {
     margin: 8,
     fontSize: 25,
@@ -251,27 +296,26 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 
-  summaryBackground: {
-    color: "black",
-    marginTop: 5,
-    textAlign: "center",
-    height: _screen.height * 0.6,
+  subTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
 
-  summaryContainer: {
+  touchableHeader: {
+    marginTop: 30,
+  },
+
+  accordion: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 10,
-    padding: 5,
-    backgroundColor: "white",
-    borderRadius: 15,
-    width: _screen.width * 0.7,
-    ...shadowStyle,
   },
 
   contentContainer: {
     justifyContent: "center",
     alignItems: "center",
     width: _screen.width * 0.85,
-    height: _screen.height * 0.65,
+    height: _screen.height * 0.55,
     borderRadius: 15,
     backgroundColor: colorPalette.secondary,
   },
@@ -282,13 +326,6 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.83,
     borderRadius: 15,
     backgroundColor: colorPalette.secondary,
-  },
-
-  subTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 10,
-    marginBottom: 5,
   },
 
   ingredientContainer: {
@@ -310,6 +347,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     marginTop: 8,
+    marginHorizontal: 16,
   },
 
   singleTagContainer: {

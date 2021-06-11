@@ -21,7 +21,6 @@ import {
   resetUserRecipeList,
   resetFilters,
 } from "../redux/actions/index";
-import { deleteAccount } from "../db/db";
 import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
@@ -154,7 +153,7 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
         <View style={{ ...styles.borderline, marginTop: 45 }} />
         <Text style={styles.subTitle2}>Top Ingredients</Text>
         {ingredientsArray.map((ingObj) => {
-          if (ingObj.count >= 5) {
+          if (ingObj.count >= 3) {
             return (
               <Text key={"i_" + ingObj.key.toString()}>
                 {ingObj.name}: {ingObj.count}

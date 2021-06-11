@@ -17,9 +17,9 @@ export default function SwipeButtons({
         <Ionicons name="thumbs-down-sharp" size={35} color="#d64f4f" />
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.infoButton}
+        style={styles.button}
         onPress={() => {
-          navigateToMoreInfoScreen(rcp);
+          rcp && navigateToMoreInfoScreen(rcp);
         }}
       >
         <Entypo name="info" size={27} color="#7e72c4" />

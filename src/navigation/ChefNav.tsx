@@ -1,5 +1,6 @@
 import React from "react";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import {
   createStackNavigator,
   StackNavigationProp,
@@ -45,21 +46,19 @@ export default function ChefNavigator({ navigation }: ChefNavigatorProps) {
           name="ChefScreen"
           component={ChefScreen}
           options={{
-            headerRight: () => {
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    setIsClicked(!isClicked);
-                  }}
-                >
-                  <MaterialCommunityIcons
-                    name="account-settings-outline"
-                    size={36}
-                    style={{ marginRight: 6 }}
-                  ></MaterialCommunityIcons>
-                </TouchableOpacity>
-              );
-            },
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("ChefSettingsScreen");
+                }}
+              >
+                <Ionicons
+                  name="settings-sharp"
+                  size={32}
+                  style={{ marginRight: 10 }}
+                />
+              </TouchableOpacity>
+            ),
             headerTitle: () => {
               return (
                 <View style={styles.headerContainer}>
