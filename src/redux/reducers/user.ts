@@ -3,7 +3,6 @@ const initialState: UserState = {
   user: {
     id: "1991",
     username: "",
-    image_url: "",
   },
   isLoggedIn: false,
 };

@@ -81,9 +81,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
     {
       label: "Appetizer",
       value: "appetizer",
-      icon: () => (
-        <MaterialCommunityIcons name="silverware-spoon" size={18} />
-      ),
+      icon: () => <MaterialCommunityIcons name="silverware-spoon" size={18} />,
     },
     {
       label: "Dessert",
@@ -179,7 +177,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
       setVegetarian(true);
       setDairyFree(true);
     }
-  }, [vegan])
+  }, [vegan]);
 
   // Compare smartFilter and decide to display the Apply button, or not
   function compareSmartFilter() {
@@ -325,17 +323,11 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
             style={[styles.checkboxBase, smartFilter && styles.checkboxChecked]}
             onPress={handleSmartFilterCheckbox}
           >
-            {smartFilter ? (
+            {smartFilter && (
               <MaterialCommunityIcons
                 name="check-bold"
                 size={18}
                 color="black"
-              />
-            ) : (
-              <MaterialCommunityIcons
-                name="check-outline"
-                size={18}
-                color={colorPalette.trim}
               />
             )}
           </Pressable>
@@ -424,17 +416,11 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
               ]}
               onPress={handleVegetarianCheckbox}
             >
-              {vegetarian ? (
+              {vegetarian && (
                 <MaterialCommunityIcons
                   name="check-bold"
                   size={18}
                   color="black"
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
                 />
               )}
             </Pressable>
@@ -449,17 +435,11 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
               ]}
               onPress={handleVeganCheckbox}
             >
-              {vegan ? (
+              {vegan && (
                 <MaterialCommunityIcons
                   name="check-bold"
                   size={18}
                   color="black"
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
                 />
               )}
             </Pressable>
@@ -477,17 +457,11 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
               ]}
               onPress={handleGlutenFreeCheckbox}
             >
-              {glutenFree ? (
+              {glutenFree && (
                 <MaterialCommunityIcons
                   name="check-bold"
                   size={18}
                   color="black"
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
                 />
               )}
             </Pressable>
@@ -502,17 +476,11 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
               ]}
               onPress={handleDairyFreeCheckbox}
             >
-              {dairyFree ? (
+              {dairyFree && (
                 <MaterialCommunityIcons
                   name="check-bold"
                   size={18}
                   color="black"
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
                 />
               )}
             </Pressable>
@@ -551,7 +519,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: _screen.width * 0.9,
     height: _screen.height * 0.6,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
@@ -567,7 +535,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     width: _screen.width * 0.85,
     height: _screen.height * 0.04,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.secondary,
   },
 

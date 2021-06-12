@@ -67,11 +67,6 @@ function FakeBurgerScreen() {
                 style={[styles.checkboxBase, { marginRight: 35 }]}
                 onPress={() => {}}
               >
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
-                />
               </Pressable>
             </View>
             <View style={styles.labelAndCheckbox}>
@@ -80,11 +75,6 @@ function FakeBurgerScreen() {
                 style={[styles.checkboxBase, { marginRight: 35 }]}
                 onPress={() => {}}
               >
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
-                />
               </Pressable>
             </View>
           </View>
@@ -96,11 +86,6 @@ function FakeBurgerScreen() {
                 style={[styles.checkboxBase, { marginRight: 35 }]}
                 onPress={() => {}}
               >
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
-                />
               </Pressable>
             </View>
             <View style={styles.labelAndCheckbox}>
@@ -109,11 +94,6 @@ function FakeBurgerScreen() {
                 style={[styles.checkboxBase, { marginRight: 35 }]}
                 onPress={() => {}}
               >
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
-                />
               </Pressable>
             </View>
           </View>
@@ -126,7 +106,10 @@ function FakeBurgerScreen() {
 export default function ProtectedBurgerScreen() {
   React.useEffect(() => {
     setTimeout(() => {
-      Alert.alert("😕Uh-Oh...", "Please create a Savored account or, login to apply Recipe Filters.")
+      Alert.alert(
+        "😕Uh-Oh...",
+        "Please create a Savored account or, login to apply Recipe Filters.\n\n" +
+        "You will get access to our Smart Recommendation feature and, it's completely free!")
     }, 500);
   })
   return (
@@ -161,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: _screen.width * 0.9,
     height: _screen.height * 0.6,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
@@ -177,7 +160,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     width: _screen.width * 0.85,
     height: _screen.height * 0.04,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.secondary,
   },
 
@@ -213,7 +196,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: _screen.width * 0.5,
     height: _screen.height * 0.03,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.background,
   },
   

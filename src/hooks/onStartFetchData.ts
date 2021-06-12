@@ -4,7 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser, setUserRecipeList, setFilters } from "../redux/actions";
 import { firebaseApp } from "../constants/Firebase";
-import { getCurrentUser, createFilters } from "../db/db";
+import { getUserDb } from "../db/db";
 
 export default function getCacheLoadData() {
   const [isLoadingComplete, setLoadingComplete] = React.useState(false);
@@ -34,13 +34,19 @@ export default function getCacheLoadData() {
             cacheAccessToken(user.getIdToken());
             // Set gloabal state
             dispatch(setUser(currentUser));
-            getCurrentUser(currentUser)
+            getUserDb(currentUser)
               .then((resp) => {
-                if (resp.recipes[0]) {
-                  dispatch(setUserRecipeList(resp.recipes));
+                // If we get a successful response...
+                if (resp) {
+                  // if recipes has an array of any length
+                  if (resp.recipes) {
+                    dispatch(setUserRecipeList(resp.recipes));
+                  }
+                  // if we have a filters record for the user
+                  if (resp.filters[0]) {
+                    dispatch(setFilters(resp.filters[0]));
+                  }
                 }
-               
-                dispatch(setFilters(resp.filters[0]));
               })
               .catch((err: Error) => console.log(err));
           }

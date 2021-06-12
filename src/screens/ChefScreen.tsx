@@ -21,6 +21,7 @@ import {
   resetUserRecipeList,
   resetFilters,
 } from "../redux/actions/index";
+import { deleteAccount } from "../db/db";
 
 const _screen = Dimensions.get("screen");
 
@@ -45,6 +46,10 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
   const [blockLogout, setBlockLogout] = React.useState(false);
 
   function Metrics({ recipeList }: { recipeList: UserRecipe[] }) {
+    const savoredRecipes = recipeList.filter((rcp) => {
+      return rcp.isSavored;
+    });
+
     // Object to contain overall counts for cuisines
     const cuisineCount: CountMap = {};
     const cuisineArray: CounterObj[] = [];
@@ -56,7 +61,7 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
     let idx: number;
 
     // Generate counts for each cuisine in user's UserRecipe list
-    for (const rcp of recipeList) {
+    for (const rcp of savoredRecipes) {
       // Do not include "World Food" in cuisine metrics
       if (rcp.cuisine !== "World Food") {
         if (cuisineCount[rcp.cuisine]) {
@@ -82,8 +87,8 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
     });
 
     // Generate counts for each ingredient for each recipe in user's UserRecipe list
-    for (const idx in recipeList) {
-      recipeList[idx].ingredients.forEach((ing) => {
+    for (const idx in savoredRecipes) {
+      savoredRecipes[idx].ingredients.forEach((ing) => {
         let skip = false;
         // Skip any ingredients that are in INGS_TO_EXCLUDE
         // (Skipped if exIng is a sub-string of ing)
@@ -122,29 +127,22 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
         {cuisineArray[0] && (
           <Text style={styles.caption}>
             So far, you have savored
-            <Text style={{ fontWeight: "bold" }}>
-              {" "}
-              {cuisineArray.length}
-              {" "}
-            </Text>
+            <Text style={{ fontWeight: "bold" }}> {cuisineArray.length} </Text>
             cuisine type(s). Your most savored cuisine is
-            <Text style={{ fontWeight: "bold" }}>
-              {" "}
-              {cuisineArray[0].name}
-            </Text>
-            {cuisineArray[1] ?
-              (<Text>
+            <Text style={{ fontWeight: "bold" }}> {cuisineArray[0].name}</Text>
+            {cuisineArray[1] ? (
+              <Text>
                 {" "}
                 but, it looks like
                 <Text style={{ fontWeight: "bold" }}>
                   {" "}
-                  {cuisineArray[1].name}
-                  {" "}
+                  {cuisineArray[1].name}{" "}
                 </Text>
                 food is a close second!
-              </Text>)
-              : (<Text>.</Text>)
-            }
+              </Text>
+            ) : (
+              <Text>.</Text>
+            )}
           </Text>
         )}
         <Text style={styles.subTitle2}>Top Ingredients</Text>
@@ -267,7 +265,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: _screen.width * 0.9,
     height: _screen.height * 0.7,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
@@ -278,7 +276,7 @@ const styles = StyleSheet.create({
     marginVertical: 16,
     width: _screen.width * 0.83,
     height: _screen.height * 0.4,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.secondary,
   },
 
@@ -302,7 +300,7 @@ const styles = StyleSheet.create({
     padding: 8,
     marginVertical: Platform.OS === "android" ? 12 : 0,
     width: _screen.width * 0.8,
-    borderRadius: 30,
+    borderRadius: 15,
   },
 
   subTitle: {

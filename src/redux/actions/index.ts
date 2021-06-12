@@ -38,6 +38,13 @@ export const unSavorRecipe = (recipeId: number): UserRecipeListAction => {
   };
 };
 
+export const savorRecipe = (recipeId: number): UserRecipeListAction => {
+  return {
+    type: "SAVOR_RECIPE",
+    payload: recipeId,
+  };
+};
+
 export const resetUserRecipeList = (): EmptyAction => {
   return {
     type: "RESET_USER_RECIPE_LIST",
@@ -88,5 +95,18 @@ export const enableScroll = (): EmptyAction => {
 export const disableScroll = (): EmptyAction => {
   return {
     type: "DISABLE_SCROLL",
+  };
+};
+
+// leaveRecipeScreen Actions
+export const leaveRecipeScreen = (): EmptyAction => {
+  return {
+    type: "TRIGGER_LEAVE",
+  };
+};
+
+export const resetRecipeScreenLeave = (): EmptyAction => {
+  return {
+    type: "SET_LEAVE_FALSE",
   };
 };

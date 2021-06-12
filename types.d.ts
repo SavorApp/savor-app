@@ -12,6 +12,7 @@ type RootStackParamList = {
   MenuScreen: undefined;
   BurgerScreen: undefined;
   ProtectedBurgerScreen: undefined;
+  MoreInfoScreen: { rcp: Recipe };
 };
 
 type BottomTabParamList = {
@@ -32,14 +33,10 @@ type MenuStackParamList = {
   MenuScreen: undefined;
   BurgerScreen: undefined;
   ProtectedBurgerScreen: undefined;
+  MoreInfoScreen: { rcp: Recipe };
 };
 
 type SavoredListStackParamList = {
-  SavoredListScreen: undefined;
-  RecipeScreen: { recipeId: number };
-};
-
-type RecipeScreenStackParamList = {
   SavoredListScreen: undefined;
   RecipeScreen: { recipeId: number };
 };
@@ -58,6 +55,7 @@ interface RootState {
   filtersState: FiltersState;
   reloadRecipesState: ReloadRecipesState;
   enableScrollState: EnableScrollState;
+  leaveRecipeScreenState: LeaveRecipeScreenState;
 }
 
 // Core User type
@@ -86,6 +84,7 @@ type RecipeAction = { type: string; payload: Recipe };
 // Core UserRecipe type
 type UserRecipe = {
   id: number;
+  recipe_id?: number;
   title: string;
   cuisine: string;
   dishType: string;
@@ -137,23 +136,27 @@ interface ReloadRecipesState {
   reload: Boolean;
 }
 
-// Empty action for resets
-type EmptyAction = {
-  type: string;
-};
-
 // Core EnableScroll interface
 interface EnableScrollState {
   enable: boolean;
 }
 
+// Core ReloadRecipesState interface
+interface LeaveRecipeScreenState {
+  leave: Boolean;
+}
+
+// Empty action for resets
+type EmptyAction = {
+  type: string;
+};
 /*
  _____________________________
  Components Property Objects
  _____________________________
 */
 
-type RecipeCardParamList = { 
+type RecipeCardParamList = {
   id: number;
   rcp: Recipe;
 };
@@ -161,11 +164,14 @@ type RecipeCardParamList = {
 type SwipeButtonsParamList = {
   handleOnPressLeft: () => void;
   handleOnPressRight: () => void;
+  rcp: Recipe;
+  navigateToMoreInfoScreen: (rcp:Recipe) => void;
 };
 
 type RecipeCardStackParamList = {
   randRecipes: Recipe[];
   filtersState: FiltersState;
+  navigateToMoreInfoScreen: (rcp:Recipe) => void;
 };
 
 /*
@@ -258,5 +264,4 @@ type RecipeScreenInfo = {
   servings: number;
   readyInMinutes: number;
   diets: string[];
-  recipeId?: number;
 };

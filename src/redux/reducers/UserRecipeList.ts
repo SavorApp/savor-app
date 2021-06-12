@@ -13,10 +13,14 @@ export const userRecipeListReducer = (
     case "SET_USER_RECIPE_LIST": {
       // TODO: clean this up
       // Rename references to recipe's id
-      action.payload.map((item) => {
-        item["id"] = item["recipe_id"];
-        delete item["recipe_id"];
-      });
+      if (Array.isArray(action.payload)) {
+        action.payload.map((rcp) => {
+          if (rcp.recipe_id) {
+            rcp.id = rcp.recipe_id;
+            delete rcp.recipe_id
+          }
+        });
+      }
       return {
         userRecipeList: action.payload,
       };
@@ -31,6 +35,17 @@ export const userRecipeListReducer = (
       const newUserRecipeList = state.userRecipeList.map((rcp) => {
         if (rcp.id === action.payload) {
           rcp.isSavored = false;
+        }
+        return rcp;
+      });
+      return {
+        userRecipeList: newUserRecipeList,
+      };
+    }
+    case "SAVOR_RECIPE": {
+      const newUserRecipeList = state.userRecipeList.map((rcp) => {
+        if (rcp.id === action.payload) {
+          rcp.isSavored = true;
         }
         return rcp;
       });

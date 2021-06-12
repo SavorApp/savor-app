@@ -18,6 +18,7 @@ import {
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { LinearGradient } from "expo-linear-gradient";
 import { firebaseApp } from "../constants/Firebase";
+import { deleteAccount } from "../db/db";
 
 const _screen = Dimensions.get("screen");
 
@@ -35,17 +36,20 @@ export default function DeleteAccountScreen({
   function handleDeleteAccount() {
     setBlockDeleteAccount(true);
     // TODO: Delete Account in DB
-    firebaseApp
-      .auth()
-      .signOut()
-      .then(() => {
+    const user = firebaseApp.auth().currentUser;
+    // console.log(user?.uid);
+    user
+      ?.delete()
+      .then(async () => {
         // Remove cached access-token on mobile storage
-        removeCachedAccessToken()
+        removeCachedAccessToken();
         // - Update global state
         dispatch(removeUser());
         dispatch(resetUserRecipeList());
         dispatch(resetFilters());
         setBlockDeleteAccount(false);
+        // - Delete from DB
+        await deleteAccount(user?.uid);
         Alert.alert("Enjoy your time off", "We hope you come back soon 👨‍🍳");
         navigation.goBack();
       })
@@ -60,12 +64,11 @@ export default function DeleteAccountScreen({
 
   async function removeCachedAccessToken() {
     try {
-      await AsyncStorage.removeItem("access-token")
-    } catch(err) {
+      await AsyncStorage.removeItem("access-token");
+    } catch (err) {
       // Handle failed asyncStorage removal error
     }
   }
-
 
   return (
     <View style={styles.container}>
@@ -74,7 +77,7 @@ export default function DeleteAccountScreen({
           Are you sure you want to delete your account?
         </Text>
         <View style={styles.form}>
-          <Text>Yes, I'm hanging my apron for now...</Text>
+          <Text>Yes, I'm hanging up my apron for now...</Text>
           <TouchableOpacity
             onPress={
               blockDeleteAccount
@@ -111,7 +114,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: _screen.width * 0.9,
     height: _screen.height * 0.6,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
@@ -122,7 +125,7 @@ const styles = StyleSheet.create({
     marginBottom: 48,
     width: _screen.width * 0.8,
     height: _screen.height * 0.3,
-    borderRadius: 30,
+    borderRadius: 15,
     backgroundColor: colorPalette.secondary,
   },
 

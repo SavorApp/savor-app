@@ -13,142 +13,67 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import HTML from "react-native-render-html";
 import Constants from "expo-constants";
-import axios from "axios";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
-import LoadingRecipeInfo from "../components/LoadingRecipeInfo";
-import { useSelector } from "react-redux";
 
 const _screen = Dimensions.get("screen");
 
-export interface RecipeScreenProps {
-  navigation: StackNavigationProp<SavoredListStackParamList, "RecipeScreen">;
-  route: RouteProp<{ params: { recipeId: string } }, "params">;
+export interface MoreInfoScreenProps {
+  route: RouteProp<{ params: {rcp: Recipe } }, "params">;
 }
 
-const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
-const RECIPE_INFO_BASE_URL = `https://api.spoonacular.com/recipes/`;
+export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
+    const { rcp } = route.params;
 
-export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
-  const { recipeId } = route.params;
-  const ENDPOINT = `${recipeId}/information?apiKey=${API_KEY}&includeNutrition=false`;
-
-  const leaveRecipeScreen = useSelector<RootState, LeaveRecipeScreenState>(
-    (state) => state.leaveRecipeScreenState
-  );
-  const [recipeInfo, setRecipeInfo] = React.useState<
-    RecipeScreenInfo | undefined
-  >({
-    title: "",
-    instructions: "",
-    summary: "",
-    ingredients: [],
-    veryHealthy: true,
-    vegetarian: true,
-    vegan: true,
-    glutenFree: true,
-    dairyFree: true,
-    healthScore: 0,
-    servings: 0,
-    readyInMinutes: 0,
-    diets: [""],
-  });
-  const [isInfoLoading, setIsInfoLoading] = React.useState(true);
-
-  async function fetchRecipeInfo() {
-    try {
-      const resp = await axios.get(RECIPE_INFO_BASE_URL + ENDPOINT);
-      const fetchedRecipe = resp.data;
-      setRecipeInfo({
-        title: fetchedRecipe.title,
-        instructions: fetchedRecipe.instructions,
-        summary: fetchedRecipe.summary,
-        ingredients: fetchedRecipe.extendedIngredients,
-        veryHealthy: fetchedRecipe.veryHealthy,
-        vegetarian: fetchedRecipe.vegetarian,
-        vegan: fetchedRecipe.vegan,
-        glutenFree: fetchedRecipe.glutenFree,
-        dairyFree: fetchedRecipe.dairyFree,
-        healthScore: fetchedRecipe.healthScore,
-        servings: fetchedRecipe.servings,
-        readyInMinutes: fetchedRecipe.readyInMinutes,
-        diets: fetchedRecipe.diets,
-      });
-      setIsInfoLoading(false);
-    } catch {
-      Alert.alert(
-        "Server Error 🤕",
-        "Sorry for the inconvenience, please try again later."
-      );
-      navigation.goBack();
-    }
-  }
-
-  // On load, fetch Recipe data via Spoonacular API
-  React.useEffect(() => {
-    fetchRecipeInfo();
-  }, []);
-
-  // Listen to leaveRecipeScreen global state, goBack to SavoredListScreen if true
-  React.useEffect(() => {
-    if (leaveRecipeScreen.leave) {
-      navigation.popToTop();
-    }
-  }, [leaveRecipeScreen]);
-
-
-  function Ingredients({ ingredients }: { ingredients: Ingredient[] }) {
-    let idx = 0;
-    return (
-      <View>
-        {ingredients.map((ing) => {
-          idx++;
-          return (
-            <View
-              key={"c_" + ing.id.toString() + idx.toString()}
-              style={styles.ingredientContainer}
-            >
-              <Text
-                key={"i_" + ing.id.toString() + idx.toString()}
-                style={styles.ingredient}
-              >
-                {ing.name}
-              </Text>
-              <Text
-                key={"m_" + ing.id.toString() + idx.toString()}
-                style={styles.measurement}
-              >
-                ({ing.measures.metric.amount}
-                {ing.measures.metric.unitShort &&
-                  " " + ing.measures.metric.unitShort}
-                )
-              </Text>
-            </View>
-          );
-        })}
-      </View>
-    );
-  }
-
-  return isInfoLoading ? (
-    <LoadingRecipeInfo recipeId={recipeId} />
-  ) : (
-    recipeInfo && (
+    function Ingredients({ ingredients }: { ingredients: Ingredient[] }) {
+        let idx = 0;
+        return (
+          <View>
+            {ingredients.map((ing) => {
+              idx++;
+              return (
+                <View
+                  key={"c_" + ing.id.toString() + idx.toString()}
+                  style={styles.ingredientContainer}
+                >
+                  <Text
+                    key={"i_" + ing.id.toString() + idx.toString()}
+                    style={styles.ingredient}
+                  >
+                    {ing.name}
+                  </Text>
+                  <Text
+                    key={"m_" + ing.id.toString() + idx.toString()}
+                    style={styles.measurement}
+                  >
+                    ({ing.measures.metric.amount}
+                    {ing.measures.metric.unitShort &&
+                      " " + ing.measures.metric.unitShort}
+                    )
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+        );
+      }
+    
+  return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
-          <Text style={styles.title}>{recipeInfo.title}</Text>
+          <Text style={styles.title}>{rcp.title}</Text>
           <View style={styles.contentContainer}>
             <ScrollView style={styles.scrollView}>
               <Text style={styles.subTitle}>Summary</Text>
-              <HTML source={{ html: recipeInfo.summary }} />
+              {/* <HTML source={{ html: rcp.summary }} /> */}
               <Text style={styles.subTitle}>Ingredients</Text>
-              <Ingredients ingredients={recipeInfo.ingredients} />
+              {/* <Ingredients ingredients={rcp.ingredients} /> */}
               <Text style={styles.subTitle}>Instructions</Text>
-              <HTML source={{ html: recipeInfo.instructions }} />
+              {/* <HTML source={{ html: rcp.instructions }} /> */}
               <Text style={styles.subTitle}>Additional Information</Text>
-              <Text>Preparation time: {recipeInfo.readyInMinutes} min</Text>
-              <Text>Servings: {recipeInfo.servings}</Text>
+              <Text>Preparation time: {rcp.readyInMinutes} min</Text>
+              <Text>Servings: {rcp.servings}</Text>
               <View style={styles.tagsContainer}>
-                {recipeInfo.veryHealthy && (
+                {rcp.veryHealthy && (
                   <View style={styles.singleTagContainer}>
                     <MaterialCommunityIcons
                       name="food-apple-outline"
@@ -157,7 +82,7 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
                     <Text style={styles.tag}>Healthy Choice</Text>
                   </View>
                 )}
-                {recipeInfo.vegetarian && (
+                {rcp.vegetarian && (
                   <View style={styles.singleTagContainer}>
                     <MaterialCommunityIcons
                       name="alpha-v-circle-outline"
@@ -166,7 +91,7 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
                     <Text style={styles.tag}>Vegetarian</Text>
                   </View>
                 )}
-                {recipeInfo.vegan && (
+                {rcp.vegan && (
                   <View style={styles.singleTagContainer}>
                     <MaterialCommunityIcons
                       name="alpha-v-circle"
@@ -175,14 +100,14 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
                     <Text style={styles.tag}>Vegan</Text>
                   </View>
                 )}
-                {recipeInfo.glutenFree && (
+                {rcp.glutenFree && (
                   <View style={styles.singleTagContainer}>
                     <Text style={[styles.tag, { fontWeight: "bold" }]}>
                       Gluten Free
                     </Text>
                   </View>
                 )}
-                {recipeInfo.dairyFree && (
+                {rcp.dairyFree && (
                   <View style={styles.singleTagContainer}>
                     <Text style={[styles.tag, { fontWeight: "bold" }]}>
                       Dairy Free
@@ -222,9 +147,7 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
           </View>
         </View>
       </View>
-    )
-  );
-}
+)}
 
 const styles = StyleSheet.create({
   container: {
