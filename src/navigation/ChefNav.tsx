@@ -47,7 +47,7 @@ export default function ChefNavigator({ navigation }: ChefNavigatorProps) {
                     navigation.navigate("ChefSettingsScreen");
                 }}
               >
-                <Ionicons name="settings-sharp" size={32} style={{marginRight: 10}} />
+                <Ionicons name="settings-sharp" size={28} style={{marginRight: 10}} color="gray" />
               </TouchableOpacity>
             ),
             headerTitle: () => {
