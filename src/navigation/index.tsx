@@ -14,6 +14,7 @@ import {
   BurgerScreen,
   ProtectedBurgerScreen,
   MoreInfoScreen,
+  ChefSettingsScreen,
 } from "../screens";
 import BottomTabNavigator from "./BottomTab";
 
@@ -184,6 +185,29 @@ function RootNavigator() {
           },
         }}
       />
+    <RootStack.Screen
+    name="ChefSettingsScreen"
+    component={ChefSettingsScreen}
+    options={{
+      headerBackImage: () => (
+        <Ionicons name="chevron-down-sharp" size={36} />
+      ),
+      headerBackTitleVisible: false,
+      headerLeftContainerStyle: {
+        marginLeft: 12,
+      },
+      headerTitle: () => {
+        return (
+          <View style={styles.headerContainer}>
+            <Image
+              source={require("../../assets/header.png")}
+              style={styles.headerImage}
+            />
+          </View>
+        );
+      },
+    }}
+  />
     </RootStack.Navigator>
   );
 }
@@ -194,6 +218,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 8,
+    height: 100,
   },
 
   headerImage: {

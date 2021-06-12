@@ -7,11 +7,14 @@ import axios from "axios";
 import RecipeCardStack from "../components/RecipeCardStack";
 import LoadingCardStack from "../components/LoadingCardStack";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { applySmartFilter, constructEndpoint, removeRecentlyViewedRecipes } from "../utils";
+import {
+  applySmartFilter,
+  constructEndpoint,
+  removeRecentlyViewedRecipes,
+} from "../utils";
 // Importing JSON data for development and testing
-import * as recipesJson from "../data/100Recipes.json";
-
-
+import * as vegRecipesJson from "../data/vegetarianRecipes.json";
+import * as dinRecipesJson from "../data/dinnerRecipes.json";
 export interface MenuScreenProps {
   navigation: StackNavigationProp<MenuStackParamList, "MenuScreen">;
 }
@@ -40,11 +43,10 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
     let fetchedRecipes: Recipe[];
 
     // Endpoint with filters included
-    const ENDPOINT = constructEndpoint(filtersState.filters);      
+    const ENDPOINT = constructEndpoint(filtersState.filters);
 
     // Try to fatch data
     try {
-
       /*
       /\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\
       UN-COMMENT FOR SPOONACULAR API CALLS
@@ -84,12 +86,13 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
       //     healthScore: rcp.healthScore,
       //     pricePerServing: rcp.pricePerServing,
       //     readyInMinutes: rcp.readyInMinutes,
-      //     ingredients: ingredientsArray,
+      //     summary: rcp.summary,
       //     servings: rcp.servings,
+      //     ingredients: ingredientsArray,
+      //     instructions: rcp.instructions,
       //     smartFilterScore: 0,
       //   };
       // });
-
 
       /*
       /\/\/\/\/\/\/\/\/\/\/\/\
@@ -97,39 +100,81 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
       \/\/\/\/\/\/\/\/\/\/\/\/
       */
 
-      fetchedRecipes = recipesJson.recipes.map((rcp) => {
-        const ingredientsArray = (
-          rcp.extendedIngredients as Array<Ingredient>
-        ).map((ing: Ingredient): string => {
-          return ing?.name;
+      // Dummy vegetarian data
+      if (filtersState.filters.vegetarian) {
+        fetchedRecipes = vegRecipesJson.recipes.map((rcp) => {
+          const ingredientsArray = (
+            rcp.extendedIngredients as Array<Ingredient>
+          ).map((ing: Ingredient): string => {
+            return ing?.name;
+          });
+          return {
+            id: rcp.id,
+            sourceUrl: rcp.sourceUrl,
+            image: rcp.image,
+            imageType: rcp.imageType,
+            title: rcp.title,
+            diets: rcp.diets,
+            cuisines: rcp.cuisines,
+            dishTypes: rcp.dishTypes,
+            vegetarian: rcp.vegetarian,
+            vegan: rcp.vegan,
+            glutenFree: rcp.glutenFree,
+            dairyFree: rcp.dairyFree,
+            veryHealthy: rcp.veryHealthy,
+            cheap: rcp.cheap,
+            veryPopular: rcp.veryPopular,
+            sustainable: rcp.sustainable,
+            aggregateLikes: rcp.aggregateLikes,
+            spoonacularScore: rcp.spoonacularScore,
+            healthScore: rcp.healthScore,
+            pricePerServing: rcp.pricePerServing,
+            readyInMinutes: rcp.readyInMinutes,
+            servings: rcp.servings,
+            summary: rcp.summary,
+            ingredients: ingredientsArray,
+            instructions: rcp.instructions,
+            smartFilterScore: 0,
+          };
         });
-        return {
-          id: rcp.id,
-          sourceUrl: rcp.sourceUrl,
-          image: rcp.image,
-          imageType: rcp.imageType,
-          title: rcp.title,
-          diets: rcp.diets,
-          cuisines: rcp.cuisines,
-          dishTypes: rcp.dishTypes,
-          vegetarian: rcp.vegetarian,
-          vegan: rcp.vegan,
-          glutenFree: rcp.glutenFree,
-          dairyFree: rcp.dairyFree,
-          veryHealthy: rcp.veryHealthy,
-          cheap: rcp.cheap,
-          veryPopular: rcp.veryPopular,
-          sustainable: rcp.sustainable,
-          aggregateLikes: rcp.aggregateLikes,
-          spoonacularScore: rcp.spoonacularScore,
-          healthScore: rcp.healthScore,
-          pricePerServing: rcp.pricePerServing,
-          readyInMinutes: rcp.readyInMinutes,
-          servings: rcp.servings,
-          ingredients: ingredientsArray,
-          smartFilterScore: 0,
-        };
-      });
+        // Dummy Dinner data
+      } else {
+        fetchedRecipes = dinRecipesJson.recipes.map((rcp) => {
+          const ingredientsArray = (
+            rcp.extendedIngredients as Array<Ingredient>
+          ).map((ing: Ingredient): string => {
+            return ing?.name;
+          });
+          return {
+            id: rcp.id,
+            sourceUrl: rcp.sourceUrl,
+            image: rcp.image,
+            imageType: rcp.imageType,
+            title: rcp.title,
+            diets: rcp.diets,
+            cuisines: rcp.cuisines,
+            dishTypes: rcp.dishTypes,
+            vegetarian: rcp.vegetarian,
+            vegan: rcp.vegan,
+            glutenFree: rcp.glutenFree,
+            dairyFree: rcp.dairyFree,
+            veryHealthy: rcp.veryHealthy,
+            cheap: rcp.cheap,
+            veryPopular: rcp.veryPopular,
+            sustainable: rcp.sustainable,
+            aggregateLikes: rcp.aggregateLikes,
+            spoonacularScore: rcp.spoonacularScore,
+            healthScore: rcp.healthScore,
+            pricePerServing: rcp.pricePerServing,
+            readyInMinutes: rcp.readyInMinutes,
+            servings: rcp.servings,
+            summary: rcp.summary,
+            ingredients: ingredientsArray,
+            instructions: rcp.instructions,
+            smartFilterScore: 0,
+          };
+        });
+      }
 
       if (fetchedRecipes.length === 0) {
         Alert.alert(
@@ -138,7 +183,10 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
         );
       } else {
         // Remove already viewed Recipes
-        const removedViewedRecipes = removeRecentlyViewedRecipes(fetchedRecipes, userRecipeListState.userRecipeList);
+        const removedViewedRecipes = removeRecentlyViewedRecipes(
+          fetchedRecipes,
+          userRecipeListState.userRecipeList
+        );
 
         // Apply smartFilter is set to true
         if (filtersState.filters.smartFilter) {
@@ -166,8 +214,8 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
   function navigateToMoreInfoScreen(rcp: Recipe) {
     navigation.navigate("MoreInfoScreen", {
       rcp: rcp,
-    })
-  } 
+    });
+  }
 
   // On filter update
   React.useEffect(() => {
@@ -175,7 +223,7 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
     fetchRandomRecipes();
   }, [filtersState]);
 
-// on reaload trigger
+  // on reaload trigger
   React.useEffect(() => {
     // if reload recipe = true
     if (reloadRecipesState.reload) {
@@ -185,10 +233,13 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
     }
   }, [reloadRecipesState]);
 
-
   return isCardStackLoading ? (
     <LoadingCardStack />
   ) : (
-    <RecipeCardStack randRecipes={randRecipes} filtersState={filtersState} navigateToMoreInfoScreen={navigateToMoreInfoScreen}/>
+    <RecipeCardStack
+      randRecipes={randRecipes}
+      filtersState={filtersState}
+      navigateToMoreInfoScreen={navigateToMoreInfoScreen}
+    />
   );
 }

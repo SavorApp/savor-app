@@ -1,6 +1,7 @@
 import LoginScreen from "./LoginScreen";
 import SignupScreen from "./SignupScreen";
 import ChefScreen from "./ChefScreen";
+import ChefSettingsScreen from "./ChefSettingsScreen"
 import DeleteAccountScreen from "./DeleteAccountScreen";
 import AboutUsScreen from "./AboutUsScreen";
 import MenuScreen from "./MenuScreen";
@@ -14,6 +15,7 @@ export {
     LoginScreen,
     SignupScreen,
     ChefScreen,
+    ChefSettingsScreen,
     DeleteAccountScreen,
     AboutUsScreen,
     MenuScreen,
