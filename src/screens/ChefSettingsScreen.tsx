@@ -51,6 +51,7 @@ export default function ChefSettingsScreen({
         dispatch(removeUser());
         dispatch(resetUserRecipeList());
         dispatch(resetFilters());
+        navigation.goBack();
         setBlockLogout(false);
       })
       .catch((err: { code: string; message: string }) => {
@@ -72,37 +73,47 @@ export default function ChefSettingsScreen({
 
   return (
     <View style={styles.container}>
-      <TouchableHighlight
+      <TouchableOpacity
         onPress={() => navigation.navigate("AboutUsScreen")}
         activeOpacity={0.8}
-        style={styles.button}
-        underlayColor={"gainsboro"}
       >
-        <Text style={styles.buttonText}>About Us</Text>
-      </TouchableHighlight>
-      <TouchableHighlight
+        <LinearGradient
+          colors={["white", "whitesmoke"]}
+          style={styles.aboutUsButton}
+        >
+          <Text style={styles.buttonText}>About Us</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+      <TouchableOpacity
         onPress={
           blockLogout
             ? () => {} // Fake function while blocked
             : handleLogout // Allow logout while unblocked
         }
         activeOpacity={0.8}
-        style={styles.button}
-        underlayColor={"gainsboro"}
       >
-        <Text style={styles.buttonText}>
-          {blockLogout ? "Processing..." : "Logout"}
-        </Text>
-      </TouchableHighlight>
-
-      <TouchableHighlight
+        <LinearGradient
+          colors={["white", "whitesmoke"]}
+          style={styles.aboutUsButton}
+        >
+          <Text style={styles.buttonText}>
+            {blockLogout ? "Processing..." : "Logout"}
+          </Text>
+        </LinearGradient>
+      </TouchableOpacity>
+      <TouchableOpacity
         onPress={() => navigation.navigate("DeleteAccountScreen")}
         activeOpacity={0.8}
-        style={styles.button}
-        underlayColor={"gainsboro"}
       >
-        <Text style={styles.buttonText}>Delete Account</Text>
-      </TouchableHighlight>
+        <LinearGradient
+          colors={["white", "whitesmoke"]}
+          style={styles.aboutUsButton}
+        >
+          <Text style={{ ...styles.buttonText, color: "#FF5454" }}>
+            Delete Account
+          </Text>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -115,6 +126,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
     // backgroundColor: colorPalette.background,
   },
+
+  // buttonText: {
+  //   fontSize: 20,
+  // },
 
   subContainer: {
     justifyContent: "center",
@@ -175,18 +190,19 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontSize: 24,
+    fontSize: 22,
   },
 
-  button: {
+  aboutUsButton: {
     justifyContent: "center",
     alignItems: "center",
     marginTop: 8,
     marginHorizontal: 8,
-    width: 350,
+    width: 300,
+    backgroundColor: "#FFAA54",
     borderRadius: 10,
-    padding: 8,
-    borderWidth: 1,
+    padding: 12,
+    borderWidth: 0.2,
     borderStyle: "solid",
     shadowOpacity: 0.3,
     shadowRadius: 0.2,

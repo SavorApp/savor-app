@@ -18,7 +18,6 @@ import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
 import { updateSavorDb } from "../db/db";
 import { useFonts } from "expo-font";
-import { NONAME } from "dns";
 
 const _screen = Dimensions.get("screen");
 
@@ -44,6 +43,7 @@ export default function SavoredListScreen({
 
   const [loaded] = useFonts({
     Itim: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    SatisfyHello: require("../../assets/fonts/Satisfy-Regular.ttf"),
   });
 
   function getRandomNumber(): number {
@@ -318,20 +318,25 @@ export default function SavoredListScreen({
         <TouchableOpacity
           onPress={savoredList.length === 0 ? () => {} : handleTruffleShuffle}
           activeOpacity={0.8}
+          style={{
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+            shadowOffset: { width: 1, height: 1 },
+          }}
         >
           <LinearGradient
-            colors={[colorPalette.popLight, colorPalette.popDark]}
+            colors={["#F7DD08", "#FFAA54"]}
             style={styles.truffleShuffleButton}
           >
             <Text
               style={{
-                color: "black",
-                fontFamily: "Itim",
-                fontSize: 24,
-                fontStyle: "bold",
+                color: "#343332",
+                fontSize: 28,
+                fontFamily: "SatisfyHello",
+                // fontStyle: "bold",
               }}
             >
-              Truffle Shuffle
+              Truffle Shuffle!
             </Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -364,6 +369,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.86,
     height: _screen.height * 0.68,
     borderRadius: 15,
+
     // backgroundColor: colorPalette.secondary,
   },
 
@@ -437,9 +443,12 @@ const styles = StyleSheet.create({
   truffleShuffleButton: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 8,
-    width: 200,
-    height: 50,
+    marginTop: 7,
+    // width: 160,
+    width: _screen.width * 0.9,
+    height: _screen.height * 0.065,
+    borderWidth: 0.2,
+    borderColor: "grey",
     borderRadius: 10,
     padding: 8,
   },

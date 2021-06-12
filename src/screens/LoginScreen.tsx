@@ -146,7 +146,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text style={styles.title}>Please Sign In</Text>
+        <Text style={styles.title}>Already have an account? Please login.</Text>
         <View style={styles.form}>
           <View style={styles.inputContainer}>
             <View style={[styles.input, { justifyContent: "space-between" }]}>
@@ -207,18 +207,23 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
               activeOpacity={0.8}
             >
               <LinearGradient
-                colors={[colorPalette.alternate, colorPalette.alternate2]}
+                colors={["#5454FF", "#3B3BB3"]}
                 style={styles.signUpButton}
               >
-                <Text style={{ color: colorPalette.background }}>
-                  {blockLogin ? "Processing..." : "Sign In"}
+                <Text style={{ color: "white" }}>
+                  {blockLogin ? "Processing..." : "Login"}
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
         </View>
 
-        <View>
+        <View
+          style={{
+            flexDirection: "row",
+          }}
+        >
+          <Text>Don't have an account yet? </Text>
           <TouchableOpacity onPress={() => navigation.navigate("SignupScreen")}>
             <Text style={styles.signUp}>Sign Up</Text>
           </TouchableOpacity>
@@ -230,7 +235,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             activeOpacity={0.8}
           >
             <LinearGradient
-              colors={[colorPalette.popLight, colorPalette.popDark]}
+              colors={["white", "whitesmoke"]}
               style={styles.aboutUsButton}
             >
               <Text style={{ color: "black" }}>About Us</Text>
@@ -247,7 +252,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
@@ -256,7 +261,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.9,
     height: _screen.height * 0.6,
     borderRadius: 15,
-    backgroundColor: colorPalette.primary,
+    // backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
 
@@ -267,14 +272,14 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.8,
     height: _screen.height * 0.3,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.secondary,
   },
 
   title: {
     marginVertical: 8,
     fontSize: 28,
     fontWeight: "bold",
-    color: colorPalette.background,
+    // color: colorPalette.background,
   },
 
   inputContainer: {
@@ -283,7 +288,7 @@ const styles = StyleSheet.create({
     margin: 1,
     padding: 6,
     paddingBottom: 18,
-    width: _screen.width * 0.7,
+    width: _screen.width * 0.8,
     borderRadius: 10,
     backgroundColor: colorPalette.background,
   },
@@ -292,7 +297,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 10,
     paddingHorizontal: 3,
-    width: _screen.width * 0.65,
+    width: _screen.width * 0.7,
     borderBottomWidth: 1,
     borderBottomColor: colorPalette.trim,
   },
@@ -315,18 +320,27 @@ const styles = StyleSheet.create({
   },
 
   signUp: {
-    margin: 8,
-    fontSize: 18,
+    // margin: 8,
+    // fontSize: 18,
+    // color: "blue",
     textDecorationLine: "underline",
-    color: colorPalette.background,
+    color: "#5c5c5c",
+    // color: colorPalette.background,
   },
 
   aboutUsButton: {
     justifyContent: "center",
     alignItems: "center",
     marginTop: 8,
-    width: 120,
+    marginHorizontal: 8,
+    width: 200,
+    backgroundColor: "#FFAA54",
     borderRadius: 10,
     padding: 8,
+    borderWidth: 0.2,
+    borderStyle: "solid",
+    shadowOpacity: 0.3,
+    shadowRadius: 0.2,
+    shadowOffset: { width: 0.2, height: 0.3 },
   },
 });

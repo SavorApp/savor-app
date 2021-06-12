@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
@@ -284,7 +284,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.9,
     height: _screen.height * 0.75,
     borderRadius: 15,
-    backgroundColor: colorPalette.primary,
+    // backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
 
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
     margin: 8,
     fontSize: 25,
     fontWeight: "bold",
-    color: colorPalette.background,
+    // color: colorPalette.background,
     textAlign: "center",
   },
 
@@ -317,7 +317,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.85,
     height: _screen.height * 0.55,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.secondary,
   },
 
   scrollView: {
@@ -325,7 +325,7 @@ const styles = StyleSheet.create({
     marginVertical: Platform.OS === "android" ? 12 : 0,
     width: _screen.width * 0.83,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.secondary,
   },
 
   ingredientContainer: {
