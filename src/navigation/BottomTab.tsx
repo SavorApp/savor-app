@@ -18,10 +18,12 @@ export default function BottomTabNavigator() {
       initialRouteName="Menu"
       tabBarOptions={{
         // activeTintColor: Colors[colorScheme].tint,
-        activeTintColor: "#ff4a47",
+        activeTintColor: "#FF5454",
+        // inactiveTintColor: "#2e2e2e",
         style: {
           elevation: 70,
           height: 100,
+          // backgroundColor: "#ed4a45",
         },
         // showLabel: false,
       }}

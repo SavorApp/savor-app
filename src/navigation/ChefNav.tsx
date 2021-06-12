@@ -51,6 +51,7 @@ export default function ChefNavigator({ navigation }: ChefNavigatorProps) {
                   name="settings-sharp"
                   size={32}
                   style={{ marginRight: 10 }}
+                  color={"grey"}
                 />
               </TouchableOpacity>
             ),

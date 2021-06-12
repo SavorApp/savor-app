@@ -122,11 +122,13 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
     });
 
     const [loaded] = useFonts({
-      Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
+      SatisfyHello: require("../../assets/fonts/Satisfy-Regular.ttf"),
     });
 
+    if (!loaded) return null;
+
     return (
-      <View style={styles.scrollable}>
+      <View>
         <View style={{ ...styles.borderline, marginTop: 30 }} />
         <Text style={styles.subTitle2}>Taste Profile</Text>
         {cuisineArray[0] && (
@@ -155,7 +157,10 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
         {ingredientsArray.map((ingObj) => {
           if (ingObj.count >= 3) {
             return (
-              <Text key={"i_" + ingObj.key.toString()}>
+              <Text
+                style={{ ...styles.caption, fontStyle: "normal" }}
+                key={"i_" + ingObj.key.toString()}
+              >
                 {ingObj.name}: {ingObj.count}
               </Text>
             );
@@ -204,55 +209,10 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
         <Text style={styles.username}>{userState.user.username}</Text>
         <View style={styles.profileContainer}>
           <ScrollView style={styles.scrollView}>
-            {/* <Text style={styles.subTitle}>Your Metrics</Text> */}
             <Metrics recipeList={userRecipeListState.userRecipeList} />
             <Text>{"\n\n\n"}</Text>
           </ScrollView>
         </View>
-
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate("AboutUsScreen")}
-          activeOpacity={0.8}
-        >
-          <LinearGradient
-            colors={[colorPalette.popLight, colorPalette.popDark]}
-            style={styles.button}
-          >
-            <Text style={{ color: "black" }}>About Us</Text>
-          </LinearGradient>
-        </TouchableOpacity> */}
-
-        {/* <View style={styles.bottomButtonsContainer}>
-          <TouchableOpacity
-            onPress={
-              blockLogout
-                ? () => {} // Fake function while blocked
-                : handleLogout // Allow logout while unblocked
-            }
-            activeOpacity={0.8}
-          >
-            <LinearGradient
-              colors={[colorPalette.trimLight, colorPalette.trim]}
-              style={styles.button}
-            >
-              <Text style={{ color: "black" }}>
-                {blockLogout ? "Processing..." : "Logout"}
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate("DeleteAccountScreen")}
-            activeOpacity={0.8}
-          >
-            <LinearGradient
-              colors={["#ffe6e6", "#ff6666"]}
-              style={styles.button}
-            >
-              <Text style={{ color: "black" }}>Delete Account</Text>
-            </LinearGradient>
-          </TouchableOpacity> */}
-        {/* </View> */}
       </View>
     </View>
   );
@@ -272,15 +232,13 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.9,
     height: _screen.height * 0.7,
     borderRadius: 15,
-    marginTop: 100,
-    // backgroundColor: colorPalette.primary,
+    marginTop: 120,
     ...shadowStyle,
   },
 
   profileContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 16,
     width: _screen.width * 0.83,
     height: _screen.height * 0.7,
     borderRadius: 15,
@@ -290,9 +248,9 @@ const styles = StyleSheet.create({
   title: {
     justifyContent: "flex-start",
     textAlign: "center",
-    fontSize: 36,
-    fontWeight: "bold",
-    fontFamily: "Satisfy",
+    fontSize: 40,
+    fontFamily: "SatisfyHello",
+    // fontWeight: "bold",
     // marginTop: -50,
     // color: colorPalette.background,
   },
@@ -301,7 +259,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 8,
     fontSize: 24,
-    fontFamily: "Satisfy",
+    fontFamily: "SatisfyHello",
     // fontWeight: "bold",
     // color: colorPalette.popDark,
   },
@@ -316,7 +274,6 @@ const styles = StyleSheet.create({
   subTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    marginTop: 10,
     marginBottom: 6,
   },
 
@@ -325,28 +282,12 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginVertical: 6,
     height: 45,
-    fontFamily: "Satisfy",
   },
 
   caption: {
     fontStyle: "italic",
+    fontSize: 20,
   },
-
-  // button: {
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   marginTop: 8,
-  //   marginHorizontal: 8,
-  //   width: 120,
-  //   borderRadius: 10,
-  //   padding: 8,
-  // },
-
-  // bottomButtonsContainer: {
-  //   flexDirection: "row",
-  //   margin: 8,
-  // },
-
   borderline: {
     borderBottomColor: "black",
     borderBottomWidth: 1,

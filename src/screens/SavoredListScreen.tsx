@@ -56,6 +56,9 @@ export default function SavoredListScreen({
     });
   }
 
+  if (!loaded) {
+    return null;
+  }
   // below is the recipe list
 
   function RecipeListItem({

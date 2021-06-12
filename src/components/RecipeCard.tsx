@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     height: _screen.height * 0.6,
     width: _screen.width * 0.88,
     borderRadius: 15,
-    marginBottom: 40,
+    marginBottom: 30,
     // backgroundColor: colorPalette.secondary,
   },
 
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     padding: 3,
     width: _screen.width * 0.78,
     borderRadius: 5,
-    backgroundColor: "rgba(255, 255, 255, 0.6)",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
     justifyContent: "center",
     marginBottom: 15,
     ...shadowStyle,
