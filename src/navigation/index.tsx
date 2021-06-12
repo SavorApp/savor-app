@@ -60,10 +60,7 @@ function RootNavigator() {
           headerTitle: () => {
             return (
               <View style={styles.headerContainer}>
-                <Image
-                  source={require("../../assets/header.png")}
-                  style={styles.headerImage}
-                />
+                <Text style={{fontSize: 24}}>Sign Up</Text>
               </View>
             );
           },
@@ -83,10 +80,7 @@ function RootNavigator() {
           headerTitle: () => {
             return (
               <View style={styles.headerContainer}>
-                <Image
-                  source={require("../../assets/header.png")}
-                  style={styles.headerImage}
-                />
+                <Text style={{fontSize: 24}}>About Us</Text>
               </View>
             );
           },
@@ -106,10 +100,7 @@ function RootNavigator() {
           headerTitle: () => {
             return (
               <View style={styles.headerContainer}>
-                <Image
-                  source={require("../../assets/header.png")}
-                  style={styles.headerImage}
-                />
+                <Text style={{fontSize: 24}}>Delete Account</Text>
               </View>
             );
           },
@@ -129,10 +120,7 @@ function RootNavigator() {
           headerTitle: () => {
             return (
               <View style={styles.headerContainer}>
-                <Image
-                  source={require("../../assets/header.png")}
-                  style={styles.headerImage}
-                />
+                <Text style={{fontSize: 24}}>Filters</Text>
               </View>
             );
           },
@@ -152,10 +140,7 @@ function RootNavigator() {
           headerTitle: () => {
             return (
               <View style={styles.headerContainer}>
-                <Image
-                  source={require("../../assets/header.png")}
-                  style={styles.headerImage}
-                />
+                <Text style={{fontSize: 24}}>Filters</Text>
               </View>
             );
           },
@@ -176,10 +161,7 @@ function RootNavigator() {
           headerTitle: () => {
             return (
               <View style={styles.headerContainer}>
-                <Image
-                  source={require("../../assets/header.png")}
-                  style={styles.headerImage}
-                />
+                <Text style={{fontSize: 24}}>Recipe Information</Text>
               </View>
             );
           },
@@ -199,10 +181,7 @@ function RootNavigator() {
       headerTitle: () => {
         return (
           <View style={styles.headerContainer}>
-            <Image
-              source={require("../../assets/header.png")}
-              style={styles.headerImage}
-            />
+            <Text style={{fontSize: 24}}>Settings</Text>
           </View>
         );
       },
