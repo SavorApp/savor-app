@@ -1,5 +1,12 @@
 import React from "react";
-import { StyleSheet, Dimensions, Platform, View, ScrollView, Text } from "react-native";
+import {
+  StyleSheet,
+  Dimensions,
+  Platform,
+  View,
+  ScrollView,
+  Text,
+} from "react-native";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import {
   header,
@@ -13,7 +20,7 @@ import {
   swipeAndLookContent,
   savorToCookContent,
   contactUsContent,
-  email
+  email,
 } from "../constants/AboutUsContent";
 
 const _screen = Dimensions.get("screen");
@@ -22,23 +29,33 @@ export default function AboutUsScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text style={styles.title}>About Us</Text>
+        {/* <Text style={styles.title}>About Us</Text> */}
         <View style={styles.contentContainer}>
           <ScrollView style={styles.scrollView}>
             <Text style={styles.content}>{header}</Text>
             <View style={styles.sloganContainer}>
               <Text style={[styles.slogan, styles.content]}>{slogan}</Text>
             </View>
-            <Text style={[styles.subTitle, styles.content]}>Savored Core Values:</Text>
-            <Text style={[styles.subTitle2, styles.content]}>{noBoundaries}</Text>
+            <Text style={[styles.subTitle, styles.content]}>
+              Savored Core Values:
+            </Text>
+            <Text style={[styles.subTitle2, styles.content]}>
+              {noBoundaries}
+            </Text>
             <Text style={styles.content}>{noBoundariesContent}</Text>
             <Text style={[styles.subTitle2, styles.content]}>{noLimits}</Text>
             <Text style={styles.content}>{noLimitsContent}</Text>
-            <Text style={[styles.subTitle2, styles.content]}>{swipeAndLook}</Text>
+            <Text style={[styles.subTitle2, styles.content]}>
+              {swipeAndLook}
+            </Text>
             <Text style={styles.content}>{swipeAndLookContent}</Text>
-            <Text style={[styles.subTitle2, styles.content]}>{savorToCook}</Text>
+            <Text style={[styles.subTitle2, styles.content]}>
+              {savorToCook}
+            </Text>
             <Text style={styles.content}>{savorToCookContent}</Text>
-            <Text style={[styles.subTitle, styles.content]}>Contact Information:</Text>
+            <Text style={[styles.subTitle, styles.content]}>
+              Contact Information:
+            </Text>
             <Text style={styles.content}>{contactUsContent}</Text>
             <Text style={[styles.content, styles.email]}>{email}</Text>
           </ScrollView>
@@ -53,16 +70,16 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
     justifyContent: "center",
     alignItems: "center",
-    width: _screen.width * 0.9,
-    height: _screen.height * 0.8,
+    width: _screen.width * 0.95,
+    height: _screen.height * 0.9,
     borderRadius: 15,
-    backgroundColor: colorPalette.primary,
+    // backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
 
@@ -70,24 +87,24 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     fontSize: 28,
     fontWeight: "bold",
-    color: colorPalette.background,
+    // color: colorPalette.background,
   },
 
   contentContainer: {
     justifyContent: "center",
     alignItems: "center",
-    width: _screen.width * 0.85,
-    height: _screen.height * 0.7,
+    width: _screen.width * 0.93,
+    height: _screen.height * 0.86,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.secondary,
   },
 
   scrollView: {
     padding: 8,
     marginVertical: Platform.OS === "android" ? 12 : 0,
-    width: _screen.width * 0.83,
+    width: _screen.width * 0.93,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.secondary,
   },
 
   content: {
@@ -98,29 +115,29 @@ const styles = StyleSheet.create({
     marginVertical: 6,
     paddingTop: 4,
     backgroundColor: colorPalette.popDark,
-    borderRadius: 10
+    borderRadius: 10,
   },
 
   slogan: {
     textAlign: "center",
-    fontSize: 12,
+    fontSize: 18,
     fontWeight: "bold",
     fontStyle: "italic",
   },
 
   subTitle: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "bold",
   },
 
   subTitle2: {
-    fontSize: 14,
+    fontSize: 18,
     fontWeight: "bold",
     textDecorationLine: "underline",
   },
 
   email: {
     fontWeight: "bold",
-    color: colorPalette.alternate2
-  }
+    color: colorPalette.alternate2,
+  },
 });

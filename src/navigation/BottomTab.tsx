@@ -16,7 +16,17 @@ export default function BottomTabNavigator() {
   return (
     <BottomTab.Navigator
       initialRouteName="Menu"
-      tabBarOptions={{ activeTintColor: Colors[colorScheme].tint }}
+      tabBarOptions={{
+        // activeTintColor: Colors[colorScheme].tint,
+        activeTintColor: "#FF5454",
+        // inactiveTintColor: "#2e2e2e",
+        style: {
+          elevation: 70,
+          height: 100,
+          // backgroundColor: "#ed4a45",
+        },
+        // showLabel: false,
+      }}
     >
       <BottomTab.Screen
         name="Chef"
@@ -54,21 +64,8 @@ function TabBarIcon(props: {
   color: string;
 }) {
   return (
-    <MaterialCommunityIcons size={30} style={{ marginBottom: -3 }} {...props} />
+    <MaterialCommunityIcons style={{ marginTop: 10 }} size={40} {...props} />
   );
 }
 
-const styles = StyleSheet.create({
-  headerContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 8,
-  },
-
-  headerImage: {
-    flex: 1,
-    resizeMode: "contain",
-    width: 200,
-  },
-});
+const styles = StyleSheet.create({});

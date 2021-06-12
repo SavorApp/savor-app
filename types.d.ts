@@ -13,6 +13,7 @@ type RootStackParamList = {
   BurgerScreen: undefined;
   ProtectedBurgerScreen: undefined;
   MoreInfoScreen: { rcp: Recipe };
+  ChefSettingsScreen: undefined;
 };
 
 type BottomTabParamList = {
@@ -25,6 +26,7 @@ type ChefStackParamList = {
   LoginScreen: undefined;
   SignupScreen: undefined;
   ChefScreen: undefined;
+  ChefSettingsScreen: undefined;
   AboutUsScreen: undefined;
   DeleteAccountScreen: undefined;
 };
@@ -215,6 +217,7 @@ type Recipe = {
   pricePerServing: number;
   readyInMinutes: number;
   servings: number;
+  summary: string;
   ingredients: string[];
   instructions: string;
   smartFilterScore: number;

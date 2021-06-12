@@ -17,8 +17,7 @@ import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
 import { updateSavorDb } from "../db/db";
-
-import axios from "axios";
+import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
 
@@ -42,6 +41,11 @@ export default function SavoredListScreen({
     (state) => state.userState
   );
 
+  const [loaded] = useFonts({
+    Itim: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    SatisfyHello: require("../../assets/fonts/Satisfy-Regular.ttf"),
+  });
+
   function getRandomNumber(): number {
     return Math.floor(Math.random() * savoredList.length);
   }
@@ -52,6 +56,9 @@ export default function SavoredListScreen({
     });
   }
 
+  if (!loaded) {
+    return null;
+  }
   // below is the recipe list
 
   function RecipeListItem({
@@ -84,10 +91,18 @@ export default function SavoredListScreen({
         activeOpacity={0.8}
       >
         <View style={styles.recipeListItemInner}>
-          {cuisineMap[rcp.cuisine] || cuisineMap["All"]}
           <View style={styles.recipeListItemInnerContent}>
-            <Text style={styles.recipeTitle}>{newTitle}</Text>
+            <Text
+              style={{
+                ...styles.recipeTitle,
+              }}
+            >
+              {newTitle}
+            </Text>
             <View style={styles.tagsContainer}>
+              <View style={{ ...styles.singleTagContainer, borderWidth: 0 }}>
+                {cuisineMap[rcp.cuisine] || cuisineMap["All"]}
+              </View>
               <View style={styles.singleTagContainer}>
                 {dishTypeMap[rcp.dishType] || dishTypeMap["All"]}
                 <Text style={styles.tag}>{rcp.dishType}</Text>
@@ -303,12 +318,26 @@ export default function SavoredListScreen({
         <TouchableOpacity
           onPress={savoredList.length === 0 ? () => {} : handleTruffleShuffle}
           activeOpacity={0.8}
+          style={{
+            shadowOpacity: 0.2,
+            shadowRadius: 3,
+            shadowOffset: { width: 1, height: 1 },
+          }}
         >
           <LinearGradient
-            colors={[colorPalette.popLight, colorPalette.popDark]}
+            colors={["#F7DD08", "#FFAA54"]}
             style={styles.truffleShuffleButton}
           >
-            <Text style={{ color: "black" }}>Truffle Shuffle</Text>
+            <Text
+              style={{
+                color: "#343332",
+                fontSize: 28,
+                fontFamily: "SatisfyHello",
+                // fontStyle: "bold",
+              }}
+            >
+              Truffle Shuffle!
+            </Text>
           </LinearGradient>
         </TouchableOpacity>
       </View>
@@ -321,7 +350,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
@@ -330,7 +359,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.9,
     height: _screen.height * 0.75,
     borderRadius: 15,
-    backgroundColor: colorPalette.primary,
+    // backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
 
@@ -340,15 +369,16 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.86,
     height: _screen.height * 0.68,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+
+    // backgroundColor: colorPalette.secondary,
   },
 
   flatList: {
     padding: 8,
     marginVertical: Platform.OS === "android" ? 12 : 0,
-    width: _screen.width * 0.83,
+    width: _screen.width * 0.93,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.secondary,
   },
 
   flatListContainer: {
@@ -360,26 +390,33 @@ const styles = StyleSheet.create({
   recipeListItem: {
     justifyContent: "center",
     alignItems: "center",
-    margin: 1,
-    padding: 8,
-    width: _screen.width * 0.81,
-    borderRadius: 10,
+    margin: 4,
+    padding: 3,
+    width: _screen.width * 0.9,
+    borderRadius: 7,
     backgroundColor: colorPalette.background,
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    shadowOffset: { width: 1, height: 1 },
   },
 
   recipeListItemInner: {
     flexDirection: "row",
     alignItems: "center",
-    paddingHorizontal: 6,
     width: _screen.width * 0.81,
   },
 
   recipeListItemInnerContent: {
-    paddingLeft: 6,
+    paddingLeft: 3,
+    marginLeft: -15,
   },
 
   recipeTitle: {
-    fontSize: 16,
+    fontSize: 20,
+    padding: 9,
+    marginTop: -5,
+
+    fontFamily: "Itim",
   },
 
   tagsContainer: {
@@ -392,8 +429,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginRight: 3,
     padding: 4,
+    marginLeft: 10,
+    marginBottom: 5,
+    borderColor: "black",
+    borderWidth: 0.3,
     borderRadius: 8,
-    backgroundColor: colorPalette.trimLight,
   },
 
   tag: {
@@ -403,8 +443,12 @@ const styles = StyleSheet.create({
   truffleShuffleButton: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 8,
-    width: 120,
+    marginTop: 7,
+    // width: 160,
+    width: _screen.width * 0.9,
+    height: _screen.height * 0.065,
+    borderWidth: 0.2,
+    borderColor: "grey",
     borderRadius: 10,
     padding: 8,
   },
@@ -417,7 +461,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingLeft: 15,
     margin: 5,
-    // marginBottom: 15,
     borderRadius: 5,
   },
 

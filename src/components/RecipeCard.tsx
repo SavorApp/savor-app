@@ -1,13 +1,23 @@
 import React from "react";
-import { View, StyleSheet, Text, Dimensions, ImageBackground, Animated } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  Dimensions,
+  ImageBackground,
+  Animated,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { shadowStyle, colorPalette } from "../constants/ColorPalette";
 import { disableScroll, enableScroll } from "../redux/actions";
 const _screen = Dimensions.get("screen");
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useFonts } from "expo-font";
 
-
-export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
+export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
+  // if (rcp.title.split(" ").length > 3) {
+  //   rcp.title = rcp.title.split(" ").splice(0, 3).join(" ");
+  // }
   const filtersState = useSelector<RootState, FiltersState>(
     (state) => state.filtersState
   );
@@ -15,6 +25,14 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
     (state) => state.enableScrollState
   );
   const dispatch = useDispatch();
+
+  const [loaded] = useFonts({
+    Satisfy: require("../../assets/fonts/OpenSans-Regular.ttf"),
+  });
+
+  if (!loaded) {
+    return null;
+  }
 
   return (
     <View style={styles.container}>
@@ -24,8 +42,12 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
           centerContent={true}
           directionalLockEnabled
           scrollEnabled={scrollState.enable}
-          onTouchStart={() => { dispatch(enableScroll()) }}
-          onScrollEndDrag={() => { dispatch(disableScroll()) }}
+          onTouchStart={() => {
+            dispatch(enableScroll());
+          }}
+          onScrollEndDrag={() => {
+            dispatch(disableScroll());
+          }}
         >
           {rcp.image ? (
             <View style={styles.imageContainer}>
@@ -41,35 +63,37 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
             </View>
           ) : (
             <View style={styles.noImageContainer}>
-              <ImageBackground key={id} source={require("../../assets/icon.png")} style={styles.noImage}>
+              <ImageBackground
+                key={id}
+                source={require("../../assets/icon.png")}
+                style={styles.noImage}
+              >
                 <View style={styles.titleContainer}>
                   <Text style={styles.title}>{rcp.title}</Text>
                 </View>
-                <Text style={styles.noImageMsg}>
-                😟 No Image 😟
-                </Text>
+                <Text style={styles.noImageMsg}>😟 No Image 😟</Text>
               </ImageBackground>
             </View>
-            )}
+          )}
 
           <View style={styles.rcpInfoContainer}>
             <Text style={styles.rcpInfo}>
               Type:{" "}
               {filtersState.filters.dishType
                 ? filtersState.filters.dishType[0].toUpperCase() +
-                filtersState.filters.dishType.slice(1)
+                  filtersState.filters.dishType.slice(1)
                 : rcp.dishTypes.length === 0
-                  ? "Many"
-                  : rcp.dishTypes[0][0].toUpperCase() + rcp.dishTypes[0].slice(1)}
+                ? "Many"
+                : rcp.dishTypes[0][0].toUpperCase() + rcp.dishTypes[0].slice(1)}
             </Text>
             <Text style={styles.rcpInfo}>
               Cuisine:{" "}
               {filtersState.filters.cuisine
                 ? filtersState.filters.cuisine[0].toUpperCase() +
-                filtersState.filters.cuisine.slice(1)
+                  filtersState.filters.cuisine.slice(1)
                 : rcp.cuisines.length === 0
-                  ? "World Food"
-                  : rcp.cuisines[0]}
+                ? "World Food"
+                : rcp.cuisines[0]}
             </Text>
             {/* <Text style={styles.rcpInfo}>
               Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}
@@ -84,7 +108,6 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
               Vegan:{rcp.vegan ? " ✅  " : " ❌ "}
             </Text> */}
 
-            
             <Text style={styles.subTitle}>Additional Information</Text>
             <Text>Preparation time: {rcp.readyInMinutes} min </Text>
             <Text>Servings: {rcp.servings}</Text>
@@ -109,10 +132,7 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
               )}
               {rcp.vegan && (
                 <View style={styles.singleTagContainer}>
-                  <MaterialCommunityIcons
-                    name="alpha-v-circle"
-                    color="green"
-                  />
+                  <MaterialCommunityIcons name="alpha-v-circle" color="green" />
                   <Text style={styles.tag}>Vegan</Text>
                 </View>
               )}
@@ -120,14 +140,14 @@ export default function RecipeCard({ id, rcp, }: RecipeCardParamList) {
                 <View style={styles.singleTagContainer}>
                   <Text style={[styles.tag, { fontWeight: "bold" }]}>
                     Gluten Free
-                    </Text>
+                  </Text>
                 </View>
               )}
               {rcp.dairyFree && (
                 <View style={styles.singleTagContainer}>
                   <Text style={[styles.tag, { fontWeight: "bold" }]}>
                     Dairy Free
-                    </Text>
+                  </Text>
                 </View>
               )}
             </View>
@@ -147,11 +167,13 @@ const styles = StyleSheet.create({
 
   subContainer: {
     justifyContent: "center",
-    paddingTop: 20,
+    alignItems: "center",
+    // paddingTop: 20,
     height: _screen.height * 0.6,
     width: _screen.width * 0.88,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    marginBottom: 30,
+    // backgroundColor: colorPalette.secondary,
   },
 
   scrollViewContainer: {
@@ -159,12 +181,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  
+
   imageContainer: {
-    justifyContent: "center",
+    display: "flex",
+    justifyContent: "flex-start",
     alignItems: "center",
     height: _screen.height * 0.6,
     width: _screen.width * 0.88,
+    ...shadowStyle,
   },
 
   noImageContainer: {
@@ -176,7 +200,8 @@ const styles = StyleSheet.create({
 
   image: {
     alignItems: "center",
-    height: _screen.height * 0.5,
+    justifyContent: "flex-end",
+    height: _screen.height * 0.6,
     width: _screen.width * 0.85,
     resizeMode: "contain",
     overflow: "hidden",
@@ -191,20 +216,23 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     borderRadius: 15,
   },
-  
+
   titleContainer: {
     marginVertical: 3,
     padding: 3,
     width: _screen.width * 0.78,
-    borderRadius: 15,
-    backgroundColor: "rgba(0, 0, 0, 0.7)",
+    borderRadius: 5,
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+    justifyContent: "center",
+    marginBottom: 15,
+    ...shadowStyle,
   },
-  
+
   title: {
     textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 20,
-    color: "white",
+    fontSize: 28,
+    color: "black",
+    fontFamily: "Satisfy",
   },
 
   subTitle: {
@@ -214,14 +242,13 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
 
-
   noImageMsg: {
     textAlign: "center",
     marginTop: 18,
     borderRadius: 10,
     fontSize: 20,
     backgroundColor: "rgba(255, 255, 255, 0.8)",
-    overflow: "hidden"
+    overflow: "hidden",
   },
 
   rcpInfoContainer: {

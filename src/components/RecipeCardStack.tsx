@@ -1,7 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import { StyleSheet, Dimensions, View, Text } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
-import { addtoUserRecipeList, disableScroll, savorRecipe, triggerReload, unSavorRecipe } from "../redux/actions";
+import {
+  addtoUserRecipeList,
+  disableScroll,
+  savorRecipe,
+  triggerReload,
+  unSavorRecipe,
+} from "../redux/actions";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
@@ -26,7 +32,7 @@ export default function RecipeCardStack({
   const [blockSwipeButtons, setBlockSwipeButtons] = React.useState(false);
   const userRef = useRef<UserState>();
   const cardStackRef = React.useRef<CardStack>();
-  const [currentRcp, setCurrentRcp] = React.useState<Recipe>(randRecipes[0])
+  const [currentRcp, setCurrentRcp] = React.useState<Recipe>(randRecipes[0]);
 
   useEffect(() => {
     userRef.current = userState;
@@ -34,7 +40,7 @@ export default function RecipeCardStack({
 
   async function handleSwipe(idx: number, savored: Boolean) {
     const randRecipe = randRecipes[idx];
-    
+
     const recipeToBeAdded = {
       id: randRecipe.id,
       title: randRecipe.title,
@@ -67,7 +73,7 @@ export default function RecipeCardStack({
     userRecipeListState.userRecipeList.forEach((rcp) => {
       if (rcp.id === recipeToBeAdded.id) {
         neverViewed = false;
-      } 
+      }
     });
 
     // If user has never acted on this recipe...
@@ -82,22 +88,25 @@ export default function RecipeCardStack({
       // If this recipe has been acted upon...
       if (savored) {
         // Update global state based on savored value
-        dispatch(savorRecipe(recipeToBeAdded.id))
+        dispatch(savorRecipe(recipeToBeAdded.id));
       } else {
-        dispatch(unSavorRecipe(recipeToBeAdded.id))
+        dispatch(unSavorRecipe(recipeToBeAdded.id));
       }
       if (userRef.current?.isLoggedIn) {
         // Update DB record based on savored value
-        await updateSavorDb(userRef.current?.user.id, recipeToBeAdded.id, savored);
+        await updateSavorDb(
+          userRef.current?.user.id,
+          recipeToBeAdded.id,
+          savored
+        );
       }
     }
-    
+
     // If we are at the last card, trigger a reload
     if (randRecipes.length - idx === 1) {
       dispatch(triggerReload());
-      
     }
-    setCurrentRcp(randRecipes[idx+1])
+    setCurrentRcp(randRecipes[idx + 1]);
     setBlockSwipeButtons(false);
   }
 
@@ -110,8 +119,6 @@ export default function RecipeCardStack({
     setBlockSwipeButtons(true);
     !blockSwipeButtons && cardStackRef.current?.swipeRight();
   }
-
-  
 
   function renderNoMoreCard() {
     return (
@@ -176,7 +183,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
@@ -185,7 +192,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.9,
     height: _screen.height * 0.75,
     borderRadius: 15,
-    backgroundColor: colorPalette.primary,
+    // backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
 
@@ -201,6 +208,6 @@ const styles = StyleSheet.create({
   noMoreCardsText: {
     justifyContent: "center",
     alignItems: "center",
-    color: colorPalette.background,
+    // color: colorPalette.background,
   },
 });
