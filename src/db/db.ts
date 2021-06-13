@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SAVORED_SERVER_ENDPOINT } from "../constants/api";
+import { SAVORED_SERVER_ENDPOINT } from "../constants/Api";
 
 export async function postRecipeDb(
   user_id: string | undefined,

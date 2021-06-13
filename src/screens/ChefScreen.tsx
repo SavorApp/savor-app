@@ -203,7 +203,7 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
     OpenSans_400Regular,
   });
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return <Text>Loading...</Text>;
   } else {
     return (
       <View style={styles.container}>

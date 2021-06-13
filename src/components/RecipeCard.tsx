@@ -32,7 +32,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
   });
 
   if (!fontsLoaded) {
-    return <AppLoading />;
+    return <Text>Loading...</Text>;
   } else {
     return (
       <View style={styles.container}>
