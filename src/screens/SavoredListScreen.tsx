@@ -18,6 +18,7 @@ import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
 import { updateSavorDb } from "../db/db";
 import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 
 const _screen = Dimensions.get("screen");
 
@@ -41,7 +42,7 @@ export default function SavoredListScreen({
     (state) => state.userState
   );
 
-  const [loaded] = useFonts({
+  const [fontsLoaded] = useFonts({
     Itim: require("../../assets/fonts/OpenSans-Regular.ttf"),
     SatisfyHello: require("../../assets/fonts/Satisfy-Regular.ttf"),
   });
@@ -56,9 +57,6 @@ export default function SavoredListScreen({
     });
   }
 
-  if (!loaded) {
-    return null;
-  }
   // below is the recipe list
 
   function RecipeListItem({
@@ -276,73 +274,76 @@ export default function SavoredListScreen({
     );
   }
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <View style={styles.contentContainer}>
-          <SwipeListView
-            useFlatList={true}
-            style={styles.flatList}
-            contentContainerStyle={styles.flatListContainer}
-            data={savoredList}
-            keyExtractor={(rowData, index) => {
-              // console.log("I am rowData: ", rowData)
-              return rowData.id.toString();
-            }}
-            renderItem={(rowData, rowMap) => renderItem(rowData, rowMap)}
-            renderHiddenItem={(rowData, rowMap) => {
-              return renderHiddenItem(rowData, rowMap);
-            }}
-            leftOpenValue={75}
-            rightOpenValue={-150}
-            disableRightSwipe
-            onRowDidOpen={(rowData, rowMap) => onRowDidOpen(rowData, rowMap)}
-            leftActivationValue={100}
-            rightActivationValue={-200}
-            leftActionValue={0}
-            rightActionValue={-500}
-            onLeftAction={(rowData, rowMap) => {
-              return onLeftAction(rowData, rowMap);
-            }}
-            onRightAction={(rowData, rowMap) => {
-              return onRightAction(rowData, rowMap);
-            }}
-            onLeftActionStatusChange={(rowData, rowMap) =>
-              onLeftActionStatusChange(rowData, rowMap)
-            }
-            onRightActionStatusChange={(rowData, rowMap) =>
-              onRightActionStatusChange(rowData, rowMap)
-            }
-          />
-        </View>
-        <TouchableOpacity
-          onPress={savoredList.length === 0 ? () => {} : handleTruffleShuffle}
-          activeOpacity={0.8}
-          style={{
-            shadowOpacity: 0.2,
-            shadowRadius: 3,
-            shadowOffset: { width: 1, height: 1 },
-          }}
-        >
-          <LinearGradient
-            colors={["#F7DD08", "#FFAA54"]}
-            style={styles.truffleShuffleButton}
-          >
-            <Text
-              style={{
-                color: "#343332",
-                fontSize: 28,
-                fontFamily: "SatisfyHello",
-                // fontStyle: "bold",
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.container}>
+        <View style={styles.subContainer}>
+          <View style={styles.contentContainer}>
+            <SwipeListView
+              useFlatList={true}
+              style={styles.flatList}
+              contentContainerStyle={styles.flatListContainer}
+              data={savoredList}
+              keyExtractor={(rowData, index) => {
+                // console.log("I am rowData: ", rowData)
+                return rowData.id.toString();
               }}
+              renderItem={(rowData, rowMap) => renderItem(rowData, rowMap)}
+              renderHiddenItem={(rowData, rowMap) => {
+                return renderHiddenItem(rowData, rowMap);
+              }}
+              leftOpenValue={75}
+              rightOpenValue={-150}
+              disableRightSwipe
+              onRowDidOpen={(rowData, rowMap) => onRowDidOpen(rowData, rowMap)}
+              leftActivationValue={100}
+              rightActivationValue={-200}
+              leftActionValue={0}
+              rightActionValue={-500}
+              onLeftAction={(rowData, rowMap) => {
+                return onLeftAction(rowData, rowMap);
+              }}
+              onRightAction={(rowData, rowMap) => {
+                return onRightAction(rowData, rowMap);
+              }}
+              onLeftActionStatusChange={(rowData, rowMap) =>
+                onLeftActionStatusChange(rowData, rowMap)
+              }
+              onRightActionStatusChange={(rowData, rowMap) =>
+                onRightActionStatusChange(rowData, rowMap)
+              }
+            />
+          </View>
+          <TouchableOpacity
+            onPress={savoredList.length === 0 ? () => {} : handleTruffleShuffle}
+            activeOpacity={0.8}
+            style={{
+              shadowOpacity: 0.2,
+              shadowRadius: 3,
+              shadowOffset: { width: 1, height: 1 },
+            }}
+          >
+            <LinearGradient
+              colors={["#F7DD08", "#FFAA54"]}
+              style={styles.truffleShuffleButton}
             >
-              Truffle Shuffle!
-            </Text>
-          </LinearGradient>
-        </TouchableOpacity>
+              <Text
+                style={{
+                  color: "#343332",
+                  fontSize: 28,
+                  fontFamily: "SatisfyHello",
+                }}
+              >
+                Truffle Shuffle!
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -444,7 +445,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 7,
-    // width: 160,
     width: _screen.width * 0.9,
     height: _screen.height * 0.065,
     borderWidth: 0.2,

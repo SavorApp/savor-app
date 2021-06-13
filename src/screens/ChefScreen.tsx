@@ -21,7 +21,9 @@ import {
   resetUserRecipeList,
   resetFilters,
 } from "../redux/actions/index";
-import { useFonts } from "expo-font";
+import { useFonts, Satisfy_400Regular } from "@expo-google-fonts/satisfy";
+import { OpenSans_400Regular } from "@expo-google-fonts/open-sans";
+import AppLoading from "expo-app-loading";
 
 const _screen = Dimensions.get("screen");
 
@@ -121,12 +123,6 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
       return b.count - a.count;
     });
 
-    const [loaded] = useFonts({
-      SatisfyHello: require("../../assets/fonts/Satisfy-Regular.ttf"),
-    });
-
-    if (!loaded) return null;
-
     return (
       <View>
         <View style={{ ...styles.borderline, marginTop: 30 }} />
@@ -202,20 +198,28 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
     }
   }
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Text style={styles.title}>Welcome Chef</Text>
-        <Text style={styles.username}>{userState.user.username}</Text>
-        <View style={styles.profileContainer}>
-          <ScrollView style={styles.scrollView}>
-            <Metrics recipeList={userRecipeListState.userRecipeList} />
-            <Text>{"\n\n\n"}</Text>
-          </ScrollView>
+  const [fontsLoaded] = useFonts({
+    Satisfy_400Regular,
+    OpenSans_400Regular,
+  });
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.container}>
+        <View style={styles.subContainer}>
+          <Text style={styles.title}>Welcome Chef</Text>
+          <Text style={styles.username}>{userState.user.username}</Text>
+          <View style={styles.profileContainer}>
+            <ScrollView style={styles.scrollView}>
+              <Metrics recipeList={userRecipeListState.userRecipeList} />
+              <Text>{"\n\n\n"}</Text>
+            </ScrollView>
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -249,7 +253,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     textAlign: "center",
     fontSize: 40,
-    fontFamily: "SatisfyHello",
+    fontFamily: "Satisfy_400Regular",
     // fontWeight: "bold",
     // marginTop: -50,
     // color: colorPalette.background,
@@ -259,7 +263,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 8,
     fontSize: 24,
-    fontFamily: "SatisfyHello",
+    fontFamily: "Satisfy_400Regular",
     // fontWeight: "bold",
     // color: colorPalette.popDark,
   },

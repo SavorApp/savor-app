@@ -13,6 +13,7 @@ import { disableScroll, enableScroll } from "../redux/actions";
 const _screen = Dimensions.get("screen");
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
+import AppLoading from "expo-app-loading";
 
 export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
   // if (rcp.title.split(" ").length > 3) {
@@ -26,136 +27,140 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
   );
   const dispatch = useDispatch();
 
-  const [loaded] = useFonts({
-    Satisfy: require("../../assets/fonts/OpenSans-Regular.ttf"),
+  const [fontsLoaded] = useFonts({
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
   });
 
-  if (!loaded) {
-    return null;
-  }
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
+    return (
+      <View style={styles.container}>
+        <View style={styles.subContainer}>
+          <Animated.ScrollView
+            contentContainerStyle={styles.scrollViewContainer}
+            centerContent={true}
+            directionalLockEnabled
+            scrollEnabled={scrollState.enable}
+            onTouchStart={() => {
+              dispatch(enableScroll());
+            }}
+            onScrollEndDrag={() => {
+              dispatch(disableScroll());
+            }}
+          >
+            {rcp.image ? (
+              <View style={styles.imageContainer}>
+                <ImageBackground
+                  key={id}
+                  source={{ uri: rcp.image || " " }}
+                  style={styles.image}
+                >
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>{rcp.title}</Text>
+                  </View>
+                </ImageBackground>
+              </View>
+            ) : (
+              <View style={styles.noImageContainer}>
+                <ImageBackground
+                  key={id}
+                  source={require("../../assets/icon.png")}
+                  style={styles.noImage}
+                >
+                  <View style={styles.titleContainer}>
+                    <Text style={styles.title}>{rcp.title}</Text>
+                  </View>
+                  <Text style={styles.noImageMsg}>😟 No Image 😟</Text>
+                </ImageBackground>
+              </View>
+            )}
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Animated.ScrollView
-          contentContainerStyle={styles.scrollViewContainer}
-          centerContent={true}
-          directionalLockEnabled
-          scrollEnabled={scrollState.enable}
-          onTouchStart={() => {
-            dispatch(enableScroll());
-          }}
-          onScrollEndDrag={() => {
-            dispatch(disableScroll());
-          }}
-        >
-          {rcp.image ? (
-            <View style={styles.imageContainer}>
-              <ImageBackground
-                key={id}
-                source={{ uri: rcp.image || " " }}
-                style={styles.image}
-              >
-                <View style={styles.titleContainer}>
-                  <Text style={styles.title}>{rcp.title}</Text>
-                </View>
-              </ImageBackground>
-            </View>
-          ) : (
-            <View style={styles.noImageContainer}>
-              <ImageBackground
-                key={id}
-                source={require("../../assets/icon.png")}
-                style={styles.noImage}
-              >
-                <View style={styles.titleContainer}>
-                  <Text style={styles.title}>{rcp.title}</Text>
-                </View>
-                <Text style={styles.noImageMsg}>😟 No Image 😟</Text>
-              </ImageBackground>
-            </View>
-          )}
+            <View style={styles.rcpInfoContainer}>
+              <Text style={styles.rcpInfo}>
+                Type:{" "}
+                {filtersState.filters.dishType
+                  ? filtersState.filters.dishType[0].toUpperCase() +
+                    filtersState.filters.dishType.slice(1)
+                  : rcp.dishTypes.length === 0
+                  ? "Many"
+                  : rcp.dishTypes[0][0].toUpperCase() +
+                    rcp.dishTypes[0].slice(1)}
+              </Text>
+              <Text style={styles.rcpInfo}>
+                Cuisine:{" "}
+                {filtersState.filters.cuisine
+                  ? filtersState.filters.cuisine[0].toUpperCase() +
+                    filtersState.filters.cuisine.slice(1)
+                  : rcp.cuisines.length === 0
+                  ? "World Food"
+                  : rcp.cuisines[0]}
+              </Text>
+              {/* <Text style={styles.rcpInfo}>
+                Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}
+              </Text>
+              <Text style={styles.rcpInfo}>
+                Gluten-free:{rcp.glutenFree ? " ✅  " : " ❌ "}
+              </Text>
+              <Text style={styles.rcpInfo}>
+                Vegetarian:{rcp.vegetarian ? " ✅  " : " ❌ "}
+              </Text>
+              <Text style={styles.rcpInfo}>
+                Vegan:{rcp.vegan ? " ✅  " : " ❌ "}
+              </Text> */}
 
-          <View style={styles.rcpInfoContainer}>
-            <Text style={styles.rcpInfo}>
-              Type:{" "}
-              {filtersState.filters.dishType
-                ? filtersState.filters.dishType[0].toUpperCase() +
-                  filtersState.filters.dishType.slice(1)
-                : rcp.dishTypes.length === 0
-                ? "Many"
-                : rcp.dishTypes[0][0].toUpperCase() + rcp.dishTypes[0].slice(1)}
-            </Text>
-            <Text style={styles.rcpInfo}>
-              Cuisine:{" "}
-              {filtersState.filters.cuisine
-                ? filtersState.filters.cuisine[0].toUpperCase() +
-                  filtersState.filters.cuisine.slice(1)
-                : rcp.cuisines.length === 0
-                ? "World Food"
-                : rcp.cuisines[0]}
-            </Text>
-            {/* <Text style={styles.rcpInfo}>
-              Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}
-            </Text>
-            <Text style={styles.rcpInfo}>
-              Gluten-free:{rcp.glutenFree ? " ✅  " : " ❌ "}
-            </Text>
-            <Text style={styles.rcpInfo}>
-              Vegetarian:{rcp.vegetarian ? " ✅  " : " ❌ "}
-            </Text>
-            <Text style={styles.rcpInfo}>
-              Vegan:{rcp.vegan ? " ✅  " : " ❌ "}
-            </Text> */}
-
-            <Text style={styles.subTitle}>Additional Information</Text>
-            <Text>Preparation time: {rcp.readyInMinutes} min </Text>
-            <Text>Servings: {rcp.servings}</Text>
-            <View style={styles.tagsContainer}>
-              {rcp.veryHealthy && (
-                <View style={styles.singleTagContainer}>
-                  <MaterialCommunityIcons
-                    name="food-apple-outline"
-                    color="green"
-                  />
-                  <Text style={styles.tag}>Healthy Choice</Text>
-                </View>
-              )}
-              {rcp.vegetarian && (
-                <View style={styles.singleTagContainer}>
-                  <MaterialCommunityIcons
-                    name="alpha-v-circle-outline"
-                    color="green"
-                  />
-                  <Text style={styles.tag}>Vegetarian</Text>
-                </View>
-              )}
-              {rcp.vegan && (
-                <View style={styles.singleTagContainer}>
-                  <MaterialCommunityIcons name="alpha-v-circle" color="green" />
-                  <Text style={styles.tag}>Vegan</Text>
-                </View>
-              )}
-              {rcp.glutenFree && (
-                <View style={styles.singleTagContainer}>
-                  <Text style={[styles.tag, { fontWeight: "bold" }]}>
-                    Gluten Free
-                  </Text>
-                </View>
-              )}
-              {rcp.dairyFree && (
-                <View style={styles.singleTagContainer}>
-                  <Text style={[styles.tag, { fontWeight: "bold" }]}>
-                    Dairy Free
-                  </Text>
-                </View>
-              )}
+              <Text style={styles.subTitle}>Additional Information</Text>
+              <Text>Preparation time: {rcp.readyInMinutes} min </Text>
+              <Text>Servings: {rcp.servings}</Text>
+              <View style={styles.tagsContainer}>
+                {rcp.veryHealthy && (
+                  <View style={styles.singleTagContainer}>
+                    <MaterialCommunityIcons
+                      name="food-apple-outline"
+                      color="green"
+                    />
+                    <Text style={styles.tag}>Healthy Choice</Text>
+                  </View>
+                )}
+                {rcp.vegetarian && (
+                  <View style={styles.singleTagContainer}>
+                    <MaterialCommunityIcons
+                      name="alpha-v-circle-outline"
+                      color="green"
+                    />
+                    <Text style={styles.tag}>Vegetarian</Text>
+                  </View>
+                )}
+                {rcp.vegan && (
+                  <View style={styles.singleTagContainer}>
+                    <MaterialCommunityIcons
+                      name="alpha-v-circle"
+                      color="green"
+                    />
+                    <Text style={styles.tag}>Vegan</Text>
+                  </View>
+                )}
+                {rcp.glutenFree && (
+                  <View style={styles.singleTagContainer}>
+                    <Text style={[styles.tag, { fontWeight: "bold" }]}>
+                      Gluten Free
+                    </Text>
+                  </View>
+                )}
+                {rcp.dairyFree && (
+                  <View style={styles.singleTagContainer}>
+                    <Text style={[styles.tag, { fontWeight: "bold" }]}>
+                      Dairy Free
+                    </Text>
+                  </View>
+                )}
+              </View>
             </View>
-          </View>
-        </Animated.ScrollView>
+          </Animated.ScrollView>
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -232,7 +237,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 28,
     color: "black",
-    fontFamily: "Satisfy",
+    fontFamily: "OpenSans",
   },
 
   subTitle: {
