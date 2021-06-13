@@ -16,7 +16,7 @@ import HTML from "react-native-render-html";
 import Constants from "expo-constants";
 import axios from "axios";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
-import LoadingRecipeInfo from "../components/LoadingRecipeInfo";
+import LoadingRecipeInfo from "../components/loadingRecipeInfo";
 import { useSelector } from "react-redux";
 
 const _screen = Dimensions.get("screen");
@@ -121,12 +121,12 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
                 {ing?.name}
               </Text>
               <Text
-                key={"m_" + ing?.id.toString() + idx.toString()}
+                key={"m_" + idx.toString()}
                 style={styles.measurement}
               >
-                ({ing?.measures.metric.amount}
-                {ing?.measures.metric.unitShort &&
-                  " " + ing?.measures.metric.unitShort}
+                ({ing!.measures.metric.amount}
+                {ing!.measures.metric.unitShort &&
+                  " " + ing!.measures.metric.unitShort}
                 )
               </Text>
             </View>

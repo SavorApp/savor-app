@@ -331,7 +331,7 @@ const styles = StyleSheet.create({
   aboutUsButton: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 8,
+    marginTop: 16,
     marginHorizontal: 8,
     width: 200,
     backgroundColor: "#FFAA54",
