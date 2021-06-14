@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     height: _screen.height * 0.6,
     width: _screen.width * 0.93,
     borderRadius: 15,
-    backgroundColor: "white",
+    backgroundColor: "#fff",
     ...shadowStyle,
   },
 
