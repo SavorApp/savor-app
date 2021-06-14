@@ -20,21 +20,23 @@ import {
   resetUserRecipeList,
   resetFilters,
 } from "../redux/actions/index";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 const _screen = Dimensions.get("screen");
 
 export interface ChefSettingsScreenProps {
-    navigation: StackNavigationProp<ChefStackParamList, "ChefSettingsScreen">;
+  navigation: StackNavigationProp<ChefStackParamList, "ChefSettingsScreen">;
 }
 
-export default function ChefSettingsScreen({navigation} : ChefSettingsScreenProps) {
+export default function ChefSettingsScreen({
+  navigation,
+}: ChefSettingsScreenProps) {
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   );
 
   const dispatch = useDispatch();
   const [blockLogout, setBlockLogout] = React.useState(false);
-
 
   function handleLogout() {
     setBlockLogout(true);
@@ -49,6 +51,7 @@ export default function ChefSettingsScreen({navigation} : ChefSettingsScreenProp
         dispatch(removeUser());
         dispatch(resetUserRecipeList());
         dispatch(resetFilters());
+        navigation.goBack();
         setBlockLogout(false);
       })
       .catch((err: { code: string; message: string }) => {
@@ -70,55 +73,47 @@ export default function ChefSettingsScreen({navigation} : ChefSettingsScreenProp
 
   return (
     <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Text style={styles.title}>Chef Settings</Text>
-        <View style={styles.profileContainer}>
-        </View>
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate("AboutUsScreen")}
-          activeOpacity={0.8}
+      <TouchableOpacity
+        onPress={() => navigation.navigate("AboutUsScreen")}
+        activeOpacity={0.8}
+      >
+        <LinearGradient
+          colors={["white", "whitesmoke"]}
+          style={styles.aboutUsButton}
         >
-          <LinearGradient
-            colors={[colorPalette.popLight, colorPalette.popDark]}
-            style={styles.button}
-          >
-            <Text style={{ color: "black" }}>About Us</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-
-        <View style={styles.bottomButtonsContainer}>
-          <TouchableOpacity
-            onPress={
-              blockLogout
-                ? () => {} // Fake function while blocked
-                : handleLogout // Allow logout while unblocked
-            }
-            activeOpacity={0.8}
-          >
-            <LinearGradient
-              colors={[colorPalette.trimLight, colorPalette.trim]}
-              style={styles.button}
-            >
-              <Text style={{ color: "black" }}>
-                {blockLogout ? "Processing..." : "Logout"}
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate("DeleteAccountScreen")}
-            activeOpacity={0.8}
-          >
-            <LinearGradient
-              colors={["#ffe6e6", "#ff6666"]}
-              style={styles.button}
-            >
-              <Text style={{ color: "black" }}>Delete Account</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      </View>
+          <Text style={styles.buttonText}>About Us</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={
+          blockLogout
+            ? () => {} // Fake function while blocked
+            : handleLogout // Allow logout while unblocked
+        }
+        activeOpacity={0.8}
+      >
+        <LinearGradient
+          colors={["white", "whitesmoke"]}
+          style={styles.aboutUsButton}
+        >
+          <Text style={styles.buttonText}>
+            {blockLogout ? "Processing..." : "Logout"}
+          </Text>
+        </LinearGradient>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("DeleteAccountScreen")}
+        activeOpacity={0.8}
+      >
+        <LinearGradient
+          colors={["white", "whitesmoke"]}
+          style={styles.aboutUsButton}
+        >
+          <Text style={{ ...styles.buttonText, color: "#990000" }}>
+            Delete Account
+          </Text>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -126,10 +121,15 @@ export default function ChefSettingsScreen({navigation} : ChefSettingsScreenProp
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    marginTop: 20,
+    // backgroundColor: colorPalette.background,
   },
+
+  // buttonText: {
+  //   fontSize: 20,
+  // },
 
   subContainer: {
     justifyContent: "center",
@@ -137,8 +137,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.9,
     height: _screen.height * 0.7,
     borderRadius: 15,
-    backgroundColor: colorPalette.primary,
-    ...shadowStyle,
+    // backgroundColor: colorPalette.primary,
   },
 
   profileContainer: {
@@ -148,7 +147,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.83,
     height: _screen.height * 0.4,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.secondary,
   },
 
   title: {
@@ -190,14 +189,24 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
   },
 
-  button: {
+  buttonText: {
+    fontSize: 22,
+  },
+
+  aboutUsButton: {
     justifyContent: "center",
     alignItems: "center",
     marginTop: 8,
     marginHorizontal: 8,
-    width: 120,
+    width: 300,
+    backgroundColor: "#FFAA54",
     borderRadius: 10,
-    padding: 8,
+    padding: 12,
+    borderWidth: 0.2,
+    borderStyle: "solid",
+    shadowOpacity: 0.3,
+    shadowRadius: 0.2,
+    shadowOffset: { width: 0.2, height: 0.3 },
   },
 
   bottomButtonsContainer: {

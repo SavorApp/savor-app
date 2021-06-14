@@ -8,9 +8,11 @@ export default function LoadingCardStack() {
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-          <View style={styles.loadingContent}>
-            <Text style={{color: "white", fontSize: 24}}>Loading Recipes...</Text>
-          </View>
+        <View style={styles.loadingContent}>
+          <Text style={{ color: "white", fontSize: 24 }}>
+            Loading Recipes...
+          </Text>
+        </View>
       </View>
     </View>
   );
@@ -21,7 +23,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
@@ -30,13 +32,12 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.9,
     height: _screen.height * 0.75,
     borderRadius: 15,
-    backgroundColor: colorPalette.primary,
+    // backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
 
   loadingContent: {
     justifyContent: "center",
     alignItems: "center",
-  }
-
+  },
 });

@@ -21,6 +21,7 @@ import {
   resetUserRecipeList,
   resetFilters,
 } from "../redux/actions/index";
+import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
 
@@ -122,18 +123,19 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
 
     return (
       <View>
+        <View style={{ ...styles.borderline, marginTop: 30 }} />
         <Text style={styles.subTitle2}>Taste Profile</Text>
         {cuisineArray[0] && (
           <Text style={styles.caption}>
             So far, you have savored
-            <Text style={{ fontWeight: "bold" }}> {cuisineArray.length} </Text>
+            <Text style={{ fontFamily: "OpenSansBold", }}> {cuisineArray.length} </Text>
             cuisine type(s). Your most savored cuisine is
-            <Text style={{ fontWeight: "bold" }}> {cuisineArray[0].name}</Text>
+            <Text style={{ fontFamily: "OpenSansBold", }}> {cuisineArray[0].name}</Text>
             {cuisineArray[1] ? (
               <Text>
                 {" "}
                 but, it looks like
-                <Text style={{ fontWeight: "bold" }}>
+                <Text style={{ fontFamily: "OpenSansBold", }}>
                   {" "}
                   {cuisineArray[1].name}{" "}
                 </Text>
@@ -144,11 +146,15 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
             )}
           </Text>
         )}
+        <View style={{ ...styles.borderline, marginTop: 45 }} />
         <Text style={styles.subTitle2}>Top Ingredients</Text>
         {ingredientsArray.map((ingObj) => {
           if (ingObj.count >= 3) {
             return (
-              <Text key={"i_" + ingObj.key.toString()}>
+              <Text
+                style={{ ...styles.caption, fontStyle: "normal" }}
+                key={"i_" + ingObj.key.toString()}
+              >
                 {ingObj.name}: {ingObj.count}
               </Text>
             );
@@ -189,66 +195,31 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
       // Handle failed asyncStorage removal error
     }
   }
+  // Load fonts
+  const [fontsLoaded] = useFonts({
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
+    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
+  });
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Text style={styles.title}>Welcome Chef</Text>
-        <Text style={styles.username}>{userState.user.username}</Text>
-        <View style={styles.profileContainer}>
-          <ScrollView style={styles.scrollView}>
-            <Text style={styles.subTitle}>Your Metrics</Text>
-            <Metrics recipeList={userRecipeListState.userRecipeList} />
-            <Text>{"\n\n\n"}</Text>
-          </ScrollView>
-        </View>
-
-        <TouchableOpacity
-          onPress={() => navigation.navigate("AboutUsScreen")}
-          activeOpacity={0.8}
-        >
-          <LinearGradient
-            colors={[colorPalette.popLight, colorPalette.popDark]}
-            style={styles.button}
-          >
-            <Text style={{ color: "black" }}>About Us</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-
-        <View style={styles.bottomButtonsContainer}>
-          <TouchableOpacity
-            onPress={
-              blockLogout
-                ? () => {} // Fake function while blocked
-                : handleLogout // Allow logout while unblocked
-            }
-            activeOpacity={0.8}
-          >
-            <LinearGradient
-              colors={[colorPalette.trimLight, colorPalette.trim]}
-              style={styles.button}
-            >
-              <Text style={{ color: "black" }}>
-                {blockLogout ? "Processing..." : "Logout"}
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate("DeleteAccountScreen")}
-            activeOpacity={0.8}
-          >
-            <LinearGradient
-              colors={["#ffe6e6", "#ff6666"]}
-              style={styles.button}
-            >
-              <Text style={{ color: "black" }}>Delete Account</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+  if (!fontsLoaded) {
+    return <View></View>;
+  } else {
+    return (
+      <View style={styles.container}>
+        <View style={styles.subContainer}>
+          <Text style={styles.title}>Welcome Chef</Text>
+          <Text style={styles.username}>{userState.user.username}</Text>
+          <View style={styles.profileContainer}>
+            <ScrollView style={styles.scrollView}>
+              <Metrics recipeList={userRecipeListState.userRecipeList} />
+              <Text>{"\n\n\n"}</Text>
+            </ScrollView>
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -256,80 +227,80 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
     justifyContent: "center",
     alignItems: "center",
-    width: _screen.width * 0.9,
+    width: _screen.width * 0.93,
     height: _screen.height * 0.7,
     borderRadius: 15,
-    backgroundColor: colorPalette.primary,
+    marginTop: 120,
     ...shadowStyle,
   },
 
   profileContainer: {
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 16,
-    width: _screen.width * 0.83,
-    height: _screen.height * 0.4,
+    width: _screen.width * 0.93,
+    height: _screen.height * 0.7,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.secondary,
   },
 
   title: {
     justifyContent: "flex-start",
     textAlign: "center",
-    fontSize: 28,
-    fontWeight: "bold",
-    color: colorPalette.background,
+    fontSize: 40,
+    fontFamily: "Satisfy",
+    // fontWeight: "bold",
+    // marginTop: -50,
+    // color: colorPalette.background,
   },
 
   username: {
     textAlign: "center",
     marginBottom: 8,
-    fontSize: 24,
-    fontWeight: "bold",
-    color: colorPalette.popDark,
+    fontSize: 18,
+    // fontFamily: "Satisfy",
+    // fontWeight: "bold",
+    // color: colorPalette.popDark,
   },
 
   scrollView: {
     padding: 8,
     marginVertical: Platform.OS === "android" ? 12 : 0,
-    width: _screen.width * 0.8,
+    width: _screen.width * 0.93,
     borderRadius: 15,
   },
 
   subTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    marginTop: 10,
     marginBottom: 6,
   },
 
   subTitle2: {
     fontWeight: "bold",
+    fontSize: 24,
     marginVertical: 6,
+    height: 45,
+    fontFamily: "OpenSans",
   },
 
   caption: {
-    fontStyle: "italic",
+    // fontStyle: "italic",
+    fontSize: 20,
+    fontFamily: "OpenSans",
   },
-
-  button: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 8,
-    marginHorizontal: 8,
-    width: 120,
-    borderRadius: 10,
-    padding: 8,
-  },
-
-  bottomButtonsContainer: {
-    flexDirection: "row",
-    margin: 8,
+  borderline: {
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+    opacity: 0.2,
+    shadowOpacity: 0.8,
+    shadowRadius: 1,
+    shadowOffset: { width: 1, height: 1 },
+    marginBottom: 10,
   },
 });

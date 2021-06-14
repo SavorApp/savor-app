@@ -44,10 +44,15 @@ export default function ChefNavigator({ navigation }: ChefNavigatorProps) {
             headerRight: () => (
               <TouchableOpacity
                 onPress={() => {
-                    navigation.navigate("ChefSettingsScreen");
+                  navigation.navigate("ChefSettingsScreen");
                 }}
               >
-                <Ionicons name="settings-sharp" size={28} style={{marginRight: 10}} color="gray" />
+                <Ionicons
+                  name="settings-sharp"
+                  size={35}
+                  style={{ marginRight: 12 }}
+                  color="gray"
+                />
               </TouchableOpacity>
             ),
             headerTitle: () => {

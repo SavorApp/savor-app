@@ -76,7 +76,6 @@ export default function DeleteAccountScreen({
         <Text style={styles.title}>
           Are you sure you want to delete your account?
         </Text>
-        <View style={styles.form}>
           <Text>Yes, I'm hanging up my apron for now...</Text>
           <TouchableOpacity
             onPress={
@@ -87,15 +86,14 @@ export default function DeleteAccountScreen({
             activeOpacity={0.8}
           >
             <LinearGradient
-              colors={["#ffe6e6", "#ff6666"]}
+              colors={["#b30000", "#990000"]}
               style={styles.button}
             >
-              <Text style={{ color: "black" }}>
+              <Text style={{ color: "white" }}>
                 {blockDeleteAccount ? "Processing..." : "Delete Account"}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
-        </View>
       </View>
     </View>
   );
@@ -104,45 +102,37 @@ export default function DeleteAccountScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    marginTop: 30
+    // paddingBottom: 30
+    // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     alignItems: "center",
     width: _screen.width * 0.9,
-    height: _screen.height * 0.6,
-    borderRadius: 15,
-    backgroundColor: colorPalette.primary,
-    ...shadowStyle,
-  },
-
-  form: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 48,
-    width: _screen.width * 0.8,
     height: _screen.height * 0.3,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.primary,
+    // ...shadowStyle,
   },
 
   title: {
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
-    marginVertical: 8,
-    fontSize: 16,
+    // marginVertical: 8,
+    fontSize: 18,
     fontWeight: "bold",
-    color: colorPalette.background,
+    // color: colorPalette.background,
   },
 
   button: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 8,
+    marginVertical: 8,
     marginHorizontal: 8,
     width: 120,
     borderRadius: 10,
