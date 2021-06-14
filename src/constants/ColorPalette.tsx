@@ -1,12 +1,12 @@
 export const colorPalette = {
-  primary: "#1F8F89", // FF5454
+  primary: "#FF5454",
   secondary: "#8DDBBC", // 993232
   alternate: "#007ea7",
   alternate2: "#003459",
   trimLight: "#c6c9cc",
   trim: "#85909C",
   popLight: "#fc6f03",
-  popDark: "#fc4e03",
+  popDark: "#FF5454",
   background: "#ffffff",
 };
 

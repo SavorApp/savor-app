@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Image } from "react-native";
+import { StyleSheet, View, Image, Text } from "react-native";
 import {
   createStackNavigator,
   StackNavigationProp,
@@ -63,10 +63,7 @@ export default function SavoredListNavigator({
           headerTitle: () => {
             return (
               <View style={styles.headerContainer}>
-                <Image
-                  source={require("../../assets/header.png")}
-                  style={styles.headerImage}
-                />
+                <Text style={{fontSize: 24}}>Recipe Information</Text>
               </View>
             );
           },

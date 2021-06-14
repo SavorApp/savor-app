@@ -3,7 +3,6 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { shadowStyle } from "../constants/ColorPalette";
-import { StackNavigationProp } from "@react-navigation/stack";
 
 export default function SwipeButtons({
   handleOnPressLeft,
@@ -17,12 +16,12 @@ export default function SwipeButtons({
         <Ionicons name="thumbs-down-sharp" size={35} color="#d64f4f" />
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.button}
+        style={styles.infoButton}
         onPress={() => {
           rcp && navigateToMoreInfoScreen(rcp);
         }}
       >
-        <Entypo name="info" size={27} color="#7e72c4" />
+        <Entypo name="info" size={27} color="#5454FF" />
       </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleOnPressRight}>
         <Ionicons name="thumbs-up-sharp" size={35} color="#75d177" />
@@ -37,6 +36,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
+    marginBottom: 12,
   },
   button: {
     width: 75,

@@ -49,8 +49,9 @@ export default function ChefNavigator({ navigation }: ChefNavigatorProps) {
               >
                 <Ionicons
                   name="settings-sharp"
-                  size={32}
-                  style={{ marginRight: 10 }}
+                  size={35}
+                  style={{ marginRight: 12 }}
+                  color="gray"
                 />
               </TouchableOpacity>
             ),

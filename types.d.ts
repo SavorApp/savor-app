@@ -256,6 +256,7 @@ type Ingredient = {
 // Recipe Screen Info type
 type RecipeScreenInfo = {
   title: string;
+  image: string;
   instructions: string;
   summary: string;
   ingredients: Ingredient[];
