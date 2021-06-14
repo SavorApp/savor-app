@@ -17,15 +17,11 @@ export default function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Menu"
       tabBarOptions={{
-        // activeTintColor: Colors[colorScheme].tint,
         activeTintColor: "#FF5454",
-        // inactiveTintColor: "#2e2e2e",
         style: {
           elevation: 70,
           height: 100,
-          // backgroundColor: "#ed4a45",
         },
-        // showLabel: false,
       }}
     >
       <BottomTab.Screen
@@ -67,5 +63,3 @@ function TabBarIcon(props: {
     <MaterialCommunityIcons style={{ marginTop: 10 }} size={40} {...props} />
   );
 }
-
-const styles = StyleSheet.create({});

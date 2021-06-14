@@ -3,7 +3,6 @@ import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Entypo } from "@expo/vector-icons";
 import { shadowStyle } from "../constants/ColorPalette";
-import { StackNavigationProp } from "@react-navigation/stack";
 
 export default function SwipeButtons({
   handleOnPressLeft,
