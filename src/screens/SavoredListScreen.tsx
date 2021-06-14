@@ -18,7 +18,6 @@ import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
 import { updateSavorDb } from "../db/db";
 import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
 
 const _screen = Dimensions.get("screen");
 
@@ -43,8 +42,8 @@ export default function SavoredListScreen({
   );
 
   const [fontsLoaded] = useFonts({
-    Itim: require("../../assets/fonts/OpenSans-Regular.ttf"),
-    SatisfyHello: require("../../assets/fonts/Satisfy-Regular.ttf"),
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
   });
 
   function getRandomNumber(): number {
@@ -86,7 +85,7 @@ export default function SavoredListScreen({
         onPress={() =>
           navigation.navigate("RecipeScreen", { recipeId: rcp.id })
         }
-        activeOpacity={0.8}
+        activeOpacity={1}
       >
         <View style={styles.recipeListItemInner}>
           <View style={styles.recipeListItemInnerContent}>
@@ -318,7 +317,7 @@ export default function SavoredListScreen({
           </View>
           <TouchableOpacity
             onPress={savoredList.length === 0 ? () => {} : handleTruffleShuffle}
-            activeOpacity={0.8}
+            activeOpacity={1}
             style={{
               shadowOpacity: 0.2,
               shadowRadius: 3,
@@ -333,7 +332,7 @@ export default function SavoredListScreen({
                 style={{
                   color: "#343332",
                   fontSize: 28,
-                  fontFamily: "SatisfyHello",
+                  fontFamily: "Satisfy",
                 }}
               >
                 Truffle Shuffle!
@@ -416,8 +415,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 9,
     marginTop: -5,
-
-    fontFamily: "Itim",
+    fontFamily: "OpenSans",
   },
 
   tagsContainer: {
@@ -475,12 +473,12 @@ const styles = StyleSheet.create({
   },
 
   backRightBtnLeft: {
-    backgroundColor: "#1f65ff",
+    backgroundColor: "#5454FF",
     right: 75,
   },
 
   backRightBtnRight: {
-    backgroundColor: "red",
+    backgroundColor: "#C70000",
     right: 0,
     borderTopRightRadius: 5,
     borderBottomRightRadius: 5,

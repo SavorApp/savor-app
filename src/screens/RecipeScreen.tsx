@@ -18,6 +18,7 @@ import axios from "axios";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import LoadingRecipeInfo from "../components/loadingRecipeInfo";
 import { useSelector } from "react-redux";
+import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
 
@@ -92,6 +93,11 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     fetchRecipeInfo();
   }, []);
 
+  const [fontsLoaded] = useFonts({
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
+  });
+
   // Listen to leaveRecipeScreen global state, goBack to SavoredListScreen if true
   React.useEffect(() => {
     if (leaveRecipeScreen.leave) {
@@ -109,21 +115,18 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     });
 
     return (
-      <View>
+      <View style={{ marginTop: 4 }}>
         {filteredIngredients.map((ing) => {
           idx++;
           return (
             <View
               key={"c_" + idx.toString()}
-              style={styles.ingredientContainer}
+              style={{ ...styles.ingredientContainer, marginTop: 8 }}
             >
               <Text key={"i_" + idx.toString()} style={styles.ingredient}>
                 {ing?.name}
               </Text>
-              <Text
-                key={"m_" + idx.toString()}
-                style={styles.measurement}
-              >
+              <Text key={"m_" + idx.toString()} style={styles.measurement}>
                 ({ing!.measures.metric.amount}
                 {ing!.measures.metric.unitShort &&
                   " " + ing!.measures.metric.unitShort}
@@ -136,7 +139,7 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     );
   }
 
-  return isInfoLoading ? (
+  return isInfoLoading && fontsLoaded ? (
     <LoadingRecipeInfo recipeId={recipeId} />
   ) : (
     recipeInfo && (
@@ -161,7 +164,15 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
                   />
                 </View>
               </TouchableOpacity>
-              {showSummary && <HTML source={{ html: recipeInfo.summary }} />}
+              {showSummary && (
+                <HTML
+                  tagsStyles={{
+                    div: { fontSize: 18, lineHeight: 28, marginTop: 12 },
+                    a: { fontSize: 18 },
+                  }}
+                  source={{ html: `<div>${recipeInfo.summary} </div>` }}
+                />
+              )}
               <TouchableOpacity
                 style={styles.touchableHeader}
                 onPress={() => {
@@ -205,20 +216,34 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
               </TouchableOpacity>
               {showInstructions && (
                 <>
-                  <Text style={{ fontWeight: "bold" }}>
+                  <Text
+                    style={{
+                      fontWeight: "bold",
+                      fontSize: 18,
+                      marginTop: 12,
+                    }}
+                  >
                     Preparation time:{" "}
                     <Text style={{ fontWeight: "normal" }}>
                       {recipeInfo.readyInMinutes} min
                     </Text>
                   </Text>
-                  <Text style={{ fontWeight: "bold" }}>
+                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
                     Servings:{" "}
                     <Text style={{ fontWeight: "normal" }}>
                       {recipeInfo.servings}
                     </Text>
                     {"\n"}
                   </Text>
-                  <HTML source={{ html: recipeInfo.instructions }} />
+                  <HTML
+                    tagsStyles={{
+                      div: { fontSize: 18, lineHeight: 28 },
+                      ol: { fontSize: 18 },
+                      li: { fontSize: 18, marginTop: -5 },
+                      a: { fontSize: 18 },
+                    }}
+                    source={{ html: `<div>${recipeInfo.instructions}</div>` }}
+                  />
                 </>
               )}
               <Text>{"\n\n\n"}</Text>
@@ -273,16 +298,16 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
     // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
-    width: _screen.width * 0.9,
-    height: _screen.height * 0.75,
+    width: _screen.width * 0.93,
+    height: _screen.height * 0.68,
     borderRadius: 15,
     // backgroundColor: colorPalette.primary,
     ...shadowStyle,
@@ -290,14 +315,16 @@ const styles = StyleSheet.create({
 
   title: {
     margin: 8,
+    marginTop: 30,
     fontSize: 25,
     fontWeight: "bold",
     // color: colorPalette.background,
     textAlign: "center",
+    fontFamily: "OpenSans",
   },
 
   subTitle: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
   },
 
@@ -312,10 +339,11 @@ const styles = StyleSheet.create({
   },
 
   contentContainer: {
+    marginTop: 15,
     justifyContent: "center",
     alignItems: "center",
-    width: _screen.width * 0.85,
-    height: _screen.height * 0.55,
+    width: _screen.width * 0.93,
+    height: _screen.height * 0.68,
     borderRadius: 15,
     // backgroundColor: colorPalette.secondary,
   },
@@ -323,7 +351,7 @@ const styles = StyleSheet.create({
   scrollView: {
     padding: 8,
     marginVertical: Platform.OS === "android" ? 12 : 0,
-    width: _screen.width * 0.83,
+    width: _screen.width * 0.93,
     borderRadius: 15,
     // backgroundColor: colorPalette.secondary,
   },
@@ -336,11 +364,13 @@ const styles = StyleSheet.create({
   ingredient: {
     justifyContent: "flex-start",
     width: "65%",
+    fontSize: 18,
   },
 
   measurement: {
     justifyContent: "flex-start",
     width: "35%",
+    fontSize: 18,
   },
 
   tagsContainer: {

@@ -51,8 +51,8 @@ export default function MenuNavigator({ navigation }: MenuNavigatorProps) {
             >
               <MaterialCommunityIcons
                 name="hamburger"
-                size={30}
-                style={{ marginRight: 6 }}
+                size={38}
+                style={{ marginRight: 12 }}
                 color="gray"
               />
             </TouchableOpacity>

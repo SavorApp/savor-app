@@ -21,9 +21,7 @@ import {
   resetUserRecipeList,
   resetFilters,
 } from "../redux/actions/index";
-import { useFonts, Satisfy_400Regular } from "@expo-google-fonts/satisfy";
-import { OpenSans_400Regular } from "@expo-google-fonts/open-sans";
-import AppLoading from "expo-app-loading";
+import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
 
@@ -197,11 +195,12 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
       // Handle failed asyncStorage removal error
     }
   }
-
+  // Load fonts
   const [fontsLoaded] = useFonts({
-    Satisfy_400Regular,
-    OpenSans_400Regular,
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
   });
+
   if (!fontsLoaded) {
     return <Text>Loading...</Text>;
   } else {
@@ -253,7 +252,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     textAlign: "center",
     fontSize: 40,
-    fontFamily: "Satisfy_400Regular",
+    fontFamily: "Satisfy",
     // fontWeight: "bold",
     // marginTop: -50,
     // color: colorPalette.background,
@@ -263,7 +262,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 8,
     fontSize: 24,
-    fontFamily: "Satisfy_400Regular",
+    fontFamily: "Satisfy",
     // fontWeight: "bold",
     // color: colorPalette.popDark,
   },
@@ -286,11 +285,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginVertical: 6,
     height: 45,
+    fontFamily: "OpenSans",
   },
 
   caption: {
     fontStyle: "italic",
     fontSize: 20,
+    fontFamily: "OpenSans",
   },
   borderline: {
     borderBottomColor: "black",
