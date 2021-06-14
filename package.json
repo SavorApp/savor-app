@@ -8,9 +8,6 @@
     "eject": "expo eject"
   },
   "dependencies": {
-    "@expo-google-fonts/inter": "^0.1.0",
-    "@expo-google-fonts/open-sans": "^0.1.0",
-    "@expo-google-fonts/satisfy": "^0.1.0",
     "@react-native-async-storage/async-storage": "^1.13.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-native-firebase/app": "^12.0.0",
@@ -22,7 +19,6 @@
     "axios": "^0.21.1",
     "dotenv": "^10.0.0",
     "expo": "~41.0.1",
-    "expo-app-loading": "^1.0.3",
     "expo-font": "~9.1.0",
     "expo-linear-gradient": "~9.1.0",
     "expo-linking": "~2.2.3",
@@ -41,7 +37,6 @@
     "react-native-emoji": "^1.8.0",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-material-menu": "^1.2.0",
-    "react-native-really-awesome-button": "^1.6.0",
     "react-native-reanimated": "~2.1.0",
     "react-native-render-html": "^5.1.0",
     "react-native-safe-area-context": "^3.2.0",

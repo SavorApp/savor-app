@@ -17,7 +17,7 @@ import HTML from "react-native-render-html";
 import Constants from "expo-constants";
 import axios from "axios";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
-import LoadingRecipeInfo from "../components/loadingRecipeInfo";
+import LoadingRecipeInfo from "../components/LoadingRecipeInfo";
 import { useSelector } from "react-redux";
 import { useFonts } from "expo-font";
 
