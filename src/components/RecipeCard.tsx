@@ -5,7 +5,7 @@ import {
   Text,
   Dimensions,
   ImageBackground,
-  Animated,
+  Image,
 } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { shadowStyle, colorPalette } from "../constants/ColorPalette";
@@ -32,7 +32,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
   });
 
   if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
+    return <View></View>;
   } else {
     return (
       <View style={styles.container}>
@@ -56,23 +56,23 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
                   source={{ uri: rcp.image || " " }}
                   style={styles.image}
                 >
-                  <View style={styles.titleContainer}>
-                    <Text style={styles.title}>{rcp.title}</Text>
-                  </View>
                 </ImageBackground>
+                  <View style={styles.titleContainer}>
+                    <Text numberOfLines={2} style={styles.title}>{rcp.title}</Text>
+                  </View>
               </View>
             ) : (
               <View style={styles.noImageContainer}>
-                <ImageBackground
+                <Image
                   key={id}
-                  source={require("../../assets/icon.png")}
+                  source={require("../../assets/icon2.png")}
                   style={styles.noImage}
                 >
+                </Image>
+                  <Text style={styles.noImageMsg}>😟 No Image 😟</Text>
                   <View style={styles.titleContainer}>
                     <Text style={styles.title}>{rcp.title}</Text>
                   </View>
-                  <Text style={styles.noImageMsg}>😟 No Image 😟</Text>
-                </ImageBackground>
               </View>
             )}
 
@@ -193,32 +193,40 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: _screen.height * 0.6,
     width: _screen.width * 0.93,
+    borderRadius: 15,
+    backgroundColor: "white",
     ...shadowStyle,
   },
 
   noImageContainer: {
-    justifyContent: "center",
+    display: "flex",
+    justifyContent: "space-evenly",
     alignItems: "center",
     height: _screen.height * 0.6,
-    width: _screen.width * 0.88,
+    width: _screen.width * 0.93,
+    borderRadius: 15,
+    backgroundColor: "white"
   },
 
   image: {
     alignItems: "center",
     justifyContent: "flex-end",
-    height: _screen.height * 0.6,
+    height: _screen.height * 0.5,
     width: _screen.width * 0.93,
     resizeMode: "contain",
     overflow: "hidden",
-    borderRadius: 15,
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
+    // borderRadius: 15,
   },
 
   noImage: {
     alignItems: "center",
-    height: _screen.height * 0.5,
+    justifyContent: "flex-end",
+    height: _screen.height * 0.25,
     width: _screen.width * 0.8,
     resizeMode: "contain",
-    overflow: "hidden",
+    // overflow: "hidden",
     borderRadius: 15,
   },
 

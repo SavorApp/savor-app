@@ -8,6 +8,7 @@ import {
   Platform,
   Alert,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
@@ -41,6 +42,7 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     RecipeScreenInfo | undefined
   >({
     title: "",
+    image: "",
     instructions: "",
     summary: "",
     ingredients: [],
@@ -65,6 +67,7 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
       const fetchedRecipe = resp.data;
       setRecipeInfo({
         title: fetchedRecipe.title,
+        image: fetchedRecipe.image,
         instructions: fetchedRecipe.instructions,
         summary: fetchedRecipe.summary,
         ingredients: fetchedRecipe.extendedIngredients,
@@ -87,16 +90,18 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
       navigation.goBack();
     }
   }
+  
+  const [fontsLoaded] = useFonts({
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
+    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
+  });
 
   // On load, fetch Recipe data via Spoonacular API
   React.useEffect(() => {
     fetchRecipeInfo();
   }, []);
 
-  const [fontsLoaded] = useFonts({
-    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
-    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
-  });
 
   // Listen to leaveRecipeScreen global state, goBack to SavoredListScreen if true
   React.useEffect(() => {
@@ -145,9 +150,16 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     recipeInfo && (
       <View style={styles.container}>
         <View style={styles.subContainer}>
-          <Text style={styles.title}>{recipeInfo.title}</Text>
           <View style={styles.contentContainer}>
             <ScrollView style={styles.scrollView}>
+          <Text style={styles.title}>{recipeInfo.title}</Text>
+          <View style={{ ...styles.borderline }} />
+            <Image
+                  source={{ uri: recipeInfo.image || " " }}
+                  style={styles.image}
+                  resizeMode="contain"
+                />
+            
               <TouchableOpacity
                 onPress={() => {
                   setShowSummary(!showSummary);
@@ -307,20 +319,42 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     alignItems: "center",
     width: _screen.width * 0.93,
-    height: _screen.height * 0.58,
+    height: _screen.height * 0.7,
     borderRadius: 15,
     // backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
 
   title: {
-    margin: 8,
-    marginTop: 30,
-    fontSize: 25,
+    // margin: 8,
+    // marginTop: 30,
+    fontSize: 24,
     fontWeight: "bold",
     // color: colorPalette.background,
     textAlign: "center",
     fontFamily: "OpenSans",
+  },
+
+  image: {
+    // alignItems: "center",
+    // justifyContent: "center",
+    height: _screen.height * 0.3,
+    width: _screen.width * 0.9,
+    marginVertical: 8,
+    // resizeMode: "contain",
+    // overflow: "hidden",
+    // borderRadius: 60,
+  },
+
+  borderline: {
+    alignSelf: "center",
+    borderBottomColor: "black",
+    marginVertical: 16,
+    marginBottom: 8,
+    borderBottomWidth: 1,
+    opacity: 0.8,
+    width: _screen.width * 0.7,
+
   },
 
   subTitle: {
@@ -343,7 +377,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: _screen.width * 0.93,
-    height: _screen.height * 0.58,
+    height: _screen.height * 0.7,
     borderRadius: 15,
     // backgroundColor: colorPalette.secondary,
   },
@@ -377,7 +411,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    flexWrap: "wrap",
+    // flexWrap: "wrap",
     marginTop: 8,
     marginHorizontal: 16,
   },
@@ -386,7 +420,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 3,
+    marginHorizontal: 3,
     marginTop: 3,
     padding: 4,
     borderRadius: 8,

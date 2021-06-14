@@ -1,32 +1,37 @@
 import React from "react";
 import {
-    StyleSheet,
-    Dimensions,
-    View,
-    Text,
-    ScrollView,
-    Platform,
-    TouchableOpacity,
+  StyleSheet,
+  Dimensions,
+  View,
+  Text,
+  ScrollView,
+  Platform,
+  TouchableOpacity,
 } from "react-native";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import HTML from "react-native-render-html";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
 
 export interface MoreInfoScreenProps {
-    route: RouteProp<{ params: { rcp: Recipe } }, "params">;
+  route: RouteProp<{ params: { rcp: Recipe } }, "params">;
 }
 
 export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
-    const { rcp } = route.params;
-    const [showSummary, setShowSummary] = React.useState(false);
-    const [showIngredients, setShowIngredients] = React.useState(false);
-    const [showInstructions, setShowInstructions] = React.useState(false);
+  const { rcp } = route.params;
+  const [showSummary, setShowSummary] = React.useState(false);
+  const [showIngredients, setShowIngredients] = React.useState(false);
+  const [showInstructions, setShowInstructions] = React.useState(false);
 
+  const [fontsLoaded] = useFonts({
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
+  });
 
-    // Filter through an array of ingredient name to remove duplicates and set the display
+  // Filter through an array of ingredient name to remove duplicates and set the display
   function Ingredients({ ingredients }: { ingredients: string[] }) {
     let idx = 0;
     const filteredIngredients = Array.from(new Set(ingredients));
@@ -50,12 +55,16 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
     );
   }
 
-  return (
+  if (!fontsLoaded) {
+    return <View></View>;
+  } else {
+    return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
-          <Text style={styles.title}>{rcp.title}</Text>
           <View style={styles.contentContainer}>
             <ScrollView style={styles.scrollView}>
+            <Text style={styles.title}>{rcp.title}</Text>
+            <View style={{ ...styles.borderline }} />
               <TouchableOpacity
                 onPress={() => {
                   setShowSummary(!showSummary);
@@ -75,8 +84,9 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
               {showSummary && (
                 <HTML
                   tagsStyles={{
-                    div: { fontSize: 18, lineHeight: 28, marginTop: 12 },
-                    a: { fontSize: 18 },
+                    div: { fontSize: 18, lineHeight: 28, marginTop: 12, fontFamily: "OpenSans" },
+                    b: {fontFamily: "OpenSansBold"},
+                    a: { fontSize: 18, fontFamily: "OpenSans" },
                   }}
                   source={{ html: `<div>${rcp.summary} </div>` }}
                 />
@@ -100,9 +110,7 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
                   />
                 </View>
               </TouchableOpacity>
-              {showIngredients && (
-                <Ingredients ingredients={rcp.ingredients} />
-              )}
+              {showIngredients && <Ingredients ingredients={rcp.ingredients} />}
               <TouchableOpacity
                 style={styles.touchableHeader}
                 onPress={() => {
@@ -128,24 +136,23 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
                     style={{
                       fontWeight: "bold",
                       fontSize: 18,
+                      fontFamily: "OpenSansBold",
                       marginTop: 12,
                     }}
                   >
                     Preparation time:{" "}
-                    <Text style={{ fontWeight: "normal" }}>
+                    <Text style={{ fontWeight: "normal", fontFamily: "OpenSans" }}>
                       {rcp.readyInMinutes} min
                     </Text>
                   </Text>
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+                  <Text style={{ fontWeight: "bold", fontSize: 18, fontFamily: "OpenSansBold", }}>
                     Servings:{" "}
-                    <Text style={{ fontWeight: "normal" }}>
-                      {rcp.servings}
-                    </Text>
+                    <Text style={{ fontWeight: "normal", fontFamily: "OpenSans" }}>{rcp.servings}</Text>
                     {"\n"}
                   </Text>
                   <HTML
                     tagsStyles={{
-                      div: { fontSize: 18, lineHeight: 28 },
+                      div: { fontSize: 18, lineHeight: 28, fontFamily: "OpenSans" },
                       ol: { fontSize: 18 },
                       li: { fontSize: 18, marginTop: -5 },
                       a: { fontSize: 18 },
@@ -199,7 +206,8 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
           </View>
         </View>
       </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -214,15 +222,15 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     alignItems: "center",
     width: _screen.width * 0.93,
-    height: _screen.height * 0.68,
+    height: _screen.height * 0.8,
     borderRadius: 15,
-    // backgroundColor: colorPalette.primary,
+    // backgroundColor: "#ff5454",
     ...shadowStyle,
   },
 
   title: {
-    margin: 8,
-    marginTop: 30,
+    // margin: 8,
+    // marginTop: 30,
     fontSize: 25,
     fontWeight: "bold",
     // color: colorPalette.background,
@@ -230,9 +238,22 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans",
   },
 
+  borderline: {
+    alignSelf: "center",
+    borderBottomColor: "black",
+    marginVertical: 8,
+    marginBottom: 24,
+    borderBottomWidth: 1,
+    opacity: 0.8,
+    width: _screen.width * 0.7,
+
+  },
+
   subTitle: {
     fontSize: 24,
     fontWeight: "bold",
+    fontFamily: "OpenSansBold",
+    // color: "#ff5454"
   },
 
   touchableHeader: {
@@ -250,7 +271,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: _screen.width * 0.93,
-    height: _screen.height * 0.68,
+    height: _screen.height * 0.8,
     borderRadius: 15,
     // backgroundColor: colorPalette.secondary,
   },
@@ -272,6 +293,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     width: "65%",
     fontSize: 18,
+    fontFamily: "OpenSans"
   },
 
   measurement: {
@@ -284,7 +306,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
-    flexWrap: "wrap",
+    // flexWrap: "wrap",
     marginTop: 8,
     marginHorizontal: 16,
   },
@@ -293,7 +315,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 3,
+    marginHorizontal: 3,
     marginTop: 3,
     padding: 4,
     borderRadius: 8,

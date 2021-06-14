@@ -128,14 +128,14 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
         {cuisineArray[0] && (
           <Text style={styles.caption}>
             So far, you have savored
-            <Text style={{ fontWeight: "bold" }}> {cuisineArray.length} </Text>
+            <Text style={{ fontFamily: "OpenSansBold", }}> {cuisineArray.length} </Text>
             cuisine type(s). Your most savored cuisine is
-            <Text style={{ fontWeight: "bold" }}> {cuisineArray[0].name}</Text>
+            <Text style={{ fontFamily: "OpenSansBold", }}> {cuisineArray[0].name}</Text>
             {cuisineArray[1] ? (
               <Text>
                 {" "}
                 but, it looks like
-                <Text style={{ fontWeight: "bold" }}>
+                <Text style={{ fontFamily: "OpenSansBold", }}>
                   {" "}
                   {cuisineArray[1].name}{" "}
                 </Text>
@@ -198,11 +198,12 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
   // Load fonts
   const [fontsLoaded] = useFonts({
     OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
     Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
   });
 
   if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
+    return <View></View>;
   } else {
     return (
       <View style={styles.container}>
@@ -289,7 +290,7 @@ const styles = StyleSheet.create({
   },
 
   caption: {
-    fontStyle: "italic",
+    // fontStyle: "italic",
     fontSize: 20,
     fontFamily: "OpenSans",
   },

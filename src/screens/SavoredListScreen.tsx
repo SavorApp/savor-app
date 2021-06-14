@@ -9,6 +9,7 @@ import {
   Platform,
 } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
+import ConfettiCannon from 'react-native-confetti-cannon';
 import { useSelector, useDispatch } from "react-redux";
 import { unSavorRecipe } from "../redux/actions";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -40,6 +41,7 @@ export default function SavoredListScreen({
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   );
+  const explosion = React.useRef<ConfettiCannon>();
 
   const [fontsLoaded] = useFonts({
     OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
@@ -51,9 +53,12 @@ export default function SavoredListScreen({
   }
 
   function handleTruffleShuffle() {
-    navigation.navigate("RecipeScreen", {
-      recipeId: savoredList[getRandomNumber()].id,
-    });
+    explosion.current?.start();
+    setTimeout(() => {
+      navigation.navigate("RecipeScreen", {
+        recipeId: savoredList[getRandomNumber()].id,
+      });
+    }, 2500);
   }
 
   // below is the recipe list
@@ -66,8 +71,8 @@ export default function SavoredListScreen({
     rightActionState,
   }) {
     // {rcp}: {rcp: UserRecipe}
-    const newTitle =
-      rcp.title.length >= 25 ? rcp.title.slice(0, 25) + "..." : rcp.title;
+    // const newTitle =
+    //   rcp.title.length >= 30 ? rcp.title.slice(0, 30) + "..." : rcp.title;
 
     // console.log("rightActionState", rightActionState);
     if (rightActionState) {
@@ -91,11 +96,12 @@ export default function SavoredListScreen({
         <View style={styles.recipeListItemInner}>
           <View style={styles.recipeListItemInnerContent}>
             <Text
+              numberOfLines={1}
               style={{
                 ...styles.recipeTitle,
               }}
             >
-              {newTitle}
+              {rcp.title}
             </Text>
             <View style={styles.tagsContainer}>
               <View style={{ ...styles.singleTagContainer, borderWidth: 0 }}>
@@ -275,7 +281,7 @@ export default function SavoredListScreen({
   }
 
   if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
+    return <View></View>;
   } else {
     return (
       <View style={styles.container}>
@@ -337,6 +343,16 @@ export default function SavoredListScreen({
             </LinearGradient>
           </TouchableOpacity>
         </View>
+        <ConfettiCannon
+          count={300}
+          colors={["#ff5454", "#F7DD08", "##FFAA54", "#e64c4c", "#cc4343", "#ff6565", "#ff7676"]}
+          explosionSpeed={500}
+          fallSpeed={2000}
+          origin={{x: _screen.width*0.5, y: -_screen.height*0.5}}
+          autoStart={false}
+          fadeOut={true}
+          ref={(confettiRef: any) => {explosion.current = confettiRef}}
+        />
       </View>
     );
   }
