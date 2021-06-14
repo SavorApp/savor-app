@@ -320,7 +320,7 @@ export default function SavoredListScreen({
           </View>
           <TouchableOpacity
             onPress={savoredList.length === 0 ? () => {} : handleTruffleShuffle}
-            activeOpacity={1}
+            activeOpacity={0.8}
             style={{
               shadowOpacity: 0.2,
               shadowRadius: 3,
