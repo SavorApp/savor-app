@@ -109,7 +109,7 @@ export default function ChefSettingsScreen({
           colors={["white", "whitesmoke"]}
           style={styles.aboutUsButton}
         >
-          <Text style={{ ...styles.buttonText, color: "#FF5454" }}>
+          <Text style={{ ...styles.buttonText, color: "#990000" }}>
             Delete Account
           </Text>
         </LinearGradient>

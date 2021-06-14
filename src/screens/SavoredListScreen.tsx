@@ -67,8 +67,9 @@ export default function SavoredListScreen({
   }) {
     // {rcp}: {rcp: UserRecipe}
     const newTitle =
-      rcp.title.length >= 30 ? rcp.title.slice(0, 30) + "..." : rcp.title;
+      rcp.title.length >= 25 ? rcp.title.slice(0, 25) + "..." : rcp.title;
 
+    // console.log("rightActionState", rightActionState);
     if (rightActionState) {
       Animated.timing(rowHeightAnimatedValue, {
         toValue: 0,
@@ -150,9 +151,9 @@ export default function SavoredListScreen({
 
   const onRowDidOpen = (item, rowMap) => {};
 
-  const onLeftActionStatusChange = (item, rowMap) => {};
+  // const onLeftActionStatusChange = (item, rowMap) => {};
 
-  const onRightActionStatusChange = (item, rowMap) => {};
+  // const onRightActionStatusChange = (item, rowMap) => {};
 
   const onRightAction = (item, rowMap) => {};
 
@@ -307,12 +308,8 @@ export default function SavoredListScreen({
               onRightAction={(rowData, rowMap) => {
                 return onRightAction(rowData, rowMap);
               }}
-              onLeftActionStatusChange={(rowData, rowMap) =>
-                onLeftActionStatusChange(rowData, rowMap)
-              }
-              onRightActionStatusChange={(rowData, rowMap) =>
-                onRightActionStatusChange(rowData, rowMap)
-              }
+              onLeftActionStatusChange={ () => {}}
+              onRightActionStatusChange={ () => {}}
             />
           </View>
           <TouchableOpacity

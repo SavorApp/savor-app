@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Image
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
@@ -323,8 +324,8 @@ const styles = StyleSheet.create({
     // margin: 8,
     // fontSize: 18,
     // color: "blue",
-    textDecorationLine: "underline",
-    color: "#5c5c5c",
+    // textDecorationLine: "underline",
+    color: "#ff5454",
     // color: colorPalette.background,
   },
 

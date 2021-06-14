@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
   subContainer: {
     justifyContent: "center",
     alignItems: "center",
-    width: _screen.width * 0.9,
+    width: _screen.width * 0.93,
     height: _screen.height * 0.7,
     borderRadius: 15,
     marginTop: 120,
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
   profileContainer: {
     justifyContent: "center",
     alignItems: "center",
-    width: _screen.width * 0.83,
+    width: _screen.width * 0.93,
     height: _screen.height * 0.7,
     borderRadius: 15,
     // backgroundColor: colorPalette.secondary,
@@ -261,8 +261,8 @@ const styles = StyleSheet.create({
   username: {
     textAlign: "center",
     marginBottom: 8,
-    fontSize: 24,
-    fontFamily: "Satisfy",
+    fontSize: 18,
+    // fontFamily: "Satisfy",
     // fontWeight: "bold",
     // color: colorPalette.popDark,
   },
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
   scrollView: {
     padding: 8,
     marginVertical: Platform.OS === "android" ? 12 : 0,
-    width: _screen.width * 0.8,
+    width: _screen.width * 0.93,
     borderRadius: 15,
   },
 

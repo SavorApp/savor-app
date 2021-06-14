@@ -307,7 +307,7 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     alignItems: "center",
     width: _screen.width * 0.93,
-    height: _screen.height * 0.68,
+    height: _screen.height * 0.58,
     borderRadius: 15,
     // backgroundColor: colorPalette.primary,
     ...shadowStyle,
@@ -343,7 +343,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: _screen.width * 0.93,
-    height: _screen.height * 0.68,
+    height: _screen.height * 0.58,
     borderRadius: 15,
     // backgroundColor: colorPalette.secondary,
   },
@@ -374,6 +374,8 @@ const styles = StyleSheet.create({
   },
 
   tagsContainer: {
+    justifyContent: "center",
+    alignItems: "center",
     flexDirection: "row",
     flexWrap: "wrap",
     marginTop: 8,

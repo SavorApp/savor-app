@@ -13,7 +13,7 @@ import { disableScroll, enableScroll } from "../redux/actions";
 const _screen = Dimensions.get("screen");
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
-import AppLoading from "expo-app-loading";
+// import AppLoading from "expo-app-loading";
 
 export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
   // if (rcp.title.split(" ").length > 3) {
@@ -37,7 +37,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
     return (
       <View style={styles.container}>
         <View style={styles.subContainer}>
-          <Animated.ScrollView
+          {/* <Animated.ScrollView
             contentContainerStyle={styles.scrollViewContainer}
             centerContent={true}
             directionalLockEnabled
@@ -48,7 +48,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
             onScrollEndDrag={() => {
               dispatch(disableScroll());
             }}
-          >
+          > */}
             {rcp.image ? (
               <View style={styles.imageContainer}>
                 <ImageBackground
@@ -76,7 +76,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
               </View>
             )}
 
-            <View style={styles.rcpInfoContainer}>
+            {/* <View style={styles.rcpInfoContainer}>
               <Text style={styles.rcpInfo}>
                 Type:{" "}
                 {filtersState.filters.dishType
@@ -95,7 +95,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
                   : rcp.cuisines.length === 0
                   ? "World Food"
                   : rcp.cuisines[0]}
-              </Text>
+              </Text> */}
               {/* <Text style={styles.rcpInfo}>
                 Dairy-free:{rcp.dairyFree ? " ✅  " : " ❌ "}
               </Text>
@@ -109,7 +109,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
                 Vegan:{rcp.vegan ? " ✅  " : " ❌ "}
               </Text> */}
 
-              <Text style={styles.subTitle}>Additional Information</Text>
+              {/* <Text style={styles.subTitle}>Additional Information</Text>
               <Text>Preparation time: {rcp.readyInMinutes} min </Text>
               <Text>Servings: {rcp.servings}</Text>
               <View style={styles.tagsContainer}>
@@ -156,7 +156,7 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
                 )}
               </View>
             </View>
-          </Animated.ScrollView>
+          </Animated.ScrollView> */}
         </View>
       </View>
     );
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // paddingTop: 20,
     height: _screen.height * 0.6,
-    width: _screen.width * 0.88,
+    width: _screen.width * 0.93,
     borderRadius: 15,
     marginBottom: 30,
     // backgroundColor: colorPalette.secondary,
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     height: _screen.height * 0.6,
-    width: _screen.width * 0.88,
+    width: _screen.width * 0.93,
     ...shadowStyle,
   },
 
@@ -207,7 +207,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     height: _screen.height * 0.6,
-    width: _screen.width * 0.85,
+    width: _screen.width * 0.93,
     resizeMode: "contain",
     overflow: "hidden",
     borderRadius: 15,
@@ -225,12 +225,12 @@ const styles = StyleSheet.create({
   titleContainer: {
     marginVertical: 3,
     padding: 3,
-    width: _screen.width * 0.78,
+    width: _screen.width * 0.9,
     borderRadius: 5,
     backgroundColor: "rgba(255, 255, 255, 0.9)",
     justifyContent: "center",
     marginBottom: 15,
-    ...shadowStyle,
+    // ...shadowStyle,
   },
 
   title: {
