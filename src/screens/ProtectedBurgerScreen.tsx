@@ -107,7 +107,7 @@ export default function ProtectedBurgerScreen() {
     setTimeout(() => {
       Alert.alert(
         "😕Uh-Oh...",
-        "Please create a Savored account or, login to apply Recipe Filters.\n\n" +
+        "Please create a Savor account or, login to apply Recipe Filters.\n\n" +
         "You will get access to our Smart Recommendation feature and, it's completely free!")
     }, 500);
   })
