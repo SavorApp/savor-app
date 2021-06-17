@@ -13,6 +13,8 @@ import {
   DeleteAccountScreen,
   BurgerScreen,
   ProtectedBurgerScreen,
+  MoreInfoScreen,
+  ChefSettingsScreen,
 } from "../screens";
 import BottomTabNavigator from "./BottomTab";
 
@@ -58,10 +60,7 @@ function RootNavigator() {
           headerTitle: () => {
             return (
               <View style={styles.headerContainer}>
-                <Image
-                  source={require("../../assets/header.png")}
-                  style={styles.headerImage}
-                />
+                <Text style={{fontSize: 24}}>Sign Up</Text>
               </View>
             );
           },
@@ -81,10 +80,7 @@ function RootNavigator() {
           headerTitle: () => {
             return (
               <View style={styles.headerContainer}>
-                <Image
-                  source={require("../../assets/header.png")}
-                  style={styles.headerImage}
-                />
+                <Text style={{fontSize: 24}}>About Us</Text>
               </View>
             );
           },
@@ -104,10 +100,7 @@ function RootNavigator() {
           headerTitle: () => {
             return (
               <View style={styles.headerContainer}>
-                <Image
-                  source={require("../../assets/header.png")}
-                  style={styles.headerImage}
-                />
+                <Text style={{fontSize: 24}}>Delete Account</Text>
               </View>
             );
           },
@@ -127,10 +120,7 @@ function RootNavigator() {
           headerTitle: () => {
             return (
               <View style={styles.headerContainer}>
-                <Image
-                  source={require("../../assets/header.png")}
-                  style={styles.headerImage}
-                />
+                <Text style={{fontSize: 24}}>Filters</Text>
               </View>
             );
           },
@@ -150,15 +140,53 @@ function RootNavigator() {
           headerTitle: () => {
             return (
               <View style={styles.headerContainer}>
-                <Image
-                  source={require("../../assets/header.png")}
-                  style={styles.headerImage}
-                />
+                <Text style={{fontSize: 24}}>Filters</Text>
               </View>
             );
           },
         }}
       />
+      <RootStack.Screen
+        name="MoreInfoScreen"
+        // TODO: Research whether there is another solution than to cast
+        component={MoreInfoScreen as React.FC}
+        options={{
+          headerBackImage: () => (
+            <Ionicons name="chevron-down-sharp" size={36} />
+          ),
+          headerBackTitleVisible: false,
+          headerLeftContainerStyle: {
+            marginLeft: 12,
+          },
+          headerTitle: () => {
+            return (
+              <View style={styles.headerContainer}>
+                <Text style={{fontSize: 24}}>Recipe Information</Text>
+              </View>
+            );
+          },
+        }}
+      />
+    <RootStack.Screen
+    name="ChefSettingsScreen"
+    component={ChefSettingsScreen}
+    options={{
+      headerBackImage: () => (
+        <Ionicons name="chevron-down-sharp" size={36} />
+      ),
+      headerBackTitleVisible: false,
+      headerLeftContainerStyle: {
+        marginLeft: 12,
+      },
+      headerTitle: () => {
+        return (
+          <View style={styles.headerContainer}>
+            <Text style={{fontSize: 24}}>Settings</Text>
+          </View>
+        );
+      },
+    }}
+  />
     </RootStack.Navigator>
   );
 }
@@ -169,6 +197,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     padding: 8,
+    height: 100,
   },
 
   headerImage: {

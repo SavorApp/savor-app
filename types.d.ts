@@ -12,6 +12,8 @@ type RootStackParamList = {
   MenuScreen: undefined;
   BurgerScreen: undefined;
   ProtectedBurgerScreen: undefined;
+  MoreInfoScreen: { rcp: Recipe };
+  ChefSettingsScreen: undefined;
 };
 
 type BottomTabParamList = {
@@ -24,6 +26,7 @@ type ChefStackParamList = {
   LoginScreen: undefined;
   SignupScreen: undefined;
   ChefScreen: undefined;
+  ChefSettingsScreen: undefined;
   AboutUsScreen: undefined;
   DeleteAccountScreen: undefined;
 };
@@ -32,6 +35,7 @@ type MenuStackParamList = {
   MenuScreen: undefined;
   BurgerScreen: undefined;
   ProtectedBurgerScreen: undefined;
+  MoreInfoScreen: { rcp: Recipe };
 };
 
 type SavoredListStackParamList = {
@@ -82,7 +86,7 @@ type RecipeAction = { type: string; payload: Recipe };
 // Core UserRecipe type
 type UserRecipe = {
   id: number;
-  recipe_id?: number
+  recipe_id?: number;
   title: string;
   cuisine: string;
   dishType: string;
@@ -154,7 +158,7 @@ type EmptyAction = {
  _____________________________
 */
 
-type RecipeCardParamList = { 
+type RecipeCardParamList = {
   id: number;
   rcp: Recipe;
 };
@@ -162,11 +166,14 @@ type RecipeCardParamList = {
 type SwipeButtonsParamList = {
   handleOnPressLeft: () => void;
   handleOnPressRight: () => void;
+  rcp: Recipe;
+  navigateToMoreInfoScreen: (rcp:Recipe) => void;
 };
 
 type RecipeCardStackParamList = {
   randRecipes: Recipe[];
   filtersState: FiltersState;
+  navigateToMoreInfoScreen: (rcp:Recipe) => void;
 };
 
 /*
@@ -210,7 +217,9 @@ type Recipe = {
   pricePerServing: number;
   readyInMinutes: number;
   servings: number;
+  summary: string;
   ingredients: string[];
+  instructions: string;
   smartFilterScore: number;
   extendedIngredients?: Ingredient[];
 };
@@ -247,6 +256,7 @@ type Ingredient = {
 // Recipe Screen Info type
 type RecipeScreenInfo = {
   title: string;
+  image: string;
   instructions: string;
   summary: string;
   ingredients: Ingredient[];

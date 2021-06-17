@@ -7,6 +7,8 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  Linking,
+  Image
 } from "react-native";
 import { useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
@@ -14,7 +16,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { firebaseApp } from "../constants/Firebase";
-import { createUser, createFilters, swipeToDb, getCurrentUser } from "../db/db";
+import { postUserDb, postFiltersDb, postRecipeDb } from "../db/db";
 import { initialState } from "../redux/reducers/filters";
 const _screen = Dimensions.get("screen");
 
@@ -65,11 +67,11 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
           .auth()
           .createUserWithEmailAndPassword(email, password);
 
-        const createUserResult = await createUser(
+        const createUserResult = await postUserDb(
           resp.user?.uid,
           resp.user?.email
         );
-        const createFiltersResult = await createFilters(
+        const createFiltersResult = await postFiltersDb(
           resp.user?.uid,
           initialState.filters
         );
@@ -77,7 +79,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
         if (resp.additionalUserInfo?.isNewUser) {
           if (userRecipeListState.userRecipeList.length !== 0) {
             for (const savoredRcp of userRecipeListState.userRecipeList) {
-              const swipeToDbResult = await swipeToDb(
+              const swipeToDbResult = await postRecipeDb(
                 resp.user?.uid,
                 savoredRcp
               );
@@ -96,7 +98,11 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text style={styles.title}>Please Register</Text>
+      <Image 
+        source={require("../../assets/header.png")}
+        style={styles.headerImage}
+        />
+        <Text style={styles.subHeader}>Put on your apron and sharpen your knife, Heat up the pan and spice up your life!</Text>
         <View style={styles.form}>
           <View style={styles.inputContainer}>
             <View style={[styles.input, { justifyContent: "space-between" }]}>
@@ -147,6 +153,8 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
             </View>
           </View>
 
+          <Text style={{color: "gray", fontSize: 10, marginTop: 3}}>By signing up your are agreeing to our terms and conditions.</Text>
+
           <View style={styles.signInButtonContainer}>
             <TouchableOpacity
               onPress={
@@ -157,10 +165,10 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
               activeOpacity={0.8}
             >
               <LinearGradient
-                colors={[colorPalette.popLight, colorPalette.popDark]}
+                colors={["#5454FF", "#3B3BB3"]}
                 style={styles.signUpButton}
               >
-                <Text>{blockSignup ? "Processing..." : "Register"}</Text>
+                <Text style={{ color: "white" }}>{blockSignup ? "Processing..." : "Sign Up"}</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -170,12 +178,101 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
   );
 }
 
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: "center",
+//     alignItems: "center",
+//     backgroundColor: colorPalette.background,
+//   },
+
+//   subContainer: {
+//     justifyContent: "center",
+//     alignItems: "center",
+//     width: _screen.width * 0.9,
+//     height: _screen.height * 0.6,
+//     borderRadius: 15,
+//     backgroundColor: colorPalette.primary,
+//     ...shadowStyle,
+//   },
+
+//   form: {
+//     justifyContent: "center",
+//     alignItems: "center",
+//     marginBottom: 48,
+//     width: _screen.width * 0.8,
+//     height: _screen.height * 0.3,
+//     borderRadius: 15,
+//     backgroundColor: colorPalette.secondary,
+//   },
+
+//   title: {
+//     marginVertical: 8,
+//     fontSize: 28,
+//     fontWeight: "bold",
+//     color: colorPalette.background,
+//   },
+
+//   inputContainer: {
+//     justifyContent: "center",
+//     alignItems: "center",
+//     margin: 1,
+//     padding: 6,
+//     paddingBottom: 18,
+//     width: _screen.width * 0.7,
+//     borderRadius: 10,
+//     backgroundColor: colorPalette.background,
+//   },
+
+//   input: {
+//     flexDirection: "row",
+//     marginTop: 10,
+//     paddingHorizontal: 3,
+//     width: _screen.width * 0.65,
+//     borderBottomWidth: 1,
+//     borderBottomColor: colorPalette.trim,
+//   },
+
+//   passwordContainer: {
+//     flexDirection: "row",
+//   },
+
+//   signInButtonContainer: {
+//     marginTop: 10,
+//   },
+
+//   signUpButton: {
+//     justifyContent: "center",
+//     alignItems: "center",
+//     marginTop: 10,
+//     width: 200,
+//     borderRadius: 10,
+//     padding: 8,
+//   },
+
+//   signUp: {
+//     margin: 8,
+//     fontSize: 18,
+//     textDecorationLine: "underline",
+//     color: colorPalette.background,
+//   },
+
+//   aboutUsButton: {
+//     justifyContent: "center",
+//     alignItems: "center",
+//     marginTop: 8,
+//     width: 120,
+//     borderRadius: 10,
+//     padding: 8,
+//   },
+// });
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
@@ -184,7 +281,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.9,
     height: _screen.height * 0.6,
     borderRadius: 15,
-    backgroundColor: colorPalette.primary,
+    // backgroundColor: colorPalette.primary,
     ...shadowStyle,
   },
 
@@ -195,14 +292,22 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.8,
     height: _screen.height * 0.3,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.secondary,
   },
 
-  title: {
-    marginVertical: 8,
-    fontSize: 28,
+  subHeader: {
+    // marginVertical: 8,
+    textAlign: "center",
+    fontSize: 18,
     fontWeight: "bold",
-    color: colorPalette.background,
+    // color: "gray"
+    // color: colorPalette.background,
+  },
+
+  headerImage: {
+    flex: 1,
+    resizeMode: "contain",
+    width: 200,
   },
 
   inputContainer: {
@@ -211,7 +316,7 @@ const styles = StyleSheet.create({
     margin: 1,
     padding: 6,
     paddingBottom: 18,
-    width: _screen.width * 0.7,
+    width: _screen.width * 0.8,
     borderRadius: 10,
     backgroundColor: colorPalette.background,
   },
@@ -220,7 +325,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 10,
     paddingHorizontal: 3,
-    width: _screen.width * 0.65,
+    width: _screen.width * 0.7,
     borderBottomWidth: 1,
     borderBottomColor: colorPalette.trim,
   },
@@ -243,18 +348,28 @@ const styles = StyleSheet.create({
   },
 
   signUp: {
-    margin: 8,
-    fontSize: 18,
+    // margin: 8,
+    // fontSize: 18,
+    // color: "blue",
     textDecorationLine: "underline",
-    color: colorPalette.background,
+    color: "#5c5c5c",
+    // color: colorPalette.background,
   },
 
   aboutUsButton: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 8,
-    width: 120,
+    marginTop: 16,
+    marginHorizontal: 8,
+    width: 200,
+    backgroundColor: "#FFAA54",
     borderRadius: 10,
     padding: 8,
+    borderWidth: 0.2,
+    borderStyle: "solid",
+    shadowOpacity: 0.3,
+    shadowRadius: 0.2,
+    shadowOffset: { width: 0.2, height: 0.3 },
   },
 });
+

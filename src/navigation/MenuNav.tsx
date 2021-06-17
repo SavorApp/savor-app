@@ -49,7 +49,12 @@ export default function MenuNavigator({ navigation }: MenuNavigatorProps) {
                 }
               }}
             >
-              <MaterialCommunityIcons name="menu" size={36} />
+              <MaterialCommunityIcons
+                name="hamburger"
+                size={38}
+                style={{ marginRight: 12 }}
+                color="gray"
+              />
             </TouchableOpacity>
           ),
           headerTitle: () => {

@@ -17,24 +17,23 @@ function FakeBurgerScreen() {
   return (
     <View style={styles.container}>
         <View style={styles.subContainer}>
-          <Text style={styles.title}>Recipe Filters</Text>
           <View style={[styles.filtersContainers, styles.smartFilterContainer]}>
-            <Text>Smart Filter: </Text>
+            <Text style={styles.filterLabel}>Smart Recommendations: </Text>
             <Pressable
               style={[styles.checkboxBase, styles.checkboxChecked]}
               onPress={() => {}}
             >
-              <MaterialCommunityIcons name="check-bold" size={18} color="black" />
+              <MaterialCommunityIcons name="check-bold" size={18} color="#FF5454" />
             </Pressable>
           </View>
-
+          <View style={{ ...styles.borderline }} />
           <View
             style={[
               styles.filtersContainers,
               styles.dropDownContainer
             ]}
           >
-            <Text>Dish Types: </Text>
+            <Text style={styles.filterLabel}>Dish Types: </Text>
             <View style={styles.dropdown}>
               <View style={styles.dropdownItem}>
                 <MaterialCommunityIcons name="silverware-variant" size={18} />
@@ -50,7 +49,7 @@ function FakeBurgerScreen() {
               styles.dropDownContainer
             ]}
           >
-            <Text>Cuisine: </Text>
+            <Text style={styles.filterLabel}>Cuisine: </Text>
             <View style={styles.dropdown}>
               <View style={styles.dropdownItem}>
                 <Emoji name="jp" />
@@ -59,61 +58,41 @@ function FakeBurgerScreen() {
               <MaterialCommunityIcons name="menu-down-outline" size={24} />
             </View>
           </View>
-
+          <View style={{ ...styles.borderline }} />
           <View style={[styles.filtersContainers, styles.checkBoxContainer]}>
             <View style={styles.labelAndCheckbox}>
-              <Text>Vegetarian: </Text>
+              <Text style={styles.filterLabel}>Vegetarian: </Text>
               <Pressable
                 style={[styles.checkboxBase, { marginRight: 35 }]}
                 onPress={() => {}}
               >
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
-                />
               </Pressable>
             </View>
             <View style={styles.labelAndCheckbox}>
-              <Text>Vegan: </Text>
+              <Text style={styles.filterLabel}>Vegan: </Text>
               <Pressable
                 style={[styles.checkboxBase, { marginRight: 35 }]}
                 onPress={() => {}}
               >
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
-                />
               </Pressable>
             </View>
           </View>
 
           <View style={[styles.filtersContainers, styles.checkBoxContainer]}>
             <View style={styles.labelAndCheckbox}>
-              <Text>Gluten Free: </Text>
+              <Text style={styles.filterLabel}>Gluten Free: </Text>
               <Pressable
                 style={[styles.checkboxBase, { marginRight: 35 }]}
                 onPress={() => {}}
               >
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
-                />
               </Pressable>
             </View>
             <View style={styles.labelAndCheckbox}>
-              <Text>Dairy Free: </Text>
+              <Text style={styles.filterLabel}>Dairy Free: </Text>
               <Pressable
                 style={[styles.checkboxBase, { marginRight: 35 }]}
                 onPress={() => {}}
               >
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
-                />
               </Pressable>
             </View>
           </View>
@@ -126,7 +105,10 @@ function FakeBurgerScreen() {
 export default function ProtectedBurgerScreen() {
   React.useEffect(() => {
     setTimeout(() => {
-      Alert.alert("😕Uh-Oh...", "Please create a Savored account or, login to apply Recipe Filters.")
+      Alert.alert(
+        "😕Uh-Oh...",
+        "Please create a Savor account or, login to apply Recipe Filters.\n\n" +
+        "You will get access to our Smart Recommendation feature and, it's completely free!")
     }, 500);
   })
   return (
@@ -136,6 +118,7 @@ export default function ProtectedBurgerScreen() {
   )
 
 }
+
 
 const styles = StyleSheet.create({
   overlay: {
@@ -150,27 +133,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
     flex: 10,
     marginTop: 8,
-    paddingBottom: 100,
-    justifyContent: "center",
+    // paddingBottom: 100,
+    // justifyContent: "center",
     alignItems: "center",
     width: _screen.width * 0.9,
-    height: _screen.height * 0.6,
+    height: _screen.height * 0.8,
     borderRadius: 15,
-    backgroundColor: colorPalette.primary,
+    paddingTop: 30,
     ...shadowStyle,
-  },
-
-  title: {
-    marginBottom: 16,
-    fontSize: 28,
-    fontWeight: "bold",
-    color: colorPalette.background,
   },
 
   filtersContainers: {
@@ -178,12 +154,12 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.85,
     height: _screen.height * 0.04,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.popLight,
   },
 
   smartFilterContainer: {
     flexDirection: "row",
-    paddingHorizontal: 100,
+    paddingHorizontal: 45,
     justifyContent: "space-between",
     alignItems: "center",
   },
@@ -203,6 +179,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     justifyContent: "space-between",
     alignItems: "center",
+    marginVertical: 15,
   },
 
   dropdown: {
@@ -216,7 +193,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     backgroundColor: colorPalette.background,
   },
-  
+
   dropdownItem: {
     flexDirection: "row",
   },
@@ -231,7 +208,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: _screen.width * 0.4,
+    width: _screen.width * 0.44,
   },
 
   checkboxBase: {
@@ -241,17 +218,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: "coral",
+    borderColor: "grey",
     backgroundColor: colorPalette.background,
   },
 
   checkboxChecked: {
-    backgroundColor: colorPalette.popDark,
+    backgroundColor: "white",
   },
 
   applyContainer: {
     flex: 1,
-    marginVertical: 18,
+    marginVertical: 50,
+    paddingTop: 50
   },
 
   applyButton: {
@@ -261,5 +239,23 @@ const styles = StyleSheet.create({
     width: 200,
     borderRadius: 10,
     padding: 8,
+    borderColor: "grey",
+    borderWidth: 0.2
   },
+
+  borderline: {
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+    width: _screen.width * 0.85,
+    opacity: 0.2,
+    shadowOpacity: 0.8,
+    shadowRadius: 1,
+    shadowOffset: { width: 1, height: 1 },
+    marginVertical: 40,
+  },
+
+  filterLabel: {
+    fontSize: 18,
+  }
 });
+

@@ -18,6 +18,7 @@ import {
 import { colorPalette, shadowStyle } from "../constants/ColorPalette";
 import { LinearGradient } from "expo-linear-gradient";
 import { firebaseApp } from "../constants/Firebase";
+import { deleteAccount } from "../db/db";
 
 const _screen = Dimensions.get("screen");
 
@@ -35,17 +36,20 @@ export default function DeleteAccountScreen({
   function handleDeleteAccount() {
     setBlockDeleteAccount(true);
     // TODO: Delete Account in DB
-    firebaseApp
-      .auth()
-      .signOut()
-      .then(() => {
+    const user = firebaseApp.auth().currentUser;
+    // console.log(user?.uid);
+    user
+      ?.delete()
+      .then(async () => {
         // Remove cached access-token on mobile storage
-        removeCachedAccessToken()
+        removeCachedAccessToken();
         // - Update global state
         dispatch(removeUser());
         dispatch(resetUserRecipeList());
         dispatch(resetFilters());
         setBlockDeleteAccount(false);
+        // - Delete from DB
+        await deleteAccount(user?.uid);
         Alert.alert("Enjoy your time off", "We hope you come back soon 👨‍🍳");
         navigation.goBack();
       })
@@ -60,12 +64,11 @@ export default function DeleteAccountScreen({
 
   async function removeCachedAccessToken() {
     try {
-      await AsyncStorage.removeItem("access-token")
-    } catch(err) {
+      await AsyncStorage.removeItem("access-token");
+    } catch (err) {
       // Handle failed asyncStorage removal error
     }
   }
-
 
   return (
     <View style={styles.container}>
@@ -73,8 +76,7 @@ export default function DeleteAccountScreen({
         <Text style={styles.title}>
           Are you sure you want to delete your account?
         </Text>
-        <View style={styles.form}>
-          <Text>Yes, I'm hanging my apron for now...</Text>
+          <Text>Yes, I'm hanging up my apron for now...</Text>
           <TouchableOpacity
             onPress={
               blockDeleteAccount
@@ -84,15 +86,14 @@ export default function DeleteAccountScreen({
             activeOpacity={0.8}
           >
             <LinearGradient
-              colors={["#ffe6e6", "#ff6666"]}
+              colors={["#b30000", "#990000"]}
               style={styles.button}
             >
-              <Text style={{ color: "black" }}>
+              <Text style={{ color: "white" }}>
                 {blockDeleteAccount ? "Processing..." : "Delete Account"}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
-        </View>
       </View>
     </View>
   );
@@ -101,45 +102,37 @@ export default function DeleteAccountScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    // justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    marginTop: 30
+    // paddingBottom: 30
+    // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
-    justifyContent: "center",
+    justifyContent: "space-evenly",
     alignItems: "center",
     width: _screen.width * 0.9,
-    height: _screen.height * 0.6,
-    borderRadius: 15,
-    backgroundColor: colorPalette.primary,
-    ...shadowStyle,
-  },
-
-  form: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 48,
-    width: _screen.width * 0.8,
     height: _screen.height * 0.3,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.primary,
+    // ...shadowStyle,
   },
 
   title: {
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",
-    marginVertical: 8,
-    fontSize: 16,
+    // marginVertical: 8,
+    fontSize: 18,
     fontWeight: "bold",
-    color: colorPalette.background,
+    // color: colorPalette.background,
   },
 
   button: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 8,
+    marginVertical: 8,
     marginHorizontal: 8,
     width: 120,
     borderRadius: 10,

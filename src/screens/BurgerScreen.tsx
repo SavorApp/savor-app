@@ -81,9 +81,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
     {
       label: "Appetizer",
       value: "appetizer",
-      icon: () => (
-        <MaterialCommunityIcons name="silverware-spoon" size={18} />
-      ),
+      icon: () => <MaterialCommunityIcons name="silverware-spoon" size={18} />,
     },
     {
       label: "Dessert",
@@ -179,7 +177,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
       setVegetarian(true);
       setDairyFree(true);
     }
-  }, [vegan])
+  }, [vegan]);
 
   // Compare smartFilter and decide to display the Apply button, or not
   function compareSmartFilter() {
@@ -318,29 +316,22 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text style={styles.title}>Recipe Filters</Text>
         <View style={[styles.filtersContainers, styles.smartFilterContainer]}>
-          <Text>Smart Filter: </Text>
+          <Text style={styles.filterLabel}>Smart Recommendations: </Text>
           <Pressable
             style={[styles.checkboxBase, smartFilter && styles.checkboxChecked]}
             onPress={handleSmartFilterCheckbox}
           >
-            {smartFilter ? (
+            {smartFilter && (
               <MaterialCommunityIcons
                 name="check-bold"
                 size={18}
-                color="black"
-              />
-            ) : (
-              <MaterialCommunityIcons
-                name="check-outline"
-                size={18}
-                color={colorPalette.trim}
+                color="#FF5454"
               />
             )}
           </Pressable>
         </View>
-
+        <View style={{ ...styles.borderline }} />
         <View
           style={[
             styles.filtersContainers,
@@ -348,7 +339,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
             styles.z2,
           ]}
         >
-          <Text>Dish Types: </Text>
+          <Text style={styles.filterLabel}>Dish Types: </Text>
           <DropDownPicker
             zIndex={3000}
             listMode="SCROLLVIEW"
@@ -359,6 +350,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
             setValue={setDishTypeValue}
             closeAfterSelecting={true}
             setItems={setDishTypeItems}
+            textStyle={{fontSize: 18,}}
             translation={{
               PLACEHOLDER: "Select your type(s)",
               SEARCH_PLACEHOLDER: "Type something...",
@@ -367,16 +359,16 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
             }}
             style={styles.dropdown}
             containerStyle={styles.dropdown}
-            ArrowUpIconComponent={({}) => (
+            ArrowUpIconComponent={({ }) => (
               <MaterialCommunityIcons name="menu-up-outline" size={24} />
             )}
-            ArrowDownIconComponent={({}) => (
+            ArrowDownIconComponent={({ }) => (
               <MaterialCommunityIcons name="menu-down-outline" size={24} />
             )}
             maxHeight={300}
           />
         </View>
-
+              
         <View
           style={[
             styles.filtersContainers,
@@ -384,7 +376,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
             styles.z1,
           ]}
         >
-          <Text>Cuisine: </Text>
+          <Text style={styles.filterLabel}>Cuisine: </Text>
           <DropDownPicker
             zIndex={2000}
             listMode="SCROLLVIEW"
@@ -395,6 +387,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
             setValue={setCuisineValue}
             closeAfterSelecting={true}
             setItems={setCuisineItems}
+            textStyle={{fontSize: 18,}}
             translation={{
               PLACEHOLDER: "Select your cuisine",
               SEARCH_PLACEHOLDER: "Type something...",
@@ -403,19 +396,19 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
             }}
             style={styles.dropdown}
             containerStyle={styles.dropdown}
-            ArrowUpIconComponent={({}) => (
+            ArrowUpIconComponent={({ }) => (
               <MaterialCommunityIcons name="menu-up-outline" size={24} />
             )}
-            ArrowDownIconComponent={({}) => (
+            ArrowDownIconComponent={({ }) => (
               <MaterialCommunityIcons name="menu-down-outline" size={24} />
             )}
             maxHeight={300}
           />
         </View>
-
+        <View style={{ ...styles.borderline }} />
         <View style={[styles.filtersContainers, styles.checkBoxContainer]}>
           <View style={styles.labelAndCheckbox}>
-            <Text>Vegetarian: </Text>
+            <Text style={styles.filterLabel}>Vegetarian: </Text>
             <Pressable
               style={[
                 styles.checkboxBase,
@@ -424,23 +417,17 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
               ]}
               onPress={handleVegetarianCheckbox}
             >
-              {vegetarian ? (
+              {vegetarian && (
                 <MaterialCommunityIcons
                   name="check-bold"
                   size={18}
-                  color="black"
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
+                  color="#FF5454"
                 />
               )}
             </Pressable>
           </View>
           <View style={styles.labelAndCheckbox}>
-            <Text>Vegan: </Text>
+            <Text style={styles.filterLabel}>Vegan: </Text>
             <Pressable
               style={[
                 styles.checkboxBase,
@@ -449,17 +436,11 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
               ]}
               onPress={handleVeganCheckbox}
             >
-              {vegan ? (
+              {vegan && (
                 <MaterialCommunityIcons
                   name="check-bold"
                   size={18}
-                  color="black"
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
+                  color="#FF5454"
                 />
               )}
             </Pressable>
@@ -468,7 +449,7 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
 
         <View style={[styles.filtersContainers, styles.checkBoxContainer]}>
           <View style={styles.labelAndCheckbox}>
-            <Text>Gluten Free: </Text>
+            <Text style={styles.filterLabel}>Gluten Free: </Text>
             <Pressable
               style={[
                 styles.checkboxBase,
@@ -477,23 +458,17 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
               ]}
               onPress={handleGlutenFreeCheckbox}
             >
-              {glutenFree ? (
+              {glutenFree && (
                 <MaterialCommunityIcons
                   name="check-bold"
                   size={18}
-                  color="black"
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
+                  color="#FF5454"
                 />
               )}
             </Pressable>
           </View>
           <View style={styles.labelAndCheckbox}>
-            <Text>Dairy Free: </Text>
+            <Text style={styles.filterLabel}>Dairy Free: </Text>
             <Pressable
               style={[
                 styles.checkboxBase,
@@ -502,17 +477,11 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
               ]}
               onPress={handleDairyFreeCheckbox}
             >
-              {dairyFree ? (
+              {dairyFree && (
                 <MaterialCommunityIcons
                   name="check-bold"
                   size={18}
-                  color="black"
-                />
-              ) : (
-                <MaterialCommunityIcons
-                  name="check-outline"
-                  size={18}
-                  color={colorPalette.trim}
+                  color="#FF5454"
                 />
               )}
             </Pressable>
@@ -523,10 +492,10 @@ export default function BurgerScreen({ navigation }: BurgerScreenProps) {
         {changesMade && (
           <TouchableOpacity onPress={handleApply} activeOpacity={0.8}>
             <LinearGradient
-              colors={[colorPalette.popLight, colorPalette.popDark]}
+              colors={["#FF5454", "#FF5454"]}
               style={styles.applyButton}
             >
-              <Text style={{ color: "black" }}>Apply</Text>
+              <Text style={{ color: "white", fontSize: 18 }}>Apply</Text>
             </LinearGradient>
           </TouchableOpacity>
         )}
@@ -540,27 +509,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colorPalette.background,
+    // backgroundColor: colorPalette.background,
   },
 
   subContainer: {
     flex: 10,
     marginTop: 8,
-    paddingBottom: 100,
-    justifyContent: "center",
+    // paddingBottom: 100,
+    // justifyContent: "center",
     alignItems: "center",
     width: _screen.width * 0.9,
-    height: _screen.height * 0.6,
+    height: _screen.height * 0.8,
     borderRadius: 15,
-    backgroundColor: colorPalette.primary,
+    paddingTop: 30,
     ...shadowStyle,
-  },
-
-  title: {
-    marginBottom: 16,
-    fontSize: 28,
-    fontWeight: "bold",
-    color: colorPalette.background,
   },
 
   filtersContainers: {
@@ -568,12 +530,12 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.85,
     height: _screen.height * 0.04,
     borderRadius: 15,
-    backgroundColor: colorPalette.secondary,
+    // backgroundColor: colorPalette.popLight,
   },
 
   smartFilterContainer: {
     flexDirection: "row",
-    paddingHorizontal: 100,
+    paddingHorizontal: 45,
     justifyContent: "space-between",
     alignItems: "center",
   },
@@ -593,11 +555,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     justifyContent: "space-between",
     alignItems: "center",
+    marginVertical: 15,
   },
 
   dropdown: {
     width: _screen.width * 0.5,
     height: _screen.height * 0.03,
+    fontSize: 5,
   },
 
   checkBoxContainer: {
@@ -610,7 +574,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    width: _screen.width * 0.4,
+    width: _screen.width * 0.44,
   },
 
   checkboxBase: {
@@ -620,17 +584,18 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 4,
     borderWidth: 1,
-    borderColor: "coral",
+    borderColor: "grey",
     backgroundColor: colorPalette.background,
   },
 
   checkboxChecked: {
-    backgroundColor: colorPalette.popDark,
+    backgroundColor: "white",
   },
 
   applyContainer: {
     flex: 1,
-    marginVertical: 18,
+    marginVertical: 50,
+    paddingTop: 50
   },
 
   applyButton: {
@@ -640,5 +605,22 @@ const styles = StyleSheet.create({
     width: 200,
     borderRadius: 10,
     padding: 8,
+    borderColor: "grey",
+    borderWidth: 0.2
   },
+
+  borderline: {
+    borderBottomColor: "black",
+    borderBottomWidth: 1,
+    width: _screen.width * 0.85,
+    opacity: 0.2,
+    shadowOpacity: 0.8,
+    shadowRadius: 1,
+    shadowOffset: { width: 1, height: 1 },
+    marginVertical: 40,
+  },
+
+  filterLabel: {
+    fontSize: 18,
+  }
 });
