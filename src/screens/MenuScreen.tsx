@@ -137,7 +137,7 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
       //       smartFilterScore: 0,
       //     };
       //   });
-      // Dummy Dinner data
+      //   // Dummy Dinner data
       // } else {
       //   fetchedRecipes = dinRecipesJson.recipes.map((rcp) => {
       //     const ingredientsArray = (
