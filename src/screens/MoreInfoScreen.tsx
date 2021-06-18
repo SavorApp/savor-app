@@ -11,7 +11,7 @@ import {
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import HTML from "react-native-render-html";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { colorPalette } from "../constants/ColorPalette";
 import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
@@ -60,150 +60,160 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
   } else {
     return (
       <View style={styles.container}>
-        <View style={styles.subContainer}>
-          <View style={styles.contentContainer}>
-            <ScrollView style={styles.scrollView}>
+        <View style={styles.contentContainer}>
+          <ScrollView style={styles.scrollView}>
             <Text style={styles.title}>{rcp.title}</Text>
-            <View style={{ ...styles.borderline }} />
-              <TouchableOpacity
-                onPress={() => {
-                  setShowSummary(!showSummary);
+            <View style={styles.borderline} />
+            <TouchableOpacity
+              onPress={() => {
+                setShowSummary(!showSummary);
+              }}
+              activeOpacity={0.8}
+            >
+              <View style={styles.accordion}>
+                <Text style={styles.subTitle}>Summary</Text>
+                <Ionicons
+                  name={showSummary ? "chevron-up-sharp" : "chevron-down-sharp"}
+                  size={24}
+                />
+              </View>
+            </TouchableOpacity>
+            {showSummary && (
+              <HTML
+                tagsStyles={{
+                  div: {
+                    fontSize: 18,
+                    lineHeight: 28,
+                    marginTop: 12,
+                    fontFamily: "OpenSans",
+                  },
+                  b: { fontFamily: "OpenSansBold" },
+                  a: { fontSize: 18, fontFamily: "OpenSans" },
                 }}
-                activeOpacity={0.8}
-              >
-                <View style={styles.accordion}>
-                  <Text style={styles.subTitle}>Summary</Text>
-                  <Ionicons
-                    name={
-                      showSummary ? "chevron-up-sharp" : "chevron-down-sharp"
-                    }
-                    size={24}
-                  />
-                </View>
-              </TouchableOpacity>
-              {showSummary && (
+                source={{ html: `<div>${rcp.summary} </div>` }}
+              />
+            )}
+            <TouchableOpacity
+              style={styles.touchableHeader}
+              onPress={() => {
+                setShowIngredients(!showIngredients);
+              }}
+              activeOpacity={0.8}
+            >
+              <View style={styles.accordion}>
+                <Text style={styles.subTitle}>Ingredients</Text>
+                <Ionicons
+                  name={
+                    showIngredients ? "chevron-up-sharp" : "chevron-down-sharp"
+                  }
+                  size={24}
+                />
+              </View>
+            </TouchableOpacity>
+            {showIngredients && <Ingredients ingredients={rcp.ingredients} />}
+            <TouchableOpacity
+              style={styles.touchableHeader}
+              onPress={() => {
+                setShowInstructions(!showInstructions);
+              }}
+              activeOpacity={0.8}
+            >
+              <View style={styles.accordion}>
+                <Text style={styles.subTitle}>Instructions</Text>
+                <Ionicons
+                  name={
+                    showInstructions ? "chevron-up-sharp" : "chevron-down-sharp"
+                  }
+                  size={24}
+                />
+              </View>
+            </TouchableOpacity>
+            {showInstructions && (
+              <>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 18,
+                    fontFamily: "OpenSansBold",
+                    marginTop: 12,
+                  }}
+                >
+                  Preparation time:{" "}
+                  <Text
+                    style={{ fontWeight: "normal", fontFamily: "OpenSans" }}
+                  >
+                    {rcp.readyInMinutes} min
+                  </Text>
+                </Text>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 18,
+                    fontFamily: "OpenSansBold",
+                  }}
+                >
+                  Servings:{" "}
+                  <Text
+                    style={{ fontWeight: "normal", fontFamily: "OpenSans" }}
+                  >
+                    {rcp.servings}
+                  </Text>
+                  {"\n"}
+                </Text>
                 <HTML
                   tagsStyles={{
-                    div: { fontSize: 18, lineHeight: 28, marginTop: 12, fontFamily: "OpenSans" },
-                    b: {fontFamily: "OpenSansBold"},
-                    a: { fontSize: 18, fontFamily: "OpenSans" },
-                  }}
-                  source={{ html: `<div>${rcp.summary} </div>` }}
-                />
-              )}
-              <TouchableOpacity
-                style={styles.touchableHeader}
-                onPress={() => {
-                  setShowIngredients(!showIngredients);
-                }}
-                activeOpacity={0.8}
-              >
-                <View style={styles.accordion}>
-                  <Text style={styles.subTitle}>Ingredients</Text>
-                  <Ionicons
-                    name={
-                      showIngredients
-                        ? "chevron-up-sharp"
-                        : "chevron-down-sharp"
-                    }
-                    size={24}
-                  />
-                </View>
-              </TouchableOpacity>
-              {showIngredients && <Ingredients ingredients={rcp.ingredients} />}
-              <TouchableOpacity
-                style={styles.touchableHeader}
-                onPress={() => {
-                  setShowInstructions(!showInstructions);
-                }}
-                activeOpacity={0.8}
-              >
-                <View style={styles.accordion}>
-                  <Text style={styles.subTitle}>Instructions</Text>
-                  <Ionicons
-                    name={
-                      showInstructions
-                        ? "chevron-up-sharp"
-                        : "chevron-down-sharp"
-                    }
-                    size={24}
-                  />
-                </View>
-              </TouchableOpacity>
-              {showInstructions && (
-                <>
-                  <Text
-                    style={{
-                      fontWeight: "bold",
+                    div: {
                       fontSize: 18,
-                      fontFamily: "OpenSansBold",
-                      marginTop: 12,
-                    }}
-                  >
-                    Preparation time:{" "}
-                    <Text style={{ fontWeight: "normal", fontFamily: "OpenSans" }}>
-                      {rcp.readyInMinutes} min
-                    </Text>
-                  </Text>
-                  <Text style={{ fontWeight: "bold", fontSize: 18, fontFamily: "OpenSansBold", }}>
-                    Servings:{" "}
-                    <Text style={{ fontWeight: "normal", fontFamily: "OpenSans" }}>{rcp.servings}</Text>
-                    {"\n"}
-                  </Text>
-                  <HTML
-                    tagsStyles={{
-                      div: { fontSize: 18, lineHeight: 28, fontFamily: "OpenSans" },
-                      ol: { fontSize: 18 },
-                      li: { fontSize: 18, marginTop: -5 },
-                      a: { fontSize: 18 },
-                    }}
-                    source={{ html: `<div>${rcp.instructions}</div>` }}
-                  />
-                </>
-              )}
-              <Text>{"\n\n\n"}</Text>
-            </ScrollView>
-          </View>
-          <View style={styles.tagsContainer}>
-            {rcp.veryHealthy && (
-              <View style={styles.singleTagContainer}>
-                <MaterialCommunityIcons
-                  name="food-apple-outline"
-                  color="green"
+                      lineHeight: 28,
+                      fontFamily: "OpenSans",
+                    },
+                    ol: { fontSize: 18 },
+                    li: { fontSize: 18, marginTop: -5 },
+                    a: { fontSize: 18 },
+                  }}
+                  source={{ html: `<div>${rcp.instructions}</div>` }}
                 />
-                <Text style={styles.tag}>Healthy Choice</Text>
-              </View>
+              </>
             )}
-            {rcp.vegetarian && (
-              <View style={styles.singleTagContainer}>
-                <MaterialCommunityIcons
-                  name="alpha-v-circle-outline"
-                  color="green"
-                />
-                <Text style={styles.tag}>Vegetarian</Text>
-              </View>
-            )}
-            {rcp.vegan && (
-              <View style={styles.singleTagContainer}>
-                <MaterialCommunityIcons name="alpha-v-circle" color="green" />
-                <Text style={styles.tag}>Vegan</Text>
-              </View>
-            )}
-            {rcp.glutenFree && (
-              <View style={styles.singleTagContainer}>
-                <Text style={[styles.tag, { fontWeight: "bold" }]}>
-                  Gluten Free
-                </Text>
-              </View>
-            )}
-            {rcp.dairyFree && (
-              <View style={styles.singleTagContainer}>
-                <Text style={[styles.tag, { fontWeight: "bold" }]}>
-                  Dairy Free
-                </Text>
-              </View>
-            )}
-          </View>
+            <Text>{"\n\n\n"}</Text>
+          </ScrollView>
+        </View>
+        <View style={styles.tagsContainer}>
+          {rcp.veryHealthy && (
+            <View style={styles.singleTagContainer}>
+              <MaterialCommunityIcons name="food-apple-outline" color="green" />
+              <Text style={styles.tag}>Healthy Choice</Text>
+            </View>
+          )}
+          {rcp.vegetarian && (
+            <View style={styles.singleTagContainer}>
+              <MaterialCommunityIcons
+                name="alpha-v-circle-outline"
+                color="green"
+              />
+              <Text style={styles.tag}>Vegetarian</Text>
+            </View>
+          )}
+          {rcp.vegan && (
+            <View style={styles.singleTagContainer}>
+              <MaterialCommunityIcons name="alpha-v-circle" color="green" />
+              <Text style={styles.tag}>Vegan</Text>
+            </View>
+          )}
+          {rcp.glutenFree && (
+            <View style={styles.singleTagContainer}>
+              <Text style={[styles.tag, { fontWeight: "bold" }]}>
+                Gluten Free
+              </Text>
+            </View>
+          )}
+          {rcp.dairyFree && (
+            <View style={styles.singleTagContainer}>
+              <Text style={[styles.tag, { fontWeight: "bold" }]}>
+                Dairy Free
+              </Text>
+            </View>
+          )}
         </View>
       </View>
     );
@@ -212,28 +222,24 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // justifyContent: "center",
+    flex: 10,
+    justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: colorPalette.background,
   },
 
-  subContainer: {
-    // justifyContent: "center",
-    alignItems: "center",
+  contentContainer: {
+    flex: 9,
     width: _screen.width * 0.93,
-    height: _screen.height * 0.8,
     borderRadius: 15,
-    // backgroundColor: "#ff5454",
-    ...shadowStyle,
+    borderWidth: 0.2,
+  },
+
+  scrollView: {
+    borderRadius: 15,
   },
 
   title: {
-    // margin: 8,
-    // marginTop: 30,
-    fontSize: 25,
-    fontWeight: "bold",
-    // color: colorPalette.background,
+    fontSize: 24,
     textAlign: "center",
     fontFamily: "OpenSans",
   },
@@ -241,47 +247,26 @@ const styles = StyleSheet.create({
   borderline: {
     alignSelf: "center",
     borderBottomColor: "black",
-    marginVertical: 8,
-    marginBottom: 24,
+    marginVertical: _screen.height * 0.01,
+    marginBottom: _screen.height * 0.03,
     borderBottomWidth: 1,
-    opacity: 0.8,
-    width: _screen.width * 0.7,
-
-  },
-
-  subTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-    fontFamily: "OpenSansBold",
-    // color: "#ff5454"
-  },
-
-  touchableHeader: {
-    marginTop: 30,
+    opacity: 0.5,
+    width: _screen.width * 0.6,
   },
 
   accordion: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: 10,
+    marginBottom: _screen.height * 0.01,
   },
 
-  contentContainer: {
-    marginTop: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    width: _screen.width * 0.93,
-    height: _screen.height * 0.8,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.secondary,
+  subTitle: {
+    fontSize: 20,
+    fontFamily: "OpenSansBold",
   },
 
-  scrollView: {
-    padding: 8,
-    marginVertical: Platform.OS === "android" ? 12 : 0,
-    width: _screen.width * 0.93,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.secondary,
+  touchableHeader: {
+    marginTop: _screen.height * 0.03,
   },
 
   ingredientContainer: {
@@ -293,7 +278,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     width: "65%",
     fontSize: 18,
-    fontFamily: "OpenSans"
+    fontFamily: "OpenSans",
   },
 
   measurement: {
@@ -303,12 +288,14 @@ const styles = StyleSheet.create({
   },
 
   tagsContainer: {
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
     // flexWrap: "wrap",
-    marginTop: 8,
+    // marginTop: 8,
     marginHorizontal: 16,
+    borderWidth: 0.2,
   },
 
   singleTagContainer: {
