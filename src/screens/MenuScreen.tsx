@@ -54,7 +54,7 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
       */
 
       // Spoonacular GET request
-      const resp = await axios.get(RAND_RECIPE_BASE_URL + ENDPOINT);
+      // const resp = await axios.get(RAND_RECIPE_BASE_URL + ENDPOINT);
       // Assign parse data.recipes to fit our Recipep[] type
       // fetchedRecipes = resp.data.recipes.map((rcp: Recipe) => {
       //   // For each Recipe, initialize an ingredients arrat containing ingredient names

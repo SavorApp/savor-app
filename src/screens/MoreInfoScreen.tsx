@@ -56,7 +56,7 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
   }
 
   if (!fontsLoaded) {
-    return <View></View>;
+    return null;
   } else {
     return (
       <View style={styles.container}>

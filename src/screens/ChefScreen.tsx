@@ -203,7 +203,7 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
   });
 
   if (!fontsLoaded) {
-    return <View></View>;
+    return null;
   } else {
     return (
       <View style={styles.container}>

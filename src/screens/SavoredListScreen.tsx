@@ -281,7 +281,7 @@ export default function SavoredListScreen({
   }
 
   if (!fontsLoaded) {
-    return <View></View>;
+    return null;
   } else {
     return (
       <View style={styles.container}>
