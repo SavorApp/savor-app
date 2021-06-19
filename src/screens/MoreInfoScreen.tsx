@@ -132,7 +132,7 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
                 <Text style={styles.subHeader}>
                   Preparation time:{" "}
                   <Text
-                    style={{ fontWeight: "normal", fontFamily: "OpenSans" }}
+                    style={{ fontFamily: "OpenSans" }}
                   >
                     {rcp.readyInMinutes} min
                   </Text>
@@ -140,7 +140,7 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
                 <Text style={styles.subHeader}>
                   Servings:{" "}
                   <Text
-                    style={{ fontWeight: "normal", fontFamily: "OpenSans" }}
+                    style={{ fontFamily: "OpenSans" }}
                   >
                     {rcp.servings}
                   </Text>
@@ -187,14 +187,14 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
           )}
           {rcp.glutenFree && (
             <View style={styles.singleTagContainer}>
-              <Text style={[styles.tag, { fontWeight: "bold" }]}>
+              <Text style={styles.tagBold}>
                 Gluten Free
               </Text>
             </View>
           )}
           {rcp.dairyFree && (
             <View style={styles.singleTagContainer}>
-              <Text style={[styles.tag, { fontWeight: "bold" }]}>
+              <Text style={styles.tagBold}>
                 Dairy Free
               </Text>
             </View>
@@ -278,6 +278,12 @@ const styles = StyleSheet.create({
   },
 
   tag: {
-    fontSize: 10,
+    fontSize: font.tagSize,
+    fontFamily: "OpenSans",
+  },
+
+  tagBold: {
+    fontSize: font.tagSize,
+    fontFamily: "OpenSansBold",
   },
 });

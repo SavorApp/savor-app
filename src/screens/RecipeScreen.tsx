@@ -16,7 +16,12 @@ import { RouteProp } from "@react-navigation/native";
 import HTML from "react-native-render-html";
 import Constants from "expo-constants";
 import axios from "axios";
-import { colorPalette, shadowStyle } from "../constants/Styling";
+import {
+  borderLine,
+  colorPalette,
+  font,
+  shadowStyle,
+} from "../constants/Styling";
 import LoadingRecipeInfo from "../components/LoadingRecipeInfo";
 import { useSelector } from "react-redux";
 import { useFonts } from "expo-font";
@@ -32,6 +37,12 @@ const API_KEY = Constants.manifest.extra?.SPOONACULAR_API_KEY;
 const RECIPE_INFO_BASE_URL = `https://api.spoonacular.com/recipes/`;
 
 export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
+  const [fontsLoaded] = useFonts({
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
+    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
+  });
+
   const { recipeId } = route.params;
   const ENDPOINT = `${recipeId}/information?apiKey=${API_KEY}&includeNutrition=false`;
 
@@ -90,18 +101,11 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
       navigation.goBack();
     }
   }
-  
-  const [fontsLoaded] = useFonts({
-    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
-    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
-    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
-  });
 
   // On load, fetch Recipe data via Spoonacular API
   React.useEffect(() => {
     fetchRecipeInfo();
   }, []);
-
 
   // Listen to leaveRecipeScreen global state, goBack to SavoredListScreen if true
   React.useEffect(() => {
@@ -120,13 +124,13 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
     });
 
     return (
-      <View style={{ marginTop: 4 }}>
+      <View>
         {filteredIngredients.map((ing) => {
           idx++;
           return (
             <View
               key={"c_" + idx.toString()}
-              style={{ ...styles.ingredientContainer, marginTop: 8 }}
+              style={styles.ingredientContainer}
             >
               <Text key={"i_" + idx.toString()} style={styles.ingredient}>
                 {ing?.name}
@@ -149,158 +153,145 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
   ) : (
     recipeInfo && (
       <View style={styles.container}>
-        <View style={styles.subContainer}>
-          <View style={styles.contentContainer}>
-            <ScrollView style={styles.scrollView}>
-          <Text style={styles.title}>{recipeInfo.title}</Text>
-          <View style={{ ...styles.borderline }} />
+        <View style={styles.contentContainer}>
+          <ScrollView style={styles.scrollView}>
+            <Text style={styles.title}>{recipeInfo.title}</Text>
+            <View style={styles.borderline} />
             <Image
-                  source={{ uri: recipeInfo.image || " " }}
-                  style={styles.image}
-                  resizeMode="contain"
+              source={{ uri: recipeInfo.image || " " }}
+              style={styles.image}
+              resizeMode="contain"
+            />
+
+            <TouchableOpacity
+              onPress={() => {
+                setShowSummary(!showSummary);
+              }}
+              activeOpacity={0.8}
+            >
+              <View style={styles.accordion}>
+                <Text style={styles.subTitle}>Summary</Text>
+                <Ionicons
+                  name={showSummary ? "chevron-up-sharp" : "chevron-down-sharp"}
+                  size={24}
                 />
-            
-              <TouchableOpacity
-                onPress={() => {
-                  setShowSummary(!showSummary);
+              </View>
+            </TouchableOpacity>
+            {showSummary && (
+              <HTML
+                tagsStyles={{
+                  div: { fontSize: font.contentSize, lineHeight: 24,},
+                  b: { fontFamily: "OpenSansBold" },
+                  a: { fontSize: font.contentSize, fontFamily: "OpenSans" },
                 }}
-                activeOpacity={0.8}
-              >
-                <View style={styles.accordion}>
-                  <Text style={styles.subTitle}>Summary</Text>
-                  <Ionicons
-                    name={
-                      showSummary ? "chevron-up-sharp" : "chevron-down-sharp"
-                    }
-                    size={24}
-                  />
-                </View>
-              </TouchableOpacity>
-              {showSummary && (
+                source={{ html: `<div>${recipeInfo.summary} </div>` }}
+              />
+            )}
+            <TouchableOpacity
+              style={styles.touchableHeader}
+              onPress={() => {
+                setShowIngredients(!showIngredients);
+              }}
+              activeOpacity={0.8}
+            >
+              <View style={styles.accordion}>
+                <Text style={styles.subTitle}>Ingredients</Text>
+                <Ionicons
+                  name={
+                    showIngredients ? "chevron-up-sharp" : "chevron-down-sharp"
+                  }
+                  size={24}
+                />
+              </View>
+            </TouchableOpacity>
+            {showIngredients && (
+              <Ingredients ingredients={recipeInfo.ingredients} />
+            )}
+            <TouchableOpacity
+              style={styles.touchableHeader}
+              onPress={() => {
+                setShowInstructions(!showInstructions);
+              }}
+              activeOpacity={0.8}
+            >
+              <View style={styles.accordion}>
+                <Text style={styles.subTitle}>Instructions</Text>
+                <Ionicons
+                  name={
+                    showInstructions ? "chevron-up-sharp" : "chevron-down-sharp"
+                  }
+                  size={24}
+                />
+              </View>
+            </TouchableOpacity>
+            {showInstructions && (
+              <>
+                <Text style={styles.subHeader}>
+                  Preparation time:{" "}
+                  <Text style={{ fontFamily: "OpenSans" }}>
+                    {recipeInfo.readyInMinutes} min
+                  </Text>
+                </Text>
+                <Text style={styles.subHeader}>
+                  Servings:{" "}
+                  <Text style={{ fontFamily: "OpenSans" }}>
+                    {recipeInfo.servings}
+                  </Text>
+                  {"\n"}
+                </Text>
                 <HTML
                   tagsStyles={{
-                    div: { fontSize: 18, lineHeight: 28, marginTop: 12 },
-                    a: { fontSize: 18 },
+                    div: {
+                      fontSize: font.contentSize,
+                      lineHeight: 24,
+                      fontFamily: "OpenSans",
+                    },
+                    ol: { fontSize: font.contentSize },
+                    a: { fontSize: font.contentSize },
                   }}
-                  source={{ html: `<div>${recipeInfo.summary} </div>` }}
+                  source={{ html: `<div>${recipeInfo.instructions}</div>` }}
                 />
-              )}
-              <TouchableOpacity
-                style={styles.touchableHeader}
-                onPress={() => {
-                  setShowIngredients(!showIngredients);
-                }}
-                activeOpacity={0.8}
-              >
-                <View style={styles.accordion}>
-                  <Text style={styles.subTitle}>Ingredients</Text>
-                  <Ionicons
-                    name={
-                      showIngredients
-                        ? "chevron-up-sharp"
-                        : "chevron-down-sharp"
-                    }
-                    size={24}
-                  />
-                </View>
-              </TouchableOpacity>
-              {showIngredients && (
-                <Ingredients ingredients={recipeInfo.ingredients} />
-              )}
-              <TouchableOpacity
-                style={styles.touchableHeader}
-                onPress={() => {
-                  setShowInstructions(!showInstructions);
-                }}
-                activeOpacity={0.8}
-              >
-                <View style={styles.accordion}>
-                  <Text style={styles.subTitle}>Instructions</Text>
-                  <Ionicons
-                    name={
-                      showInstructions
-                        ? "chevron-up-sharp"
-                        : "chevron-down-sharp"
-                    }
-                    size={24}
-                  />
-                </View>
-              </TouchableOpacity>
-              {showInstructions && (
-                <>
-                  <Text
-                    style={{
-                      fontWeight: "bold",
-                      fontSize: 18,
-                      marginTop: 12,
-                    }}
-                  >
-                    Preparation time:{" "}
-                    <Text style={{ fontWeight: "normal" }}>
-                      {recipeInfo.readyInMinutes} min
-                    </Text>
-                  </Text>
-                  <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                    Servings:{" "}
-                    <Text style={{ fontWeight: "normal" }}>
-                      {recipeInfo.servings}
-                    </Text>
-                    {"\n"}
-                  </Text>
-                  <HTML
-                    tagsStyles={{
-                      div: { fontSize: 18, lineHeight: 28 },
-                      ol: { fontSize: 18 },
-                      li: { fontSize: 18, marginTop: -5 },
-                      a: { fontSize: 18 },
-                    }}
-                    source={{ html: `<div>${recipeInfo.instructions}</div>` }}
-                  />
-                </>
-              )}
-              <Text>{"\n\n\n"}</Text>
-            </ScrollView>
-          </View>
-          <View style={styles.tagsContainer}>
-            {recipeInfo.veryHealthy && (
-              <View style={styles.singleTagContainer}>
-                <MaterialCommunityIcons
-                  name="food-apple-outline"
-                  color="green"
-                />
-                <Text style={styles.tag}>Healthy Choice</Text>
-              </View>
+              </>
             )}
-            {recipeInfo.vegetarian && (
-              <View style={styles.singleTagContainer}>
-                <MaterialCommunityIcons
-                  name="alpha-v-circle-outline"
-                  color="green"
-                />
-                <Text style={styles.tag}>Vegetarian</Text>
-              </View>
-            )}
-            {recipeInfo.vegan && (
-              <View style={styles.singleTagContainer}>
-                <MaterialCommunityIcons name="alpha-v-circle" color="green" />
-                <Text style={styles.tag}>Vegan</Text>
-              </View>
-            )}
-            {recipeInfo.glutenFree && (
-              <View style={styles.singleTagContainer}>
-                <Text style={[styles.tag, { fontWeight: "bold" }]}>
-                  Gluten Free
-                </Text>
-              </View>
-            )}
-            {recipeInfo.dairyFree && (
-              <View style={styles.singleTagContainer}>
-                <Text style={[styles.tag, { fontWeight: "bold" }]}>
-                  Dairy Free
-                </Text>
-              </View>
-            )}
-          </View>
+            <Text>{"\n\n\n"}</Text>
+          </ScrollView>
+        </View>
+        <View style={styles.tagsContainer}>
+          {recipeInfo.veryHealthy && (
+            <View style={styles.singleTagContainer}>
+              <MaterialCommunityIcons name="food-apple-outline" color="green" />
+              <Text style={styles.tag}>Healthy Choice</Text>
+            </View>
+          )}
+          {recipeInfo.vegetarian && (
+            <View style={styles.singleTagContainer}>
+              <MaterialCommunityIcons
+                name="alpha-v-circle-outline"
+                color="green"
+              />
+              <Text style={styles.tag}>Vegetarian</Text>
+            </View>
+          )}
+          {recipeInfo.vegan && (
+            <View style={styles.singleTagContainer}>
+              <MaterialCommunityIcons name="alpha-v-circle" color="green" />
+              <Text style={styles.tag}>Vegan</Text>
+            </View>
+          )}
+          {recipeInfo.glutenFree && (
+            <View style={styles.singleTagContainer}>
+              <Text style={styles.tagBold}>
+                Gluten Free
+              </Text>
+            </View>
+          )}
+          {recipeInfo.dairyFree && (
+            <View style={styles.singleTagContainer}>
+              <Text style={styles.tagBold}>
+                Dairy Free
+              </Text>
+            </View>
+          )}
         </View>
       </View>
     )
@@ -309,10 +300,98 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // justifyContent: "center",
+    flex: 13,
+    justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: colorPalette.background,
+  },
+
+  contentContainer: {
+    flex: 12,
+    width: _screen.width * 0.93,
+  },
+
+  scrollView: {
+    paddingTop: _screen.height * 0.01,
+  },
+
+  title: {
+    fontSize: font.titleSize,
+    textAlign: "center",
+    fontFamily: "OpenSans",
+  },
+
+  image: {
+    height: _screen.height * 0.3,
+    width: _screen.width * 0.9,
+    marginBottom: _screen.height * 0.01,
+  },
+
+  borderline: {
+    alignSelf: "center",
+    ...borderLine,
+  },
+
+  accordion: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: _screen.height * 0.01,
+  },
+
+  subTitle: {
+    fontSize: font.subTitleSize,
+    fontFamily: "OpenSansBold",
+    marginBottom: _screen.height * 0.01,
+  },
+
+  touchableHeader: {
+    marginTop: _screen.height * 0.03,
+  },
+
+  subHeader: {
+    fontSize: font.subHeaderSize,
+    fontFamily: "OpenSansBold",
+  },
+
+  ingredientContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 3,
+  },
+
+  ingredient: {
+    fontSize: font.contentSize,
+    fontFamily: "OpenSans",
+  },
+
+  measurement: {
+    justifyContent: "flex-start",
+    fontSize: font.contentSize,
+    fontFamily: "OpenSans",
+  },
+
+  tagsContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "flex-start",
+    marginTop: _screen.height * 0.01,
+  },
+
+  singleTagContainer: {
+    flexDirection: "row",
+    marginHorizontal: 2,
+    padding: 3,
+    borderRadius: 8,
+    backgroundColor: colorPalette.lightGray,
+  },
+
+  tag: {
+    fontSize: font.tagSize,
+    fontFamily: "OpenSans",
+  },
+
+  tagBold: {
+    fontSize: font.tagSize,
+    fontFamily: "OpenSansBold",
   },
 
   subContainer: {
@@ -323,111 +402,5 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     // backgroundColor: colorPalette.primary,
     ...shadowStyle,
-  },
-
-  title: {
-    // margin: 8,
-    // marginTop: 30,
-    fontSize: 24,
-    fontWeight: "bold",
-    // color: colorPalette.background,
-    textAlign: "center",
-    fontFamily: "OpenSans",
-  },
-
-  image: {
-    // alignItems: "center",
-    // justifyContent: "center",
-    height: _screen.height * 0.3,
-    width: _screen.width * 0.9,
-    marginVertical: 8,
-    // resizeMode: "contain",
-    // overflow: "hidden",
-    // borderRadius: 60,
-  },
-
-  borderline: {
-    alignSelf: "center",
-    borderBottomColor: "black",
-    marginVertical: 16,
-    marginBottom: 8,
-    borderBottomWidth: 1,
-    opacity: 0.8,
-    width: _screen.width * 0.7,
-
-  },
-
-  subTitle: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-
-  touchableHeader: {
-    marginTop: 30,
-  },
-
-  accordion: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginBottom: 10,
-  },
-
-  contentContainer: {
-    marginTop: 15,
-    justifyContent: "center",
-    alignItems: "center",
-    width: _screen.width * 0.93,
-    height: _screen.height * 0.7,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.secondary,
-  },
-
-  scrollView: {
-    padding: 8,
-    marginVertical: Platform.OS === "android" ? 12 : 0,
-    width: _screen.width * 0.93,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.secondary,
-  },
-
-  ingredientContainer: {
-    flex: 1,
-    flexDirection: "row",
-  },
-
-  ingredient: {
-    justifyContent: "flex-start",
-    width: "65%",
-    fontSize: 18,
-  },
-
-  measurement: {
-    justifyContent: "flex-start",
-    width: "35%",
-    fontSize: 18,
-  },
-
-  tagsContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-    // flexWrap: "wrap",
-    marginTop: 8,
-    marginHorizontal: 16,
-  },
-
-  singleTagContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 3,
-    marginTop: 3,
-    padding: 4,
-    borderRadius: 8,
-    backgroundColor: colorPalette.lightGray,
-  },
-
-  tag: {
-    fontSize: 10,
   },
 });

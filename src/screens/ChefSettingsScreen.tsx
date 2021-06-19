@@ -161,6 +161,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.93,
     height: 30,
     borderRadius: 10,
+    borderColor: colorPalette.darkGray,
     borderWidth: Platform.OS === "android" ? 0.5 : 0.3,
   },
 

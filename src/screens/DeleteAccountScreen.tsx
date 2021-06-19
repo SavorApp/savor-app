@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   Alert,
+  Platform,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -15,10 +16,11 @@ import {
   resetFilters,
   resetUserRecipeList,
 } from "../redux/actions";
-import { colorPalette, shadowStyle } from "../constants/Styling";
+import { colorPalette, font, shadowStyle } from "../constants/Styling";
 import { LinearGradient } from "expo-linear-gradient";
 import { firebaseApp } from "../constants/Firebase";
 import { deleteAccount } from "../db/db";
+import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
 
@@ -29,8 +31,12 @@ export interface DeleteAccountScreenProps {
 export default function DeleteAccountScreen({
   navigation,
 }: DeleteAccountScreenProps) {
-  const dispatch = useDispatch();
+  const [fontsLoaded] = useFonts({
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
+  });
 
+  const dispatch = useDispatch();
   const [blockDeleteAccount, setBlockDeleteAccount] = React.useState(false);
 
   function handleDeleteAccount() {
@@ -72,11 +78,10 @@ export default function DeleteAccountScreen({
 
   return (
     <View style={styles.container}>
-      <View style={styles.subContainer}>
         <Text style={styles.title}>
           Are you sure you want to delete your account?
         </Text>
-          <Text>Yes, I'm hanging up my apron for now...</Text>
+          <Text style={styles.contentText}>Yes, I'm hanging up my apron for now...</Text>
           <TouchableOpacity
             onPress={
               blockDeleteAccount
@@ -86,15 +91,14 @@ export default function DeleteAccountScreen({
             activeOpacity={0.8}
           >
             <LinearGradient
-              colors={["#b30000", "#990000"]}
+              colors={colorPalette.deleteAccountGradient}
               style={styles.button}
             >
-              <Text style={{ color: "white" }}>
+              <Text style={{...styles.contentText, color: "white" }}>
                 {blockDeleteAccount ? "Processing..." : "Delete Account"}
               </Text>
             </LinearGradient>
           </TouchableOpacity>
-      </View>
     </View>
   );
 }
@@ -102,40 +106,33 @@ export default function DeleteAccountScreen({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    marginTop: 30
-    // paddingBottom: 30
-    // backgroundColor: colorPalette.background,
-  },
-
-  subContainer: {
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    width: _screen.width * 0.9,
-    height: _screen.height * 0.3,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.primary,
-    // ...shadowStyle,
+    marginTop: _screen.height * 0.03,
   },
 
   title: {
-    justifyContent: "center",
-    alignItems: "center",
     textAlign: "center",
-    // marginVertical: 8,
-    fontSize: 18,
-    fontWeight: "bold",
-    // color: colorPalette.background,
+    fontSize: font.subHeaderSize,
+    fontFamily: "OpenSansBold",
+    width: _screen.width * 0.93,
+    marginBottom: _screen.height * 0.01,
+  },
+
+  contentText: {
+    textAlign: "center",
+    fontSize: font.contentSize,
+    fontFamily: "OpenSans",
   },
 
   button: {
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 8,
-    marginHorizontal: 8,
-    width: 120,
+    width: 200,
+    height: 30,
     borderRadius: 10,
-    padding: 8,
+    borderColor: colorPalette.darkGray,
+    borderWidth: Platform.OS === "android" ? 0.5 : 0.3,
+    marginVertical: _screen.height * 0.01,
   },
 });
