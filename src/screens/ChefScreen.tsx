@@ -1,26 +1,18 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   StyleSheet,
   Dimensions,
   View,
   Text,
-  TouchableOpacity,
-  Alert,
   ScrollView,
-  Platform,
 } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { LinearGradient } from "expo-linear-gradient";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { colorPalette, shadowStyle } from "../constants/Styling";
-import { INGS_TO_EXCLUDE } from "../constants/IngredientsToExclude";
-import { firebaseApp } from "../constants/Firebase";
 import {
-  removeUser,
-  resetUserRecipeList,
-  resetFilters,
-} from "../redux/actions/index";
+  borderLine,
+  font,
+} from "../constants/Styling";
+import { INGS_TO_EXCLUDE } from "../constants/IngredientsToExclude";
 import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
@@ -36,14 +28,20 @@ export interface ChefScreenProps {
 }
 
 export default function ChefScreen({ navigation }: ChefScreenProps) {
+  // Load fonts
+  const [fontsLoaded] = useFonts({
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
+    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
+  });
+
   const userState = useSelector<RootState, UserState>(
     (state) => state.userState
   );
   const userRecipeListState = useSelector<RootState, UserRecipeListState>(
     (state) => state.userRecipeListState
   );
-  const dispatch = useDispatch();
-  const [blockLogout, setBlockLogout] = React.useState(false);
+
 
   function Metrics({ recipeList }: { recipeList: UserRecipe[] }) {
     const savoredRecipes = recipeList.filter((rcp) => {
@@ -123,36 +121,43 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
 
     return (
       <View>
-        <View style={{ ...styles.borderline, marginTop: 30 }} />
-        <Text style={styles.subTitle2}>Taste Profile</Text>
+        <Text style={styles.subTitle}>Taste Profile</Text>
         {cuisineArray[0] && (
-          <Text style={styles.caption}>
-            So far, you have savored
-            <Text style={{ fontFamily: "OpenSansBold", }}> {cuisineArray.length} </Text>
-            cuisine type(s). Your most savored cuisine is
-            <Text style={{ fontFamily: "OpenSansBold", }}> {cuisineArray[0].name}</Text>
-            {cuisineArray[1] ? (
-              <Text>
+          <View style={styles.captionContainer}>
+            <Text style={styles.caption}>
+              So far, you have savored
+              <Text style={{ fontFamily: "OpenSansBold" }}>
                 {" "}
-                but, it looks like
-                <Text style={{ fontFamily: "OpenSansBold", }}>
-                  {" "}
-                  {cuisineArray[1].name}{" "}
-                </Text>
-                food is a close second!
+                {cuisineArray.length}{" "}
               </Text>
-            ) : (
-              <Text>.</Text>
-            )}
-          </Text>
+              cuisine type(s). Your most savored cuisine is
+              <Text style={{ fontFamily: "OpenSansBold" }}>
+                {" "}
+                {cuisineArray[0].name}
+              </Text>
+              {cuisineArray[1] ? (
+                <Text>
+                  {" "}
+                  but, it looks like
+                  <Text style={{ fontFamily: "OpenSansBold" }}>
+                    {" "}
+                    {cuisineArray[1].name}{" "}
+                  </Text>
+                  food is a close second!
+                </Text>
+              ) : (
+                <Text>.</Text>
+              )}
+            </Text>
+          </View>
         )}
-        <View style={{ ...styles.borderline, marginTop: 45 }} />
-        <Text style={styles.subTitle2}>Top Ingredients</Text>
+        <View style={styles.borderline} />
+        <Text style={styles.subTitle}>Top Ingredients</Text>
         {ingredientsArray.map((ingObj) => {
           if (ingObj.count >= 3) {
             return (
               <Text
-                style={{ ...styles.caption, fontStyle: "normal" }}
+                style={styles.caption}
                 key={"i_" + ingObj.key.toString()}
               >
                 {ingObj.name}: {ingObj.count}
@@ -164,58 +169,21 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
     );
   }
 
-  function handleLogout() {
-    setBlockLogout(true);
-    //Log out chef with firebase
-    firebaseApp
-      .auth()
-      .signOut()
-      .then(() => {
-        // Remove cached access-token on mobile storage
-        removeCachedAccessToken();
-        // - Update global state
-        dispatch(removeUser());
-        dispatch(resetUserRecipeList());
-        dispatch(resetFilters());
-        setBlockLogout(false);
-      })
-      .catch((err: { code: string; message: string }) => {
-        Alert.alert(
-          "Internal Error 🤕",
-          "Sorry for the inconvenience, please try again later."
-        );
-        setBlockLogout(false);
-      });
-  }
-
-  async function removeCachedAccessToken() {
-    try {
-      await AsyncStorage.removeItem("access-token");
-    } catch (err) {
-      // Handle failed asyncStorage removal error
-    }
-  }
-  // Load fonts
-  const [fontsLoaded] = useFonts({
-    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
-    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
-    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
-  });
-
   if (!fontsLoaded) {
     return null;
   } else {
     return (
       <View style={styles.container}>
-        <View style={styles.subContainer}>
+        <View style={styles.headerContainer}>
           <Text style={styles.title}>Welcome Chef</Text>
           <Text style={styles.username}>{userState.user.username}</Text>
-          <View style={styles.profileContainer}>
-            <ScrollView style={styles.scrollView}>
-              <Metrics recipeList={userRecipeListState.userRecipeList} />
-              <Text>{"\n\n\n"}</Text>
-            </ScrollView>
-          </View>
+          <View style={styles.borderline} />
+        </View>
+        <View style={styles.contentContainer}>
+          <ScrollView style={styles.scrollView}>
+            <Metrics recipeList={userRecipeListState.userRecipeList} />
+            <Text>{"\n\n\n"}</Text>
+          </ScrollView>
         </View>
       </View>
     );
@@ -224,83 +192,55 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 20,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: colorPalette.background,
   },
 
-  subContainer: {
+  headerContainer: {
+    flex: 5,
     justifyContent: "center",
     alignItems: "center",
-    width: _screen.width * 0.93,
-    height: _screen.height * 0.7,
-    borderRadius: 15,
-    marginTop: 120,
-    ...shadowStyle,
-  },
-
-  profileContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: _screen.width * 0.93,
-    height: _screen.height * 0.7,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.secondary,
   },
 
   title: {
-    justifyContent: "flex-start",
-    textAlign: "center",
-    fontSize: 40,
+    fontSize: font.SatisfyTitleSize,
     fontFamily: "Satisfy",
-    // fontWeight: "bold",
-    // marginTop: -50,
-    // color: colorPalette.background,
+    marginVertical: _screen.height * 0.01,
   },
 
   username: {
-    textAlign: "center",
-    marginBottom: 8,
-    fontSize: 18,
-    // fontFamily: "Satisfy",
-    // fontWeight: "bold",
-    // color: colorPalette.popDark,
+    fontSize: font.subTitleSize,
+    fontFamily: "OpenSans",
+    marginBottom: _screen.height * 0.01,
+  },
+
+  contentContainer: {
+    flex: 15,
+    width: _screen.width * 0.93,
   },
 
   scrollView: {
-    padding: 8,
-    marginVertical: Platform.OS === "android" ? 12 : 0,
-    width: _screen.width * 0.93,
-    borderRadius: 15,
   },
 
   subTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 6,
+    fontSize: font.subTitleSize,
+    fontFamily: "OpenSans",
+    marginBottom: _screen.height * 0.01
   },
 
-  subTitle2: {
-    fontWeight: "bold",
-    fontSize: 24,
-    marginVertical: 6,
-    height: 45,
-    fontFamily: "OpenSans",
+  captionContainer: {
+    marginBottom: _screen.height * 0.03
   },
 
   caption: {
-    // fontStyle: "italic",
-    fontSize: 20,
+    fontSize: font.contentSize,
     fontFamily: "OpenSans",
+    lineHeight: 24,
   },
+
   borderline: {
-    borderBottomColor: "black",
-    borderBottomWidth: 1,
-    opacity: 0.2,
-    shadowOpacity: 0.8,
-    shadowRadius: 1,
-    shadowOffset: { width: 1, height: 1 },
-    marginBottom: 10,
+    alignSelf: "center",
+    ...borderLine,
   },
 });

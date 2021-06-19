@@ -22,7 +22,7 @@ export const colorPalette = {
 };
 
 export const font = {
-  screenHeaderSize: 28,
+  SatisfyTitleSize: 38,
   titleSize: 24,
   subTitleSize: 20,
   subHeaderSize: 14,
