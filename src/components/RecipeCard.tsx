@@ -4,10 +4,9 @@ import {
   StyleSheet,
   Text,
   Dimensions,
-  ImageBackground,
   Image,
 } from "react-native";
-import { shadowStyle, colorPalette } from "../constants/Styling";
+import { shadowStyle, colorPalette, font } from "../constants/Styling";
 import { useFonts } from "expo-font";
 
 
@@ -89,7 +88,7 @@ const styles = StyleSheet.create({
 
   title: {
     textAlign: "center",
-    fontSize: 24,
+    fontSize: font.titleSize,
     fontFamily: "OpenSans",
   },
 
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
   },
 
   noImageText: {
-    fontSize: 24,
+    fontSize: font.titleSize,
     color: colorPalette.primary
   },
 });

@@ -10,7 +10,7 @@ import {
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import HTML from "react-native-render-html";
-import { colorPalette, borderLine } from "../constants/Styling";
+import { colorPalette, borderLine, font } from "../constants/Styling";
 import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
@@ -82,12 +82,12 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
               <HTML
                 tagsStyles={{
                   div: {
-                    fontSize: 14,
+                    fontSize: font.contentSize,
                     lineHeight: 24,
                     fontFamily: "OpenSans",
                   },
                   b: { fontFamily: "OpenSansBold" },
-                  a: { fontSize: 14, fontFamily: "OpenSans" },
+                  a: { fontSize: font.contentSize, fontFamily: "OpenSans" },
                 }}
                 source={{ html: `<div>${rcp.summary} </div>` }}
               />
@@ -153,12 +153,12 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
                 <HTML
                   tagsStyles={{
                     div: {
-                      fontSize: 14,
+                      fontSize: font.contentSize,
                       lineHeight: 24,
                       fontFamily: "OpenSans",
                     },
-                    ol: { fontSize: 14 },
-                    a: { fontSize: 14 },
+                    ol: { fontSize: font.contentSize },
+                    a: { fontSize: font.contentSize },
                   }}
                   source={{ html: `<div>${rcp.instructions}</div>` }}
                 />
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 24,
+    fontSize: font.titleSize,
     textAlign: "center",
     fontFamily: "OpenSans",
   },
@@ -243,7 +243,7 @@ const styles = StyleSheet.create({
   },
 
   subTitle: {
-    fontSize: 20,
+    fontSize: font.subTitleSize,
     fontFamily: "OpenSansBold",
     marginBottom: _screen.height * 0.01,
   },
@@ -253,7 +253,7 @@ const styles = StyleSheet.create({
   },
 
   subHeader: {
-    fontSize: 14,
+    fontSize: font.subHeaderSize,
     fontFamily: "OpenSansBold",
   },
 
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
   },
 
   ingredient: {
-    fontSize: 14,
+    fontSize: font.contentSize,
     fontFamily: "OpenSans",
   },
 

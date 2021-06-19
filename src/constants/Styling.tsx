@@ -17,6 +17,14 @@ export const colorPalette = {
   popDark: "#FF5454",
 };
 
+export const font = {
+  titleSize: 24,
+  subTitleSize: 20,
+  subHeaderSize: 14,
+  contentSize: 14,
+  tagSize: 10
+}
+
 export const shadowStyle = {
   shadowColor: "#000000",
   shadowOffset: {
