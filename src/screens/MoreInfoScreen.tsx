@@ -129,9 +129,7 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
             </TouchableOpacity>
             {showInstructions && (
               <>
-                <Text
-                  style={styles.subHeader}
-                >
+                <Text style={styles.subHeader}>
                   Preparation time:{" "}
                   <Text
                     style={{ fontWeight: "normal", fontFamily: "OpenSans" }}
@@ -139,9 +137,7 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
                     {rcp.readyInMinutes} min
                   </Text>
                 </Text>
-                <Text
-                  style={styles.subHeader}
-                >
+                <Text style={styles.subHeader}>
                   Servings:{" "}
                   <Text
                     style={{ fontWeight: "normal", fontFamily: "OpenSans" }}
@@ -222,7 +218,7 @@ const styles = StyleSheet.create({
   },
 
   scrollView: {
-    paddingTop: _screen.height * 0.01
+    paddingTop: _screen.height * 0.01,
   },
 
   title: {
@@ -233,7 +229,7 @@ const styles = StyleSheet.create({
 
   borderline: {
     alignSelf: "center",
-    ...borderLine
+    ...borderLine,
   },
 
   accordion: {
@@ -258,7 +254,7 @@ const styles = StyleSheet.create({
   },
 
   ingredientContainer: {
-    marginTop: 3
+    marginTop: 3,
   },
 
   ingredient: {
@@ -270,7 +266,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "flex-start",
-    marginTop: _screen.height * 0.01
+    marginTop: _screen.height * 0.01,
   },
 
   singleTagContainer: {

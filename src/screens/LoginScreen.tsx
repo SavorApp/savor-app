@@ -7,16 +7,18 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
-  Image
+  Platform,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useSelector } from "react-redux";
-import { colorPalette, shadowStyle } from "../constants/Styling";
+import { colorPalette, font, shadowStyle } from "../constants/Styling";
 import { firebaseApp } from "../constants/Firebase";
 import firebase from "firebase";
+import { useFonts } from "expo-font";
+import Emoji from "react-native-emoji";
 
 const _screen = Dimensions.get("screen");
 
@@ -25,6 +27,11 @@ export interface LoginScreenProps {
 }
 
 export default function LoginScreen({ navigation }: LoginScreenProps) {
+  const [fontsLoaded] = useFonts({
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
+  });
+
   const userRecipeListState = useSelector<RootState, UserRecipeListState>(
     (state) => state.userRecipeListState
   );
@@ -144,17 +151,22 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
     }
   }
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <Text style={styles.title}>Already have an account? Please login.</Text>
+  if (!fontsLoaded) {
+    return null;
+  } else {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>
+          Welcome back chef{" "}
+          <Emoji name="female-cook" style={{ fontSize: 24 }} />
+        </Text>
         <View style={styles.form}>
-          <View style={styles.inputContainer}>
-            <View style={[styles.input, { justifyContent: "space-between" }]}>
-              <View style={styles.passwordContainer}>
+          <View style={styles.inputsContainer}>
+            <View style={[styles.inputWithIcons]}>
+              <View style={styles.singleInputContainer}>
                 <MaterialCommunityIcons name="account-outline" size={20} />
                 <TextInput
-                  style={{ width: _screen.width * 0.5 }}
+                  style={styles.inputText}
                   placeholder="Your Email"
                   autoCapitalize="none"
                   onChangeText={(val) => emailInputChange(val)}
@@ -172,11 +184,11 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
               )}
             </View>
 
-            <View style={[styles.input, { justifyContent: "space-between" }]}>
-              <View style={styles.passwordContainer}>
+            <View style={[styles.inputWithIcons]}>
+              <View style={styles.singleInputContainer}>
                 <MaterialCommunityIcons name="lock-outline" size={20} />
                 <TextInput
-                  style={{ width: _screen.width * 0.5 }}
+                  style={styles.inputText}
                   placeholder="Your Password"
                   secureTextEntry={hidePassword ? true : false}
                   autoCapitalize="none"
@@ -198,7 +210,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             </View>
           </View>
 
-          <View style={styles.signInButtonContainer}>
+          <View style={styles.loginButtonContainer}>
             <TouchableOpacity
               onPress={() => {
                 blockLogin
@@ -208,10 +220,10 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
               activeOpacity={0.8}
             >
               <LinearGradient
-                colors={["#5454FF", "#3B3BB3"]}
-                style={styles.signUpButton}
+                colors={colorPalette.secondaryGradient}
+                style={styles.loginButton}
               >
-                <Text style={{ color: "white" }}>
+                <Text style={{ ...styles.text, color: "white" }}>
                   {blockLogin ? "Processing..." : "Login"}
                 </Text>
               </LinearGradient>
@@ -219,12 +231,8 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
           </View>
         </View>
 
-        <View
-          style={{
-            flexDirection: "row",
-          }}
-        >
-          <Text>Don't have an account yet? </Text>
+        <View style={styles.signUpContainer}>
+          <Text style={styles.text}>Don't have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate("SignupScreen")}>
             <Text style={styles.signUp}>Sign Up</Text>
           </TouchableOpacity>
@@ -236,16 +244,16 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
             activeOpacity={0.8}
           >
             <LinearGradient
-              colors={["white", "whitesmoke"]}
+              colors={colorPalette.whiteSmokeGradient}
               style={styles.aboutUsButton}
             >
-              <Text style={{ color: "black" }}>About Us</Text>
+              <Text style={{ ...styles.text, color: "black" }}>About Us</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -253,95 +261,85 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: colorPalette.background,
   },
 
-  subContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: _screen.width * 0.9,
-    height: _screen.height * 0.6,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.primary,
-    ...shadowStyle,
+  title: {
+    textAlign: "center",
+    fontSize: font.titleSize,
+    fontFamily: "OpenSansBold",
+    width: _screen.width * 0.93,
   },
 
   form: {
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 48,
-    width: _screen.width * 0.8,
-    height: _screen.height * 0.3,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.secondary,
+    marginVertical: _screen.height * 0.1,
   },
 
-  title: {
-    marginVertical: 8,
-    fontSize: 28,
-    fontWeight: "bold",
-    // color: colorPalette.background,
-  },
-
-  inputContainer: {
+  inputsContainer: {
     justifyContent: "center",
     alignItems: "center",
-    margin: 1,
-    padding: 6,
-    paddingBottom: 18,
-    width: _screen.width * 0.8,
+    marginBottom: _screen.height * 0.01,
+    width: _screen.width * 0.93,
     borderRadius: 10,
     backgroundColor: colorPalette.white,
+    ...shadowStyle,
   },
 
-  input: {
+  inputWithIcons: {
+    justifyContent: "space-between",
     flexDirection: "row",
-    marginTop: 10,
-    paddingHorizontal: 3,
+    marginTop: _screen.height * 0.02,
+    marginBottom: _screen.height * 0.01,
+    paddingHorizontal: _screen.width * 0.01,
+    width: _screen.width * 0.9,
+    borderBottomWidth: 0.5,
+    borderBottomColor: colorPalette.darkGray,
+  },
+
+  singleInputContainer: {
+    flexDirection: "row",
+  },
+
+  inputText: {
+    fontSize: font.contentSize,
+    fontFamily: "OpenSans",
     width: _screen.width * 0.7,
-    borderBottomWidth: 1,
-    borderBottomColor: colorPalette.trim,
+    marginLeft: 3,
   },
 
-  passwordContainer: {
-    flexDirection: "row",
-  },
+  loginButtonContainer: {},
 
-  signInButtonContainer: {
-    marginTop: 10,
-  },
-
-  signUpButton: {
+  loginButton: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
     width: 200,
+    height: 30,
     borderRadius: 10,
-    padding: 8,
+  },
+
+  signUpContainer: {
+    flexDirection: "row",
+    marginBottom: _screen.height * 0.02,
+  },
+
+  text: {
+    fontSize: font.contentSize,
+    fontFamily: "OpenSans",
   },
 
   signUp: {
-    // margin: 8,
-    // fontSize: 18,
-    // color: "blue",
-    // textDecorationLine: "underline",
-    color: "#ff5454",
-    // color: colorPalette.background,
+    fontSize: font.contentSize,
+    fontFamily: "OpenSans",
+    color: colorPalette.primary,
   },
 
   aboutUsButton: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 16,
-    marginHorizontal: 8,
     width: 200,
-    backgroundColor: "#FFAA54",
+    height: 30,
     borderRadius: 10,
-    padding: 8,
-    borderWidth: 0.2,
-    borderStyle: "solid",
-    shadowOpacity: 0.3,
-    shadowRadius: 0.2,
-    shadowOffset: { width: 0.2, height: 0.3 },
+    borderWidth: Platform.OS === "android" ? 0.5 : 0.3,
   },
 });

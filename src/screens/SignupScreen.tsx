@@ -7,17 +7,18 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
-  Linking,
-  Image
+  Image,
+  Platform,
 } from "react-native";
 import { useSelector } from "react-redux";
 import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { colorPalette, shadowStyle } from "../constants/Styling";
+import { colorPalette, font, shadowStyle } from "../constants/Styling";
 import { firebaseApp } from "../constants/Firebase";
 import { postUserDb, postFiltersDb, postRecipeDb } from "../db/db";
 import { initialState } from "../redux/reducers/filters";
+import { useFonts } from "expo-font";
 const _screen = Dimensions.get("screen");
 
 export interface SignupScreenProps {
@@ -25,6 +26,11 @@ export interface SignupScreenProps {
 }
 
 export default function SignupScreen({ navigation }: SignupScreenProps) {
+  const [fontsLoaded] = useFonts({
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
+  });
+
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [validEmail, setValidEmail] = React.useState(false);
@@ -67,11 +73,8 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
           .auth()
           .createUserWithEmailAndPassword(email, password);
 
-        const createUserResult = await postUserDb(
-          resp.user?.uid,
-          resp.user?.email
-        );
-        const createFiltersResult = await postFiltersDb(
+        const postUserResp = await postUserDb(resp.user?.uid, resp.user?.email);
+        const postFiltersResp = await postFiltersDb(
           resp.user?.uid,
           initialState.filters
         );
@@ -79,7 +82,7 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
         if (resp.additionalUserInfo?.isNewUser) {
           if (userRecipeListState.userRecipeList.length !== 0) {
             for (const savoredRcp of userRecipeListState.userRecipeList) {
-              const swipeToDbResult = await postRecipeDb(
+              const postRecipeResp = await postRecipeDb(
                 resp.user?.uid,
                 savoredRcp
               );
@@ -95,21 +98,28 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
     }
   }
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-      <Image 
-        source={require("../../assets/header.png")}
-        style={styles.headerImage}
+  if (!fontsLoaded) {
+    return null;
+  } else {
+    return (
+      <View style={styles.container}>
+        <Image
+          source={require("../../assets/header.png")}
+          style={styles.headerImage}
         />
-        <Text style={styles.subHeader}>Put on your apron and sharpen your knife, Heat up the pan and spice up your life!</Text>
+        <Text style={styles.title}>
+          Put on your apron and sharpen your knife,
+        </Text>
+        <Text style={styles.title}>
+          Heat up the pan and spice up your life!
+        </Text>
         <View style={styles.form}>
-          <View style={styles.inputContainer}>
-            <View style={[styles.input, { justifyContent: "space-between" }]}>
-              <View style={styles.passwordContainer}>
+          <View style={styles.inputsContainer}>
+            <View style={styles.inputWithIcons}>
+              <View style={styles.singleInputContainer}>
                 <MaterialCommunityIcons name="account-outline" size={20} />
                 <TextInput
-                  style={{ width: _screen.width * 0.5 }}
+                  style={styles.inputText}
                   placeholder="Your Email"
                   autoCapitalize="none"
                   onChangeText={(val) => setEmail(val)}
@@ -127,11 +137,11 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
               )}
             </View>
 
-            <View style={[styles.input, { justifyContent: "space-between" }]}>
-              <View style={styles.passwordContainer}>
+            <View style={styles.inputWithIcons}>
+              <View style={styles.singleInputContainer}>
                 <MaterialCommunityIcons name="lock-outline" size={20} />
                 <TextInput
-                  style={{ width: _screen.width * 0.5 }}
+                  style={styles.inputText}
                   placeholder="Your Password"
                   secureTextEntry={hidePassword ? true : false}
                   autoCapitalize="none"
@@ -153,9 +163,11 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
             </View>
           </View>
 
-          <Text style={{color: "gray", fontSize: 10, marginTop: 3}}>By signing up your are agreeing to our terms and conditions.</Text>
+          <Text style={styles.text}>
+            By signing up your are agreeing to our terms and conditions.
+          </Text>
 
-          <View style={styles.signInButtonContainer}>
+          <View style={styles.signUpButtonContainer}>
             <TouchableOpacity
               onPress={
                 blockSignup
@@ -168,208 +180,92 @@ export default function SignupScreen({ navigation }: SignupScreenProps) {
                 colors={["#5454FF", "#3B3BB3"]}
                 style={styles.signUpButton}
               >
-                <Text style={{ color: "white" }}>{blockSignup ? "Processing..." : "Sign Up"}</Text>
+                <Text style={{ color: "white" }}>
+                  {blockSignup ? "Processing..." : "Sign Up"}
+                </Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     backgroundColor: colorPalette.background,
-//   },
-
-//   subContainer: {
-//     justifyContent: "center",
-//     alignItems: "center",
-//     width: _screen.width * 0.9,
-//     height: _screen.height * 0.6,
-//     borderRadius: 15,
-//     backgroundColor: colorPalette.primary,
-//     ...shadowStyle,
-//   },
-
-//   form: {
-//     justifyContent: "center",
-//     alignItems: "center",
-//     marginBottom: 48,
-//     width: _screen.width * 0.8,
-//     height: _screen.height * 0.3,
-//     borderRadius: 15,
-//     backgroundColor: colorPalette.secondary,
-//   },
-
-//   title: {
-//     marginVertical: 8,
-//     fontSize: 28,
-//     fontWeight: "bold",
-//     color: colorPalette.background,
-//   },
-
-//   inputContainer: {
-//     justifyContent: "center",
-//     alignItems: "center",
-//     margin: 1,
-//     padding: 6,
-//     paddingBottom: 18,
-//     width: _screen.width * 0.7,
-//     borderRadius: 10,
-//     backgroundColor: colorPalette.background,
-//   },
-
-//   input: {
-//     flexDirection: "row",
-//     marginTop: 10,
-//     paddingHorizontal: 3,
-//     width: _screen.width * 0.65,
-//     borderBottomWidth: 1,
-//     borderBottomColor: colorPalette.trim,
-//   },
-
-//   passwordContainer: {
-//     flexDirection: "row",
-//   },
-
-//   signInButtonContainer: {
-//     marginTop: 10,
-//   },
-
-//   signUpButton: {
-//     justifyContent: "center",
-//     alignItems: "center",
-//     marginTop: 10,
-//     width: 200,
-//     borderRadius: 10,
-//     padding: 8,
-//   },
-
-//   signUp: {
-//     margin: 8,
-//     fontSize: 18,
-//     textDecorationLine: "underline",
-//     color: colorPalette.background,
-//   },
-
-//   aboutUsButton: {
-//     justifyContent: "center",
-//     alignItems: "center",
-//     marginTop: 8,
-//     width: 120,
-//     borderRadius: 10,
-//     padding: 8,
-//   },
-// });
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    // backgroundColor: colorPalette.background,
   },
 
-  subContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: _screen.width * 0.9,
-    height: _screen.height * 0.6,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.primary,
-    ...shadowStyle,
+  headerImage: {
+    resizeMode: "contain",
+    width: 200,
+    height: 60,
+    marginVertical: _screen.height * 0.03,
+  },
+
+  title: {
+    textAlign: "center",
+    fontSize: font.subHeaderSize,
+    fontFamily: "OpenSansBold",
+    width: _screen.width * 0.93,
   },
 
   form: {
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 48,
-    width: _screen.width * 0.8,
-    height: _screen.height * 0.3,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.secondary,
+    marginVertical: _screen.height * 0.03,
   },
 
-  subHeader: {
-    // marginVertical: 8,
-    textAlign: "center",
-    fontSize: 18,
-    fontWeight: "bold",
-    // color: "gray"
-    // color: colorPalette.background,
-  },
-
-  headerImage: {
-    flex: 1,
-    resizeMode: "contain",
-    width: 200,
-  },
-
-  inputContainer: {
+  inputsContainer: {
     justifyContent: "center",
     alignItems: "center",
-    margin: 1,
-    padding: 6,
-    paddingBottom: 18,
-    width: _screen.width * 0.8,
+    marginBottom: _screen.height * 0.01,
+    width: _screen.width * 0.93,
     borderRadius: 10,
     backgroundColor: colorPalette.white,
+    ...shadowStyle,
   },
 
-  input: {
+  inputWithIcons: {
+    justifyContent: "space-between",
     flexDirection: "row",
-    marginTop: 10,
-    paddingHorizontal: 3,
+    marginTop: _screen.height * 0.02,
+    marginBottom: _screen.height * 0.01,
+    paddingHorizontal: _screen.width * 0.01,
+    width: _screen.width * 0.9,
+    borderBottomWidth: 0.5,
+    borderBottomColor: colorPalette.darkGray,
+  },
+
+  singleInputContainer: {
+    flexDirection: "row",
+  },
+
+  inputText: {
+    fontSize: font.contentSize,
+    fontFamily: "OpenSans",
     width: _screen.width * 0.7,
-    borderBottomWidth: 1,
-    borderBottomColor: colorPalette.trim,
+    marginLeft: 3,
   },
 
-  passwordContainer: {
-    flexDirection: "row",
-  },
-
-  signInButtonContainer: {
-    marginTop: 10,
+  signUpButtonContainer: {
+    marginTop: _screen.height * 0.01
   },
 
   signUpButton: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
     width: 200,
+    height: 30,
     borderRadius: 10,
-    padding: 8,
   },
 
-  signUp: {
-    // margin: 8,
-    // fontSize: 18,
-    // color: "blue",
-    textDecorationLine: "underline",
-    color: "#5c5c5c",
-    // color: colorPalette.background,
-  },
-
-  aboutUsButton: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 16,
-    marginHorizontal: 8,
-    width: 200,
-    backgroundColor: "#FFAA54",
-    borderRadius: 10,
-    padding: 8,
-    borderWidth: 0.2,
-    borderStyle: "solid",
-    shadowOpacity: 0.3,
-    shadowRadius: 0.2,
-    shadowOffset: { width: 0.2, height: 0.3 },
+  text: {
+    fontSize: font.tagSize,
+    fontFamily: "OpenSans",
+    color: colorPalette.darkGray
   },
 });
-
