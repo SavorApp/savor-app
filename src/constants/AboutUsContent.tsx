@@ -1,8 +1,15 @@
 export const header =
-    "The Savored organization aims to provide an experience that is aligned with our values:";
+    "Savor aims to provide an experience that is strongly tied to our core values. " +
+    "All of the decisions we make are supported by this.";
 
 export const slogan = 
     "Food has no boundaries, taste has no limits. " +
+    "Swipe and look, savor to cook.";
+
+export const slogan1 = 
+    "Food has no boundaries, taste has no limits. "
+
+export const slogan2 = 
     "Swipe and look, savor to cook.";
 
 export const noBoundaries = 
@@ -18,11 +25,11 @@ export const savorToCook =
     "Savor to cook";
 
 export const noBoundariesContent = 
-    "At Savored we believe in diversity and inclusion. There are no boundaries " +
+    "At Savor we believe in diversity and inclusion. There are no boundaries " +
     "in the lives we lead. We accept people, and food, from all backgrounds " +
     "and cultures. This is especially true for food! We love to enjoy and " +
     "we recommend food from all over the world! A feature in our application we are most " +
-    "proud of is, the filtering ability. We are working hard to make the Savored application " +
+    "proud of is, the filtering ability. We are working hard to make the Savor application " +
     "inclusive to everyone, even if you might have certain dietary restrictions.";
 
 export const noLimitsContent = 
@@ -32,11 +39,11 @@ export const noLimitsContent =
     "In the same sense, there are also no limits to what you can achieve! " +
     "No matter how complex a recipe might be, we encourage you to try, try again " +
     "and, keep trying because we believe in the simple philosophy that practice " +
-    "makes perfect. We hope that the Savored application continues to help you " +
+    "makes perfect. We hope that the Savor application continues to help you " +
     "push your limits and grow as a cook!";
 
 export const swipeAndLookContent = 
-    "Seriously... Swipe and look. It's really as simple as that! The Savored application " +
+    "Seriously... Swipe and look. It's really as simple as that! The Savor application " +
     "is built upon simplicity and efficiency. We want to save you the time, and headache, " +
     "of attempting to come up with a recipe idea on your own. " + 
     "We are here to help make things simple, quick and easy for you when it comes to " +
@@ -45,7 +52,7 @@ export const swipeAndLookContent =
 
 export const savorToCookContent = 
     "So, you've found something that looks good? Intriguing? Challenging? " +
-    "Well, add it to your Savored list and start cooking! " +
+    "Well, add it to your Savoredlist and start cooking! " +
     "The idea behind this core value is that we hope to challenge individuals to " +
     "truly savor their eating habits. Cherish the food you prepare and consume. " +
     "There is something very special about picking out and preparing your own ingredients, " +
@@ -61,4 +68,4 @@ export const contactUsContent =
     "You can contact us at:";
 
 export const email = 
-    "suppport@savored.com\n\n\n";
+    "support@Savor.com\n\n\n";

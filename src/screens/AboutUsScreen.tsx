@@ -7,10 +7,11 @@ import {
   ScrollView,
   Text,
 } from "react-native";
-import { colorPalette, shadowStyle } from "../constants/Styling";
+import { colorPalette, font } from "../constants/Styling";
 import {
   header,
-  slogan,
+  slogan1,
+  slogan2,
   noBoundaries,
   noLimits,
   swipeAndLook,
@@ -22,38 +23,46 @@ import {
   contactUsContent,
   email,
 } from "../constants/AboutUsContent";
+import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
 
 export default function AboutUsScreen() {
-  return (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        {/* <Text style={styles.title}>About Us</Text> */}
+  const [fontsLoaded] = useFonts({
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  } else {
+    return (
+      <View style={styles.container}>
         <View style={styles.contentContainer}>
           <ScrollView style={styles.scrollView}>
             <Text style={styles.content}>{header}</Text>
             <View style={styles.sloganContainer}>
-              <Text style={[styles.slogan, styles.content]}>{slogan}</Text>
+              <Text style={styles.slogan}>{slogan1}</Text>
+              <Text style={styles.slogan}>{slogan2}</Text>
             </View>
-            <Text style={[styles.subTitle, styles.content]}>
+            <Text style={styles.subTitle}>
               Savored Core Values:
             </Text>
-            <Text style={[styles.subTitle2, styles.content]}>
+            <Text style={styles.subHeader}>
               {noBoundaries}
             </Text>
             <Text style={styles.content}>{noBoundariesContent}</Text>
-            <Text style={[styles.subTitle2, styles.content]}>{noLimits}</Text>
+            <Text style={styles.subHeader}>{noLimits}</Text>
             <Text style={styles.content}>{noLimitsContent}</Text>
-            <Text style={[styles.subTitle2, styles.content]}>
+            <Text style={styles.subHeader}>
               {swipeAndLook}
             </Text>
             <Text style={styles.content}>{swipeAndLookContent}</Text>
-            <Text style={[styles.subTitle2, styles.content]}>
+            <Text style={styles.subHeader}>
               {savorToCook}
             </Text>
             <Text style={styles.content}>{savorToCookContent}</Text>
-            <Text style={[styles.subTitle, styles.content]}>
+            <Text style={styles.subTitle}>
               Contact Information:
             </Text>
             <Text style={styles.content}>{contactUsContent}</Text>
@@ -61,8 +70,8 @@ export default function AboutUsScreen() {
           </ScrollView>
         </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -70,74 +79,54 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: colorPalette.background,
-  },
-
-  subContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: _screen.width * 0.95,
-    height: _screen.height * 0.9,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.primary,
-    ...shadowStyle,
-  },
-
-  title: {
-    marginVertical: 8,
-    fontSize: 28,
-    fontWeight: "bold",
-    // color: colorPalette.background,
   },
 
   contentContainer: {
-    justifyContent: "center",
-    alignItems: "center",
     width: _screen.width * 0.93,
-    height: _screen.height * 0.86,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.secondary,
   },
 
   scrollView: {
-    padding: 8,
-    marginVertical: Platform.OS === "android" ? 12 : 0,
-    width: _screen.width * 0.93,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.secondary,
-  },
-
-  content: {
-    marginBottom: 6,
+    paddingTop: _screen.height * 0.01,
   },
 
   sloganContainer: {
-    marginVertical: 6,
-    paddingTop: 4,
-    backgroundColor: colorPalette.popDark,
+    backgroundColor: colorPalette.lightGray,
     borderRadius: 10,
+    borderColor: colorPalette.darkGray,
+    borderWidth: Platform.OS === "android" ? 0.5 : 0.3,
+    marginTop: _screen.height * 0.03
   },
 
   slogan: {
     textAlign: "center",
-    fontSize: 18,
-    fontWeight: "bold",
-    fontStyle: "italic",
+    fontSize: font.subHeaderSize,
+    fontFamily: "OpenSansBold",
+    color: colorPalette.primary
   },
 
   subTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
+    fontSize: font.subTitleSize,
+    fontFamily: "OpenSansBold",
+    marginVertical: _screen.height * 0.03
   },
 
-  subTitle2: {
-    fontSize: 18,
-    fontWeight: "bold",
+  subHeader: {
+    fontSize: font.subHeaderSize,
+    fontFamily: "OpenSansBold",
     textDecorationLine: "underline",
+    marginVertical: _screen.height * 0.01
   },
+
+  content: {
+    fontSize: font.contentSize,
+    fontFamily: "OpenSans",
+    lineHeight: 24,
+  },
+
 
   email: {
-    fontWeight: "bold",
+    fontSize: font.contentSize,
+    fontFamily: "OpenSansBold",
     color: colorPalette.alternate2,
   },
 });
