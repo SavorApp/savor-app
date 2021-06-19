@@ -13,6 +13,7 @@ export const colorPalette = {
   darkGray: "#818283",
   white: "#ffffff",
   black: "#000000",
+  deleteAccount: "#990000",
 
   alternate: "#007ea7",
   alternate2: "#003459",
