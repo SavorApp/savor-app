@@ -37,13 +37,13 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
     const filteredIngredients = Array.from(new Set(ingredients));
 
     return (
-      <View style={{ marginTop: 4 }}>
+      <View>
         {filteredIngredients.map((ing) => {
           idx++;
           return (
             <View
               key={"c_" + idx.toString()}
-              style={{ ...styles.ingredientContainer, marginTop: 8 }}
+              style={styles.ingredientContainer}
             >
               <Text key={"i_" + idx.toString()} style={styles.ingredient}>
                 {ing}
@@ -65,6 +65,7 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
             <Text style={styles.title}>{rcp.title}</Text>
             <View style={styles.borderline} />
             <TouchableOpacity
+              style={styles.touchableHeader}
               onPress={() => {
                 setShowSummary(!showSummary);
               }}
@@ -82,13 +83,12 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
               <HTML
                 tagsStyles={{
                   div: {
-                    fontSize: 18,
-                    lineHeight: 28,
-                    marginTop: 12,
+                    fontSize: 14,
+                    lineHeight: 24,
                     fontFamily: "OpenSans",
                   },
                   b: { fontFamily: "OpenSansBold" },
-                  a: { fontSize: 18, fontFamily: "OpenSans" },
+                  a: { fontSize: 14, fontFamily: "OpenSans" },
                 }}
                 source={{ html: `<div>${rcp.summary} </div>` }}
               />
@@ -131,12 +131,7 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
             {showInstructions && (
               <>
                 <Text
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: 18,
-                    fontFamily: "OpenSansBold",
-                    marginTop: 12,
-                  }}
+                  style={styles.subHeader}
                 >
                   Preparation time:{" "}
                   <Text
@@ -146,11 +141,7 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
                   </Text>
                 </Text>
                 <Text
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: 18,
-                    fontFamily: "OpenSansBold",
-                  }}
+                  style={styles.subHeader}
                 >
                   Servings:{" "}
                   <Text
@@ -163,13 +154,12 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
                 <HTML
                   tagsStyles={{
                     div: {
-                      fontSize: 18,
-                      lineHeight: 28,
+                      fontSize: 14,
+                      lineHeight: 24,
                       fontFamily: "OpenSans",
                     },
-                    ol: { fontSize: 18 },
-                    li: { fontSize: 18, marginTop: -5 },
-                    a: { fontSize: 18 },
+                    ol: { fontSize: 14 },
+                    a: { fontSize: 14 },
                   }}
                   source={{ html: `<div>${rcp.instructions}</div>` }}
                 />
@@ -222,20 +212,17 @@ export default function MoreInfoScreen({ route }: MoreInfoScreenProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 10,
+    flex: 13,
     justifyContent: "center",
     alignItems: "center",
   },
 
   contentContainer: {
-    flex: 9,
+    flex: 12,
     width: _screen.width * 0.93,
-    borderRadius: 15,
-    borderWidth: 0.2,
   },
 
   scrollView: {
-    borderRadius: 15,
   },
 
   title: {
@@ -263,50 +250,40 @@ const styles = StyleSheet.create({
   subTitle: {
     fontSize: 20,
     fontFamily: "OpenSansBold",
+    marginBottom: _screen.height * 0.01,
   },
 
   touchableHeader: {
     marginTop: _screen.height * 0.03,
   },
 
+  subHeader: {
+    fontSize: 14,
+    fontFamily: "OpenSansBold",
+  },
+
   ingredientContainer: {
-    flex: 1,
-    flexDirection: "row",
+    marginTop: 3
   },
 
   ingredient: {
-    justifyContent: "flex-start",
-    width: "65%",
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: "OpenSans",
-  },
-
-  measurement: {
-    justifyContent: "flex-start",
-    width: "35%",
-    fontSize: 18,
   },
 
   tagsContainer: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
     flexDirection: "row",
-    // flexWrap: "wrap",
-    // marginTop: 8,
-    marginHorizontal: 16,
-    borderWidth: 0.2,
+    alignItems: "flex-start",
+    marginTop: _screen.height * 0.01
   },
 
   singleTagContainer: {
     flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 3,
-    marginTop: 3,
-    padding: 4,
+    marginHorizontal: 2,
+    padding: 3,
     borderRadius: 8,
-    backgroundColor: colorPalette.trimLight,
+    backgroundColor: colorPalette.lightGray,
   },
 
   tag: {

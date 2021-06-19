@@ -407,7 +407,7 @@ const styles = StyleSheet.create({
     padding: 3,
     width: _screen.width * 0.9,
     borderRadius: 7,
-    backgroundColor: colorPalette.background,
+    backgroundColor: colorPalette.white,
     shadowOpacity: 0.2,
     shadowRadius: 3,
     shadowOffset: { width: 1, height: 1 },

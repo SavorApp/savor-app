@@ -3,10 +3,10 @@ export const colorPalette = {
   secondary: "#5454FF",
   thumbsDown: "#d64f4f",
   thumbsUp: "#75d177",
+  lightGray: "#d7d9db",
 
   alternate: "#007ea7",
   alternate2: "#003459",
-  trimLight: "#c6c9cc",
   trim: "#85909C",
   popLight: "#fc6f03",
   popDark: "#FF5454",
