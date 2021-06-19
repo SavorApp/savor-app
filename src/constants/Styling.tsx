@@ -5,6 +5,7 @@ const _screen = Dimensions.get("screen");
 export const colorPalette = {
   primary: "#FF5454",
   secondary: "#5454FF",
+  primaryGradient: ["#FF5454", "#b33b3b"],
   secondaryGradient: ["#5454FF", "#3B3BB3"],
   whiteSmokeGradient: ["#ffffff", "#dddddd"],
   thumbsDown: "#d64f4f",
