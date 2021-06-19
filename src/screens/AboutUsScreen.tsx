@@ -127,6 +127,6 @@ const styles = StyleSheet.create({
   email: {
     fontSize: font.contentSize,
     fontFamily: "OpenSansBold",
-    color: colorPalette.alternate2,
+    color: colorPalette.secondary,
   },
 });
