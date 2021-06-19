@@ -13,7 +13,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/Styling";
 import { firebaseApp } from "../constants/Firebase";
 import {
   removeUser,
@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 28,
     fontWeight: "bold",
-    color: colorPalette.background,
+    color: colorPalette.white,
   },
 
   username: {

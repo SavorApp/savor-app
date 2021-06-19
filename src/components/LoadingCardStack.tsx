@@ -1,7 +1,7 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import Emoji from "react-native-emoji";
-import { colorPalette } from "../constants/ColorPalette";
+import { colorPalette } from "../constants/Styling";
 
 
 export default function LoadingCardStack() {

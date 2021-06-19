@@ -1,6 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text, Dimensions } from "react-native";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/Styling";
 
 const _screen = Dimensions.get("screen");
 

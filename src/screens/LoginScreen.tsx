@@ -14,7 +14,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useSelector } from "react-redux";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/Styling";
 import { firebaseApp } from "../constants/Firebase";
 import firebase from "firebase";
 
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     paddingBottom: 18,
     width: _screen.width * 0.8,
     borderRadius: 10,
-    backgroundColor: colorPalette.background,
+    backgroundColor: colorPalette.white,
   },
 
   input: {

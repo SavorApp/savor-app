@@ -7,7 +7,7 @@ import {
   ScrollView,
   Text,
 } from "react-native";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/Styling";
 import {
   header,
   slogan,

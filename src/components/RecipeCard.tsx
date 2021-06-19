@@ -7,7 +7,7 @@ import {
   ImageBackground,
   Image,
 } from "react-native";
-import { shadowStyle, colorPalette } from "../constants/ColorPalette";
+import { shadowStyle, colorPalette } from "../constants/Styling";
 import { useFonts } from "expo-font";
 
 

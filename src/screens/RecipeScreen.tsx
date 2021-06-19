@@ -16,7 +16,7 @@ import { RouteProp } from "@react-navigation/native";
 import HTML from "react-native-render-html";
 import Constants from "expo-constants";
 import axios from "axios";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/Styling";
 import LoadingRecipeInfo from "../components/LoadingRecipeInfo";
 import { useSelector } from "react-redux";
 import { useFonts } from "expo-font";
@@ -424,7 +424,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
     padding: 4,
     borderRadius: 8,
-    backgroundColor: colorPalette.trimLight,
+    backgroundColor: colorPalette.lightGray,
   },
 
   tag: {

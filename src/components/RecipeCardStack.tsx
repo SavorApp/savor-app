@@ -8,7 +8,7 @@ import {
   triggerReload,
   unSavorRecipe,
 } from "../redux/actions";
-import { colorPalette } from "../constants/ColorPalette";
+import { colorPalette } from "../constants/Styling";
 import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
 import SwipeButtons from "../components/SwipeButtons";

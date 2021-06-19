@@ -15,7 +15,7 @@ import {
   resetFilters,
   resetUserRecipeList,
 } from "../redux/actions";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/Styling";
 import { LinearGradient } from "expo-linear-gradient";
 import { firebaseApp } from "../constants/Firebase";
 import { deleteAccount } from "../db/db";

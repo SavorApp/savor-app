@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Emoji from "react-native-emoji";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/Styling";
 
 const _screen = Dimensions.get("screen");
 
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
     width: _screen.width * 0.5,
     height: _screen.height * 0.03,
     borderRadius: 15,
-    backgroundColor: colorPalette.background,
+    backgroundColor: colorPalette.white,
   },
 
   dropdownItem: {
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: "grey",
-    backgroundColor: colorPalette.background,
+    backgroundColor: colorPalette.white,
   },
 
   checkboxChecked: {

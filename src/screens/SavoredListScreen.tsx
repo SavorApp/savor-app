@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { unSavorRecipe } from "../redux/actions";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/Styling";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
 import { updateSavorDb } from "../db/db";

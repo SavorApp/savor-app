@@ -12,7 +12,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Emoji from "react-native-emoji";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { colorPalette, shadowStyle } from "../constants/Styling";
 import { useSelector, useDispatch } from "react-redux";
 import { updateFilters } from "../redux/actions";
 import { updateFiltersDb } from "../db/db";
@@ -585,7 +585,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderWidth: 1,
     borderColor: "grey",
-    backgroundColor: colorPalette.background,
+    backgroundColor: colorPalette.white,
   },
 
   checkboxChecked: {

@@ -5,13 +5,12 @@ import {
   View,
   Text,
   ScrollView,
-  Platform,
   TouchableOpacity,
 } from "react-native";
 import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import { RouteProp } from "@react-navigation/native";
 import HTML from "react-native-render-html";
-import { colorPalette } from "../constants/ColorPalette";
+import { colorPalette, borderLine } from "../constants/Styling";
 import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
@@ -223,6 +222,7 @@ const styles = StyleSheet.create({
   },
 
   scrollView: {
+    paddingTop: _screen.height * 0.01
   },
 
   title: {
@@ -233,12 +233,7 @@ const styles = StyleSheet.create({
 
   borderline: {
     alignSelf: "center",
-    borderBottomColor: "black",
-    marginVertical: _screen.height * 0.01,
-    marginBottom: _screen.height * 0.03,
-    borderBottomWidth: 1,
-    opacity: 0.5,
-    width: _screen.width * 0.6,
+    ...borderLine
   },
 
   accordion: {
