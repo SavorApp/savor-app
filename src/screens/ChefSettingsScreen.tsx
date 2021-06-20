@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   StyleSheet,
   Dimensions,
@@ -7,20 +7,19 @@ import {
   Text,
   TouchableOpacity,
   Alert,
-  ScrollView,
   Platform,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { LinearGradient } from "expo-linear-gradient";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { colorPalette, font, shadowStyle } from "../constants/Styling";
 import { firebaseApp } from "../constants/Firebase";
 import {
   removeUser,
   resetUserRecipeList,
   resetFilters,
 } from "../redux/actions/index";
-import { TouchableHighlight } from "react-native-gesture-handler";
+import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
 
@@ -31,12 +30,16 @@ export interface ChefSettingsScreenProps {
 export default function ChefSettingsScreen({
   navigation,
 }: ChefSettingsScreenProps) {
-  const userState = useSelector<RootState, UserState>(
-    (state) => state.userState
-  );
-
+  const [fontsLoaded] = useFonts({
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
+  });
   const dispatch = useDispatch();
   const [blockLogout, setBlockLogout] = React.useState(false);
+
+  function handleChangePassword() {
+    Alert.alert("In Development 🛠", "Sorry, this feature is still being built.")
+  }
 
   function handleLogout() {
     setBlockLogout(true);
@@ -71,146 +74,98 @@ export default function ChefSettingsScreen({
     }
   }
 
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("AboutUsScreen")}
-        activeOpacity={0.8}
-      >
-        <LinearGradient
-          colors={["white", "whitesmoke"]}
-          style={styles.aboutUsButton}
-        >
-          <Text style={styles.buttonText}>About Us</Text>
-        </LinearGradient>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={
-          blockLogout
-            ? () => {} // Fake function while blocked
-            : handleLogout // Allow logout while unblocked
-        }
-        activeOpacity={0.8}
-      >
-        <LinearGradient
-          colors={["white", "whitesmoke"]}
-          style={styles.aboutUsButton}
-        >
-          <Text style={styles.buttonText}>
-            {blockLogout ? "Processing..." : "Logout"}
-          </Text>
-        </LinearGradient>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("DeleteAccountScreen")}
-        activeOpacity={0.8}
-      >
-        <LinearGradient
-          colors={["white", "whitesmoke"]}
-          style={styles.aboutUsButton}
-        >
-          <Text style={{ ...styles.buttonText, color: "#990000" }}>
-            Delete Account
-          </Text>
-        </LinearGradient>
-      </TouchableOpacity>
-    </View>
-  );
+  if (!fontsLoaded) {
+    return null;
+  } else {
+    return (
+      <View style={styles.container}>
+        <View style={styles.accountFeaturesContainer}>
+          <TouchableOpacity
+            onPress={handleChangePassword}
+            activeOpacity={0.8}
+          >
+            <LinearGradient
+              colors={colorPalette.whiteSmokeGradient}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Change Password</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("AboutUsScreen")}
+            activeOpacity={0.8}
+          >
+            <LinearGradient
+              colors={colorPalette.whiteSmokeGradient}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>About Us</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.logOutAndDeleteContainer}>
+          <TouchableOpacity
+            onPress={
+              blockLogout
+                ? () => {} // Fake function while blocked
+                : handleLogout // Allow logout while unblocked
+            }
+            activeOpacity={0.8}
+          >
+            <LinearGradient
+              colors={colorPalette.whiteSmokeGradient}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>
+                {blockLogout ? "Processing..." : "Logout"}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("DeleteAccountScreen")}
+            activeOpacity={0.8}
+          >
+            <LinearGradient
+              colors={colorPalette.whiteSmokeGradient}
+              style={styles.button}
+            >
+              <Text style={{ ...styles.buttonText, color: colorPalette.deleteAccount }}>
+                Delete Account
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
     alignItems: "center",
-    marginTop: 20,
-    // backgroundColor: colorPalette.background,
-  },
-
-  // buttonText: {
-  //   fontSize: 20,
-  // },
-
-  subContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: _screen.width * 0.9,
-    height: _screen.height * 0.7,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.primary,
-  },
-
-  profileContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginVertical: 16,
-    width: _screen.width * 0.83,
-    height: _screen.height * 0.4,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.secondary,
-  },
-
-  title: {
-    justifyContent: "flex-start",
-    textAlign: "center",
-    fontSize: 28,
-    fontWeight: "bold",
-    color: colorPalette.background,
-  },
-
-  username: {
-    textAlign: "center",
-    marginBottom: 8,
-    fontSize: 24,
-    fontWeight: "bold",
-    color: colorPalette.popDark,
-  },
-
-  scrollView: {
-    padding: 8,
-    marginVertical: Platform.OS === "android" ? 12 : 0,
-    width: _screen.width * 0.8,
-    borderRadius: 15,
-  },
-
-  subTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 10,
-    marginBottom: 6,
-  },
-
-  subTitle2: {
-    fontWeight: "bold",
-    marginVertical: 6,
-  },
-
-  caption: {
-    fontStyle: "italic",
+    marginTop: _screen.height * 0.01,
+    marginBottom: _screen.height * 0.03,
   },
 
   buttonText: {
-    fontSize: 22,
+    fontSize: font.contentSize,
+    fontFamily: "OpenSans"
   },
 
-  aboutUsButton: {
+  button: {
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 8,
-    marginHorizontal: 8,
-    width: 300,
-    backgroundColor: "#FFAA54",
+    marginBottom: _screen.height * 0.01,
+    width: _screen.width * 0.93,
+    height: 30,
     borderRadius: 10,
-    padding: 12,
-    borderWidth: 0.2,
-    borderStyle: "solid",
-    shadowOpacity: 0.3,
-    shadowRadius: 0.2,
-    shadowOffset: { width: 0.2, height: 0.3 },
+    borderColor: colorPalette.darkGray,
+    borderWidth: Platform.OS === "android" ? 0.5 : 0.3,
   },
 
-  bottomButtonsContainer: {
-    flexDirection: "row",
-    margin: 8,
-  },
+  accountFeaturesContainer: {},
+
+  logOutAndDeleteContainer: {}
 });
