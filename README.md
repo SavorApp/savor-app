@@ -57,11 +57,11 @@ Last but not least, we’d like you to Savor what you eat. We challenge you to b
 This is where you swipe on your recommended recipes, much like a modern dating app.
 <table border="0">
  <tr>
-    <td>
-        <img src="./assets/screenshots/menuScreen.png" alt="Savor Menu Screen" width="300px" >
+    <td width="300px">
+        <img src="./assets/screenshots/menuScreen.png" alt="Savor Menu Screen" />
     </td>
     <td>
-        <div style="margin-left:14px;align-self:center;">
+        <div>
             <ul>
                 <li/>This is where you swipe on your recommended recipes, much like a modern dating app.
                 <br/><br/>
@@ -75,104 +75,119 @@ This is where you swipe on your recommended recipes, much like a modern dating a
     </td>
  </tr>
 </table>
-<!-- <div style="display: flex;flex-direction:row;margin-bottom:14px;">
-    <img src="./assets/screenshots/menuScreen.png" alt="Savor Menu Screen" width="300px" >
-    <div style="margin-left:14px;align-self:center;">
-        <ul>
-            <li/>This is where you swipe on your recommended recipes, much like a modern dating app.
-            <br/><br/>
-            <li/>You may either swipe left or right on recipes or, use the thumbs-down and thumbs-up buttons for a different user experience.
-            <br/><br/>
-            <li/>Click the info button to quickly view information for the given recipe, before making your final decision.
-            <br/><br/>
-            <li/>Click the burger icon in the top-right corner for custom filtering options.
-        </ul>
-    </div>
-</div> -->
 
 ### *Custom Filtering*
 Savor allows for you to get specific without being a hassle to configure.
-<div style="display: flex;flex-direction:row;margin-bottom:14px">
-    <img src="./assets/screenshots/burgerScreen.png" alt="Savor Burger Screen" width="300px" >
-    <div style="margin-left:14px;align-self:center;">
-        <ul>
-            <li/>This is where you set various filtering options according to your personal preference.
-            <br/><br/>
-            <li/>The Smart Recommendation option allows Savor to recommend recipes that you are more likely to enjoy based on your previous decisions.
-            <br/><br/>
-            <li/>Dish Types allow for you to filter between breakfast, dinner, dessert, beverage, etc.
-            <br/><br/>
-            <li/>Cuisine allows for you to filter between dishes from around the world.
-            <br/><br/>
-            <li/>Finally, we've included filtering options for individuals who might have specific dietary requirements.
-        </ul>
-    </div>
-</div>
+<table border="0">
+ <tr>
+    <td width="300px">
+        <img src="./assets/screenshots/burgerScreen.png" alt="Savor Burger Screen" />
+    </td>
+    <td>
+        <div>
+            <ul>
+                <li/>This is where you set various filtering options according to your personal preference.
+                <br/><br/>
+                <li/>The Smart Recommendation option allows Savor to recommend recipes that you are more likely to enjoy based on your previous decisions.
+                <br/><br/>
+                <li/>Dish Types allow for you to filter between breakfast, dinner, dessert, beverage, etc.
+                <br/><br/>
+                <li/>Cuisine allows for you to filter between dishes from around the world.
+                <br/><br/>
+                <li/>Finally, we've included filtering options for individuals who might have specific dietary requirements.
+            </ul>
+        </div>
+    </td>
+ </tr>
+</table>
 
 ### *Chef Screen*
 This is where you can access information and features regarding your account. We strive to provide users with a personalized experience.
-<div style="display: flex;flex-direction:row;margin-bottom:14px">
-    <img src="./assets/screenshots/chefScreen.png" alt="Savor Chef Screen" width="300px" >
-    <div style="margin-left:14px;align-self:center;">
-        <ul>
-            <li/>Your Taste Profile is unique to you and, is created based on the recipes you have Savored.
-            <br/><br/>
-            <li/>Your Top Ingredients is another unique feature that is populated based on your Savored recipes.
-            <br/><br/>
-            <li/>Click the gear icon in the top-right corner to access your account settings. 
-        </ul>
-    </div>
-</div>
+<table border="0">
+ <tr>
+    <td width="300px">
+        <img src="./assets/screenshots/chefScreen.png" alt="Savor Chef Screen" />
+    </td>
+    <td>
+        <div>
+            <ul>
+                <li/>Your Taste Profile is unique to you and, is created based on the recipes you have Savored.
+                <br/><br/>
+                <li/>Your Top Ingredients is another unique feature that is populated based on your Savored recipes.
+                <br/><br/>
+                <li/>Click the gear icon in the top-right corner to access your account settings. 
+            </ul>
+        </div>
+    </td>
+ </tr>
+</table>
 
 ### *Savored List*
 This is where you can interact with the recipes you have previously Savored.
-<div style="display: flex;flex-direction:row;margin-bottom:14px">
-    <img src="./assets/screenshots/savoredListScreen.png" alt="Savor Savored List Screen" width="300px" >
-    <div style="margin-left:14px;align-self:center;">
-        <ul>
-            <li/>Just enough information is displayed for a given recipe.
-            <br/><br/>
-            <li/>The flag represents the recipe Cuisine.
-            <br/><br/>
-            <li/>Individual tags are displayed below the recipe title that quickly tell you all you need to know about a given recipe.
-            <br/><br/>
-            <li/>Click on a recipe to view more information about a given recipe.
-            <br/><br/>
-            <li/>Click the Truffle Shuffle button if you're feeling indecisive!
-        </ul>
-    </div>
-</div>
+<table border="0">
+ <tr>
+    <td width="300px">
+        <img src="./assets/screenshots/savoredListScreen.png" alt="Savor Savored List Screen" />
+    </td>
+    <td>
+        <div>
+            <ul>
+                <li/>Just enough information is displayed for a given recipe.
+                <br/><br/>
+                <li/>The flag represents the recipe Cuisine.
+                <br/><br/>
+                <li/>Individual tags are displayed below the recipe title that quickly tell you all you need to know about a given recipe.
+                <br/><br/>
+                <li/>Click on a recipe to view more information about a given recipe.
+                <br/><br/>
+                <li/>Click the Truffle Shuffle button if you're feeling indecisive!
+            </ul>
+        </div>
+    </td>
+ </tr>
+</table>
 
 ### *Truffle Shuffle*
 The infamous Truffle Shuffle button assists the indecisive user by selecting a recipe at random.
-<!-- ![truffleShuffle](./assets/screenshots/truffleShuffleVideo.gif) -->
-<div style="display: flex;flex-direction:row;margin-bottom:14px">
-    <img src="./assets/screenshots/truffleShuffle.png" alt="Savor Recipe Screen" width="300px" >
-    <div style="margin-left:14px;align-self:center;">
-        <ul>
-            <li />A recipe is selected at random, so you don't have to take any extra time to think of something to cook.
-            </br></br>
-            <li/>Everyone likes confetti right?
-        </ul>
-    </div>
-</div>
+<table border="0">
+ <tr>
+    <td width="300px">
+        <img src="./assets/screenshots/truffleShuffle.png" alt="Savor Truffle Shuffle Button" />
+    </td>
+    <td>
+        <div>
+            <ul>
+                <li/>A recipe is selected at random, so you don't have to take any extra time to think of something to cook.
+                </br></br>
+                <li/>Everyone likes confetti right?
+            </ul>
+        </div>
+    </td>
+ </tr>
+</table>
 
 ### *Recipe Information*
 This screen provides you with all you need to prepare your meal.
-<div style="display: flex;flex-direction:row;margin-bottom:14px">
-    <img src="./assets/screenshots/recipeScreen.png" alt="Savor Recipe Screen" width="300px" >
-    <div style="margin-left:14px;align-self:center;">
-        <ul>
-            <li/>The title of the recipe is displayed at the top of the screen.
-            <br/><br/>
-            <li/>An image is displayed just below the title
-            <br/><br/>
-            <li/>Summary, Ingredients and Instructions are clickable dropdowns that will expand with further information.
-            <br/><br/>
-            <li/>Recipe tags are displayed at the bottom of the screen.
-        </ul>
-    </div>
-</div>
+<table border="0">
+ <tr>
+    <td width="300px">
+        <img src="./assets/screenshots/recipeScreen.png" alt="Savor Recipe Screen" />
+    </td>
+    <td>
+        <div>
+            <ul>
+                <li/>The title of the recipe is displayed at the top of the screen.
+                <br/><br/>
+                <li/>An image is displayed just below the title
+                <br/><br/>
+                <li/>Summary, Ingredients and Instructions are clickable dropdowns that will expand with further information.
+                <br/><br/>
+                <li/>Recipe tags are displayed at the bottom of the screen.
+            </ul>
+        </div>
+    </td>
+ </tr>
+</table>
 
 # Coming Soon
 ### Going-Out Mode
