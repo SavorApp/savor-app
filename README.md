@@ -3,10 +3,10 @@
 <!-- Logo -->
     <img src="./assets/icon.png" alt="Savor Logo" width="300px" >
 <!-- Tagline -->
-    <p align="center" style="font-size:14px;font-style:italic;">
-        Food has no boundaries, taste has no limits. 
+    <p align="center">
+        <em>Food has no boundaries, taste has no limits.</em>
     <br/>
-        Swipe and look, Savor to cook.
+        <em>Swipe and look, Savor to cook.</em>
     <br/>
     </p>
 <!-- Links -->
@@ -55,7 +55,27 @@ Last but not least, we’d like you to Savor what you eat. We challenge you to b
 ## Key features
 ### *Menu Screen*
 This is where you swipe on your recommended recipes, much like a modern dating app.
-<div style="display: flex;flex-direction:row;margin-bottom:14px;">
+<table border="0">
+ <tr>
+    <td>
+        <img src="./assets/screenshots/menuScreen.png" alt="Savor Menu Screen" width="300px" >
+    </td>
+    <td>
+        <div style="margin-left:14px;align-self:center;">
+            <ul>
+                <li/>This is where you swipe on your recommended recipes, much like a modern dating app.
+                <br/><br/>
+                <li/>You may either swipe left or right on recipes or, use the thumbs-down and thumbs-up buttons for a different user experience.
+                <br/><br/>
+                <li/>Click the info button to quickly view information for the given recipe, before making your final decision.
+                <br/><br/>
+                <li/>Click the burger icon in the top-right corner for custom filtering options.
+            </ul>
+        </div>
+    </td>
+ </tr>
+</table>
+<!-- <div style="display: flex;flex-direction:row;margin-bottom:14px;">
     <img src="./assets/screenshots/menuScreen.png" alt="Savor Menu Screen" width="300px" >
     <div style="margin-left:14px;align-self:center;">
         <ul>
@@ -68,7 +88,7 @@ This is where you swipe on your recommended recipes, much like a modern dating a
             <li/>Click the burger icon in the top-right corner for custom filtering options.
         </ul>
     </div>
-</div>
+</div> -->
 
 ### *Custom Filtering*
 Savor allows for you to get specific without being a hassle to configure.
