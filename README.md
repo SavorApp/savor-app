@@ -200,8 +200,8 @@ This screen provides you with all you need to prepare your meal.
 # Contact
 For support, feedback or, to report a bug, you may contact any of the following contributors:
 - Johan Thestrup: [GitHub](https://github.com/JohanThestrup), [LinkedIn](https://www.linkedin.com/in/johanthestrup/)
-- Gaetan Karst: [GitHub](https://github.com/GaetanKarst), [LinkedIn](https://www.linkedin.com/in/markc-herring/)
-- Mark Herring: [GitHub](https://github.com/Worldonawire), [LinkedIn](https://www.linkedin.com/in/gaetankarst/)
+- Gaetan Karst: [GitHub](https://github.com/GaetanKarst), [LinkedIn](https://www.linkedin.com/in/gaetankarst/)
+- Mark Herring: [GitHub](https://github.com/Worldonawire), [LinkedIn](https://www.linkedin.com/in/markc-herring/)
 - Yoshio Hasegawa: [GitHub](https://github.com/yoshiohasegawa), [LinkedIn](https://www.linkedin.com/in/yoshiohasegawa/)
 
 ## License
