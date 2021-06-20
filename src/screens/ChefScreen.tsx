@@ -12,7 +12,7 @@ import {
   borderLine,
   font,
 } from "../constants/Styling";
-import { INGS_TO_EXCLUDE } from "../constants/IngredientsToExclude";
+import { ingredientMap, INGS_TO_EXCLUDE } from "../constants/Maps";
 import { useFonts } from "expo-font";
 
 const _screen = Dimensions.get("screen");
@@ -96,6 +96,12 @@ export default function ChefScreen({ navigation }: ChefScreenProps) {
           }
         }
         if (!skip) {
+          // If ingredeint in ingredientMap,
+          // get standard name for ingredient
+          // Ex: replace 'garlic clove' with 'garlic'
+          if (ing in ingredientMap) {
+            ing = ingredientMap[ing];
+          }
           if (ingredientsCount[ing]) {
             ingredientsCount[ing]++;
           } else {

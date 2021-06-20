@@ -3,6 +3,9 @@ import Emoji from "react-native-emoji";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 interface Map {
+    [id: string]: string;
+}
+interface JSXMap {
     [id: string]: JSX.Element;
 }
 
@@ -10,7 +13,7 @@ interface Bundler {
     [id: string]: string;
 }
 
-export const cuisineMap: Map = {
+export const cuisineMap: JSXMap = {
     All: <Emoji name="rainbow-flag"/>,
     American: <Emoji name="us"/>,
     British: <Emoji name="gb"/>,
@@ -29,7 +32,7 @@ export const cuisineMap: Map = {
     Vietnamese: <Emoji name="flag-vn"/>
 }
 
-export const dishTypeMap: Map = {
+export const dishTypeMap: JSXMap = {
     All: <MaterialCommunityIcons name="emoticon-outline" />,
     Breakfast: <MaterialCommunityIcons name="silverware-variant" />,
     Lunch: <MaterialCommunityIcons name="silverware-variant" />,
@@ -47,3 +50,32 @@ export const dishTypeBundler: Bundler = {
     dessert: "dessert,",
     beverage: "beverage,"
 }
+
+export const INGS_TO_EXCLUDE = [
+    "salt",
+    "pepper",
+    "sugar",
+    "water",
+    "flour",
+    "baking",
+    "cream",
+    "vanilla",
+    "ice cubes",
+    "mayonnaise",
+    "mustard",
+    "ketchup",
+    "butter",
+    "density",
+    "cooking oil",
+    "vegetable oil",
+    "olive oil",
+    "extract",
+    "nutmeg",
+    "gelatin",
+    "egg substitute",
+    "half n half"
+  ];
+
+  export const ingredientMap: Map = {
+    "garlic cloves": "garlic"
+  };

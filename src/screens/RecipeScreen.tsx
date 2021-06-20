@@ -40,7 +40,6 @@ export default function RecipeScreen({ route, navigation }: RecipeScreenProps) {
   const [fontsLoaded] = useFonts({
     OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
     OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
-    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
   });
 
   const { recipeId } = route.params;
