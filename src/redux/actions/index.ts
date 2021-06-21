@@ -1,41 +1,112 @@
-import { User, UserAction, Recipe, RecipeAction, RecipeListAction, Filters, FiltersAction } from "../../../types"
-
-
 // User Actions
-export const setUser = (user: User):UserAction => {
-    return {
-        type: "LOGIN_USER",
-        payload: user
-    }
-}
+export const setUser = (user: User): UserAction => {
+  return {
+    type: "LOGIN_USER",
+    payload: user,
+  };
+};
 
-export const removeUser = (user: User):UserAction => {
-    return {
-        type: "LOGOUT_USER",
-        payload: user
-    }
-}
+export const removeUser = (): EmptyAction => {
+  return {
+    type: "LOGOUT_USER",
+  };
+};
 
-// Recipe Actions
-export const recipeAction = (recipe: Recipe):RecipeAction => {
-    return {
-        type: "NEW_ACTION_HERE",
-        payload: recipe
-    }
-}
+// User Recipe List Actions
+export const setUserRecipeList = (
+  userRecipeList: UserRecipe[]
+): UserRecipeListAction => {
+  return {
+    type: "SET_USER_RECIPE_LIST",
+    payload: userRecipeList,
+  };
+};
 
-// Recipe List Actions
-export const recipeListAction = (recipeList: Recipe[]):RecipeListAction => {
-    return {
-        type: "NEW_ACTION_HERE",
-        payload: recipeList
-    }
-}
+export const addtoUserRecipeList = (
+  recipe: UserRecipe
+): UserRecipeListAction => {
+  return {
+    type: "ADD_TO_USER_RECIPE_LIST",
+    payload: recipe,
+  };
+};
+
+export const unSavorRecipe = (recipeId: number): UserRecipeListAction => {
+  return {
+    type: "UNSAVOR_RECIPE",
+    payload: recipeId,
+  };
+};
+
+export const savorRecipe = (recipeId: number): UserRecipeListAction => {
+  return {
+    type: "SAVOR_RECIPE",
+    payload: recipeId,
+  };
+};
+
+export const resetUserRecipeList = (): EmptyAction => {
+  return {
+    type: "RESET_USER_RECIPE_LIST",
+  };
+};
 
 // Filters Actions
-export const updateFilters = (filters: Filters):FiltersAction => {
-    return {
-        type: "UPDATE_FILTERS",
-        payload: filters
-    }
-}
+export const setFilters = (filters: Filters): FiltersAction => {
+  return {
+    type: "SET_FILTERS",
+    payload: filters,
+  };
+};
+
+export const updateFilters = (filters: Filters): FiltersAction => {
+  return {
+    type: "UPDATE_FILTERS",
+    payload: filters,
+  };
+};
+
+export const resetFilters = (): EmptyAction => {
+  return {
+    type: "RESET_FILTERS",
+  };
+};
+
+// ReloadRecipes Actions
+export const triggerReload = (): EmptyAction => {
+  return {
+    type: "TRIGGER_RELOAD",
+  };
+};
+
+export const resetReload = (): EmptyAction => {
+  return {
+    type: "SET_RELOAD_FALSE",
+  };
+};
+
+// EnableScroll on Recipe Card Actions
+export const enableScroll = (): EmptyAction => {
+  return {
+    type: "ENABLE_SCROLL",
+  };
+};
+
+export const disableScroll = (): EmptyAction => {
+  return {
+    type: "DISABLE_SCROLL",
+  };
+};
+
+// leaveRecipeScreen Actions
+export const leaveRecipeScreen = (): EmptyAction => {
+  return {
+    type: "TRIGGER_LEAVE",
+  };
+};
+
+export const resetRecipeScreenLeave = (): EmptyAction => {
+  return {
+    type: "SET_LEAVE_FALSE",
+  };
+};

@@ -1,15 +1,18 @@
 import { userReducer } from "./user";
-import { recipeReducer } from "./recipe"
-import { recipeListReducer } from "./recipeList"
-import { filtersReducer } from "./filters"
+import { reloadRecipesReducer } from "./reloadRecipes";
+import { userRecipeListReducer } from "./userRecipeList";
+import { filtersReducer } from "./filters";
 import { combineReducers } from "redux";
-
+import { enableScrollReducer } from "./enableScroll";
+import { leaveRecipeScreenReducer } from "./leaveRecipeScreen";
 
 const rootReducer = combineReducers({
-    userState: userReducer,
-    recipeState: recipeReducer,
-    recipeListState: recipeListReducer,
-    filtersState: filtersReducer
+  userState: userReducer,
+  reloadRecipesState: reloadRecipesReducer,
+  userRecipeListState: userRecipeListReducer,
+  filtersState: filtersReducer,
+  enableScrollState: enableScrollReducer,
+  leaveRecipeScreenState: leaveRecipeScreenReducer,
 });
 
 export default rootReducer;

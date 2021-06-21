@@ -1,5 +1,5 @@
-Endpoint used for recipes.json
-https://api.spoonacular.com/recipes/random?apiKey={API_KEY}&number=10&tags=dinner,american
+Endpoint used for dinnerRecipes.json (manually parsed to remove desserts incorrectly tagged)
+https://api.spoonacular.com/recipes/random?apiKey={API_KEY}&number=100&tags=dinner
 
-Endpoint used for filteredRecipes.json
-https://api.spoonacular.com/recipes/random?apiKey={API_KEY}&number=10&tags=gluten%20free,vegetarian,dinner,italian
+Endpoint used for vegetarianRecipes.json (manually parsed to remove desserts incorrectly tagged)
+https://api.spoonacular.com/recipes/random?apiKey={API_KEY}&number=100&tags=vegetarian,dinner
