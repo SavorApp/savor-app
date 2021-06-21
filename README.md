@@ -52,7 +52,7 @@ Last but not least, we’d like you to Savor what you eat. We challenge you to b
 - [Firebase](https://firebase.google.com/)
 - [PostgreSQL](https://www.postgresql.org/)
 
-## Key features
+## Key Features
 ### *Menu Screen*
 This is where you swipe on your recommended recipes, much like a modern dating app.
 <table border="0">
