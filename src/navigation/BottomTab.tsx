@@ -1,5 +1,4 @@
 import React from "react";
-import { StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Colors from "../constants/Colors";
@@ -7,6 +6,9 @@ import useColorScheme from "../hooks/useColorScheme";
 import ChefNavigator from "./ChefNav";
 import MenuNavigator from "./MenuNav";
 import SavoredListNavigator from "./SavoredListNav";
+import { Dimensions } from "react-native";
+
+const _screen = Dimensions.get("screen");
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -17,11 +19,9 @@ export default function BottomTabNavigator() {
     <BottomTab.Navigator
       initialRouteName="Menu"
       tabBarOptions={{
-        activeTintColor: "#FF5454",
-        style: {
-          elevation: 70,
-          height: 100,
-        },
+        activeTintColor: Colors[colorScheme].tint,
+        labelPosition: "below-icon",
+        style: { height: _screen.height * 0.12 },
       }}
     >
       <BottomTab.Screen
@@ -59,7 +59,5 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
   color: string;
 }) {
-  return (
-    <MaterialCommunityIcons style={{ marginTop: 10 }} size={40} {...props} />
-  );
+  return <MaterialCommunityIcons size={36} {...props} />;
 }

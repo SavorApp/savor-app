@@ -1,43 +1,32 @@
 import React from "react";
-import { View, StyleSheet, Text, Dimensions } from "react-native";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { View, StyleSheet, Text } from "react-native";
+import Emoji from "react-native-emoji";
+import { colorPalette } from "../constants/Styling";
 
-const _screen = Dimensions.get("screen");
 
 export default function LoadingCardStack() {
   return (
-    <View style={styles.container}>
-      <View style={styles.subContainer}>
-        <View style={styles.loadingContent}>
-          <Text style={{ color: "#ff5454", fontSize: 24 }}>
-            Loading Recipes 😋...
-          </Text>
-        </View>
-      </View>
+        <View style={styles.container}>
+          <Emoji name="yum" style={{fontSize: 24}}/>
+          <Text style={styles.loadingText}>Loading Recipes...</Text>
+          <Emoji name="yum" style={{fontSize: 24}}/>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: colorPalette.background,
   },
 
-  subContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: _screen.width * 0.9,
-    height: _screen.height * 0.75,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.primary,
-    ...shadowStyle,
-  },
+  loadingText: {
+    marginHorizontal: 12,
+    fontSize: 24,
+    color: colorPalette.primary
+  }
 
-  loadingContent: {
-    justifyContent: "center",
-    alignItems: "center",
-  },
 });

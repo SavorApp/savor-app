@@ -9,12 +9,12 @@ import {
   Platform,
 } from "react-native";
 import { SwipeListView } from "react-native-swipe-list-view";
-import ConfettiCannon from 'react-native-confetti-cannon';
+import ConfettiCannon from "react-native-confetti-cannon";
 import { useSelector, useDispatch } from "react-redux";
 import { unSavorRecipe } from "../redux/actions";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { colorPalette, font, shadowStyle } from "../constants/Styling";
 import { cuisineMap, dishTypeMap } from "../constants/Maps";
 import { LinearGradient } from "expo-linear-gradient";
 import { updateSavorDb } from "../db/db";
@@ -32,6 +32,12 @@ export interface SavoredListScreenProps {
 export default function SavoredListScreen({
   navigation,
 }: SavoredListScreenProps) {
+  const [fontsLoaded] = useFonts({
+    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
+    OpenSansBold: require("../../assets/fonts/OpenSans-Bold.ttf"),
+    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
+  });
+
   const dispatch = useDispatch();
   const savoredList = useSelector<RootState, UserRecipe[]>((state) => {
     return state.userRecipeListState.userRecipeList.filter((rcp) => {
@@ -42,11 +48,6 @@ export default function SavoredListScreen({
     (state) => state.userState
   );
   const explosion = React.useRef<ConfettiCannon>();
-
-  const [fontsLoaded] = useFonts({
-    OpenSans: require("../../assets/fonts/OpenSans-Regular.ttf"),
-    Satisfy: require("../../assets/fonts/Satisfy-Regular.ttf"),
-  });
 
   function getRandomNumber(): number {
     return Math.floor(Math.random() * savoredList.length);
@@ -61,7 +62,6 @@ export default function SavoredListScreen({
     }, 2500);
   }
 
-  // below is the recipe list
 
   function RecipeListItem({
     rcp,
@@ -70,11 +70,7 @@ export default function SavoredListScreen({
     leftActionState,
     rightActionState,
   }) {
-    // {rcp}: {rcp: UserRecipe}
-    // const newTitle =
-    //   rcp.title.length >= 30 ? rcp.title.slice(0, 30) + "..." : rcp.title;
 
-    // console.log("rightActionState", rightActionState);
     if (rightActionState) {
       Animated.timing(rowHeightAnimatedValue, {
         toValue: 0,
@@ -104,7 +100,7 @@ export default function SavoredListScreen({
               {rcp.title}
             </Text>
             <View style={styles.tagsContainer}>
-              <View style={{ ...styles.singleTagContainer, borderWidth: 0 }}>
+              <View style={styles.flagContainer}>
                 {cuisineMap[rcp.cuisine] || cuisineMap["All"]}
               </View>
               <View style={styles.singleTagContainer}>
@@ -128,12 +124,12 @@ export default function SavoredListScreen({
               )}
               {rcp.glutenFree && (
                 <View style={styles.singleTagContainer}>
-                  <Text style={[styles.tag, { fontWeight: "bold" }]}>GF</Text>
+                  <Text style={styles.tagBold}>GF</Text>
                 </View>
               )}
               {rcp.dairyFree && (
                 <View style={styles.singleTagContainer}>
-                  <Text style={[styles.tag, { fontWeight: "bold" }]}>DF</Text>
+                  <Text style={styles.tagBold}>DF</Text>
                 </View>
               )}
             </View>
@@ -209,18 +205,16 @@ export default function SavoredListScreen({
 
     return (
       <Animated.View
-        style={[styles.rowBack, { height: rowHeightAnimatedValue }]}
+        style={{ ...styles.rowBack, height: rowHeightAnimatedValue }}
       >
-        <Text>Left</Text>
         <TouchableOpacity
-          style={[styles.backRightBtn, styles.backRightBtnLeft]}
+          style={{ ...styles.backRightBtn, ...styles.backRightBtnLeft }}
           onPress={onClose}
         >
           <MaterialCommunityIcons
             name="close-circle-outline"
-            size={25}
-            style={styles.trash}
-            color="#fff"
+            size={24}
+            color={colorPalette.white}
           />
         </TouchableOpacity>
         <Animated.View
@@ -234,12 +228,10 @@ export default function SavoredListScreen({
           ]}
         >
           <TouchableOpacity
-            style={[styles.backRightBtn, styles.backRightBtnRight]}
             onPress={onDelete}
           >
             <Animated.View
               style={[
-                styles.trash,
                 {
                   transform: [
                     {
@@ -255,8 +247,8 @@ export default function SavoredListScreen({
             >
               <MaterialCommunityIcons
                 name="trash-can-outline"
-                size={25}
-                color="#fff"
+                size={24}
+                color={colorPalette.white}
               />
             </Animated.View>
           </TouchableOpacity>
@@ -281,77 +273,77 @@ export default function SavoredListScreen({
   }
 
   if (!fontsLoaded) {
-    return <View></View>;
+    return null;
   } else {
     return (
       <View style={styles.container}>
-        <View style={styles.subContainer}>
-          <View style={styles.contentContainer}>
-            <SwipeListView
-              useFlatList={true}
-              style={styles.flatList}
-              contentContainerStyle={styles.flatListContainer}
-              data={savoredList}
-              keyExtractor={(rowData, index) => {
-                // console.log("I am rowData: ", rowData)
-                return rowData.id.toString();
-              }}
-              renderItem={(rowData, rowMap) => renderItem(rowData, rowMap)}
-              renderHiddenItem={(rowData, rowMap) => {
-                return renderHiddenItem(rowData, rowMap);
-              }}
-              leftOpenValue={75}
-              rightOpenValue={-150}
-              disableRightSwipe
-              onRowDidOpen={(rowData, rowMap) => onRowDidOpen(rowData, rowMap)}
-              leftActivationValue={100}
-              rightActivationValue={-200}
-              leftActionValue={0}
-              rightActionValue={-500}
-              onLeftAction={(rowData, rowMap) => {
-                return onLeftAction(rowData, rowMap);
-              }}
-              onRightAction={(rowData, rowMap) => {
-                return onRightAction(rowData, rowMap);
-              }}
-              onLeftActionStatusChange={ () => {}}
-              onRightActionStatusChange={ () => {}}
-            />
-          </View>
-          <TouchableOpacity
-            onPress={savoredList.length === 0 ? () => {} : handleTruffleShuffle}
-            activeOpacity={0.8}
-            style={{
-              shadowOpacity: 0.2,
-              shadowRadius: 3,
-              shadowOffset: { width: 1, height: 1 },
+        <View style={styles.contentContainer}>
+          <SwipeListView
+            useFlatList={true}
+            style={styles.flatList}
+            contentContainerStyle={styles.flatListContainer}
+            data={savoredList}
+            keyExtractor={(rowData, index) => {
+              // console.log("I am rowData: ", rowData)
+              return rowData.id.toString();
             }}
-          >
-            <LinearGradient
-              colors={["#F7DD08", "#FFAA54"]}
-              style={styles.truffleShuffleButton}
-            >
-              <Text
-                style={{
-                  color: "#343332",
-                  fontSize: 28,
-                  fontFamily: "Satisfy",
-                }}
-              >
-                Truffle Shuffle!
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
+            renderItem={(rowData, rowMap) => renderItem(rowData, rowMap)}
+            renderHiddenItem={(rowData, rowMap) => {
+              return renderHiddenItem(rowData, rowMap);
+            }}
+            leftOpenValue={75}
+            rightOpenValue={-150}
+            disableRightSwipe
+            onRowDidOpen={(rowData, rowMap) => onRowDidOpen(rowData, rowMap)}
+            leftActivationValue={100}
+            rightActivationValue={-200}
+            leftActionValue={0}
+            rightActionValue={-500}
+            onLeftAction={(rowData, rowMap) => {
+              return onLeftAction(rowData, rowMap);
+            }}
+            onRightAction={(rowData, rowMap) => {
+              return onRightAction(rowData, rowMap);
+            }}
+            onLeftActionStatusChange={() => {}}
+            onRightActionStatusChange={() => {}}
+          />
         </View>
+        <TouchableOpacity
+          onPress={savoredList.length === 0 ? () => {} : handleTruffleShuffle}
+          activeOpacity={0.8}
+          style={styles.truffleShuffleButton1}
+        >
+          <LinearGradient
+            colors={colorPalette.truffleShuffleGradient}
+            style={styles.truffleShuffleButton2}
+          >
+            <Text
+              style={styles.truffleShuffleText}
+            >
+              Truffle Shuffle!
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
         <ConfettiCannon
           count={300}
-          colors={["#ff5454", "#F7DD08", "##FFAA54", "#e64c4c", "#cc4343", "#ff6565", "#ff7676"]}
+          colors={[
+            "#ff5454",
+            "#F7DD08",
+            "##FFAA54",
+            "#e64c4c",
+            "#cc4343",
+            "#ff6565",
+            "#ff7676",
+          ]}
           explosionSpeed={500}
           fallSpeed={2000}
-          origin={{x: _screen.width*0.5, y: -_screen.height*0.5}}
+          origin={{ x: _screen.width * 0.5, y: -_screen.height * 0.5 }}
           autoStart={false}
           fadeOut={true}
-          ref={(confettiRef: any) => {explosion.current = confettiRef}}
+          ref={(confettiRef: any) => {
+            explosion.current = confettiRef;
+          }}
         />
       </View>
     );
@@ -360,74 +352,44 @@ export default function SavoredListScreen({
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
+    flex: 20,
+    justifyContent: "space-between",
     alignItems: "center",
-    // backgroundColor: colorPalette.background,
-  },
-
-  subContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: _screen.width * 0.9,
-    height: _screen.height * 0.75,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.primary,
-    ...shadowStyle,
   },
 
   contentContainer: {
-    justifyContent: "center",
-    alignItems: "center",
-    width: _screen.width * 0.86,
-    height: _screen.height * 0.68,
-    borderRadius: 15,
-
-    // backgroundColor: colorPalette.secondary,
+    flex: 15,
+    width: _screen.width,
   },
 
   flatList: {
-    padding: 8,
-    marginVertical: Platform.OS === "android" ? 12 : 0,
-    width: _screen.width * 0.93,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.secondary,
+    paddingTop: _screen.height * 0.01,
+    ...shadowStyle
   },
 
   flatListContainer: {
     justifyContent: "center",
     alignItems: "center",
-    paddingBottom: 16,
   },
 
   recipeListItem: {
-    justifyContent: "center",
-    alignItems: "center",
-    margin: 4,
+    marginBottom: _screen.height * 0.01,
     padding: 3,
-    width: _screen.width * 0.9,
-    borderRadius: 7,
-    backgroundColor: colorPalette.background,
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
-    shadowOffset: { width: 1, height: 1 },
+    width: _screen.width * 0.93,
+    borderRadius: 8,
+    backgroundColor: colorPalette.white
   },
 
   recipeListItemInner: {
     flexDirection: "row",
     alignItems: "center",
-    width: _screen.width * 0.81,
   },
 
   recipeListItemInnerContent: {
-    paddingLeft: 3,
-    marginLeft: -15,
   },
 
   recipeTitle: {
-    fontSize: 20,
-    padding: 9,
-    marginTop: -5,
+    fontSize: font.subTitleSize,
     fontFamily: "OpenSans",
   },
 
@@ -435,70 +397,77 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
 
+  flagContainer: {
+    marginHorizontal: 2,
+  },
+
   singleTagContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 3,
-    padding: 4,
-    marginLeft: 10,
-    marginBottom: 5,
-    borderColor: "black",
-    borderWidth: 0.3,
-    borderRadius: 8,
+    marginHorizontal: 2,
+    padding: 3,
+    borderRadius: 6,
+    backgroundColor: colorPalette.lightGray,
   },
 
   tag: {
-    fontSize: 10,
+    fontSize: font.tagSize,
+    fontFamily: "OpenSans",
   },
 
-  truffleShuffleButton: {
+  tagBold: {
+    fontSize: font.tagSize,
+    fontFamily: "OpenSansBold",
+  },
+  
+  rowBack: {
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 7,
-    width: _screen.width * 0.9,
-    height: _screen.height * 0.065,
-    borderWidth: 0.2,
-    borderColor: "grey",
-    borderRadius: 10,
-    padding: 8,
   },
-
-  rowBack: {
-    alignItems: "center",
-    backgroundColor: "#DDD",
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingLeft: 15,
-    margin: 5,
-    borderRadius: 5,
-  },
-
+  
   backRightBtn: {
-    alignItems: "flex-end",
-    bottom: 0,
+    alignItems: "center",
     justifyContent: "center",
     position: "absolute",
+    width: _screen.width * 0.19,
     top: 0,
-    width: 75,
-    paddingRight: 17,
+    bottom: 0,
+    marginBottom: 8,
+    borderRadius: 8
   },
-
+  
   backRightBtnLeft: {
-    backgroundColor: "#5454FF",
+    backgroundColor: colorPalette.secondary,
     right: 75,
   },
-
+  
   backRightBtnRight: {
-    backgroundColor: "#C70000",
+    backgroundColor: colorPalette.removeRed,
     right: 0,
-    borderTopRightRadius: 5,
-    borderBottomRightRadius: 5,
+    borderTopRightRadius: 8,
+    borderBottomRightRadius: 8,
   },
-  trash: {
-    height: 25,
-    width: 25,
-    marginRight: 7,
+
+  truffleShuffleButton1: {
+    borderColor: colorPalette.darkGray,
+    borderWidth: Platform.OS === "android" ? 0.5 : 0.3,
+    borderRadius: 10,
+    marginVertical: _screen.height * 0.01,
+    ...shadowStyle
   },
+  
+  truffleShuffleButton2: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: _screen.width * 0.9,
+    height: _screen.height * 0.06,
+    borderRadius: 10,
+  },
+
+  truffleShuffleText: {
+    fontSize: font.titleSize,
+    fontFamily: "Satisfy"
+  }
 });

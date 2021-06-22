@@ -8,7 +8,7 @@ import {
   triggerReload,
   unSavorRecipe,
 } from "../redux/actions";
-import { colorPalette, shadowStyle } from "../constants/ColorPalette";
+import { colorPalette } from "../constants/Styling";
 import CardStack, { Card } from "react-native-card-stack-swiper";
 import RecipeCard from "../components/RecipeCard";
 import SwipeButtons from "../components/SwipeButtons";
@@ -122,22 +122,20 @@ export default function RecipeCardStack({
 
   function renderNoMoreCard() {
     return (
-      <View style={styles.renderNoMoreCardsContainer}>
-        <Text style={styles.noMoreCardsText}>No More Recipes,</Text>
-
+      <View style={styles.noMoreCardsContainer}>
+        <Emoji name="male-cook" style={{ fontSize: 24, marginTop: _screen.height*0.01 }} />
+        <Text style={styles.noMoreCardsText}>No more recipes,</Text>
         <Text style={styles.noMoreCardsText}>
-          please adjust your filters...
+          please adjust your filters.
         </Text>
-        <Emoji style={{ margin: 8 }} name="male-cook" />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      <View style={styles.subContainer}>
         <CardStack
-          style={{ ...styles.cardStack, flex: 1 }}
+          style={styles.cardStack}
           ref={(cardStack: CardStack) => {
             cardStackRef.current = cardStack;
           }}
@@ -168,46 +166,31 @@ export default function RecipeCardStack({
           rcp={currentRcp}
           navigateToMoreInfoScreen={navigateToMoreInfoScreen}
         />
-      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  cardStack: {
-    justifyContent: "flex-end",
+  container: {
+    flex: 10,
+    justifyContent: "space-evenly",
     alignItems: "center",
   },
 
-  container: {
-    flex: 1,
+  cardStack: {
+    flex: 5,
     justifyContent: "center",
     alignItems: "center",
-    // backgroundColor: colorPalette.background,
   },
 
-  subContainer: {
-    justifyContent: "flex-end",
+  noMoreCardsContainer: {
     alignItems: "center",
-    width: _screen.width * 0.9,
-    height: _screen.height * 0.75,
-    borderRadius: 15,
-    // backgroundColor: colorPalette.primary,
-    ...shadowStyle,
-  },
-
-  renderNoMoreCardsContainer: {
-    justifyContent: "space-between",
-    alignItems: "center",
-    textAlign: "center",
-    marginBottom: 250,
-    height: _screen.height * 0.05,
-    color: "white",
   },
 
   noMoreCardsText: {
     justifyContent: "center",
     alignItems: "center",
-    // color: colorPalette.background,
+    fontSize: 24,
+    color: colorPalette.primary,
   },
 });
