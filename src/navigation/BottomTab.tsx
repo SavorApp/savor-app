@@ -6,7 +6,8 @@ import useColorScheme from "../hooks/useColorScheme";
 import ChefNavigator from "./ChefNav";
 import MenuNavigator from "./MenuNav";
 import SavoredListNavigator from "./SavoredListNav";
-import { Dimensions } from "react-native";
+import { Dimensions, Platform, PlatformIOSStatic } from "react-native";
+import { font } from "../constants/Styling";
 
 const _screen = Dimensions.get("screen");
 
@@ -15,13 +16,44 @@ const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
 
+  const { tagSize } = font;
+
+  let PlatformIdentifier;
+  if (Platform.OS === "ios") {
+    // Used to determine iPad vs non-iPad
+    PlatformIdentifier = Platform as PlatformIOSStatic;
+  } else {
+    PlatformIdentifier = Platform;
+  }
+
   return (
     <BottomTab.Navigator
       initialRouteName="Menu"
       tabBarOptions={{
         activeTintColor: Colors[colorScheme].tint,
         labelPosition: "below-icon",
-        style: { height: _screen.height * 0.12 },
+        labelStyle: {
+          fontSize:
+            PlatformIdentifier.OS === "ios"
+              ? PlatformIdentifier.isPad
+                ? 16
+                : tagSize
+              : tagSize,
+          marginBottom:
+            PlatformIdentifier.OS === "ios"
+              ? PlatformIdentifier.isPad
+                ? 8
+                : 0
+              : 0,
+        },
+        style: {
+          height:
+            PlatformIdentifier.OS === "ios"
+              ? PlatformIdentifier.isPad
+                ? _screen.height * 0.1
+                : _screen.height * 0.12
+              : _screen.height * 0.12,
+        },
       }}
     >
       <BottomTab.Screen
@@ -59,5 +91,23 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof MaterialCommunityIcons>["name"];
   color: string;
 }) {
-  return <MaterialCommunityIcons size={36} {...props} />;
+  let PlatformIdentifier;
+  if (Platform.OS === "ios") {
+    // Used to determine iPad vs non-iPad
+    PlatformIdentifier = Platform as PlatformIOSStatic;
+  } else {
+    PlatformIdentifier = Platform;
+  }
+  return (
+    <MaterialCommunityIcons
+      size={
+        PlatformIdentifier.OS === "ios"
+          ? PlatformIdentifier.isPad
+            ? 55
+            : 36
+          : 36
+      }
+      {...props}
+    />
+  );
 }

@@ -5,12 +5,21 @@ import {
   Text,
   Dimensions,
   Image,
+  Platform,
+  PlatformIOSStatic,
 } from "react-native";
 import { shadowStyle, colorPalette, font } from "../constants/Styling";
 import { useFonts } from "expo-font";
 
-
 const _screen = Dimensions.get("screen");
+
+let PlatformIdentifier;
+if (Platform.OS === "ios") {
+  // Used to determine iPad vs non-iPad
+  PlatformIdentifier = Platform as PlatformIOSStatic;
+} else {
+  PlatformIdentifier = Platform;
+}
 
 export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
   const [fontsLoaded] = useFonts({
@@ -22,32 +31,32 @@ export default function RecipeCard({ id, rcp }: RecipeCardParamList) {
   } else {
     return (
       <View style={styles.container}>
-            {rcp.image ? (
-              <View style={styles.cardContainer}>
-                <Image
-                  key={id}
-                  source={{ uri: rcp.image || " " }}
-                  style={styles.image}
-                >
-                </Image>
-                  <View style={styles.titleContainer}>
-                    <Text numberOfLines={2} style={styles.title}>{rcp.title}</Text>
-                  </View>
-              </View>
-            ) : (
-              <View style={styles.cardContainer}>
-                <Image
-                  key={id}
-                  source={require("../../assets/icon2.png")}
-                  style={styles.noImage}
-                >
-                </Image>
-                  <Text style={styles.noImageText}>No Image</Text>
-                  <View style={styles.titleContainer}>
-                    <Text style={styles.title}>{rcp.title}</Text>
-                  </View>
-              </View>
-            )}
+        {rcp.image ? (
+          <View style={styles.cardContainer}>
+            <Image
+              key={id}
+              source={{ uri: rcp.image || " " }}
+              style={styles.image}
+            ></Image>
+            <View style={styles.titleContainer}>
+              <Text numberOfLines={2} style={styles.title}>
+                {rcp.title}
+              </Text>
+            </View>
+          </View>
+        ) : (
+          <View style={styles.cardContainer}>
+            <Image
+              key={id}
+              source={require("../../assets/icon2.png")}
+              style={styles.noImage}
+            ></Image>
+            <Text style={styles.noImageText}>No Image</Text>
+            <View style={styles.titleContainer}>
+              <Text style={styles.title}>{rcp.title}</Text>
+            </View>
+          </View>
+        )}
       </View>
     );
   }
@@ -58,20 +67,30 @@ const styles = StyleSheet.create({
     flex: 10,
     justifyContent: "center",
     alignItems: "center",
-    ...shadowStyle
+    ...shadowStyle,
   },
 
   cardContainer: {
     flex: 8,
     justifyContent: "space-between",
     alignItems: "center",
-    height: _screen.height * 0.5,
+    height:
+      PlatformIdentifier.OS === "ios"
+        ? PlatformIdentifier.isPad
+          ? _screen.height * 0.64
+          : _screen.height * 0.5
+        : _screen.height * 0.5,
     borderRadius: 15,
     backgroundColor: colorPalette.white,
   },
 
   image: {
-    height: _screen.height * 0.39,
+    height:
+      PlatformIdentifier.OS === "ios"
+        ? PlatformIdentifier.isPad
+          ? _screen.height * 0.55
+          : _screen.height * 0.39
+        : _screen.height * 0.39,
     width: _screen.width * 0.93,
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
@@ -100,6 +119,6 @@ const styles = StyleSheet.create({
 
   noImageText: {
     fontSize: font.titleSize,
-    color: colorPalette.primary
+    color: colorPalette.primary,
   },
 });
