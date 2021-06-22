@@ -100,7 +100,7 @@ export default function MenuScreen({ navigation }: MenuScreenProps) {
       \/\/\/\/\/\/\/\/\/\/\/\/
       */
 
-      // Dummy vegetarian data
+      // // Dummy vegetarian data
       // if (filtersState.filters.vegetarian) {
       //   fetchedRecipes = vegRecipesJson.recipes.map((rcp) => {
       //     const ingredientsArray = (
