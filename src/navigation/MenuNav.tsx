@@ -4,10 +4,18 @@ import {
   createStackNavigator,
   StackNavigationProp,
 } from "@react-navigation/stack";
-import { StyleSheet, TouchableOpacity, Image, View } from "react-native";
+import { StyleSheet, TouchableOpacity, Image, View, Platform, PlatformIOSStatic } from "react-native";
 import { MenuScreen } from "../screens";
 import { useSelector, useDispatch } from "react-redux";
 import { leaveRecipeScreen } from "../redux/actions";
+
+let PlatformIdentifier: any;
+if (Platform.OS === "ios") {
+  // Used to determine iPad vs non-iPad
+  PlatformIdentifier = Platform as PlatformIOSStatic;
+} else {
+  PlatformIdentifier = Platform;
+}
 
 export interface MenuNavigatorProps {
   navigation: StackNavigationProp<MenuStackParamList, "MenuScreen">;
@@ -51,7 +59,11 @@ export default function MenuNavigator({ navigation }: MenuNavigatorProps) {
             >
               <MaterialCommunityIcons
                 name="hamburger"
-                size={38}
+                size={PlatformIdentifier.OS === "ios"
+                ? PlatformIdentifier.isPad
+                  ? 42
+                  : 38
+                : 38}
                 style={{ marginRight: 12 }}
                 color="gray"
               />

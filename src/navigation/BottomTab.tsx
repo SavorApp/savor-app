@@ -11,6 +11,14 @@ import { font } from "../constants/Styling";
 
 const _screen = Dimensions.get("screen");
 
+let PlatformIdentifier: any;
+if (Platform.OS === "ios") {
+  // Used to determine iPad vs non-iPad
+  PlatformIdentifier = Platform as PlatformIOSStatic;
+} else {
+  PlatformIdentifier = Platform;
+}
+
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
@@ -18,13 +26,6 @@ export default function BottomTabNavigator() {
 
   const { tagSize } = font;
 
-  let PlatformIdentifier;
-  if (Platform.OS === "ios") {
-    // Used to determine iPad vs non-iPad
-    PlatformIdentifier = Platform as PlatformIOSStatic;
-  } else {
-    PlatformIdentifier = Platform;
-  }
 
   return (
     <BottomTab.Navigator

@@ -1,6 +1,6 @@
 import React from "react";
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
-import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
+import { StyleSheet, View, Image, TouchableOpacity, Platform, PlatformIOSStatic } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import {
   createStackNavigator,
   StackNavigationProp,
@@ -8,6 +8,14 @@ import {
 import { ChefScreen, LoginScreen } from "../screens";
 import { useSelector, useDispatch } from "react-redux";
 import { leaveRecipeScreen } from "../redux/actions";
+
+let PlatformIdentifier: any;
+if (Platform.OS === "ios") {
+  // Used to determine iPad vs non-iPad
+  PlatformIdentifier = Platform as PlatformIOSStatic;
+} else {
+  PlatformIdentifier = Platform;
+}
 
 export interface ChefNavigatorProps {
   navigation: StackNavigationProp<ChefStackParamList, "ChefScreen">;
@@ -49,7 +57,11 @@ export default function ChefNavigator({ navigation }: ChefNavigatorProps) {
               >
                 <Ionicons
                   name="settings-sharp"
-                  size={35}
+                  size={PlatformIdentifier.OS === "ios"
+                  ? PlatformIdentifier.isPad
+                    ? 40
+                    : 35
+                  : 35}
                   style={{ marginRight: 12 }}
                   color="gray"
                 />
