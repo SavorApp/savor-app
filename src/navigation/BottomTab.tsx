@@ -50,9 +50,9 @@ export default function BottomTabNavigator() {
           height:
             PlatformIdentifier.OS === "ios"
               ? PlatformIdentifier.isPad
-                ? _screen.height * 0.1
-                : _screen.height * 0.12
-              : _screen.height * 0.12,
+                ? _screen.height * 0.07
+                : _screen.height * 0.1
+              : _screen.height * 0.1,
         },
       }}
     >
@@ -103,7 +103,7 @@ function TabBarIcon(props: {
       size={
         PlatformIdentifier.OS === "ios"
           ? PlatformIdentifier.isPad
-            ? 55
+            ? 38
             : 36
           : 36
       }

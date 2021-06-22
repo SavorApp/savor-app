@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     height:
       PlatformIdentifier.OS === "ios"
         ? PlatformIdentifier.isPad
-          ? _screen.height * 0.64
+          ? _screen.height * 0.6
           : _screen.height * 0.5
         : _screen.height * 0.5,
     borderRadius: 15,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     height:
       PlatformIdentifier.OS === "ios"
         ? PlatformIdentifier.isPad
-          ? _screen.height * 0.55
+          ? _screen.height * 0.5
           : _screen.height * 0.39
         : _screen.height * 0.39,
     width: _screen.width * 0.93,
