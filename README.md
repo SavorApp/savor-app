@@ -30,7 +30,7 @@
 4. [Contact](#contact)
 
 # About
-Savor is a mobile application that is currently open for [beta testing](mailto:savor.beta.test@gmail.com). We are working hard to help with indecisiveness when it comes to coming up with a recipe to cook. Our app lets you easily find and explore over 50,000 recipes from a multitude of cultures so that you can Savor what you eat, while widening your kitchen repertoire. 
+Savor is a mobile application that is currently open for [beta testing](mailto:savor.beta.test@gmail.com). We are working hard to help with indecisiveness when it comes to choosing a recipe to cook. Our app lets you easily find and explore over 50,000 recipes from a multitude of cultures so that you can Savor what you eat, while widening your kitchen repertoire. 
 
 ## Core Values
 ### *Food has no boundaries:*
@@ -148,7 +148,7 @@ This is where you can interact with the recipes you have previously Savored.
 </table>
 
 ### *Truffle Shuffle*
-The infamous Truffle Shuffle button assists the indecisive user by selecting a recipe at random.
+The famous Truffle Shuffle button assists the indecisive user by selecting a recipe at random.
 <table border="0">
  <tr>
     <td width="300px">
